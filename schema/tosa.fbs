@@ -64,6 +64,7 @@ enum Op:uint32 {
   BITWISE_AND,
   BITWISE_OR,
   BITWISE_XOR,
+  DIV,
   LOGICAL_AND,
   LOGICAL_LEFT_SHIFT,
   LOGICAL_RIGHT_SHIFT,
@@ -127,9 +128,7 @@ enum Op:uint32 {
 
   // Data Nodes
   CONST,
-  PLACEHOLDER,
   IDENTITY,
-  IDENTITYN,
 
   // Custom operations
   CUSTOM,
@@ -271,7 +270,7 @@ table PadQuantInfo {
 
 table Version {
   _major: int32 = 0;
-  _minor: int32 = 21;
+  _minor: int32 = 22;
   _patch: int32 = 0;
   _experimental: bool = false;
 }

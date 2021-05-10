@@ -199,62 +199,61 @@ enum Op {
   Op_BITWISE_AND = 16,
   Op_BITWISE_OR = 17,
   Op_BITWISE_XOR = 18,
-  Op_LOGICAL_AND = 19,
-  Op_LOGICAL_LEFT_SHIFT = 20,
-  Op_LOGICAL_RIGHT_SHIFT = 21,
-  Op_LOGICAL_OR = 22,
-  Op_LOGICAL_XOR = 23,
-  Op_MAXIMUM = 24,
-  Op_MINIMUM = 25,
-  Op_MUL = 26,
-  Op_POW = 27,
-  Op_SUB = 28,
-  Op_TABLE = 29,
-  Op_ABS = 30,
-  Op_BITWISE_NOT = 31,
-  Op_CEIL = 32,
-  Op_CLZ = 33,
-  Op_EXP = 34,
-  Op_FLOOR = 35,
-  Op_LOG = 36,
-  Op_LOGICAL_NOT = 37,
-  Op_NEGATE = 38,
-  Op_RECIPROCAL = 39,
-  Op_RSQRT = 40,
-  Op_SELECT = 41,
-  Op_EQUAL = 42,
-  Op_GREATER = 43,
-  Op_GREATER_EQUAL = 44,
-  Op_REDUCE_ANY = 45,
-  Op_REDUCE_ALL = 46,
-  Op_REDUCE_MAX = 47,
-  Op_REDUCE_MIN = 48,
-  Op_REDUCE_PRODUCT = 49,
-  Op_REDUCE_SUM = 50,
-  Op_CONCAT = 51,
-  Op_PAD = 52,
-  Op_RESHAPE = 53,
-  Op_REVERSE = 54,
-  Op_SLICE = 55,
-  Op_TILE = 56,
-  Op_TRANSPOSE = 57,
-  Op_GATHER = 58,
-  Op_SCATTER = 59,
-  Op_RESIZE = 60,
-  Op_CAST = 61,
-  Op_RESCALE = 62,
-  Op_CONST = 63,
-  Op_PLACEHOLDER = 64,
+  Op_DIV = 19,
+  Op_LOGICAL_AND = 20,
+  Op_LOGICAL_LEFT_SHIFT = 21,
+  Op_LOGICAL_RIGHT_SHIFT = 22,
+  Op_LOGICAL_OR = 23,
+  Op_LOGICAL_XOR = 24,
+  Op_MAXIMUM = 25,
+  Op_MINIMUM = 26,
+  Op_MUL = 27,
+  Op_POW = 28,
+  Op_SUB = 29,
+  Op_TABLE = 30,
+  Op_ABS = 31,
+  Op_BITWISE_NOT = 32,
+  Op_CEIL = 33,
+  Op_CLZ = 34,
+  Op_EXP = 35,
+  Op_FLOOR = 36,
+  Op_LOG = 37,
+  Op_LOGICAL_NOT = 38,
+  Op_NEGATE = 39,
+  Op_RECIPROCAL = 40,
+  Op_RSQRT = 41,
+  Op_SELECT = 42,
+  Op_EQUAL = 43,
+  Op_GREATER = 44,
+  Op_GREATER_EQUAL = 45,
+  Op_REDUCE_ANY = 46,
+  Op_REDUCE_ALL = 47,
+  Op_REDUCE_MAX = 48,
+  Op_REDUCE_MIN = 49,
+  Op_REDUCE_PRODUCT = 50,
+  Op_REDUCE_SUM = 51,
+  Op_CONCAT = 52,
+  Op_PAD = 53,
+  Op_RESHAPE = 54,
+  Op_REVERSE = 55,
+  Op_SLICE = 56,
+  Op_TILE = 57,
+  Op_TRANSPOSE = 58,
+  Op_GATHER = 59,
+  Op_SCATTER = 60,
+  Op_RESIZE = 61,
+  Op_CAST = 62,
+  Op_RESCALE = 63,
+  Op_CONST = 64,
   Op_IDENTITY = 65,
-  Op_IDENTITYN = 66,
-  Op_CUSTOM = 67,
-  Op_COND_IF = 68,
-  Op_WHILE_LOOP = 69,
+  Op_CUSTOM = 66,
+  Op_COND_IF = 67,
+  Op_WHILE_LOOP = 68,
   Op_MIN = Op_UNKNOWN,
   Op_MAX = Op_WHILE_LOOP
 };
 
-inline const Op (&EnumValuesOp())[70] {
+inline const Op (&EnumValuesOp())[69] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -275,6 +274,7 @@ inline const Op (&EnumValuesOp())[70] {
     Op_BITWISE_AND,
     Op_BITWISE_OR,
     Op_BITWISE_XOR,
+    Op_DIV,
     Op_LOGICAL_AND,
     Op_LOGICAL_LEFT_SHIFT,
     Op_LOGICAL_RIGHT_SHIFT,
@@ -320,9 +320,7 @@ inline const Op (&EnumValuesOp())[70] {
     Op_CAST,
     Op_RESCALE,
     Op_CONST,
-    Op_PLACEHOLDER,
     Op_IDENTITY,
-    Op_IDENTITYN,
     Op_CUSTOM,
     Op_COND_IF,
     Op_WHILE_LOOP
@@ -331,7 +329,7 @@ inline const Op (&EnumValuesOp())[70] {
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[71] = {
+  static const char * const names[70] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -351,6 +349,7 @@ inline const char * const *EnumNamesOp() {
     "BITWISE_AND",
     "BITWISE_OR",
     "BITWISE_XOR",
+    "DIV",
     "LOGICAL_AND",
     "LOGICAL_LEFT_SHIFT",
     "LOGICAL_RIGHT_SHIFT",
@@ -396,9 +395,7 @@ inline const char * const *EnumNamesOp() {
     "CAST",
     "RESCALE",
     "CONST",
-    "PLACEHOLDER",
     "IDENTITY",
-    "IDENTITYN",
     "CUSTOM",
     "COND_IF",
     "WHILE_LOOP",
@@ -1888,7 +1885,7 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<int32_t>(VT__MAJOR, 0);
   }
   int32_t _minor() const {
-    return GetField<int32_t>(VT__MINOR, 21);
+    return GetField<int32_t>(VT__MINOR, 22);
   }
   int32_t _patch() const {
     return GetField<int32_t>(VT__PATCH, 0);
@@ -1914,7 +1911,7 @@ struct VersionBuilder {
     fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, 0);
   }
   void add__minor(int32_t _minor) {
-    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 21);
+    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 22);
   }
   void add__patch(int32_t _patch) {
     fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, 0);
@@ -1937,7 +1934,7 @@ struct VersionBuilder {
 inline flatbuffers::Offset<Version> CreateVersion(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t _major = 0,
-    int32_t _minor = 21,
+    int32_t _minor = 22,
     int32_t _patch = 0,
     bool _experimental = false) {
   VersionBuilder builder_(_fbb);

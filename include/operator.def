@@ -49,6 +49,7 @@ DEF_OPERATOR(arithmetic_right_shift,  ARITHMETIC_RIGHT_SHIFT,   ArithmeticRightS
 DEF_OPERATOR(bitwise_and,             BITWISE_AND,              BitwiseAnd,             None,             None)
 DEF_OPERATOR(bitwise_or,              BITWISE_OR,               BitwiseOr,              None,             None)
 DEF_OPERATOR(bitwise_xor,             BITWISE_XOR,              BitwiseXor,             None,             None)
+DEF_OPERATOR(div,                     DIV,                      Div,                    None,             None)
 DEF_OPERATOR(logical_and,             LOGICAL_AND,              LogicalAnd,             None,             None)
 DEF_OPERATOR(logical_left_shift,      LOGICAL_LEFT_SHIFT,       LogicalLeftShift,       None,             None)
 DEF_OPERATOR(logical_right_shift,     LOGICAL_RIGHT_SHIFT,      LogicalRightShift,      None,             None)
@@ -112,9 +113,7 @@ DEF_OPERATOR(rescale,                 RESCALE,                  Rescale,        
 
 /* data nodes */
 DEF_OPERATOR(const,                   CONST,                    Const,                  None,             None)
-DEF_OPERATOR(placeholder,             PLACEHOLDER,              Placeholder,            None,             None)
 DEF_OPERATOR(identity,                IDENTITY,                 Identity,               None,             None)
-DEF_OPERATOR(identityn,               IDENTITYN,                IdentityN,              None,             None)
 
 /* custom operations */
 DEF_OPERATOR(custom,                  CUSTOM,                   Custom,                 None,             None)
