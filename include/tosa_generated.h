@@ -1951,7 +1951,7 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_NAME = 4,
     VT_SHAPE = 6,
     VT_TYPE = 8,
-    VT_NPY_FILENAME = 10
+    VT_DATA = 10
   };
   const flatbuffers::String *name() const {
     return GetPointer<const flatbuffers::String *>(VT_NAME);
@@ -1962,8 +1962,8 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   tosa::DType type() const {
     return static_cast<tosa::DType>(GetField<uint32_t>(VT_TYPE, 0));
   }
-  const flatbuffers::String *npy_filename() const {
-    return GetPointer<const flatbuffers::String *>(VT_NPY_FILENAME);
+  const flatbuffers::Vector<uint8_t> *data() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1972,8 +1972,8 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_SHAPE) &&
            verifier.VerifyVector(shape()) &&
            VerifyField<uint32_t>(verifier, VT_TYPE) &&
-           VerifyOffset(verifier, VT_NPY_FILENAME) &&
-           verifier.VerifyString(npy_filename()) &&
+           VerifyOffset(verifier, VT_DATA) &&
+           verifier.VerifyVector(data()) &&
            verifier.EndTable();
   }
 };
@@ -1991,8 +1991,8 @@ struct TosaTensorBuilder {
   void add_type(tosa::DType type) {
     fbb_.AddElement<uint32_t>(TosaTensor::VT_TYPE, static_cast<uint32_t>(type), 0);
   }
-  void add_npy_filename(flatbuffers::Offset<flatbuffers::String> npy_filename) {
-    fbb_.AddOffset(TosaTensor::VT_NPY_FILENAME, npy_filename);
+  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
+    fbb_.AddOffset(TosaTensor::VT_DATA, data);
   }
   explicit TosaTensorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2011,9 +2011,9 @@ inline flatbuffers::Offset<TosaTensor> CreateTosaTensor(
     flatbuffers::Offset<flatbuffers::String> name = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape = 0,
     tosa::DType type = tosa::DType_UNKNOWN,
-    flatbuffers::Offset<flatbuffers::String> npy_filename = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0) {
   TosaTensorBuilder builder_(_fbb);
-  builder_.add_npy_filename(npy_filename);
+  builder_.add_data(data);
   builder_.add_type(type);
   builder_.add_shape(shape);
   builder_.add_name(name);
@@ -2025,16 +2025,17 @@ inline flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
     const char *name = nullptr,
     const std::vector<int32_t> *shape = nullptr,
     tosa::DType type = tosa::DType_UNKNOWN,
-    const char *npy_filename = nullptr) {
+    const std::vector<uint8_t> *data = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
-  auto npy_filename__ = npy_filename ? _fbb.CreateString(npy_filename) : 0;
+  if (data) { _fbb.ForceVectorAlignment(data->size(), sizeof(uint8_t), 8); }
+  auto data__ = data ? _fbb.CreateVector<uint8_t>(*data) : 0;
   return tosa::CreateTosaTensor(
       _fbb,
       name__,
       shape__,
       type,
-      npy_filename__);
+      data__);
 }
 
 struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

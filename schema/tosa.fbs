@@ -276,10 +276,10 @@ table Version {
 }
 
 table TosaTensor {
-  name:string;              // name of the tensor, used for solving dependency
-  shape:[int32];            // shape of the tensor
-  type:DType;               // data type of the tensor
-  npy_filename: string;     // numpy array filename
+  name:string;                      // name of the tensor, used for solving dependency
+  shape:[int32];                    // shape of the tensor
+  type:DType;                       // data type of the tensor
+  data: [ubyte] (force_align: 8);   // raw data array if it's a constant tensor.
 }
 
 table TosaOperator {
