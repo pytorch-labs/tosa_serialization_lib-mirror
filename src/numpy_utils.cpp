@@ -18,6 +18,8 @@
 // Magic NUMPY header
 static const char NUMPY_HEADER_STR[] = "\x93NUMPY\x1\x0\x76\x0{";
 static const int NUMPY_HEADER_SZ     = 128;
+// Maximum shape dimensions supported
+static const int NUMPY_MAX_DIMS_SUPPORTED = 10;
 
 NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, bool* databuf)
 {
@@ -189,11 +191,11 @@ NumpyUtilities::NPError NumpyUtilities::checkNpyHeader(FILE* infile, const uint3
             while (isspace(*ptr))
                 ptr++;
 
-            // The shape contains N comma-separated integers. Read up to 4.
+            // The shape contains N comma-separated integers. Read up to MAX_DIMS.
             char* end = NULL;
 
             ptr = strtok_r(ptr, ",", &end);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < NUMPY_MAX_DIMS_SUPPORTED; i++)
             {
                 // Out of dimensions
                 if (!ptr)
