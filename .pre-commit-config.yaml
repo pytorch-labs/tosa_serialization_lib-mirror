@@ -26,6 +26,15 @@ repos:
 
 -   repo: local
     hooks:
+    -   id: regenerate-headers
+        name: regenerate-headers
+        language: system
+        entry: ./regenerate_headers.sh
+        pass_filenames: false
+        always_run: true
+
+-   repo: local
+    hooks:
     -   id: clang-format
         name: clang-format
         exclude: tosa_generated.h|build|third_party

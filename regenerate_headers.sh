@@ -14,22 +14,24 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+# Bail if any of the commands fail
+set -e
 
 if test -f "third_party/flatbuffers/flatc";
 then
     echo "Found flatc, skip building..."
 else
     echo "flatc not found, building now..."
-    pushd third_party/flatbuffers/
+    pushd third_party/flatbuffers/ > /dev/null
         cmake .
         make flatc -j8
-    popd
+    popd > /dev/null
 fi
 
-pushd include/
+pushd include/ > /dev/null
     ../third_party/flatbuffers/flatc --cpp ../schema/tosa.fbs
-popd
-pushd python/
+popd > /dev/null
+pushd python/ > /dev/null
     ../third_party/flatbuffers/flatc --python ../schema/tosa.fbs
-popd
+popd > /dev/null
 
