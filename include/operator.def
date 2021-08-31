@@ -28,14 +28,14 @@
 
 /* tensor operators */
 DEF_OPERATOR(argmax,                  ARGMAX,                   ArgMax,                 Axis,             None)
-DEF_OPERATOR(avg_pool2d,              AVG_POOL2D,               AvgPool2d,              Pool2d,           Unary)
-DEF_OPERATOR(conv2d,                  CONV2D,                   Conv2d,                 Conv2d,           Conv)
-DEF_OPERATOR(conv3d,                  CONV3D,                   Conv3d,                 None,             None)
-DEF_OPERATOR(depthwise_conv2d,        DEPTHWISE_CONV2D,         DepthwiseConv2d,        Conv2d,           Conv)
+DEF_OPERATOR(avg_pool2d,              AVG_POOL2D,               AvgPool2d,              Pool,             Unary)
+DEF_OPERATOR(conv2d,                  CONV2D,                   Conv2d,                 Conv,             Conv)
+DEF_OPERATOR(conv3d,                  CONV3D,                   Conv3d,                 Conv,             Conv)
+DEF_OPERATOR(depthwise_conv2d,        DEPTHWISE_CONV2D,         DepthwiseConv2d,        Conv,             Conv)
 DEF_OPERATOR(fully_connected,         FULLY_CONNECTED,          FullyConnected,         None,             Conv)
 DEF_OPERATOR(matmul,                  MATMUL,                   MatMul,                 None,             MatMul)
-DEF_OPERATOR(max_pool2d,              MAX_POOL2D,               MaxPool2d,              Pool2d,           None)
-DEF_OPERATOR(transpose_conv2d,        TRANSPOSE_CONV2D,         TransposeConv2d,        TransposeConv2d,  Conv)
+DEF_OPERATOR(max_pool2d,              MAX_POOL2D,               MaxPool2d,              Pool,             None)
+DEF_OPERATOR(transpose_conv2d,        TRANSPOSE_CONV2D,         TransposeConv2d,        TransposeConv,    Conv)
 
 /* activation */
 DEF_OPERATOR(clamp,                   CLAMP,                    Clamp,                  Clamp,            None)

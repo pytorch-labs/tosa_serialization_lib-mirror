@@ -23,14 +23,14 @@
 
 namespace tosa {
 
-struct Pool2dAttribute;
-struct Pool2dAttributeBuilder;
+struct PoolAttribute;
+struct PoolAttributeBuilder;
 
-struct Conv2dAttribute;
-struct Conv2dAttributeBuilder;
+struct ConvAttribute;
+struct ConvAttributeBuilder;
 
-struct TransposeConv2dAttribute;
-struct TransposeConv2dAttributeBuilder;
+struct TransposeConvAttribute;
+struct TransposeConvAttributeBuilder;
 
 struct ReluNAttribute;
 struct ReluNAttributeBuilder;
@@ -412,9 +412,9 @@ inline const char *EnumNameOp(Op e) {
 
 enum Attribute {
   Attribute_NONE = 0,
-  Attribute_Pool2dAttribute = 1,
-  Attribute_Conv2dAttribute = 2,
-  Attribute_TransposeConv2dAttribute = 3,
+  Attribute_PoolAttribute = 1,
+  Attribute_ConvAttribute = 2,
+  Attribute_TransposeConvAttribute = 3,
   Attribute_ReluNAttribute = 4,
   Attribute_AxisAttribute = 5,
   Attribute_ReshapeAttribute = 6,
@@ -434,9 +434,9 @@ enum Attribute {
 inline const Attribute (&EnumValuesAttribute())[16] {
   static const Attribute values[] = {
     Attribute_NONE,
-    Attribute_Pool2dAttribute,
-    Attribute_Conv2dAttribute,
-    Attribute_TransposeConv2dAttribute,
+    Attribute_PoolAttribute,
+    Attribute_ConvAttribute,
+    Attribute_TransposeConvAttribute,
     Attribute_ReluNAttribute,
     Attribute_AxisAttribute,
     Attribute_ReshapeAttribute,
@@ -456,9 +456,9 @@ inline const Attribute (&EnumValuesAttribute())[16] {
 inline const char * const *EnumNamesAttribute() {
   static const char * const names[17] = {
     "NONE",
-    "Pool2dAttribute",
-    "Conv2dAttribute",
-    "TransposeConv2dAttribute",
+    "PoolAttribute",
+    "ConvAttribute",
+    "TransposeConvAttribute",
     "ReluNAttribute",
     "AxisAttribute",
     "ReshapeAttribute",
@@ -486,16 +486,16 @@ template<typename T> struct AttributeTraits {
   static const Attribute enum_value = Attribute_NONE;
 };
 
-template<> struct AttributeTraits<tosa::Pool2dAttribute> {
-  static const Attribute enum_value = Attribute_Pool2dAttribute;
+template<> struct AttributeTraits<tosa::PoolAttribute> {
+  static const Attribute enum_value = Attribute_PoolAttribute;
 };
 
-template<> struct AttributeTraits<tosa::Conv2dAttribute> {
-  static const Attribute enum_value = Attribute_Conv2dAttribute;
+template<> struct AttributeTraits<tosa::ConvAttribute> {
+  static const Attribute enum_value = Attribute_ConvAttribute;
 };
 
-template<> struct AttributeTraits<tosa::TransposeConv2dAttribute> {
-  static const Attribute enum_value = Attribute_TransposeConv2dAttribute;
+template<> struct AttributeTraits<tosa::TransposeConvAttribute> {
+  static const Attribute enum_value = Attribute_TransposeConvAttribute;
 };
 
 template<> struct AttributeTraits<tosa::ReluNAttribute> {
@@ -611,8 +611,8 @@ template<> struct QuantInfoTraits<tosa::PadQuantInfo> {
 bool VerifyQuantInfo(flatbuffers::Verifier &verifier, const void *obj, QuantInfo type);
 bool VerifyQuantInfoVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
 
-struct Pool2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef Pool2dAttributeBuilder Builder;
+struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PoolAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PADDING = 4,
     VT_KERNEL = 6,
@@ -639,44 +639,44 @@ struct Pool2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct Pool2dAttributeBuilder {
-  typedef Pool2dAttribute Table;
+struct PoolAttributeBuilder {
+  typedef PoolAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
-    fbb_.AddOffset(Pool2dAttribute::VT_PADDING, padding);
+    fbb_.AddOffset(PoolAttribute::VT_PADDING, padding);
   }
   void add_kernel(flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel) {
-    fbb_.AddOffset(Pool2dAttribute::VT_KERNEL, kernel);
+    fbb_.AddOffset(PoolAttribute::VT_KERNEL, kernel);
   }
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(Pool2dAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(PoolAttribute::VT_STRIDE, stride);
   }
-  explicit Pool2dAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit PoolAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  Pool2dAttributeBuilder &operator=(const Pool2dAttributeBuilder &);
-  flatbuffers::Offset<Pool2dAttribute> Finish() {
+  PoolAttributeBuilder &operator=(const PoolAttributeBuilder &);
+  flatbuffers::Offset<PoolAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Pool2dAttribute>(end);
+    auto o = flatbuffers::Offset<PoolAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<Pool2dAttribute> CreatePool2dAttribute(
+inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0) {
-  Pool2dAttributeBuilder builder_(_fbb);
+  PoolAttributeBuilder builder_(_fbb);
   builder_.add_stride(stride);
   builder_.add_kernel(kernel);
   builder_.add_padding(padding);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<Pool2dAttribute> CreatePool2dAttributeDirect(
+inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *padding = nullptr,
     const std::vector<int32_t> *kernel = nullptr,
@@ -684,15 +684,15 @@ inline flatbuffers::Offset<Pool2dAttribute> CreatePool2dAttributeDirect(
   auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  return tosa::CreatePool2dAttribute(
+  return tosa::CreatePoolAttribute(
       _fbb,
       padding__,
       kernel__,
       stride__);
 }
 
-struct Conv2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef Conv2dAttributeBuilder Builder;
+struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PADDING = 4,
     VT_STRIDE = 6,
@@ -719,44 +719,44 @@ struct Conv2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct Conv2dAttributeBuilder {
-  typedef Conv2dAttribute Table;
+struct ConvAttributeBuilder {
+  typedef ConvAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
-    fbb_.AddOffset(Conv2dAttribute::VT_PADDING, padding);
+    fbb_.AddOffset(ConvAttribute::VT_PADDING, padding);
   }
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(Conv2dAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(ConvAttribute::VT_STRIDE, stride);
   }
   void add_dilation(flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation) {
-    fbb_.AddOffset(Conv2dAttribute::VT_DILATION, dilation);
+    fbb_.AddOffset(ConvAttribute::VT_DILATION, dilation);
   }
-  explicit Conv2dAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  Conv2dAttributeBuilder &operator=(const Conv2dAttributeBuilder &);
-  flatbuffers::Offset<Conv2dAttribute> Finish() {
+  ConvAttributeBuilder &operator=(const ConvAttributeBuilder &);
+  flatbuffers::Offset<ConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Conv2dAttribute>(end);
+    auto o = flatbuffers::Offset<ConvAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<Conv2dAttribute> CreateConv2dAttribute(
+inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0) {
-  Conv2dAttributeBuilder builder_(_fbb);
+  ConvAttributeBuilder builder_(_fbb);
   builder_.add_dilation(dilation);
   builder_.add_stride(stride);
   builder_.add_padding(padding);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<Conv2dAttribute> CreateConv2dAttributeDirect(
+inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *padding = nullptr,
     const std::vector<int32_t> *stride = nullptr,
@@ -764,15 +764,15 @@ inline flatbuffers::Offset<Conv2dAttribute> CreateConv2dAttributeDirect(
   auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
-  return tosa::CreateConv2dAttribute(
+  return tosa::CreateConvAttribute(
       _fbb,
       padding__,
       stride__,
       dilation__);
 }
 
-struct TransposeConv2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TransposeConv2dAttributeBuilder Builder;
+struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TransposeConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUTPAD = 4,
     VT_STRIDE = 6,
@@ -805,41 +805,41 @@ struct TransposeConv2dAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::T
   }
 };
 
-struct TransposeConv2dAttributeBuilder {
-  typedef TransposeConv2dAttribute Table;
+struct TransposeConvAttributeBuilder {
+  typedef TransposeConvAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_outpad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> outpad) {
-    fbb_.AddOffset(TransposeConv2dAttribute::VT_OUTPAD, outpad);
+    fbb_.AddOffset(TransposeConvAttribute::VT_OUTPAD, outpad);
   }
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(TransposeConv2dAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(TransposeConvAttribute::VT_STRIDE, stride);
   }
   void add_dilation(flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation) {
-    fbb_.AddOffset(TransposeConv2dAttribute::VT_DILATION, dilation);
+    fbb_.AddOffset(TransposeConvAttribute::VT_DILATION, dilation);
   }
   void add_output_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape) {
-    fbb_.AddOffset(TransposeConv2dAttribute::VT_OUTPUT_SHAPE, output_shape);
+    fbb_.AddOffset(TransposeConvAttribute::VT_OUTPUT_SHAPE, output_shape);
   }
-  explicit TransposeConv2dAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TransposeConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TransposeConv2dAttributeBuilder &operator=(const TransposeConv2dAttributeBuilder &);
-  flatbuffers::Offset<TransposeConv2dAttribute> Finish() {
+  TransposeConvAttributeBuilder &operator=(const TransposeConvAttributeBuilder &);
+  flatbuffers::Offset<TransposeConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TransposeConv2dAttribute>(end);
+    auto o = flatbuffers::Offset<TransposeConvAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TransposeConv2dAttribute> CreateTransposeConv2dAttribute(
+inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> outpad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0) {
-  TransposeConv2dAttributeBuilder builder_(_fbb);
+  TransposeConvAttributeBuilder builder_(_fbb);
   builder_.add_output_shape(output_shape);
   builder_.add_dilation(dilation);
   builder_.add_stride(stride);
@@ -847,7 +847,7 @@ inline flatbuffers::Offset<TransposeConv2dAttribute> CreateTransposeConv2dAttrib
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TransposeConv2dAttribute> CreateTransposeConv2dAttributeDirect(
+inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *outpad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
@@ -857,7 +857,7 @@ inline flatbuffers::Offset<TransposeConv2dAttribute> CreateTransposeConv2dAttrib
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
-  return tosa::CreateTransposeConv2dAttribute(
+  return tosa::CreateTransposeConvAttribute(
       _fbb,
       outpad__,
       stride__,
@@ -2059,14 +2059,14 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetPointer<const void *>(VT_ATTRIBUTE);
   }
   template<typename T> const T *attribute_as() const;
-  const tosa::Pool2dAttribute *attribute_as_Pool2dAttribute() const {
-    return attribute_type() == tosa::Attribute_Pool2dAttribute ? static_cast<const tosa::Pool2dAttribute *>(attribute()) : nullptr;
+  const tosa::PoolAttribute *attribute_as_PoolAttribute() const {
+    return attribute_type() == tosa::Attribute_PoolAttribute ? static_cast<const tosa::PoolAttribute *>(attribute()) : nullptr;
   }
-  const tosa::Conv2dAttribute *attribute_as_Conv2dAttribute() const {
-    return attribute_type() == tosa::Attribute_Conv2dAttribute ? static_cast<const tosa::Conv2dAttribute *>(attribute()) : nullptr;
+  const tosa::ConvAttribute *attribute_as_ConvAttribute() const {
+    return attribute_type() == tosa::Attribute_ConvAttribute ? static_cast<const tosa::ConvAttribute *>(attribute()) : nullptr;
   }
-  const tosa::TransposeConv2dAttribute *attribute_as_TransposeConv2dAttribute() const {
-    return attribute_type() == tosa::Attribute_TransposeConv2dAttribute ? static_cast<const tosa::TransposeConv2dAttribute *>(attribute()) : nullptr;
+  const tosa::TransposeConvAttribute *attribute_as_TransposeConvAttribute() const {
+    return attribute_type() == tosa::Attribute_TransposeConvAttribute ? static_cast<const tosa::TransposeConvAttribute *>(attribute()) : nullptr;
   }
   const tosa::ReluNAttribute *attribute_as_ReluNAttribute() const {
     return attribute_type() == tosa::Attribute_ReluNAttribute ? static_cast<const tosa::ReluNAttribute *>(attribute()) : nullptr;
@@ -2148,16 +2148,16 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-template<> inline const tosa::Pool2dAttribute *TosaOperator::attribute_as<tosa::Pool2dAttribute>() const {
-  return attribute_as_Pool2dAttribute();
+template<> inline const tosa::PoolAttribute *TosaOperator::attribute_as<tosa::PoolAttribute>() const {
+  return attribute_as_PoolAttribute();
 }
 
-template<> inline const tosa::Conv2dAttribute *TosaOperator::attribute_as<tosa::Conv2dAttribute>() const {
-  return attribute_as_Conv2dAttribute();
+template<> inline const tosa::ConvAttribute *TosaOperator::attribute_as<tosa::ConvAttribute>() const {
+  return attribute_as_ConvAttribute();
 }
 
-template<> inline const tosa::TransposeConv2dAttribute *TosaOperator::attribute_as<tosa::TransposeConv2dAttribute>() const {
-  return attribute_as_TransposeConv2dAttribute();
+template<> inline const tosa::TransposeConvAttribute *TosaOperator::attribute_as<tosa::TransposeConvAttribute>() const {
+  return attribute_as_TransposeConvAttribute();
 }
 
 template<> inline const tosa::ReluNAttribute *TosaOperator::attribute_as<tosa::ReluNAttribute>() const {
@@ -2486,16 +2486,16 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
     case Attribute_NONE: {
       return true;
     }
-    case Attribute_Pool2dAttribute: {
-      auto ptr = reinterpret_cast<const tosa::Pool2dAttribute *>(obj);
+    case Attribute_PoolAttribute: {
+      auto ptr = reinterpret_cast<const tosa::PoolAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_Conv2dAttribute: {
-      auto ptr = reinterpret_cast<const tosa::Conv2dAttribute *>(obj);
+    case Attribute_ConvAttribute: {
+      auto ptr = reinterpret_cast<const tosa::ConvAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_TransposeConv2dAttribute: {
-      auto ptr = reinterpret_cast<const tosa::TransposeConv2dAttribute *>(obj);
+    case Attribute_TransposeConvAttribute: {
+      auto ptr = reinterpret_cast<const tosa::TransposeConvAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Attribute_ReluNAttribute: {

@@ -26,17 +26,17 @@
     ...: variadic variables for more arguments, depending on NUM_ARGS_IN_ATTRIBUTES
 */
 
-DEF_ATTRIBUTE(Pool2d, 3,
+DEF_ATTRIBUTE(Pool, 3,
               int32_t, V, padding,
               int32_t, V, kernel,
               int32_t, V, stride)
 
-DEF_ATTRIBUTE(Conv2d, 3,
+DEF_ATTRIBUTE(Conv, 3,
               int32_t, V, padding,
               int32_t, V, stride,
               int32_t, V, dilation)
 
-DEF_ATTRIBUTE(TransposeConv2d, 4,
+DEF_ATTRIBUTE(TransposeConv, 4,
               int32_t, V, outpad,
               int32_t, V, stride,
               int32_t, V, dilation,

@@ -139,9 +139,9 @@ enum Op:uint32 {
 }
 
 union Attribute {
-  Pool2dAttribute,
-  Conv2dAttribute,
-  TransposeConv2dAttribute,
+  PoolAttribute,
+  ConvAttribute,
+  TransposeConvAttribute,
   ReluNAttribute,
   AxisAttribute,
   ReshapeAttribute,
@@ -156,19 +156,19 @@ union Attribute {
   WhileLoopAttribute,
 }
 
-table Pool2dAttribute {
+table PoolAttribute {
   padding: [int32];
   kernel: [int32];
   stride: [int32];
 }
 
-table Conv2dAttribute {
+table ConvAttribute {
   padding: [int32];
   stride: [int32];
   dilation: [int32];
 }
 
-table TransposeConv2dAttribute {
+table TransposeConvAttribute {
   outpad: [int32];
   stride: [int32];
   dilation: [int32];
