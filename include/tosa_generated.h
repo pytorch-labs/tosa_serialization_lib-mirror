@@ -1879,26 +1879,26 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__MAJOR = 4,
     VT__MINOR = 6,
     VT__PATCH = 8,
-    VT__EXPERIMENTAL = 10
+    VT__DRAFT = 10
   };
   int32_t _major() const {
     return GetField<int32_t>(VT__MAJOR, 0);
   }
   int32_t _minor() const {
-    return GetField<int32_t>(VT__MINOR, 22);
+    return GetField<int32_t>(VT__MINOR, 23);
   }
   int32_t _patch() const {
     return GetField<int32_t>(VT__PATCH, 0);
   }
-  bool _experimental() const {
-    return GetField<uint8_t>(VT__EXPERIMENTAL, 0) != 0;
+  bool _draft() const {
+    return GetField<uint8_t>(VT__DRAFT, 1) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT__MAJOR) &&
            VerifyField<int32_t>(verifier, VT__MINOR) &&
            VerifyField<int32_t>(verifier, VT__PATCH) &&
-           VerifyField<uint8_t>(verifier, VT__EXPERIMENTAL) &&
+           VerifyField<uint8_t>(verifier, VT__DRAFT) &&
            verifier.EndTable();
   }
 };
@@ -1911,13 +1911,13 @@ struct VersionBuilder {
     fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, 0);
   }
   void add__minor(int32_t _minor) {
-    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 22);
+    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 23);
   }
   void add__patch(int32_t _patch) {
     fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, 0);
   }
-  void add__experimental(bool _experimental) {
-    fbb_.AddElement<uint8_t>(Version::VT__EXPERIMENTAL, static_cast<uint8_t>(_experimental), 0);
+  void add__draft(bool _draft) {
+    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 1);
   }
   explicit VersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1934,14 +1934,14 @@ struct VersionBuilder {
 inline flatbuffers::Offset<Version> CreateVersion(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t _major = 0,
-    int32_t _minor = 22,
+    int32_t _minor = 23,
     int32_t _patch = 0,
-    bool _experimental = false) {
+    bool _draft = true) {
   VersionBuilder builder_(_fbb);
   builder_.add__patch(_patch);
   builder_.add__minor(_minor);
   builder_.add__major(_major);
-  builder_.add__experimental(_experimental);
+  builder_.add__draft(_draft);
   return builder_.Finish();
 }
 

@@ -148,33 +148,12 @@ TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
 TosaSerializationHandler::TosaSerializationHandler()
 {
     _schemaLoaded = false;
-
-    SetTosaVersion();
+    _version      = VersionToStr(TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
 }
 
 TosaSerializationHandler::~TosaSerializationHandler()
 {
     Clear();    // deallocate all basic blocks
-}
-
-tosa_err_t TosaSerializationHandler::SetTosaVersion()
-{
-    // version is specified within .fbs
-    // and it's encoded as defaulted value of CreateTosaVersion()
-    // need to write out one object to read that value out
-    // TODO: very costly now. is there any better way to encode constant in .fbs?
-    auto fboffset_version    = CreateVersion(_builder);
-    auto fboffset_tosa_graph = CreateTosaGraphDirect(_builder, fboffset_version, nullptr);
-    _builder.Finish(fboffset_tosa_graph);
-    std::string jsongen;
-    uint8_t* buf         = _builder.GetBufferPointer();
-    auto fb_tosa_graph   = GetTosaGraph(buf);
-    auto fb_tosa_version = fb_tosa_graph->version();
-
-    _version.set_version(fb_tosa_version->_major(), fb_tosa_version->_minor(), fb_tosa_version->_patch(),
-                         fb_tosa_version->_experimental());
-
-    return TOSA_OK;
 }
 
 tosa_err_t TosaSerializationHandler::LoadFileSchema(const char* schema_filename)
@@ -227,7 +206,7 @@ tosa_err_t TosaSerializationHandler::LoadFileJson(const char* filename)
 
     uint8_t* buf = _parser.builder_.GetBufferPointer();
 
-    err = InitWithBuf(buf);
+    err = Deserialize(buf);
     if (err != TOSA_OK)
     {
         return err;
@@ -246,7 +225,7 @@ tosa_err_t TosaSerializationHandler::SaveFileJson(const char* filename)
         return TOSA_SCHEMA_MISSING;
     }
 
-    err = FreezeBuilder();
+    err = Serialize();
     if (err != TOSA_OK)
     {
         return err;
@@ -297,7 +276,7 @@ tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const char* filename
 
     buf = (uint8_t*)read_buffer.data();
 
-    err = InitWithBuf(buf);
+    err = Deserialize(buf);
     if (err != TOSA_OK)
     {
         return err;
@@ -310,7 +289,7 @@ tosa_err_t TosaSerializationHandler::SaveFileTosaFlatbuffer(const char* filename
 {
     tosa_err_t err;
 
-    err = FreezeBuilder();
+    err = Serialize();
     if (err != TOSA_OK)
     {
         return err;
@@ -340,19 +319,18 @@ tosa_err_t TosaSerializationHandler::Clear()
     return TOSA_OK;
 }
 
-tosa_err_t TosaSerializationHandler::CheckTosaVersion(const TosaVersion& read_version)
+std::string TosaSerializationHandler::VersionToStr(int32_t major, int32_t minor, int32_t patch, bool draft)
 {
-    if (_version != read_version)
-    {
-        printf("WARNING: read tosa version: %s != schema tosa version %s\n", read_version.to_string().c_str(),
-               _version.to_string().c_str());
-        return TOSA_VERSION_MISMATCH;
-    }
-
-    return TOSA_OK;
+    std::string str;
+    str += std::to_string(major) + ".";
+    str += std::to_string(minor) + ".";
+    str += std::to_string(patch);
+    if (draft)
+        str += "d";
+    return str;
 }
 
-tosa_err_t TosaSerializationHandler::InitWithBuf(const uint8_t* buf)
+tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
 {
     auto fb_tosa_graph   = GetTosaGraph(buf);
     auto fb_tosa_version = fb_tosa_graph->version();
@@ -375,12 +353,15 @@ tosa_err_t TosaSerializationHandler::InitWithBuf(const uint8_t* buf)
     // erase container
     Clear();
 
-    TosaVersion read_version(fb_tosa_version->_major(), fb_tosa_version->_minor(), fb_tosa_version->_patch(),
-                             fb_tosa_version->_experimental());
-    tosa_err_t err = CheckTosaVersion(read_version);
+    std::string read_version = VersionToStr(fb_tosa_version->_major(), fb_tosa_version->_minor(),
+                                            fb_tosa_version->_patch(), fb_tosa_version->_draft());
 
-    if (err != TOSA_OK)
-        return err;
+    if (read_version != GetVersionStr())
+    {
+        printf("Read flatbuffer version %s doesn't match serializer version %s\n", read_version.c_str(),
+               GetVersionStr().c_str());
+        return TOSA_VERSION_MISMATCH;
+    }
 
     for (size_t i = 0; i < fb_tosa_blocks->size(); i++)
     {
@@ -436,7 +417,7 @@ tosa_err_t TosaSerializationHandler::InitWithBuf(const uint8_t* buf)
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
                 default:
-                    printf("TosaSerializationHandler::InitWithBuf(): Attribute %s not implemented yet\n",
+                    printf("TosaSerializationHandler::Deserialize(): Attribute %s not implemented yet\n",
                            EnumNamesAttribute()[attribute_type]);
                     return TOSA_INTERNAL_ERROR;
             }
@@ -454,7 +435,7 @@ tosa_err_t TosaSerializationHandler::InitWithBuf(const uint8_t* buf)
 #include "quant_info.def"
 #undef DEF_QUANTIZATION_INFO
                 default:
-                    printf("TosaSerializationHandler::InitWithBuf(): QuantInfo %s not implemented yet\n",
+                    printf("TosaSerializationHandler::Deserialize(): QuantInfo %s not implemented yet\n",
                            EnumNamesQuantInfo()[operator_qinfo_type]);
                     return TOSA_INTERNAL_ERROR;
             }
@@ -531,7 +512,7 @@ tosa_err_t TosaSerializationHandler::InitWithBuf(const uint8_t* buf)
     return TOSA_OK;
 }
 
-tosa_err_t TosaSerializationHandler::FreezeBuilder()
+tosa_err_t TosaSerializationHandler::Serialize()
 {
     std::vector<flatbuffers::Offset<TosaBasicBlock>> fboffset_blocks;
 
@@ -649,7 +630,7 @@ tosa_err_t TosaSerializationHandler::FreezeBuilder()
 #undef DEF_ARGS_S_STR
 #undef DEF_ARGS_S_DEFAULT
                 default:
-                    printf("TosaSerializationHandler::FreezeBuilder(): Attribute %s not implemented yet\n",
+                    printf("TosaSerializationHandler::Serialize(): Attribute %s not implemented yet\n",
                            EnumNamesAttribute()[attribute_type]);
                     return TOSA_INTERNAL_ERROR;
             }
@@ -715,7 +696,7 @@ tosa_err_t TosaSerializationHandler::FreezeBuilder()
 #undef DEF_ARGS_S
 #undef DEF_ARGS_V
                 default:
-                    printf("TosaSerializationHandler::FreezeBuilder(): Attribute %s not implemented yet\n",
+                    printf("TosaSerializationHandler::Serialize(): Attribute %s not implemented yet\n",
                            EnumNamesAttribute()[attribute_type]);
                     return TOSA_INTERNAL_ERROR;
             }
@@ -749,8 +730,8 @@ tosa_err_t TosaSerializationHandler::FreezeBuilder()
 
     auto fb_blocks = _builder.CreateVector(fboffset_blocks);
 
-    auto fb_version = CreateVersion(_builder, GetTosaVersion()._major, GetTosaVersion()._minor, GetTosaVersion()._patch,
-                                    GetTosaVersion()._experimental);
+    auto fb_version =
+        CreateVersion(_builder, TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
 
     auto fb_graph = CreateTosaGraph(_builder, fb_version, fb_blocks);
     _builder.Finish(fb_graph);

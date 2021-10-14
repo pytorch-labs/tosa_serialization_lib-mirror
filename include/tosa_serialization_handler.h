@@ -26,6 +26,10 @@
 #include <string>
 #include <vector>
 
+#define TOSA_VERSION_MAJOR 0
+#define TOSA_VERSION_MINOR 23
+#define TOSA_VERSION_PATCH 0
+#define TOSA_VERSION_DRAFT true
 #define TENSOR_BUFFER_FORCE_ALIGNMENT 8
 
 namespace tosa
@@ -41,66 +45,6 @@ enum tosa_err_t
     TOSA_INTERNAL_ERROR,
     TOSA_VERSION_MISMATCH,
     NUM_TOSA_ERROR
-};
-
-struct TosaVersion
-{
-    int32_t _major;
-    int32_t _minor;
-    int32_t _patch;
-    bool _experimental;
-    bool _valid;
-
-    TosaVersion()
-    {
-        _valid = false;
-    }
-
-    TosaVersion(int32_t major, int32_t minor, int32_t patch, bool experimental)
-    {
-        set_version(major, minor, patch, experimental);
-    }
-
-    void set_version(int32_t major, int32_t minor, int32_t patch, bool experimental)
-    {
-        _major        = major;
-        _minor        = minor;
-        _patch        = patch;
-        _experimental = experimental;
-        _valid        = true;
-    }
-
-    std::string to_string() const
-    {
-        std::string str;
-        assert(_valid);
-        str += std::to_string(_major) + ".";
-        str += std::to_string(_minor) + ".";
-        str += std::to_string(_patch);
-        if (_experimental)
-            str += "(experimental)";
-        return str;
-    };
-
-    bool operator==(const TosaVersion& rhs)
-    {
-        assert(_valid);
-        if (!_valid)
-            return false;
-        if (rhs._major == _major && rhs._minor == _minor && rhs._patch == _patch && rhs._experimental == _experimental)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    bool operator!=(const TosaVersion& rhs)
-    {
-        assert(_valid);
-        if (!_valid)
-            return true;
-        return !((*this) == rhs);
-    }
 };
 
 class TosaSerializationHandler;
@@ -303,7 +247,7 @@ public:
     static tosa_err_t ConvertU8toBool(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<bool>& out);
 
     // version
-    const TosaVersion& GetTosaVersion() const
+    const std::string& GetVersionStr()
     {
         return _version;
     }
@@ -350,13 +294,12 @@ public:
 
 protected:
     tosa_err_t Clear();
-    tosa_err_t InitWithBuf(const uint8_t* buf);
-    tosa_err_t FreezeBuilder();
-    tosa_err_t SetTosaVersion();
-    tosa_err_t CheckTosaVersion(const TosaVersion& read_version);
+    tosa_err_t Deserialize(const uint8_t* buf);
+    tosa_err_t Serialize();
+    std::string VersionToStr(int32_t major, int32_t minor, int32_t patch, bool draft);
 
 private:
-    TosaVersion _version;                              /* tosa version */
+    std::string _version;                              /* version string */
     flatbuffers::FlatBufferBuilder _builder;           /* flatbuffer builder */
     flatbuffers::Parser _parser;                       /* flatbuffer parser, used for json parsing */
     std::vector<TosaSerializationBasicBlock*> _blocks; /* array structure to store all TosaSerializationBasicBlock */

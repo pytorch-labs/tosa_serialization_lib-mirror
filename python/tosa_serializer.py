@@ -35,6 +35,14 @@ from tosa_ref_run import TosaReturnCode
 
 import tosa
 
+TOSA_VERSION_MAJOR = 0
+TOSA_VERSION_MINOR = 23
+TOSA_VERSION_PATCH = 0
+TOSA_VERSION_DRAFT = True
+TOSA_VERSION = [TOSA_VERSION_MAJOR,
+                TOSA_VERSION_MINOR,
+                TOSA_VERSION_PATCH,
+                TOSA_VERSION_DRAFT]
 # With the way flatc generates its python types, there is no programatic way
 # to get string names for the integer types.  Manually maintain a string table
 # here.
@@ -570,10 +578,6 @@ class TosaSerializer:
     def __init__(self, pathPrefix):
 
         # Get the global TOSA version if not already defined
-        try:
-            TOSA_VERSION
-        except NameError:
-            TosaSerializer.setTosaVersion()
 
         self.builder = flatbuffers.Builder(0)
 
@@ -688,7 +692,7 @@ class TosaSerializer:
         Version.VersionAdd_major(builder, TOSA_VERSION[0])
         Version.VersionAdd_minor(builder, TOSA_VERSION[1])
         Version.VersionAdd_patch(builder, TOSA_VERSION[2])
-        Version.VersionAdd_experimental(builder, TOSA_VERSION[3])
+        Version.VersionAdd_draft(builder, TOSA_VERSION[3])
         version = Version.VersionEnd(builder)
 
         fbv_bb = TosaSerializer.serializeObjVec(
@@ -805,30 +809,3 @@ class TosaSerializer:
         else:
             return [val]
 
-    @staticmethod
-    def setTosaVersion():
-        # Create a dummy flatbuffers file with the default version information
-        # There does not appear to be a better way to get a constant from a
-        # flatbuffer schema file
-        builder = flatbuffers.Builder(0)
-        Version.VersionStart(builder)
-        ver = Version.VersionEnd(builder)
-        TosaGraph.TosaGraphStart(builder)
-        TosaGraph.TosaGraphAddVersion(builder, ver)
-        gr = TosaGraph.TosaGraphEnd(builder)
-        builder.Finish(gr)
-
-        out = builder.Output()
-
-        gr = TosaGraph.TosaGraph()
-        root = gr.GetRootAsTosaGraph(out, 0)
-
-        # Store the version as a global variable so that it only needs to be
-        # generated once per process.
-        global TOSA_VERSION
-        TOSA_VERSION = [
-            root.Version()._major(),
-            root.Version()._minor(),
-            root.Version()._patch(),
-            root.Version()._experimental(),
-        ]
