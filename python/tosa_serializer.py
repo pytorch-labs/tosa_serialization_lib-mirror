@@ -414,7 +414,7 @@ class TosaSerializerTensor:
                     b0 = val_u32 & ByteMask
                     b1 = (val_u32 >> np.uint32(8)) & ByteMask
                     b2 = (val_u32 >> np.uint32(16)) & ByteMask
-                    b3 = (val_u32 >> np.uint32(32)) & ByteMask
+                    b3 = (val_u32 >> np.uint32(24)) & ByteMask
                     u8_data.extend([b0, b1, b2, b3])
             elif self.dtype == DType.INT48:
                 for val in self.data:
