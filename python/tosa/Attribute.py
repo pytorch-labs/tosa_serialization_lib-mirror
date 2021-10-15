@@ -22,7 +22,7 @@ class Attribute(object):
     PoolAttribute = 1
     ConvAttribute = 2
     TransposeConvAttribute = 3
-    ReluNAttribute = 4
+    PadAttribute = 4
     AxisAttribute = 5
     ReshapeAttribute = 6
     SliceAttribute = 7
@@ -34,4 +34,6 @@ class Attribute(object):
     ArithmeticRightShiftAttribute = 13
     CondIfAttribute = 14
     WhileLoopAttribute = 15
+    TransposeAttribute = 16
+    TableAttribute = 17
 

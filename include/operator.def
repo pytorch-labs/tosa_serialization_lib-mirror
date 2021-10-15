@@ -39,7 +39,6 @@ DEF_OPERATOR(transpose_conv2d,        TRANSPOSE_CONV2D,         TransposeConv2d,
 
 /* activation */
 DEF_OPERATOR(clamp,                   CLAMP,                    Clamp,                  Clamp,            None)
-DEF_OPERATOR(reluN,                   RELUN,                    ReluN,                  ReluN,            None)
 DEF_OPERATOR(sigmoid,                 SIGMOID,                  Sigmoid,                None,             None)
 DEF_OPERATOR(tanh,                    TANH,                     Tanh,                   None,             None)
 
@@ -60,7 +59,7 @@ DEF_OPERATOR(minimum,                 MINIMUM,                  Minimum,        
 DEF_OPERATOR(mul,                     MUL,                      Mul,                    Mul,              None)
 DEF_OPERATOR(pow,                     POW,                      Pow,                    None,             None)
 DEF_OPERATOR(sub,                     SUB,                      Sub,                    None,             None)
-DEF_OPERATOR(table,                   TABLE,                    Table,                  None,             None)
+DEF_OPERATOR(table,                   TABLE,                    Table,                  Table,            None)
 
 /* elementwise - unary */
 DEF_OPERATOR(abs,                     ABS,                      Abs,                    None,             None)
@@ -84,21 +83,21 @@ DEF_OPERATOR(greater,                 GREATER,                  Greater,        
 DEF_OPERATOR(greater_equal,           GREATER_EQUAL,            GreaterEqual,           None,             None)
 
 /* reduction */
-DEF_OPERATOR(reduce_any,              REDUCE_ANY,               ReduceAny,              Reduce,           None)
-DEF_OPERATOR(reduce_all,              REDUCE_ALL,               ReduceAll,              Reduce,           None)
-DEF_OPERATOR(reduce_max,              REDUCE_MAX,               ReduceMax,              Reduce,           None)
-DEF_OPERATOR(reduce_min,              REDUCE_MIN,               ReduceMin,              Reduce,           None)
-DEF_OPERATOR(reduce_prod,             REDUCE_PRODUCT,           ReduceProduct,          Reduce,           None)
-DEF_OPERATOR(reduce_sum,              REDUCE_SUM,               ReduceSum,              Reduce,           None)
+DEF_OPERATOR(reduce_any,              REDUCE_ANY,               ReduceAny,              Axis,             None)
+DEF_OPERATOR(reduce_all,              REDUCE_ALL,               ReduceAll,              Axis,             None)
+DEF_OPERATOR(reduce_max,              REDUCE_MAX,               ReduceMax,              Axis,             None)
+DEF_OPERATOR(reduce_min,              REDUCE_MIN,               ReduceMin,              Axis,             None)
+DEF_OPERATOR(reduce_prod,             REDUCE_PRODUCT,           ReduceProduct,          Axis,             None)
+DEF_OPERATOR(reduce_sum,              REDUCE_SUM,               ReduceSum,              Axis,             None)
 
 /* memory operation */
 DEF_OPERATOR(concat,                  CONCAT,                   Concat,                 Axis,             None)
-DEF_OPERATOR(pad,                     PAD,                      Pad,                    None,             Pad)
+DEF_OPERATOR(pad,                     PAD,                      Pad,                    Pad,              Pad)
 DEF_OPERATOR(reshape,                 RESHAPE,                  Reshape,                Reshape,          None)
-DEF_OPERATOR(reverse,                 REVERSE,                  Reverse,                Reverse,          None)
+DEF_OPERATOR(reverse,                 REVERSE,                  Reverse,                Axis,             None)
 DEF_OPERATOR(slice,                   SLICE,                    Slice,                  Slice,            None)
 DEF_OPERATOR(tile,                    TILE,                     Tile,                   Tile,             None)
-DEF_OPERATOR(transpose,               TRANSPOSE,                Transpose,              None,             None)
+DEF_OPERATOR(transpose,               TRANSPOSE,                Transpose,              Transpose,        None)
 
 /* gather/scatter */
 DEF_OPERATOR(gather,                  GATHER,                   Gather,                 None,             None)
