@@ -54,7 +54,7 @@ enum Op:uint32 {
 
   // Activation
   CLAMP,
-  RELUN,
+  RESERVED,
   SIGMOID,
   TANH,
 
@@ -142,7 +142,7 @@ union Attribute {
   PoolAttribute,
   ConvAttribute,
   TransposeConvAttribute,
-  ReluNAttribute,
+  PadAttribute,
   AxisAttribute,
   ReshapeAttribute,
   SliceAttribute,
@@ -154,6 +154,8 @@ union Attribute {
   ArithmeticRightShiftAttribute,
   CondIfAttribute,
   WhileLoopAttribute,
+  TransposeAttribute,
+  TableAttribute,
 }
 
 table PoolAttribute {
@@ -175,9 +177,10 @@ table TransposeConvAttribute {
   output_shape: [int32];
 }
 
-table ReluNAttribute {
-  max_int: int32;
-  max_fp: float;
+table PadAttribute {
+  padding: [int32];
+  pad_const_int: int32;
+  pad_const_fp: float;
 }
 
 table AxisAttribute {
@@ -240,6 +243,14 @@ table CondIfAttribute {
 table WhileLoopAttribute {
   cond_branch: string;
   body_branch: string;
+}
+
+table TransposeAttribute {
+  perm: [int32];
+}
+
+table TableAttribute {
+  table: [int32];
 }
 
 union QuantInfo {

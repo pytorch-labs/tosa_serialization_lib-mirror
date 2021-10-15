@@ -42,9 +42,10 @@ DEF_ATTRIBUTE(TransposeConv, 4,
               int32_t, V, dilation,
               int32_t, V, output_shape)
 
-DEF_ATTRIBUTE(ReluN, 2,
-              int32_t, S, max_int,
-              float, S, max_fp)
+DEF_ATTRIBUTE(Pad, 3,
+              int32_t, V, padding,
+              int32_t, S, pad_const_int,
+              float, S, pad_const_fp)
 
 DEF_ATTRIBUTE(Axis, 1,
               int32_t, S, axis)
@@ -96,3 +97,10 @@ DEF_ATTRIBUTE(CondIf, 2,
 DEF_ATTRIBUTE(WhileLoop, 2,
               string, S, cond_branch,
               string, S, body_branch)
+
+DEF_ATTRIBUTE(Transpose, 1,
+              int32_t, V, perm)
+
+DEF_ATTRIBUTE(Table, 1,
+              int32_t, V, table)
+

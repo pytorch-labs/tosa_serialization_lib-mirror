@@ -32,8 +32,8 @@ struct ConvAttributeBuilder;
 struct TransposeConvAttribute;
 struct TransposeConvAttributeBuilder;
 
-struct ReluNAttribute;
-struct ReluNAttributeBuilder;
+struct PadAttribute;
+struct PadAttributeBuilder;
 
 struct AxisAttribute;
 struct AxisAttributeBuilder;
@@ -67,6 +67,12 @@ struct CondIfAttributeBuilder;
 
 struct WhileLoopAttribute;
 struct WhileLoopAttributeBuilder;
+
+struct TransposeAttribute;
+struct TransposeAttributeBuilder;
+
+struct TableAttribute;
+struct TableAttributeBuilder;
 
 struct UnaryQuantInfo;
 struct UnaryQuantInfoBuilder;
@@ -191,7 +197,7 @@ enum Op {
   Op_MAX_POOL2D = 8,
   Op_TRANSPOSE_CONV2D = 9,
   Op_CLAMP = 10,
-  Op_RELUN = 11,
+  Op_RESERVED = 11,
   Op_SIGMOID = 12,
   Op_TANH = 13,
   Op_ADD = 14,
@@ -266,7 +272,7 @@ inline const Op (&EnumValuesOp())[69] {
     Op_MAX_POOL2D,
     Op_TRANSPOSE_CONV2D,
     Op_CLAMP,
-    Op_RELUN,
+    Op_RESERVED,
     Op_SIGMOID,
     Op_TANH,
     Op_ADD,
@@ -341,7 +347,7 @@ inline const char * const *EnumNamesOp() {
     "MAX_POOL2D",
     "TRANSPOSE_CONV2D",
     "CLAMP",
-    "RELUN",
+    "RESERVED",
     "SIGMOID",
     "TANH",
     "ADD",
@@ -415,7 +421,7 @@ enum Attribute {
   Attribute_PoolAttribute = 1,
   Attribute_ConvAttribute = 2,
   Attribute_TransposeConvAttribute = 3,
-  Attribute_ReluNAttribute = 4,
+  Attribute_PadAttribute = 4,
   Attribute_AxisAttribute = 5,
   Attribute_ReshapeAttribute = 6,
   Attribute_SliceAttribute = 7,
@@ -427,17 +433,19 @@ enum Attribute {
   Attribute_ArithmeticRightShiftAttribute = 13,
   Attribute_CondIfAttribute = 14,
   Attribute_WhileLoopAttribute = 15,
+  Attribute_TransposeAttribute = 16,
+  Attribute_TableAttribute = 17,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_WhileLoopAttribute
+  Attribute_MAX = Attribute_TableAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[16] {
+inline const Attribute (&EnumValuesAttribute())[18] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
     Attribute_ConvAttribute,
     Attribute_TransposeConvAttribute,
-    Attribute_ReluNAttribute,
+    Attribute_PadAttribute,
     Attribute_AxisAttribute,
     Attribute_ReshapeAttribute,
     Attribute_SliceAttribute,
@@ -448,18 +456,20 @@ inline const Attribute (&EnumValuesAttribute())[16] {
     Attribute_MulAttribute,
     Attribute_ArithmeticRightShiftAttribute,
     Attribute_CondIfAttribute,
-    Attribute_WhileLoopAttribute
+    Attribute_WhileLoopAttribute,
+    Attribute_TransposeAttribute,
+    Attribute_TableAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[17] = {
+  static const char * const names[19] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
     "TransposeConvAttribute",
-    "ReluNAttribute",
+    "PadAttribute",
     "AxisAttribute",
     "ReshapeAttribute",
     "SliceAttribute",
@@ -471,13 +481,15 @@ inline const char * const *EnumNamesAttribute() {
     "ArithmeticRightShiftAttribute",
     "CondIfAttribute",
     "WhileLoopAttribute",
+    "TransposeAttribute",
+    "TableAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_WhileLoopAttribute)) return "";
+  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_TableAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -498,8 +510,8 @@ template<> struct AttributeTraits<tosa::TransposeConvAttribute> {
   static const Attribute enum_value = Attribute_TransposeConvAttribute;
 };
 
-template<> struct AttributeTraits<tosa::ReluNAttribute> {
-  static const Attribute enum_value = Attribute_ReluNAttribute;
+template<> struct AttributeTraits<tosa::PadAttribute> {
+  static const Attribute enum_value = Attribute_PadAttribute;
 };
 
 template<> struct AttributeTraits<tosa::AxisAttribute> {
@@ -544,6 +556,14 @@ template<> struct AttributeTraits<tosa::CondIfAttribute> {
 
 template<> struct AttributeTraits<tosa::WhileLoopAttribute> {
   static const Attribute enum_value = Attribute_WhileLoopAttribute;
+};
+
+template<> struct AttributeTraits<tosa::TransposeAttribute> {
+  static const Attribute enum_value = Attribute_TransposeAttribute;
+};
+
+template<> struct AttributeTraits<tosa::TableAttribute> {
+  static const Attribute enum_value = Attribute_TableAttribute;
 };
 
 bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
@@ -865,56 +885,80 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
       output_shape__);
 }
 
-struct ReluNAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ReluNAttributeBuilder Builder;
+struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef PadAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MAX_INT = 4,
-    VT_MAX_FP = 6
+    VT_PADDING = 4,
+    VT_PAD_CONST_INT = 6,
+    VT_PAD_CONST_FP = 8
   };
-  int32_t max_int() const {
-    return GetField<int32_t>(VT_MAX_INT, 0);
+  const flatbuffers::Vector<int32_t> *padding() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PADDING);
   }
-  float max_fp() const {
-    return GetField<float>(VT_MAX_FP, 0.0f);
+  int32_t pad_const_int() const {
+    return GetField<int32_t>(VT_PAD_CONST_INT, 0);
+  }
+  float pad_const_fp() const {
+    return GetField<float>(VT_PAD_CONST_FP, 0.0f);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_MAX_INT) &&
-           VerifyField<float>(verifier, VT_MAX_FP) &&
+           VerifyOffset(verifier, VT_PADDING) &&
+           verifier.VerifyVector(padding()) &&
+           VerifyField<int32_t>(verifier, VT_PAD_CONST_INT) &&
+           VerifyField<float>(verifier, VT_PAD_CONST_FP) &&
            verifier.EndTable();
   }
 };
 
-struct ReluNAttributeBuilder {
-  typedef ReluNAttribute Table;
+struct PadAttributeBuilder {
+  typedef PadAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_max_int(int32_t max_int) {
-    fbb_.AddElement<int32_t>(ReluNAttribute::VT_MAX_INT, max_int, 0);
+  void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
+    fbb_.AddOffset(PadAttribute::VT_PADDING, padding);
   }
-  void add_max_fp(float max_fp) {
-    fbb_.AddElement<float>(ReluNAttribute::VT_MAX_FP, max_fp, 0.0f);
+  void add_pad_const_int(int32_t pad_const_int) {
+    fbb_.AddElement<int32_t>(PadAttribute::VT_PAD_CONST_INT, pad_const_int, 0);
   }
-  explicit ReluNAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_pad_const_fp(float pad_const_fp) {
+    fbb_.AddElement<float>(PadAttribute::VT_PAD_CONST_FP, pad_const_fp, 0.0f);
+  }
+  explicit PadAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ReluNAttributeBuilder &operator=(const ReluNAttributeBuilder &);
-  flatbuffers::Offset<ReluNAttribute> Finish() {
+  PadAttributeBuilder &operator=(const PadAttributeBuilder &);
+  flatbuffers::Offset<PadAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ReluNAttribute>(end);
+    auto o = flatbuffers::Offset<PadAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ReluNAttribute> CreateReluNAttribute(
+inline flatbuffers::Offset<PadAttribute> CreatePadAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t max_int = 0,
-    float max_fp = 0.0f) {
-  ReluNAttributeBuilder builder_(_fbb);
-  builder_.add_max_fp(max_fp);
-  builder_.add_max_int(max_int);
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
+    int32_t pad_const_int = 0,
+    float pad_const_fp = 0.0f) {
+  PadAttributeBuilder builder_(_fbb);
+  builder_.add_pad_const_fp(pad_const_fp);
+  builder_.add_pad_const_int(pad_const_int);
+  builder_.add_padding(padding);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *padding = nullptr,
+    int32_t pad_const_int = 0,
+    float pad_const_fp = 0.0f) {
+  auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
+  return tosa::CreatePadAttribute(
+      _fbb,
+      padding__,
+      pad_const_int,
+      pad_const_fp);
 }
 
 struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1675,6 +1719,110 @@ inline flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
       body_branch__);
 }
 
+struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TransposeAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PERM = 4
+  };
+  const flatbuffers::Vector<int32_t> *perm() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PERM);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PERM) &&
+           verifier.VerifyVector(perm()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TransposeAttributeBuilder {
+  typedef TransposeAttribute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_perm(flatbuffers::Offset<flatbuffers::Vector<int32_t>> perm) {
+    fbb_.AddOffset(TransposeAttribute::VT_PERM, perm);
+  }
+  explicit TransposeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  TransposeAttributeBuilder &operator=(const TransposeAttributeBuilder &);
+  flatbuffers::Offset<TransposeAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TransposeAttribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> perm = 0) {
+  TransposeAttributeBuilder builder_(_fbb);
+  builder_.add_perm(perm);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *perm = nullptr) {
+  auto perm__ = perm ? _fbb.CreateVector<int32_t>(*perm) : 0;
+  return tosa::CreateTransposeAttribute(
+      _fbb,
+      perm__);
+}
+
+struct TableAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TableAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TABLE = 4
+  };
+  const flatbuffers::Vector<int32_t> *table() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_TABLE);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_TABLE) &&
+           verifier.VerifyVector(table()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TableAttributeBuilder {
+  typedef TableAttribute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_table(flatbuffers::Offset<flatbuffers::Vector<int32_t>> table) {
+    fbb_.AddOffset(TableAttribute::VT_TABLE, table);
+  }
+  explicit TableAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  TableAttributeBuilder &operator=(const TableAttributeBuilder &);
+  flatbuffers::Offset<TableAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TableAttribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TableAttribute> CreateTableAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> table = 0) {
+  TableAttributeBuilder builder_(_fbb);
+  builder_.add_table(table);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *table = nullptr) {
+  auto table__ = table ? _fbb.CreateVector<int32_t>(*table) : 0;
+  return tosa::CreateTableAttribute(
+      _fbb,
+      table__);
+}
+
 struct UnaryQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef UnaryQuantInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2068,8 +2216,8 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::TransposeConvAttribute *attribute_as_TransposeConvAttribute() const {
     return attribute_type() == tosa::Attribute_TransposeConvAttribute ? static_cast<const tosa::TransposeConvAttribute *>(attribute()) : nullptr;
   }
-  const tosa::ReluNAttribute *attribute_as_ReluNAttribute() const {
-    return attribute_type() == tosa::Attribute_ReluNAttribute ? static_cast<const tosa::ReluNAttribute *>(attribute()) : nullptr;
+  const tosa::PadAttribute *attribute_as_PadAttribute() const {
+    return attribute_type() == tosa::Attribute_PadAttribute ? static_cast<const tosa::PadAttribute *>(attribute()) : nullptr;
   }
   const tosa::AxisAttribute *attribute_as_AxisAttribute() const {
     return attribute_type() == tosa::Attribute_AxisAttribute ? static_cast<const tosa::AxisAttribute *>(attribute()) : nullptr;
@@ -2103,6 +2251,12 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   const tosa::WhileLoopAttribute *attribute_as_WhileLoopAttribute() const {
     return attribute_type() == tosa::Attribute_WhileLoopAttribute ? static_cast<const tosa::WhileLoopAttribute *>(attribute()) : nullptr;
+  }
+  const tosa::TransposeAttribute *attribute_as_TransposeAttribute() const {
+    return attribute_type() == tosa::Attribute_TransposeAttribute ? static_cast<const tosa::TransposeAttribute *>(attribute()) : nullptr;
+  }
+  const tosa::TableAttribute *attribute_as_TableAttribute() const {
+    return attribute_type() == tosa::Attribute_TableAttribute ? static_cast<const tosa::TableAttribute *>(attribute()) : nullptr;
   }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
@@ -2160,8 +2314,8 @@ template<> inline const tosa::TransposeConvAttribute *TosaOperator::attribute_as
   return attribute_as_TransposeConvAttribute();
 }
 
-template<> inline const tosa::ReluNAttribute *TosaOperator::attribute_as<tosa::ReluNAttribute>() const {
-  return attribute_as_ReluNAttribute();
+template<> inline const tosa::PadAttribute *TosaOperator::attribute_as<tosa::PadAttribute>() const {
+  return attribute_as_PadAttribute();
 }
 
 template<> inline const tosa::AxisAttribute *TosaOperator::attribute_as<tosa::AxisAttribute>() const {
@@ -2206,6 +2360,14 @@ template<> inline const tosa::CondIfAttribute *TosaOperator::attribute_as<tosa::
 
 template<> inline const tosa::WhileLoopAttribute *TosaOperator::attribute_as<tosa::WhileLoopAttribute>() const {
   return attribute_as_WhileLoopAttribute();
+}
+
+template<> inline const tosa::TransposeAttribute *TosaOperator::attribute_as<tosa::TransposeAttribute>() const {
+  return attribute_as_TransposeAttribute();
+}
+
+template<> inline const tosa::TableAttribute *TosaOperator::attribute_as<tosa::TableAttribute>() const {
+  return attribute_as_TableAttribute();
 }
 
 template<> inline const tosa::UnaryQuantInfo *TosaOperator::quant_info_as<tosa::UnaryQuantInfo>() const {
@@ -2498,8 +2660,8 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
       auto ptr = reinterpret_cast<const tosa::TransposeConvAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_ReluNAttribute: {
-      auto ptr = reinterpret_cast<const tosa::ReluNAttribute *>(obj);
+    case Attribute_PadAttribute: {
+      auto ptr = reinterpret_cast<const tosa::PadAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Attribute_AxisAttribute: {
@@ -2544,6 +2706,14 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
     }
     case Attribute_WhileLoopAttribute: {
       auto ptr = reinterpret_cast<const tosa::WhileLoopAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_TransposeAttribute: {
+      auto ptr = reinterpret_cast<const tosa::TransposeAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_TableAttribute: {
+      auto ptr = reinterpret_cast<const tosa::TableAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

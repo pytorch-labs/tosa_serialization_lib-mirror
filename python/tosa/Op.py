@@ -29,7 +29,7 @@ class Op(object):
     MAX_POOL2D = 8
     TRANSPOSE_CONV2D = 9
     CLAMP = 10
-    RELUN = 11
+    RESERVED = 11
     SIGMOID = 12
     TANH = 13
     ADD = 14
