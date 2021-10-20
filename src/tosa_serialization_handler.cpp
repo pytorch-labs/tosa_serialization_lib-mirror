@@ -148,7 +148,7 @@ TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
 TosaSerializationHandler::TosaSerializationHandler()
 {
     _schemaLoaded = false;
-    _version      = VersionToStr(TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
+    _version      = TosaVersion(TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
 }
 
 TosaSerializationHandler::~TosaSerializationHandler()
@@ -319,17 +319,6 @@ tosa_err_t TosaSerializationHandler::Clear()
     return TOSA_OK;
 }
 
-std::string TosaSerializationHandler::VersionToStr(int32_t major, int32_t minor, int32_t patch, bool draft)
-{
-    std::string str;
-    str += std::to_string(major) + ".";
-    str += std::to_string(minor) + ".";
-    str += std::to_string(patch);
-    if (draft)
-        str += "d";
-    return str;
-}
-
 tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
 {
     auto fb_tosa_graph   = GetTosaGraph(buf);
@@ -353,14 +342,22 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     // erase container
     Clear();
 
-    std::string read_version = VersionToStr(fb_tosa_version->_major(), fb_tosa_version->_minor(),
-                                            fb_tosa_version->_patch(), fb_tosa_version->_draft());
+    TosaVersion read_version(fb_tosa_version->_major(), fb_tosa_version->_minor(), fb_tosa_version->_patch(),
+                             fb_tosa_version->_draft());
 
-    if (read_version != GetVersionStr())
+    TosaVersion::compat_t is_compat = read_version.is_compatible(GetVersion());
+    switch (is_compat)
     {
-        printf("Read flatbuffer version %s doesn't match serializer version %s\n", read_version.c_str(),
-               GetVersionStr().c_str());
-        return TOSA_VERSION_MISMATCH;
+        case TosaVersion::compat_t::COMPLETELY_COMPATIBLE:
+            break;
+        case TosaVersion::compat_t::PARTIALLY_COMPATIBLE:
+            printf("WARNING: Read flatbuffer version %s is partially compatible with serializer version %s\n",
+                   read_version.to_string().c_str(), GetVersion().to_string().c_str());
+            break;
+        case TosaVersion::compat_t::NOT_COMPATIBLE:
+            printf("ERROR: Read flatbuffer version %s is not compatible with serializer version %s\n",
+                   read_version.to_string().c_str(), GetVersion().to_string().c_str());
+            return TOSA_VERSION_MISMATCH;
     }
 
     for (size_t i = 0; i < fb_tosa_blocks->size(); i++)

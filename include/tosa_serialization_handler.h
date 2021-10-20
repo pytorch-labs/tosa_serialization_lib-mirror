@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 
+// Keep version number in sync with the version default value with schema/tosa.fbs
 #define TOSA_VERSION_MAJOR 0
 #define TOSA_VERSION_MINOR 23
 #define TOSA_VERSION_PATCH 0
@@ -45,6 +46,62 @@ enum tosa_err_t
     TOSA_INTERNAL_ERROR,
     TOSA_VERSION_MISMATCH,
     NUM_TOSA_ERROR
+};
+
+struct TosaVersion
+{
+    int32_t _major;
+    int32_t _minor;
+    int32_t _patch;
+    bool _draft;
+
+    enum class compat_t
+    {
+        COMPLETELY_COMPATIBLE,
+        PARTIALLY_COMPATIBLE,
+        NOT_COMPATIBLE
+    };
+
+    TosaVersion() = default;
+    TosaVersion(int32_t major, int32_t minor, int32_t patch, bool draft)
+    {
+        set_version(major, minor, patch, draft);
+    }
+
+    void set_version(int32_t major, int32_t minor, int32_t patch, bool draft)
+    {
+        _major = major;
+        _minor = minor;
+        _patch = patch;
+        _draft = draft;
+    }
+
+    std::string to_string() const
+    {
+        std::string str;
+        str += std::to_string(_major) + ".";
+        str += std::to_string(_minor) + ".";
+        str += std::to_string(_patch);
+        if (_draft)
+            str += "d";
+        return str;
+    }
+
+    compat_t is_compatible(const TosaVersion& rhs) const
+    {
+        if (rhs._major == _major && rhs._minor == _minor)
+        {
+            if (rhs._patch == _patch && rhs._draft == _draft)
+            {
+                return TosaVersion::compat_t::COMPLETELY_COMPATIBLE;
+            }
+            else
+            {
+                return TosaVersion::compat_t::PARTIALLY_COMPATIBLE;
+            }
+        }
+        return TosaVersion::compat_t::NOT_COMPATIBLE;
+    }
 };
 
 class TosaSerializationHandler;
@@ -247,7 +304,7 @@ public:
     static tosa_err_t ConvertU8toBool(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<bool>& out);
 
     // version
-    const std::string& GetVersionStr()
+    const TosaVersion& GetVersion()
     {
         return _version;
     }
@@ -296,10 +353,9 @@ protected:
     tosa_err_t Clear();
     tosa_err_t Deserialize(const uint8_t* buf);
     tosa_err_t Serialize();
-    std::string VersionToStr(int32_t major, int32_t minor, int32_t patch, bool draft);
 
 private:
-    std::string _version;                              /* version string */
+    TosaVersion _version;                              /* version struct */
     flatbuffers::FlatBufferBuilder _builder;           /* flatbuffer builder */
     flatbuffers::Parser _parser;                       /* flatbuffer parser, used for json parsing */
     std::vector<TosaSerializationBasicBlock*> _blocks; /* array structure to store all TosaSerializationBasicBlock */

@@ -35,6 +35,7 @@ from tosa_ref_run import TosaReturnCode
 
 import tosa
 
+# Keep version number in sync with the version default value with schema/tosa.fbs
 TOSA_VERSION_MAJOR = 0
 TOSA_VERSION_MINOR = 23
 TOSA_VERSION_PATCH = 0
