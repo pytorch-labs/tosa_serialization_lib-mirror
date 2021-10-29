@@ -283,7 +283,7 @@ table Version {
   _major: int32 = 0;
   _minor: int32 = 23;
   _patch: int32 = 0;
-  _draft: bool = true;
+  _draft: bool = false;
 }
 
 table TosaTensor {
