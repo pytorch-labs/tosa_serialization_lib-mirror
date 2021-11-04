@@ -27,12 +27,16 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/third_party/flatbuffers/include)
 
+# Turn off unnecessary flatbuffers targets
+set(FLATBUFFERS_BUILD_TESTS OFF)
+add_subdirectory(third_party/flatbuffers)
+
 add_library(tosa_serialization_lib STATIC
   src/tosa_serialization_handler.cpp
   src/numpy_utils.cpp
-  )
+)
 
-add_subdirectory(third_party)
+target_link_libraries(tosa_serialization_lib PRIVATE flatbuffers)
 
 add_executable(serialization_read_write
   test/src/serialization_read_write.cpp
@@ -40,7 +44,6 @@ add_executable(serialization_read_write
 
 target_link_libraries(serialization_read_write
   tosa_serialization_lib
-  flatbuffers
 )
 
 add_executable(serialization_npy_test
@@ -49,5 +52,18 @@ add_executable(serialization_npy_test
 
 target_link_libraries(serialization_npy_test
   tosa_serialization_lib
-  flatbuffers
+)
+
+set(TOSA_SERIALIZATION_LIB_CMAKE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/tosa_serialization_lib")
+
+install(
+  TARGETS tosa_serialization_lib EXPORT TosaSerializationLibTargets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(EXPORT TosaSerializationLibTargets
+  FILE TosaSerializationLibTargets.cmake
+  NAMESPACE tosa::
+  DESTINATION ${TOSA_SERIALIZATION_LIB_CMAKE_DIR}
 )
