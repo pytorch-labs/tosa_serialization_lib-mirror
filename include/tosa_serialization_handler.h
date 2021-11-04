@@ -28,9 +28,9 @@
 
 // Keep version number in sync with the version default value with schema/tosa.fbs
 #define TOSA_VERSION_MAJOR 0
-#define TOSA_VERSION_MINOR 23
+#define TOSA_VERSION_MINOR 24
 #define TOSA_VERSION_PATCH 0
-#define TOSA_VERSION_DRAFT false
+#define TOSA_VERSION_DRAFT true
 #define TENSOR_BUFFER_FORCE_ALIGNMENT 8
 
 namespace tosa
