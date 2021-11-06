@@ -107,9 +107,8 @@ public:
     public:                                                                                                            \
         Tosa##NAME##QuantInfo(const TosaQuantInfoBase* qinfo)                                                          \
         {                                                                                                              \
-            const Tosa##NAME##QuantInfo* p = dynamic_cast<const Tosa##NAME##QuantInfo*>(qinfo);                        \
-            assert(p);                                                                                                 \
-            *this = *p;                                                                                                \
+            const Tosa##NAME##QuantInfo* p = static_cast<const Tosa##NAME##QuantInfo*>(qinfo);                         \
+            *this                          = *p;                                                                       \
         }                                                                                                              \
         Tosa##NAME##QuantInfo(const Tosa##NAME##QuantInfo* p)                                                          \
         {                                                                                                              \

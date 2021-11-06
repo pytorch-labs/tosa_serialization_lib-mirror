@@ -116,7 +116,7 @@ public:
     public:                                                                                                            \
         Tosa##NAME##Attribute(const TosaAttributeBase* options)                                                        \
         {                                                                                                              \
-            const Tosa##NAME##Attribute* p = reinterpret_cast<const Tosa##NAME##Attribute*>(options);                  \
+            const Tosa##NAME##Attribute* p = static_cast<const Tosa##NAME##Attribute*>(options);                       \
             *this                          = *p;                                                                       \
         }                                                                                                              \
         Tosa##NAME##Attribute(const Tosa##NAME##Attribute* p)                                                          \
