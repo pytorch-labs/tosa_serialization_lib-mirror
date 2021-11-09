@@ -10,12 +10,16 @@ class TransposeConvAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTransposeConvAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TransposeConvAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTransposeConvAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TransposeConvAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -132,13 +136,43 @@ class TransposeConvAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         return o == 0
 
-def TransposeConvAttributeStart(builder): builder.StartObject(4)
-def TransposeConvAttributeAddOutpad(builder, outpad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outpad), 0)
-def TransposeConvAttributeStartOutpadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
-def TransposeConvAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeAddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
-def TransposeConvAttributeStartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeAddOutputShape(builder, outputShape): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(outputShape), 0)
-def TransposeConvAttributeStartOutputShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(4)
+def TransposeConvAttributeStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddOutpad(builder, outpad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outpad), 0)
+def TransposeConvAttributeAddOutpad(builder, outpad):
+    """This method is deprecated. Please switch to AddOutpad."""
+    return AddOutpad(builder, outpad)
+def StartOutpadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeConvAttributeStartOutpadVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartOutpadVector(builder, numElems)
+def AddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def TransposeConvAttributeAddStride(builder, stride):
+    """This method is deprecated. Please switch to AddStride."""
+    return AddStride(builder, stride)
+def StartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeConvAttributeStartStrideVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartStrideVector(builder, numElems)
+def AddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
+def TransposeConvAttributeAddDilation(builder, dilation):
+    """This method is deprecated. Please switch to AddDilation."""
+    return AddDilation(builder, dilation)
+def StartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeConvAttributeStartDilationVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartDilationVector(builder, numElems)
+def AddOutputShape(builder, outputShape): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(outputShape), 0)
+def TransposeConvAttributeAddOutputShape(builder, outputShape):
+    """This method is deprecated. Please switch to AddOutputShape."""
+    return AddOutputShape(builder, outputShape)
+def StartOutputShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeConvAttributeStartOutputShapeVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartOutputShapeVector(builder, numElems)
+def End(builder): return builder.EndObject()
+def TransposeConvAttributeEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

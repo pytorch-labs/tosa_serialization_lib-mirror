@@ -10,12 +10,16 @@ class TosaOperator(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTosaOperator(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TosaOperator()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTosaOperator(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TosaOperatorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -105,14 +109,47 @@ class TosaOperator(object):
             return obj
         return None
 
-def TosaOperatorStart(builder): builder.StartObject(7)
-def TosaOperatorAddOp(builder, op): builder.PrependUint32Slot(0, op, 0)
-def TosaOperatorAddAttributeType(builder, attributeType): builder.PrependUint8Slot(1, attributeType, 0)
-def TosaOperatorAddAttribute(builder, attribute): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(attribute), 0)
-def TosaOperatorAddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
-def TosaOperatorStartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaOperatorAddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
-def TosaOperatorStartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaOperatorAddQuantInfoType(builder, quantInfoType): builder.PrependUint8Slot(5, quantInfoType, 0)
-def TosaOperatorAddQuantInfo(builder, quantInfo): builder.PrependUOffsetTRelativeSlot(6, flatbuffers.number_types.UOffsetTFlags.py_type(quantInfo), 0)
-def TosaOperatorEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(7)
+def TosaOperatorStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddOp(builder, op): builder.PrependUint32Slot(0, op, 0)
+def TosaOperatorAddOp(builder, op):
+    """This method is deprecated. Please switch to AddOp."""
+    return AddOp(builder, op)
+def AddAttributeType(builder, attributeType): builder.PrependUint8Slot(1, attributeType, 0)
+def TosaOperatorAddAttributeType(builder, attributeType):
+    """This method is deprecated. Please switch to AddAttributeType."""
+    return AddAttributeType(builder, attributeType)
+def AddAttribute(builder, attribute): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(attribute), 0)
+def TosaOperatorAddAttribute(builder, attribute):
+    """This method is deprecated. Please switch to AddAttribute."""
+    return AddAttribute(builder, attribute)
+def AddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
+def TosaOperatorAddInputs(builder, inputs):
+    """This method is deprecated. Please switch to AddInputs."""
+    return AddInputs(builder, inputs)
+def StartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaOperatorStartInputsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartInputsVector(builder, numElems)
+def AddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
+def TosaOperatorAddOutputs(builder, outputs):
+    """This method is deprecated. Please switch to AddOutputs."""
+    return AddOutputs(builder, outputs)
+def StartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaOperatorStartOutputsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartOutputsVector(builder, numElems)
+def AddQuantInfoType(builder, quantInfoType): builder.PrependUint8Slot(5, quantInfoType, 0)
+def TosaOperatorAddQuantInfoType(builder, quantInfoType):
+    """This method is deprecated. Please switch to AddQuantInfoType."""
+    return AddQuantInfoType(builder, quantInfoType)
+def AddQuantInfo(builder, quantInfo): builder.PrependUOffsetTRelativeSlot(6, flatbuffers.number_types.UOffsetTFlags.py_type(quantInfo), 0)
+def TosaOperatorAddQuantInfo(builder, quantInfo):
+    """This method is deprecated. Please switch to AddQuantInfo."""
+    return AddQuantInfo(builder, quantInfo)
+def End(builder): return builder.EndObject()
+def TosaOperatorEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

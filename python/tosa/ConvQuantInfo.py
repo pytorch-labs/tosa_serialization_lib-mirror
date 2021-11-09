@@ -10,12 +10,16 @@ class ConvQuantInfo(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsConvQuantInfo(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ConvQuantInfo()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsConvQuantInfo(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def ConvQuantInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -38,7 +42,19 @@ class ConvQuantInfo(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def ConvQuantInfoStart(builder): builder.StartObject(2)
-def ConvQuantInfoAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
-def ConvQuantInfoAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
-def ConvQuantInfoEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(2)
+def ConvQuantInfoStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+def ConvQuantInfoAddInputZp(builder, inputZp):
+    """This method is deprecated. Please switch to AddInputZp."""
+    return AddInputZp(builder, inputZp)
+def AddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
+def ConvQuantInfoAddWeightZp(builder, weightZp):
+    """This method is deprecated. Please switch to AddWeightZp."""
+    return AddWeightZp(builder, weightZp)
+def End(builder): return builder.EndObject()
+def ConvQuantInfoEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

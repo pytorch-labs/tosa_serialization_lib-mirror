@@ -10,12 +10,16 @@ class RescaleAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsRescaleAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = RescaleAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsRescaleAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def RescaleAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -113,14 +117,47 @@ class RescaleAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-def RescaleAttributeStart(builder): builder.StartObject(7)
-def RescaleAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
-def RescaleAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(1, outputZp, 0)
-def RescaleAttributeAddMultiplier(builder, multiplier): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(multiplier), 0)
-def RescaleAttributeStartMultiplierVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def RescaleAttributeAddShift(builder, shift): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(shift), 0)
-def RescaleAttributeStartShiftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def RescaleAttributeAddScale32(builder, scale32): builder.PrependBoolSlot(4, scale32, 0)
-def RescaleAttributeAddDoubleRound(builder, doubleRound): builder.PrependBoolSlot(5, doubleRound, 0)
-def RescaleAttributeAddPerChannel(builder, perChannel): builder.PrependBoolSlot(6, perChannel, 0)
-def RescaleAttributeEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(7)
+def RescaleAttributeStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+def RescaleAttributeAddInputZp(builder, inputZp):
+    """This method is deprecated. Please switch to AddInputZp."""
+    return AddInputZp(builder, inputZp)
+def AddOutputZp(builder, outputZp): builder.PrependInt32Slot(1, outputZp, 0)
+def RescaleAttributeAddOutputZp(builder, outputZp):
+    """This method is deprecated. Please switch to AddOutputZp."""
+    return AddOutputZp(builder, outputZp)
+def AddMultiplier(builder, multiplier): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(multiplier), 0)
+def RescaleAttributeAddMultiplier(builder, multiplier):
+    """This method is deprecated. Please switch to AddMultiplier."""
+    return AddMultiplier(builder, multiplier)
+def StartMultiplierVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def RescaleAttributeStartMultiplierVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartMultiplierVector(builder, numElems)
+def AddShift(builder, shift): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(shift), 0)
+def RescaleAttributeAddShift(builder, shift):
+    """This method is deprecated. Please switch to AddShift."""
+    return AddShift(builder, shift)
+def StartShiftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def RescaleAttributeStartShiftVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartShiftVector(builder, numElems)
+def AddScale32(builder, scale32): builder.PrependBoolSlot(4, scale32, 0)
+def RescaleAttributeAddScale32(builder, scale32):
+    """This method is deprecated. Please switch to AddScale32."""
+    return AddScale32(builder, scale32)
+def AddDoubleRound(builder, doubleRound): builder.PrependBoolSlot(5, doubleRound, 0)
+def RescaleAttributeAddDoubleRound(builder, doubleRound):
+    """This method is deprecated. Please switch to AddDoubleRound."""
+    return AddDoubleRound(builder, doubleRound)
+def AddPerChannel(builder, perChannel): builder.PrependBoolSlot(6, perChannel, 0)
+def RescaleAttributeAddPerChannel(builder, perChannel):
+    """This method is deprecated. Please switch to AddPerChannel."""
+    return AddPerChannel(builder, perChannel)
+def End(builder): return builder.EndObject()
+def RescaleAttributeEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

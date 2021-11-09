@@ -10,12 +10,16 @@ class TosaBasicBlock(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTosaBasicBlock(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TosaBasicBlock()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTosaBasicBlock(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TosaBasicBlockBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -121,14 +125,47 @@ class TosaBasicBlock(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         return o == 0
 
-def TosaBasicBlockStart(builder): builder.StartObject(5)
-def TosaBasicBlockAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
-def TosaBasicBlockAddOperators(builder, operators): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(operators), 0)
-def TosaBasicBlockStartOperatorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaBasicBlockAddTensors(builder, tensors): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(tensors), 0)
-def TosaBasicBlockStartTensorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaBasicBlockAddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
-def TosaBasicBlockStartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaBasicBlockAddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
-def TosaBasicBlockStartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaBasicBlockEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(5)
+def TosaBasicBlockStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def TosaBasicBlockAddName(builder, name):
+    """This method is deprecated. Please switch to AddName."""
+    return AddName(builder, name)
+def AddOperators(builder, operators): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(operators), 0)
+def TosaBasicBlockAddOperators(builder, operators):
+    """This method is deprecated. Please switch to AddOperators."""
+    return AddOperators(builder, operators)
+def StartOperatorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaBasicBlockStartOperatorsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartOperatorsVector(builder, numElems)
+def AddTensors(builder, tensors): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(tensors), 0)
+def TosaBasicBlockAddTensors(builder, tensors):
+    """This method is deprecated. Please switch to AddTensors."""
+    return AddTensors(builder, tensors)
+def StartTensorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaBasicBlockStartTensorsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartTensorsVector(builder, numElems)
+def AddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
+def TosaBasicBlockAddInputs(builder, inputs):
+    """This method is deprecated. Please switch to AddInputs."""
+    return AddInputs(builder, inputs)
+def StartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaBasicBlockStartInputsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartInputsVector(builder, numElems)
+def AddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
+def TosaBasicBlockAddOutputs(builder, outputs):
+    """This method is deprecated. Please switch to AddOutputs."""
+    return AddOutputs(builder, outputs)
+def StartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaBasicBlockStartOutputsVector(builder, numElems):
+    """This method is deprecated. Please switch to Start."""
+    return StartOutputsVector(builder, numElems)
+def End(builder): return builder.EndObject()
+def TosaBasicBlockEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

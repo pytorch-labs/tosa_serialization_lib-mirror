@@ -10,12 +10,16 @@ class PadQuantInfo(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsPadQuantInfo(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = PadQuantInfo()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsPadQuantInfo(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def PadQuantInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -31,6 +35,15 @@ class PadQuantInfo(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def PadQuantInfoStart(builder): builder.StartObject(1)
-def PadQuantInfoAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
-def PadQuantInfoEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(1)
+def PadQuantInfoStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+def PadQuantInfoAddInputZp(builder, inputZp):
+    """This method is deprecated. Please switch to AddInputZp."""
+    return AddInputZp(builder, inputZp)
+def End(builder): return builder.EndObject()
+def PadQuantInfoEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

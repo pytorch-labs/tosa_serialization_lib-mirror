@@ -10,12 +10,16 @@ class ArithmeticRightShiftAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsArithmeticRightShiftAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ArithmeticRightShiftAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsArithmeticRightShiftAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def ArithmeticRightShiftAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -31,6 +35,15 @@ class ArithmeticRightShiftAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-def ArithmeticRightShiftAttributeStart(builder): builder.StartObject(1)
-def ArithmeticRightShiftAttributeAddRound(builder, round): builder.PrependBoolSlot(0, round, 0)
-def ArithmeticRightShiftAttributeEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(1)
+def ArithmeticRightShiftAttributeStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddRound(builder, round): builder.PrependBoolSlot(0, round, 0)
+def ArithmeticRightShiftAttributeAddRound(builder, round):
+    """This method is deprecated. Please switch to AddRound."""
+    return AddRound(builder, round)
+def End(builder): return builder.EndObject()
+def ArithmeticRightShiftAttributeEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)

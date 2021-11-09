@@ -10,12 +10,16 @@ class MatMulQuantInfo(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsMatMulQuantInfo(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = MatMulQuantInfo()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsMatMulQuantInfo(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def MatMulQuantInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -38,7 +42,19 @@ class MatMulQuantInfo(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def MatMulQuantInfoStart(builder): builder.StartObject(2)
-def MatMulQuantInfoAddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
-def MatMulQuantInfoAddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
-def MatMulQuantInfoEnd(builder): return builder.EndObject()
+def Start(builder): builder.StartObject(2)
+def MatMulQuantInfoStart(builder):
+    """This method is deprecated. Please switch to Start."""
+    return Start(builder)
+def AddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
+def MatMulQuantInfoAddAZp(builder, aZp):
+    """This method is deprecated. Please switch to AddAZp."""
+    return AddAZp(builder, aZp)
+def AddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
+def MatMulQuantInfoAddBZp(builder, bZp):
+    """This method is deprecated. Please switch to AddBZp."""
+    return AddBZp(builder, bZp)
+def End(builder): return builder.EndObject()
+def MatMulQuantInfoEnd(builder):
+    """This method is deprecated. Please switch to End."""
+    return End(builder)
