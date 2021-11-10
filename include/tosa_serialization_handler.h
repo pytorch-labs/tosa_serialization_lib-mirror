@@ -377,6 +377,7 @@ protected:
     tosa_err_t Clear();
     tosa_err_t Deserialize(const uint8_t* buf);
     tosa_err_t Serialize();
+    TosaVersion ParseTosaSchemaVersion(std::string schema);
 
 private:
     TosaVersion _version;                              /* version struct */
