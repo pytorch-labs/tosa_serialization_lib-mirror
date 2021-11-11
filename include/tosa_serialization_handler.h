@@ -114,7 +114,7 @@ public:
                             const flatbuffers::Vector<int32_t>* shape,
                             DType dtype,
                             const flatbuffers::Vector<uint8_t>* data);
-    TosaSerializationTensor(std::string& name,
+    TosaSerializationTensor(const std::string& name,
                             const std::vector<int32_t>& shape,
                             DType dtype,
                             const std::vector<uint8_t>& data);
@@ -148,6 +148,14 @@ public:
     {
         _name = name;
     }
+    void SetData(const std::vector<uint8_t>& data)
+    {
+        _data = data;
+    }
+    void SetData(std::vector<uint8_t>&& data)
+    {
+        _data = std::move(data);
+    }
 
 private:
     DType _dtype;                /* data type enumeration, see tosa_isa_generated.h */
@@ -166,8 +174,15 @@ public:
                               const TosaAttributeBase* attribute,
                               QuantInfo qinfo_type,
                               const TosaQuantInfoBase* qinfo,
-                              std::vector<std::string> input_tensor_names,
-                              std::vector<std::string> output_tensor_names);
+                              const std::vector<std::string>& input_tensor_names,
+                              const std::vector<std::string>& output_tensor_names);
+    TosaSerializationOperator(Op op,
+                              Attribute attribute_type,
+                              const TosaAttributeBase* attribute,
+                              QuantInfo qinfo_type,
+                              const TosaQuantInfoBase* qinfo,
+                              std::vector<std::string>&& input_tensor_names,
+                              std::vector<std::string>&& output_tensor_names);
     ~TosaSerializationOperator();
 
     // accessor
@@ -201,6 +216,10 @@ public:
     }
 
 private:
+    void InitializeAttributeQinfo(Attribute attribute_type,
+                                  const TosaAttributeBase* attribute,
+                                  QuantInfo qinfo_type,
+                                  const TosaQuantInfoBase* qinfo);
     Op _op;                        /* operator enum, see tosa_isa_generated.h for enumeration table */
     Attribute _attribute_type;     /* operator attribute enum, used for dynamic casting TosaAttributeBase class */
     TosaAttributeBase* _attribute; /* real attribute class goes here */
@@ -214,11 +233,16 @@ class TosaSerializationBasicBlock
 {
 public:
     // constructor and destructor
-    TosaSerializationBasicBlock(std::string name,
-                                std::vector<TosaSerializationOperator*> operators,
-                                std::vector<TosaSerializationTensor*> tensors,
-                                std::vector<std::string> inputs,
-                                std::vector<std::string> outputs);
+    TosaSerializationBasicBlock(const std::string& name,
+                                const std::vector<TosaSerializationOperator*>& operators,
+                                const std::vector<TosaSerializationTensor*>& tensors,
+                                const std::vector<std::string>& inputs,
+                                const std::vector<std::string>& outputs);
+    TosaSerializationBasicBlock(std::string&& name,
+                                std::vector<TosaSerializationOperator*>&& operators,
+                                std::vector<TosaSerializationTensor*>&& tensors,
+                                std::vector<std::string>&& inputs,
+                                std::vector<std::string>&& outputs);
     ~TosaSerializationBasicBlock();
 
     // accessor

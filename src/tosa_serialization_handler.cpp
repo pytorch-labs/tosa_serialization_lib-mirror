@@ -36,7 +36,7 @@ TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name
     }
 }
 
-TosaSerializationTensor::TosaSerializationTensor(std::string& name,
+TosaSerializationTensor::TosaSerializationTensor(const std::string& name,
                                                  const std::vector<int32_t>& shape,
                                                  DType dtype,
                                                  const std::vector<uint8_t>& data)
@@ -50,22 +50,17 @@ TosaSerializationTensor::TosaSerializationTensor(std::string& name,
 TosaSerializationTensor::TosaSerializationTensor()
 {
     _dtype = DType_UNKNOWN;
-
-    _name = "UNKNOWN";
+    _name  = "UNKNOWN";
 }
 
 TosaSerializationTensor::~TosaSerializationTensor()
 {}
 
-TosaSerializationOperator::TosaSerializationOperator(Op op,
-                                                     Attribute attribute_type,
-                                                     const TosaAttributeBase* attribute,
-                                                     QuantInfo qinfo_type,
-                                                     const TosaQuantInfoBase* qinfo,
-                                                     std::vector<std::string> input_tensor_names,
-                                                     std::vector<std::string> output_tensor_names)
+void TosaSerializationOperator::InitializeAttributeQinfo(Attribute attribute_type,
+                                                         const TosaAttributeBase* attribute,
+                                                         QuantInfo qinfo_type,
+                                                         const TosaQuantInfoBase* qinfo)
 {
-    _op             = op;
     _attribute_type = attribute_type;
 
     switch (attribute_type)
@@ -104,30 +99,68 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     }
 
     assert(_attribute && _qinfo);
+}
 
+TosaSerializationOperator::TosaSerializationOperator(Op op,
+                                                     Attribute attribute_type,
+                                                     const TosaAttributeBase* attribute,
+                                                     QuantInfo qinfo_type,
+                                                     const TosaQuantInfoBase* qinfo,
+                                                     const std::vector<std::string>& input_tensor_names,
+                                                     const std::vector<std::string>& output_tensor_names)
+{
+    _op                  = op;
     _input_tensor_names  = input_tensor_names;
     _output_tensor_names = output_tensor_names;
+
+    InitializeAttributeQinfo(attribute_type, attribute, qinfo_type, qinfo);
+}
+
+TosaSerializationOperator::TosaSerializationOperator(Op op,
+                                                     Attribute attribute_type,
+                                                     const TosaAttributeBase* attribute,
+                                                     QuantInfo qinfo_type,
+                                                     const TosaQuantInfoBase* qinfo,
+                                                     std::vector<std::string>&& input_tensor_names,
+                                                     std::vector<std::string>&& output_tensor_names)
+{
+    _op                  = op;
+    _input_tensor_names  = std::move(input_tensor_names);
+    _output_tensor_names = std::move(output_tensor_names);
+
+    InitializeAttributeQinfo(attribute_type, attribute, qinfo_type, qinfo);
 }
 
 TosaSerializationOperator::~TosaSerializationOperator()
 {
     delete _attribute;
     delete _qinfo;
-    // TosaSerializationTensor should be free'd in TosaSerializationSerializationHandler destructor
 }
 
-TosaSerializationBasicBlock::TosaSerializationBasicBlock(std::string name,
-                                                         std::vector<TosaSerializationOperator*> operators,
-                                                         std::vector<TosaSerializationTensor*> tensors,
-                                                         std::vector<std::string> inputs,
-                                                         std::vector<std::string> outputs)
+TosaSerializationBasicBlock::TosaSerializationBasicBlock(const std::string& name,
+                                                         const std::vector<TosaSerializationOperator*>& operators,
+                                                         const std::vector<TosaSerializationTensor*>& tensors,
+                                                         const std::vector<std::string>& inputs,
+                                                         const std::vector<std::string>& outputs)
 {
-
     _name      = name;
     _operators = operators;
     _tensors   = tensors;
     _inputs    = inputs;
     _outputs   = outputs;
+}
+
+TosaSerializationBasicBlock::TosaSerializationBasicBlock(std::string&& name,
+                                                         std::vector<TosaSerializationOperator*>&& operators,
+                                                         std::vector<TosaSerializationTensor*>&& tensors,
+                                                         std::vector<std::string>&& inputs,
+                                                         std::vector<std::string>&& outputs)
+{
+    _name      = std::move(name);
+    _operators = std::move(operators);
+    _tensors   = std::move(tensors);
+    _inputs    = std::move(inputs);
+    _outputs   = std::move(outputs);
 }
 
 TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
