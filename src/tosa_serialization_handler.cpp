@@ -386,6 +386,20 @@ tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const char* filename
     return TOSA_OK;
 }
 
+tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const void* input, int in_size)
+{
+    tosa_err_t err;
+
+    const uint8_t* buf = (const uint8_t*)input;
+    err                = Deserialize(buf);
+    if (err != TOSA_OK)
+    {
+        return err;
+    }
+
+    return TOSA_OK;
+}
+
 tosa_err_t TosaSerializationHandler::SaveFileTosaFlatbuffer(const char* filename)
 {
     tosa_err_t err;

@@ -306,6 +306,7 @@ public:
     // file io
     tosa_err_t LoadFileJson(const char* filename);
     tosa_err_t LoadFileTosaFlatbuffer(const char* filename);
+    tosa_err_t LoadFileTosaFlatbuffer(const void* input, int in_size);
     tosa_err_t SaveFileJson(const char* filename);
     tosa_err_t SaveFileTosaFlatbuffer(const char* filename);
     tosa_err_t LoadFileSchema(const char* schema_filename);
