@@ -319,7 +319,6 @@ NumpyUtilities::NPError NumpyUtilities::writeToNpyFileCommon(const char* filenam
     uint32_t totalElems = 1;
 
     assert(filename);
-    assert(shape.size() >= 0);
     assert(databuf);
 
     outfile = fopen(filename, "wb");
@@ -377,7 +376,6 @@ NumpyUtilities::NPError
     int headerPos = 0;
 
     assert(outfile);
-    assert(shape.size() >= 0);
 
     // Space-fill the header and end with a newline to start per numpy spec
     memset(header, 0x20, NUMPY_HEADER_SZ);

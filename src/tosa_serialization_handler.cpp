@@ -365,7 +365,7 @@ tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const char* filename
 {
     std::string read_buffer;
     tosa_err_t err;
-    uint8_t* buf;
+    const uint8_t* buf;
     bool ok;
 
     ok = flatbuffers::LoadFile(filename, false, &read_buffer);
@@ -375,7 +375,7 @@ tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const char* filename
         return TOSA_FILE_ERROR;
     }
 
-    buf = (uint8_t*)read_buffer.data();
+    buf = reinterpret_cast<const uint8_t*>(read_buffer.data());
 
     err = Deserialize(buf);
     if (err != TOSA_OK)
@@ -939,11 +939,11 @@ tosa_err_t TosaSerializationHandler::ConvertI4toU8(const std::vector<int8_t>& in
     out.clear();
     uint32_t in_size  = in.size();
     uint32_t out_size = (in_size % 2 == 0) ? (in_size / 2) : ((in_size + 1) / 2);
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         int8_t val_0 = in[2 * i];
         int8_t val_1 = 0;
-        if (2 * i + 1 < in_size)
+        if (2u * i + 1u < in_size)
         {
             val_1 = in[2 * i + 1];
         }
@@ -984,7 +984,7 @@ tosa_err_t
                out_size * sizeof(float));
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint32_t byte0   = in[i * sizeof(float)];
         uint32_t byte1   = in[i * sizeof(float) + 1];
@@ -1008,7 +1008,7 @@ tosa_err_t TosaSerializationHandler::ConvertU8toI48(const std::vector<uint8_t>& 
                out_size * 6);
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint64_t byte0   = in[i * 6];
         uint64_t byte1   = in[i * 6 + 1];
@@ -1040,7 +1040,7 @@ tosa_err_t TosaSerializationHandler::ConvertU8toI32(const std::vector<uint8_t>& 
                out_size * sizeof(int32_t));
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint32_t byte0   = in[i * sizeof(int32_t)];
         uint32_t byte1   = in[i * sizeof(int32_t) + 1];
@@ -1064,7 +1064,7 @@ tosa_err_t TosaSerializationHandler::ConvertU8toI16(const std::vector<uint8_t>& 
                out_size * sizeof(int16_t));
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint16_t byte0   = in[i * sizeof(int16_t)];
         uint16_t byte1   = in[i * sizeof(int16_t) + 1];
@@ -1085,7 +1085,7 @@ tosa_err_t
                out_size * sizeof(int8_t));
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint8_t val_u8 = in[i];
         int8_t* val_i8 = reinterpret_cast<int8_t*>(&val_u8);
@@ -1104,7 +1104,7 @@ tosa_err_t
                out_size, in.size());
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < in.size(); i++)
+    for (size_t i = 0; i < in.size(); i++)
     {
         uint8_t val_u8        = in[i];
         uint8_t val_0_u4      = val_u8 & 0xF;
@@ -1138,7 +1138,7 @@ tosa_err_t
                in.size(), out_size * sizeof(bool));
         return TOSA_USER_ERROR;
     }
-    for (int i = 0; i < out_size; i++)
+    for (uint32_t i = 0; i < out_size; i++)
     {
         uint8_t val_u8 = in[i];
         bool* val_bool = reinterpret_cast<bool*>(&val_u8);
