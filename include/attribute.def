@@ -27,12 +27,12 @@
 */
 
 DEF_ATTRIBUTE(Pool, 3,
-              int32_t, V, padding,
+              int32_t, V, pad,
               int32_t, V, kernel,
               int32_t, V, stride)
 
 DEF_ATTRIBUTE(Conv, 3,
-              int32_t, V, padding,
+              int32_t, V, pad,
               int32_t, V, stride,
               int32_t, V, dilation)
 
@@ -51,10 +51,10 @@ DEF_ATTRIBUTE(Axis, 1,
               int32_t, S, axis)
 
 DEF_ATTRIBUTE(Reshape, 1,
-              int32_t, V, shape)
+              int32_t, V, new_shape)
 
 DEF_ATTRIBUTE(Slice, 2,
-              int32_t, V, begin,
+              int32_t, V, start,
               int32_t, V, size)
 
 DEF_ATTRIBUTE(Tile, 1,
@@ -99,8 +99,8 @@ DEF_ATTRIBUTE(WhileLoop, 2,
               string, S, body_branch)
 
 DEF_ATTRIBUTE(Transpose, 1,
-              int32_t, V, perm)
+              int32_t, V, perms)
 
 DEF_ATTRIBUTE(Table, 1,
-              int32_t, V, table)
+              int16_t, V, table)
 

@@ -160,13 +160,13 @@ union Attribute {
 }
 
 table PoolAttribute {
-  padding: [int32];
+  pad: [int32];
   kernel: [int32];
   stride: [int32];
 }
 
 table ConvAttribute {
-  padding: [int32];
+  pad: [int32];
   stride: [int32];
   dilation: [int32];
 }
@@ -189,11 +189,11 @@ table AxisAttribute {
 }
 
 table ReshapeAttribute {
-  shape: [int32];
+  new_shape: [int32];
 }
 
 table SliceAttribute {
-  begin: [int32];
+  start: [int32];
   size: [int32];
 }
 
@@ -247,11 +247,11 @@ table WhileLoopAttribute {
 }
 
 table TransposeAttribute {
-  perm: [int32];
+  perms: [int32];
 }
 
 table TableAttribute {
-  table: [int32];
+  table: [int16];
 }
 
 union QuantInfo {

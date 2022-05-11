@@ -29,7 +29,7 @@ class SliceAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # SliceAttribute
-    def Begin(self, j):
+    def Start(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             a = self._tab.Vector(o)
@@ -37,21 +37,21 @@ class SliceAttribute(object):
         return 0
 
     # SliceAttribute
-    def BeginAsNumpy(self):
+    def StartAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # SliceAttribute
-    def BeginLength(self):
+    def StartLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # SliceAttribute
-    def BeginIsNone(self):
+    def StartIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
@@ -86,14 +86,14 @@ def Start(builder): builder.StartObject(2)
 def SliceAttributeStart(builder):
     """This method is deprecated. Please switch to Start."""
     return Start(builder)
-def AddBegin(builder, begin): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(begin), 0)
-def SliceAttributeAddBegin(builder, begin):
-    """This method is deprecated. Please switch to AddBegin."""
-    return AddBegin(builder, begin)
-def StartBeginVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def SliceAttributeStartBeginVector(builder, numElems):
+def AddStart(builder, start): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(start), 0)
+def SliceAttributeAddStart(builder, start):
+    """This method is deprecated. Please switch to AddStart."""
+    return AddStart(builder, start)
+def StartStartVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def SliceAttributeStartStartVector(builder, numElems):
     """This method is deprecated. Please switch to Start."""
-    return StartBeginVector(builder, numElems)
+    return StartStartVector(builder, numElems)
 def AddSize(builder, size): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(size), 0)
 def SliceAttributeAddSize(builder, size):
     """This method is deprecated. Please switch to AddSize."""

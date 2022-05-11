@@ -29,7 +29,7 @@ class ConvAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # ConvAttribute
-    def Padding(self, j):
+    def Pad(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             a = self._tab.Vector(o)
@@ -37,21 +37,21 @@ class ConvAttribute(object):
         return 0
 
     # ConvAttribute
-    def PaddingAsNumpy(self):
+    def PadAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # ConvAttribute
-    def PaddingLength(self):
+    def PadLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # ConvAttribute
-    def PaddingIsNone(self):
+    def PadIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
@@ -113,14 +113,14 @@ def Start(builder): builder.StartObject(3)
 def ConvAttributeStart(builder):
     """This method is deprecated. Please switch to Start."""
     return Start(builder)
-def AddPadding(builder, padding): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
-def ConvAttributeAddPadding(builder, padding):
-    """This method is deprecated. Please switch to AddPadding."""
-    return AddPadding(builder, padding)
-def StartPaddingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ConvAttributeStartPaddingVector(builder, numElems):
+def AddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+def ConvAttributeAddPad(builder, pad):
+    """This method is deprecated. Please switch to AddPad."""
+    return AddPad(builder, pad)
+def StartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ConvAttributeStartPadVector(builder, numElems):
     """This method is deprecated. Please switch to Start."""
-    return StartPaddingVector(builder, numElems)
+    return StartPadVector(builder, numElems)
 def AddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
 def ConvAttributeAddStride(builder, stride):
     """This method is deprecated. Please switch to AddStride."""

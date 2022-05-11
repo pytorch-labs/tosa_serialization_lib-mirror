@@ -622,12 +622,12 @@ bool VerifyQuantInfoVector(flatbuffers::Verifier &verifier, const flatbuffers::V
 struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PoolAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PADDING = 4,
+    VT_PAD = 4,
     VT_KERNEL = 6,
     VT_STRIDE = 8
   };
-  const flatbuffers::Vector<int32_t> *padding() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PADDING);
+  const flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
   }
   const flatbuffers::Vector<int32_t> *kernel() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_KERNEL);
@@ -637,8 +637,8 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_PADDING) &&
-           verifier.VerifyVector(padding()) &&
+           VerifyOffset(verifier, VT_PAD) &&
+           verifier.VerifyVector(pad()) &&
            VerifyOffset(verifier, VT_KERNEL) &&
            verifier.VerifyVector(kernel()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
@@ -651,8 +651,8 @@ struct PoolAttributeBuilder {
   typedef PoolAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
-    fbb_.AddOffset(PoolAttribute::VT_PADDING, padding);
+  void add_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad) {
+    fbb_.AddOffset(PoolAttribute::VT_PAD, pad);
   }
   void add_kernel(flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel) {
     fbb_.AddOffset(PoolAttribute::VT_KERNEL, kernel);
@@ -673,27 +673,27 @@ struct PoolAttributeBuilder {
 
 inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0) {
   PoolAttributeBuilder builder_(_fbb);
   builder_.add_stride(stride);
   builder_.add_kernel(kernel);
-  builder_.add_padding(padding);
+  builder_.add_pad(pad);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *padding = nullptr,
+    const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *kernel = nullptr,
     const std::vector<int32_t> *stride = nullptr) {
-  auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
+  auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   return tosa::CreatePoolAttribute(
       _fbb,
-      padding__,
+      pad__,
       kernel__,
       stride__);
 }
@@ -701,12 +701,12 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
 struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PADDING = 4,
+    VT_PAD = 4,
     VT_STRIDE = 6,
     VT_DILATION = 8
   };
-  const flatbuffers::Vector<int32_t> *padding() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PADDING);
+  const flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
   }
   const flatbuffers::Vector<int32_t> *stride() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
@@ -716,8 +716,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_PADDING) &&
-           verifier.VerifyVector(padding()) &&
+           VerifyOffset(verifier, VT_PAD) &&
+           verifier.VerifyVector(pad()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
            verifier.VerifyVector(stride()) &&
            VerifyOffset(verifier, VT_DILATION) &&
@@ -730,8 +730,8 @@ struct ConvAttributeBuilder {
   typedef ConvAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
-    fbb_.AddOffset(ConvAttribute::VT_PADDING, padding);
+  void add_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad) {
+    fbb_.AddOffset(ConvAttribute::VT_PAD, pad);
   }
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(ConvAttribute::VT_STRIDE, stride);
@@ -752,27 +752,27 @@ struct ConvAttributeBuilder {
 
 inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0) {
   ConvAttributeBuilder builder_(_fbb);
   builder_.add_dilation(dilation);
   builder_.add_stride(stride);
-  builder_.add_padding(padding);
+  builder_.add_pad(pad);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *padding = nullptr,
+    const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *dilation = nullptr) {
-  auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
+  auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
   return tosa::CreateConvAttribute(
       _fbb,
-      padding__,
+      pad__,
       stride__,
       dilation__);
 }
@@ -989,15 +989,15 @@ inline flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
 struct ReshapeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ReshapeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SHAPE = 4
+    VT_NEW_SHAPE = 4
   };
-  const flatbuffers::Vector<int32_t> *shape() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SHAPE);
+  const flatbuffers::Vector<int32_t> *new_shape() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_NEW_SHAPE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_SHAPE) &&
-           verifier.VerifyVector(shape()) &&
+           VerifyOffset(verifier, VT_NEW_SHAPE) &&
+           verifier.VerifyVector(new_shape()) &&
            verifier.EndTable();
   }
 };
@@ -1006,8 +1006,8 @@ struct ReshapeAttributeBuilder {
   typedef ReshapeAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape) {
-    fbb_.AddOffset(ReshapeAttribute::VT_SHAPE, shape);
+  void add_new_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> new_shape) {
+    fbb_.AddOffset(ReshapeAttribute::VT_NEW_SHAPE, new_shape);
   }
   explicit ReshapeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1022,37 +1022,37 @@ struct ReshapeAttributeBuilder {
 
 inline flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> new_shape = 0) {
   ReshapeAttributeBuilder builder_(_fbb);
-  builder_.add_shape(shape);
+  builder_.add_new_shape(new_shape);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *shape = nullptr) {
-  auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
+    const std::vector<int32_t> *new_shape = nullptr) {
+  auto new_shape__ = new_shape ? _fbb.CreateVector<int32_t>(*new_shape) : 0;
   return tosa::CreateReshapeAttribute(
       _fbb,
-      shape__);
+      new_shape__);
 }
 
 struct SliceAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SliceAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_BEGIN = 4,
+    VT_START = 4,
     VT_SIZE = 6
   };
-  const flatbuffers::Vector<int32_t> *begin() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_BEGIN);
+  const flatbuffers::Vector<int32_t> *start() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_START);
   }
   const flatbuffers::Vector<int32_t> *size() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SIZE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_BEGIN) &&
-           verifier.VerifyVector(begin()) &&
+           VerifyOffset(verifier, VT_START) &&
+           verifier.VerifyVector(start()) &&
            VerifyOffset(verifier, VT_SIZE) &&
            verifier.VerifyVector(size()) &&
            verifier.EndTable();
@@ -1063,8 +1063,8 @@ struct SliceAttributeBuilder {
   typedef SliceAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_begin(flatbuffers::Offset<flatbuffers::Vector<int32_t>> begin) {
-    fbb_.AddOffset(SliceAttribute::VT_BEGIN, begin);
+  void add_start(flatbuffers::Offset<flatbuffers::Vector<int32_t>> start) {
+    fbb_.AddOffset(SliceAttribute::VT_START, start);
   }
   void add_size(flatbuffers::Offset<flatbuffers::Vector<int32_t>> size) {
     fbb_.AddOffset(SliceAttribute::VT_SIZE, size);
@@ -1082,23 +1082,23 @@ struct SliceAttributeBuilder {
 
 inline flatbuffers::Offset<SliceAttribute> CreateSliceAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> begin = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> start = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> size = 0) {
   SliceAttributeBuilder builder_(_fbb);
   builder_.add_size(size);
-  builder_.add_begin(begin);
+  builder_.add_start(start);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<SliceAttribute> CreateSliceAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *begin = nullptr,
+    const std::vector<int32_t> *start = nullptr,
     const std::vector<int32_t> *size = nullptr) {
-  auto begin__ = begin ? _fbb.CreateVector<int32_t>(*begin) : 0;
+  auto start__ = start ? _fbb.CreateVector<int32_t>(*start) : 0;
   auto size__ = size ? _fbb.CreateVector<int32_t>(*size) : 0;
   return tosa::CreateSliceAttribute(
       _fbb,
-      begin__,
+      start__,
       size__);
 }
 
@@ -1695,15 +1695,15 @@ inline flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
 struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TransposeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PERM = 4
+    VT_PERMS = 4
   };
-  const flatbuffers::Vector<int32_t> *perm() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PERM);
+  const flatbuffers::Vector<int32_t> *perms() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PERMS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_PERM) &&
-           verifier.VerifyVector(perm()) &&
+           VerifyOffset(verifier, VT_PERMS) &&
+           verifier.VerifyVector(perms()) &&
            verifier.EndTable();
   }
 };
@@ -1712,8 +1712,8 @@ struct TransposeAttributeBuilder {
   typedef TransposeAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_perm(flatbuffers::Offset<flatbuffers::Vector<int32_t>> perm) {
-    fbb_.AddOffset(TransposeAttribute::VT_PERM, perm);
+  void add_perms(flatbuffers::Offset<flatbuffers::Vector<int32_t>> perms) {
+    fbb_.AddOffset(TransposeAttribute::VT_PERMS, perms);
   }
   explicit TransposeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1728,19 +1728,19 @@ struct TransposeAttributeBuilder {
 
 inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> perm = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> perms = 0) {
   TransposeAttributeBuilder builder_(_fbb);
-  builder_.add_perm(perm);
+  builder_.add_perms(perms);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *perm = nullptr) {
-  auto perm__ = perm ? _fbb.CreateVector<int32_t>(*perm) : 0;
+    const std::vector<int32_t> *perms = nullptr) {
+  auto perms__ = perms ? _fbb.CreateVector<int32_t>(*perms) : 0;
   return tosa::CreateTransposeAttribute(
       _fbb,
-      perm__);
+      perms__);
 }
 
 struct TableAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1748,8 +1748,8 @@ struct TableAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TABLE = 4
   };
-  const flatbuffers::Vector<int32_t> *table() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_TABLE);
+  const flatbuffers::Vector<int16_t> *table() const {
+    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_TABLE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -1763,7 +1763,7 @@ struct TableAttributeBuilder {
   typedef TableAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_table(flatbuffers::Offset<flatbuffers::Vector<int32_t>> table) {
+  void add_table(flatbuffers::Offset<flatbuffers::Vector<int16_t>> table) {
     fbb_.AddOffset(TableAttribute::VT_TABLE, table);
   }
   explicit TableAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
@@ -1779,7 +1779,7 @@ struct TableAttributeBuilder {
 
 inline flatbuffers::Offset<TableAttribute> CreateTableAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> table = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int16_t>> table = 0) {
   TableAttributeBuilder builder_(_fbb);
   builder_.add_table(table);
   return builder_.Finish();
@@ -1787,8 +1787,8 @@ inline flatbuffers::Offset<TableAttribute> CreateTableAttribute(
 
 inline flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *table = nullptr) {
-  auto table__ = table ? _fbb.CreateVector<int32_t>(*table) : 0;
+    const std::vector<int16_t> *table = nullptr) {
+  auto table__ = table ? _fbb.CreateVector<int16_t>(*table) : 0;
   return tosa::CreateTableAttribute(
       _fbb,
       table__);

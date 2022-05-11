@@ -137,23 +137,23 @@ class TosaSerializerAttribute(TosaSerializerUnion):
     def __init__(self):
         super().__init__()
 
-    def PoolAttribute(self, kernel, stride, padding):
+    def PoolAttribute(self, kernel, stride, pad):
         from tosa import PoolAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().PoolAttribute
 
         self.optFcns = (a.Start, a.End)
-        self.intvecs.append((a.AddPadding, padding))
+        self.intvecs.append((a.AddPad, pad))
         self.intvecs.append((a.AddKernel, kernel))
         self.intvecs.append((a.AddStride, stride))
 
-    def ConvAttribute(self, padding, stride, dilation):
+    def ConvAttribute(self, pad, stride, dilation):
         from tosa import ConvAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ConvAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddPadding, padding))
+        self.intvecs.append((a.AddPad, pad))
         self.intvecs.append((a.AddStride, stride))
         self.intvecs.append((a.AddDilation, dilation))
 
@@ -186,21 +186,21 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddAxis, axis))
 
-    def ReshapeAttribute(self, shape):
+    def ReshapeAttribute(self, new_shape):
         from tosa import ReshapeAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ReshapeAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddShape, shape))
+        self.intvecs.append((a.AddNewShape, new_shape))
 
-    def SliceAttribute(self, begin, size):
+    def SliceAttribute(self, start, size):
         from tosa import SliceAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().SliceAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddBegin, begin))
+        self.intvecs.append((a.AddStart, start))
         self.intvecs.append((a.AddSize, size))
 
     def TileAttribute(self, multiples):
@@ -292,13 +292,13 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.strings.append((a.AddCondBranch, cond_branch))
         self.strings.append((a.AddBodyBranch, body_branch))
 
-    def TransposeAttribute(self, perm):
+    def TransposeAttribute(self, perms):
         from tosa import TransposeAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().TransposeAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddPerm, perm))
+        self.intvecs.append((a.AddPerms, perms))
 
     def TableAttribute(self, table):
         from tosa import TableAttribute as a, Attribute
