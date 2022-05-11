@@ -19,7 +19,7 @@ repos:
         args: [--max-line-length=88, --extend-ignore=E203]
 
 -   repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
     -   id: black
         exclude: python/tosa
