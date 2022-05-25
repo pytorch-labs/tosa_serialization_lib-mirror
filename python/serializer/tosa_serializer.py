@@ -53,6 +53,7 @@ DTypeNames = [
     "INT32",
     "INT48",
     "FLOAT",
+    "UINT16",
 ]
 
 ByteMask = np.uint64(0xFF)

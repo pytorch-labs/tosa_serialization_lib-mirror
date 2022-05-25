@@ -30,6 +30,7 @@ enum DType:uint32 {
   INT32,
   INT48,
   FLOAT,
+  UINT16,
 }
 
 enum ResizeMode:uint32 {
