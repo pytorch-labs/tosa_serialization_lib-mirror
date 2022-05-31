@@ -86,7 +86,7 @@ struct TosaBasicBlockBuilder;
 struct TosaGraph;
 struct TosaGraphBuilder;
 
-enum DType : uint32_t {
+enum DType {
   DType_UNKNOWN = 0,
   DType_BOOL = 1,
   DType_UINT8 = 2,
@@ -140,7 +140,7 @@ inline const char *EnumNameDType(DType e) {
   return EnumNamesDType()[index];
 }
 
-enum ResizeMode : uint32_t {
+enum ResizeMode {
   ResizeMode_UNKNOWN = 0,
   ResizeMode_NEAREST = 1,
   ResizeMode_BILINEAR = 2,
@@ -173,7 +173,7 @@ inline const char *EnumNameResizeMode(ResizeMode e) {
   return EnumNamesResizeMode()[index];
 }
 
-enum Op : uint32_t {
+enum Op {
   Op_UNKNOWN = 0,
   Op_ARGMAX = 1,
   Op_AVG_POOL2D = 2,
@@ -404,7 +404,7 @@ inline const char *EnumNameOp(Op e) {
   return EnumNamesOp()[index];
 }
 
-enum Attribute : uint8_t {
+enum Attribute {
   Attribute_NONE = 0,
   Attribute_PoolAttribute = 1,
   Attribute_ConvAttribute = 2,
@@ -557,7 +557,7 @@ template<> struct AttributeTraits<tosa::TableAttribute> {
 bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
 bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
 
-enum QuantInfo : uint8_t {
+enum QuantInfo {
   QuantInfo_NONE = 0,
   QuantInfo_UnaryQuantInfo = 1,
   QuantInfo_ConvQuantInfo = 2,
@@ -664,6 +664,7 @@ struct PoolAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  PoolAttributeBuilder &operator=(const PoolAttributeBuilder &);
   flatbuffers::Offset<PoolAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PoolAttribute>(end);
@@ -743,6 +744,7 @@ struct ConvAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ConvAttributeBuilder &operator=(const ConvAttributeBuilder &);
   flatbuffers::Offset<ConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ConvAttribute>(end);
@@ -831,6 +833,7 @@ struct TransposeConvAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TransposeConvAttributeBuilder &operator=(const TransposeConvAttributeBuilder &);
   flatbuffers::Offset<TransposeConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TransposeConvAttribute>(end);
@@ -913,6 +916,7 @@ struct PadAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  PadAttributeBuilder &operator=(const PadAttributeBuilder &);
   flatbuffers::Offset<PadAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PadAttribute>(end);
@@ -971,6 +975,7 @@ struct AxisAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  AxisAttributeBuilder &operator=(const AxisAttributeBuilder &);
   flatbuffers::Offset<AxisAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<AxisAttribute>(end);
@@ -1013,6 +1018,7 @@ struct ReshapeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ReshapeAttributeBuilder &operator=(const ReshapeAttributeBuilder &);
   flatbuffers::Offset<ReshapeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ReshapeAttribute>(end);
@@ -1073,6 +1079,7 @@ struct SliceAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  SliceAttributeBuilder &operator=(const SliceAttributeBuilder &);
   flatbuffers::Offset<SliceAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SliceAttribute>(end);
@@ -1129,6 +1136,7 @@ struct TileAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TileAttributeBuilder &operator=(const TileAttributeBuilder &);
   flatbuffers::Offset<TileAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TileAttribute>(end);
@@ -1232,6 +1240,7 @@ struct ResizeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ResizeAttributeBuilder &operator=(const ResizeAttributeBuilder &);
   flatbuffers::Offset<ResizeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ResizeAttribute>(end);
@@ -1334,6 +1343,7 @@ struct ClampAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ClampAttributeBuilder &operator=(const ClampAttributeBuilder &);
   flatbuffers::Offset<ClampAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ClampAttribute>(end);
@@ -1431,6 +1441,7 @@ struct RescaleAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  RescaleAttributeBuilder &operator=(const RescaleAttributeBuilder &);
   flatbuffers::Offset<RescaleAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<RescaleAttribute>(end);
@@ -1506,6 +1517,7 @@ struct MulAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  MulAttributeBuilder &operator=(const MulAttributeBuilder &);
   flatbuffers::Offset<MulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MulAttribute>(end);
@@ -1547,6 +1559,7 @@ struct ArithmeticRightShiftAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ArithmeticRightShiftAttributeBuilder &operator=(const ArithmeticRightShiftAttributeBuilder &);
   flatbuffers::Offset<ArithmeticRightShiftAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ArithmeticRightShiftAttribute>(end);
@@ -1598,6 +1611,7 @@ struct CondIfAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  CondIfAttributeBuilder &operator=(const CondIfAttributeBuilder &);
   flatbuffers::Offset<CondIfAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CondIfAttribute>(end);
@@ -1663,6 +1677,7 @@ struct WhileLoopAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  WhileLoopAttributeBuilder &operator=(const WhileLoopAttributeBuilder &);
   flatbuffers::Offset<WhileLoopAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<WhileLoopAttribute>(end);
@@ -1719,6 +1734,7 @@ struct TransposeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TransposeAttributeBuilder &operator=(const TransposeAttributeBuilder &);
   flatbuffers::Offset<TransposeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TransposeAttribute>(end);
@@ -1770,6 +1786,7 @@ struct TableAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TableAttributeBuilder &operator=(const TableAttributeBuilder &);
   flatbuffers::Offset<TableAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TableAttribute>(end);
@@ -1828,6 +1845,7 @@ struct UnaryQuantInfoBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  UnaryQuantInfoBuilder &operator=(const UnaryQuantInfoBuilder &);
   flatbuffers::Offset<UnaryQuantInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<UnaryQuantInfo>(end);
@@ -1879,6 +1897,7 @@ struct ConvQuantInfoBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  ConvQuantInfoBuilder &operator=(const ConvQuantInfoBuilder &);
   flatbuffers::Offset<ConvQuantInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ConvQuantInfo>(end);
@@ -1930,6 +1949,7 @@ struct MatMulQuantInfoBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  MatMulQuantInfoBuilder &operator=(const MatMulQuantInfoBuilder &);
   flatbuffers::Offset<MatMulQuantInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MatMulQuantInfo>(end);
@@ -1973,6 +1993,7 @@ struct PadQuantInfoBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  PadQuantInfoBuilder &operator=(const PadQuantInfoBuilder &);
   flatbuffers::Offset<PadQuantInfo> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PadQuantInfo>(end);
@@ -2038,6 +2059,7 @@ struct VersionBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  VersionBuilder &operator=(const VersionBuilder &);
   flatbuffers::Offset<Version> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Version>(end);
@@ -2112,6 +2134,7 @@ struct TosaTensorBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TosaTensorBuilder &operator=(const TosaTensorBuilder &);
   flatbuffers::Offset<TosaTensor> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaTensor>(end);
@@ -2380,6 +2403,7 @@ struct TosaOperatorBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TosaOperatorBuilder &operator=(const TosaOperatorBuilder &);
   flatbuffers::Offset<TosaOperator> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaOperator>(end);
@@ -2496,6 +2520,7 @@ struct TosaBasicBlockBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TosaBasicBlockBuilder &operator=(const TosaBasicBlockBuilder &);
   flatbuffers::Offset<TosaBasicBlock> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaBasicBlock>(end);
@@ -2577,6 +2602,7 @@ struct TosaGraphBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
+  TosaGraphBuilder &operator=(const TosaGraphBuilder &);
   flatbuffers::Offset<TosaGraph> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaGraph>(end);

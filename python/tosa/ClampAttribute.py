@@ -10,16 +10,12 @@ class ClampAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsClampAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ClampAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsClampAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def ClampAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -56,27 +52,9 @@ class ClampAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
-def Start(builder): builder.StartObject(4)
-def ClampAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddMinInt(builder, minInt): builder.PrependInt32Slot(0, minInt, 0)
-def ClampAttributeAddMinInt(builder, minInt):
-    """This method is deprecated. Please switch to AddMinInt."""
-    return AddMinInt(builder, minInt)
-def AddMaxInt(builder, maxInt): builder.PrependInt32Slot(1, maxInt, 0)
-def ClampAttributeAddMaxInt(builder, maxInt):
-    """This method is deprecated. Please switch to AddMaxInt."""
-    return AddMaxInt(builder, maxInt)
-def AddMinFp(builder, minFp): builder.PrependFloat32Slot(2, minFp, 0.0)
-def ClampAttributeAddMinFp(builder, minFp):
-    """This method is deprecated. Please switch to AddMinFp."""
-    return AddMinFp(builder, minFp)
-def AddMaxFp(builder, maxFp): builder.PrependFloat32Slot(3, maxFp, 0.0)
-def ClampAttributeAddMaxFp(builder, maxFp):
-    """This method is deprecated. Please switch to AddMaxFp."""
-    return AddMaxFp(builder, maxFp)
-def End(builder): return builder.EndObject()
-def ClampAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def ClampAttributeStart(builder): builder.StartObject(4)
+def ClampAttributeAddMinInt(builder, minInt): builder.PrependInt32Slot(0, minInt, 0)
+def ClampAttributeAddMaxInt(builder, maxInt): builder.PrependInt32Slot(1, maxInt, 0)
+def ClampAttributeAddMinFp(builder, minFp): builder.PrependFloat32Slot(2, minFp, 0.0)
+def ClampAttributeAddMaxFp(builder, maxFp): builder.PrependFloat32Slot(3, maxFp, 0.0)
+def ClampAttributeEnd(builder): return builder.EndObject()

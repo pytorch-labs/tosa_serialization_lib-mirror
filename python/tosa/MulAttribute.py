@@ -10,16 +10,12 @@ class MulAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsMulAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = MulAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsMulAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def MulAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -35,15 +31,6 @@ class MulAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def Start(builder): builder.StartObject(1)
-def MulAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddShift(builder, shift): builder.PrependInt32Slot(0, shift, 0)
-def MulAttributeAddShift(builder, shift):
-    """This method is deprecated. Please switch to AddShift."""
-    return AddShift(builder, shift)
-def End(builder): return builder.EndObject()
-def MulAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def MulAttributeStart(builder): builder.StartObject(1)
+def MulAttributeAddShift(builder, shift): builder.PrependInt32Slot(0, shift, 0)
+def MulAttributeEnd(builder): return builder.EndObject()

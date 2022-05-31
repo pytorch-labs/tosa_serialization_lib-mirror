@@ -10,16 +10,12 @@ class ReshapeAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsReshapeAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ReshapeAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsReshapeAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def ReshapeAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -55,19 +51,7 @@ class ReshapeAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-def Start(builder): builder.StartObject(1)
-def ReshapeAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddNewShape(builder, newShape): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(newShape), 0)
-def ReshapeAttributeAddNewShape(builder, newShape):
-    """This method is deprecated. Please switch to AddNewShape."""
-    return AddNewShape(builder, newShape)
-def StartNewShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReshapeAttributeStartNewShapeVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartNewShapeVector(builder, numElems)
-def End(builder): return builder.EndObject()
-def ReshapeAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def ReshapeAttributeStart(builder): builder.StartObject(1)
+def ReshapeAttributeAddNewShape(builder, newShape): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(newShape), 0)
+def ReshapeAttributeStartNewShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ReshapeAttributeEnd(builder): return builder.EndObject()

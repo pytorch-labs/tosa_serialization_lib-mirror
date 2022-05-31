@@ -10,16 +10,12 @@ class ConvAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsConvAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ConvAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsConvAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def ConvAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -109,35 +105,11 @@ class ConvAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def Start(builder): builder.StartObject(3)
-def ConvAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
-def ConvAttributeAddPad(builder, pad):
-    """This method is deprecated. Please switch to AddPad."""
-    return AddPad(builder, pad)
-def StartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ConvAttributeStartPadVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartPadVector(builder, numElems)
-def AddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
-def ConvAttributeAddStride(builder, stride):
-    """This method is deprecated. Please switch to AddStride."""
-    return AddStride(builder, stride)
-def StartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ConvAttributeStartStrideVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartStrideVector(builder, numElems)
-def AddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
-def ConvAttributeAddDilation(builder, dilation):
-    """This method is deprecated. Please switch to AddDilation."""
-    return AddDilation(builder, dilation)
-def StartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ConvAttributeStartDilationVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartDilationVector(builder, numElems)
-def End(builder): return builder.EndObject()
-def ConvAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def ConvAttributeStart(builder): builder.StartObject(3)
+def ConvAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+def ConvAttributeStartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ConvAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def ConvAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ConvAttributeAddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
+def ConvAttributeStartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ConvAttributeEnd(builder): return builder.EndObject()

@@ -10,16 +10,12 @@ class TosaTensor(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsTosaTensor(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TosaTensor()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsTosaTensor(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def TosaTensorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -96,35 +92,11 @@ class TosaTensor(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         return o == 0
 
-def Start(builder): builder.StartObject(4)
-def TosaTensorStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
-def TosaTensorAddName(builder, name):
-    """This method is deprecated. Please switch to AddName."""
-    return AddName(builder, name)
-def AddShape(builder, shape): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(shape), 0)
-def TosaTensorAddShape(builder, shape):
-    """This method is deprecated. Please switch to AddShape."""
-    return AddShape(builder, shape)
-def StartShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TosaTensorStartShapeVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartShapeVector(builder, numElems)
-def AddType(builder, type): builder.PrependUint32Slot(2, type, 0)
-def TosaTensorAddType(builder, type):
-    """This method is deprecated. Please switch to AddType."""
-    return AddType(builder, type)
-def AddData(builder, data): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(data), 0)
-def TosaTensorAddData(builder, data):
-    """This method is deprecated. Please switch to AddData."""
-    return AddData(builder, data)
-def StartDataVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def TosaTensorStartDataVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartDataVector(builder, numElems)
-def End(builder): return builder.EndObject()
-def TosaTensorEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def TosaTensorStart(builder): builder.StartObject(4)
+def TosaTensorAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def TosaTensorAddShape(builder, shape): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(shape), 0)
+def TosaTensorStartShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TosaTensorAddType(builder, type): builder.PrependUint32Slot(2, type, 0)
+def TosaTensorAddData(builder, data): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(data), 0)
+def TosaTensorStartDataVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def TosaTensorEnd(builder): return builder.EndObject()

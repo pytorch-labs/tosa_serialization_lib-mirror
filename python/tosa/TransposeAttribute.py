@@ -10,16 +10,12 @@ class TransposeAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsTransposeAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TransposeAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsTransposeAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def TransposeAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -55,19 +51,7 @@ class TransposeAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-def Start(builder): builder.StartObject(1)
-def TransposeAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddPerms(builder, perms): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(perms), 0)
-def TransposeAttributeAddPerms(builder, perms):
-    """This method is deprecated. Please switch to AddPerms."""
-    return AddPerms(builder, perms)
-def StartPermsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeAttributeStartPermsVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartPermsVector(builder, numElems)
-def End(builder): return builder.EndObject()
-def TransposeAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def TransposeAttributeStart(builder): builder.StartObject(1)
+def TransposeAttributeAddPerms(builder, perms): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(perms), 0)
+def TransposeAttributeStartPermsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeAttributeEnd(builder): return builder.EndObject()
