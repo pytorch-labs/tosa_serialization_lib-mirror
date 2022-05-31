@@ -10,16 +10,12 @@ class CondIfAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsCondIfAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = CondIfAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsCondIfAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def CondIfAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -42,19 +38,7 @@ class CondIfAttribute(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def Start(builder): builder.StartObject(2)
-def CondIfAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddThenBranch(builder, thenBranch): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
-def CondIfAttributeAddThenBranch(builder, thenBranch):
-    """This method is deprecated. Please switch to AddThenBranch."""
-    return AddThenBranch(builder, thenBranch)
-def AddElseBranch(builder, elseBranch): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
-def CondIfAttributeAddElseBranch(builder, elseBranch):
-    """This method is deprecated. Please switch to AddElseBranch."""
-    return AddElseBranch(builder, elseBranch)
-def End(builder): return builder.EndObject()
-def CondIfAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def CondIfAttributeStart(builder): builder.StartObject(2)
+def CondIfAttributeAddThenBranch(builder, thenBranch): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
+def CondIfAttributeAddElseBranch(builder, elseBranch): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
+def CondIfAttributeEnd(builder): return builder.EndObject()

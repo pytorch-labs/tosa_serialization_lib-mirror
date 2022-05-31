@@ -10,16 +10,12 @@ class ResizeAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsResizeAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ResizeAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsResizeAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def ResizeAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -177,59 +173,17 @@ class ResizeAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
-def Start(builder): builder.StartObject(7)
-def ResizeAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddOutputSize(builder, outputSize): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outputSize), 0)
-def ResizeAttributeAddOutputSize(builder, outputSize):
-    """This method is deprecated. Please switch to AddOutputSize."""
-    return AddOutputSize(builder, outputSize)
-def StartOutputSizeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ResizeAttributeStartOutputSizeVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartOutputSizeVector(builder, numElems)
-def AddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
-def ResizeAttributeAddStride(builder, stride):
-    """This method is deprecated. Please switch to AddStride."""
-    return AddStride(builder, stride)
-def StartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ResizeAttributeStartStrideVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartStrideVector(builder, numElems)
-def AddOffset(builder, offset): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(offset), 0)
-def ResizeAttributeAddOffset(builder, offset):
-    """This method is deprecated. Please switch to AddOffset."""
-    return AddOffset(builder, offset)
-def StartOffsetVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ResizeAttributeStartOffsetVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartOffsetVector(builder, numElems)
-def AddShift(builder, shift): builder.PrependInt32Slot(3, shift, 0)
-def ResizeAttributeAddShift(builder, shift):
-    """This method is deprecated. Please switch to AddShift."""
-    return AddShift(builder, shift)
-def AddStrideFp(builder, strideFp): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(strideFp), 0)
-def ResizeAttributeAddStrideFp(builder, strideFp):
-    """This method is deprecated. Please switch to AddStrideFp."""
-    return AddStrideFp(builder, strideFp)
-def StartStrideFpVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ResizeAttributeStartStrideFpVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartStrideFpVector(builder, numElems)
-def AddOffsetFp(builder, offsetFp): builder.PrependUOffsetTRelativeSlot(5, flatbuffers.number_types.UOffsetTFlags.py_type(offsetFp), 0)
-def ResizeAttributeAddOffsetFp(builder, offsetFp):
-    """This method is deprecated. Please switch to AddOffsetFp."""
-    return AddOffsetFp(builder, offsetFp)
-def StartOffsetFpVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ResizeAttributeStartOffsetFpVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartOffsetFpVector(builder, numElems)
-def AddMode(builder, mode): builder.PrependUint32Slot(6, mode, 0)
-def ResizeAttributeAddMode(builder, mode):
-    """This method is deprecated. Please switch to AddMode."""
-    return AddMode(builder, mode)
-def End(builder): return builder.EndObject()
-def ResizeAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def ResizeAttributeStart(builder): builder.StartObject(7)
+def ResizeAttributeAddOutputSize(builder, outputSize): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outputSize), 0)
+def ResizeAttributeStartOutputSizeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ResizeAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def ResizeAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ResizeAttributeAddOffset(builder, offset): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(offset), 0)
+def ResizeAttributeStartOffsetVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ResizeAttributeAddShift(builder, shift): builder.PrependInt32Slot(3, shift, 0)
+def ResizeAttributeAddStrideFp(builder, strideFp): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(strideFp), 0)
+def ResizeAttributeStartStrideFpVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ResizeAttributeAddOffsetFp(builder, offsetFp): builder.PrependUOffsetTRelativeSlot(5, flatbuffers.number_types.UOffsetTFlags.py_type(offsetFp), 0)
+def ResizeAttributeStartOffsetFpVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ResizeAttributeAddMode(builder, mode): builder.PrependUint32Slot(6, mode, 0)
+def ResizeAttributeEnd(builder): return builder.EndObject()

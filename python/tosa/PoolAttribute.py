@@ -10,16 +10,12 @@ class PoolAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAs(cls, buf, offset=0):
+    def GetRootAsPoolAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = PoolAttribute()
         x.Init(buf, n + offset)
         return x
 
-    @classmethod
-    def GetRootAsPoolAttribute(cls, buf, offset=0):
-        """This method is deprecated. Please switch to GetRootAs."""
-        return cls.GetRootAs(buf, offset)
     @classmethod
     def PoolAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -109,35 +105,11 @@ class PoolAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def Start(builder): builder.StartObject(3)
-def PoolAttributeStart(builder):
-    """This method is deprecated. Please switch to Start."""
-    return Start(builder)
-def AddPadding(builder, padding): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
-def PoolAttributeAddPadding(builder, padding):
-    """This method is deprecated. Please switch to AddPadding."""
-    return AddPadding(builder, padding)
-def StartPaddingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def PoolAttributeStartPaddingVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartPaddingVector(builder, numElems)
-def AddKernel(builder, kernel): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
-def PoolAttributeAddKernel(builder, kernel):
-    """This method is deprecated. Please switch to AddKernel."""
-    return AddKernel(builder, kernel)
-def StartKernelVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def PoolAttributeStartKernelVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartKernelVector(builder, numElems)
-def AddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
-def PoolAttributeAddStride(builder, stride):
-    """This method is deprecated. Please switch to AddStride."""
-    return AddStride(builder, stride)
-def StartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def PoolAttributeStartStrideVector(builder, numElems):
-    """This method is deprecated. Please switch to Start."""
-    return StartStrideVector(builder, numElems)
-def End(builder): return builder.EndObject()
-def PoolAttributeEnd(builder):
-    """This method is deprecated. Please switch to End."""
-    return End(builder)
+def PoolAttributeStart(builder): builder.StartObject(3)
+def PoolAttributeAddPadding(builder, padding): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
+def PoolAttributeStartPaddingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def PoolAttributeAddKernel(builder, kernel): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
+def PoolAttributeStartKernelVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def PoolAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def PoolAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def PoolAttributeEnd(builder): return builder.EndObject()
