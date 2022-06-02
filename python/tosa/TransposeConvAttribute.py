@@ -25,7 +25,7 @@ class TransposeConvAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # TransposeConvAttribute
-    def Outpad(self, j):
+    def OutPad(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             a = self._tab.Vector(o)
@@ -33,21 +33,21 @@ class TransposeConvAttribute(object):
         return 0
 
     # TransposeConvAttribute
-    def OutpadAsNumpy(self):
+    def OutPadAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # TransposeConvAttribute
-    def OutpadLength(self):
+    def OutPadLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # TransposeConvAttribute
-    def OutpadIsNone(self):
+    def OutPadIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
@@ -79,35 +79,8 @@ class TransposeConvAttribute(object):
         return o == 0
 
     # TransposeConvAttribute
-    def Dilation(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # TransposeConvAttribute
-    def DilationAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
-        return 0
-
-    # TransposeConvAttribute
-    def DilationLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # TransposeConvAttribute
-    def DilationIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        return o == 0
-
-    # TransposeConvAttribute
     def OutputShape(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -115,30 +88,28 @@ class TransposeConvAttribute(object):
 
     # TransposeConvAttribute
     def OutputShapeAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # TransposeConvAttribute
     def OutputShapeLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # TransposeConvAttribute
     def OutputShapeIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def TransposeConvAttributeStart(builder): builder.StartObject(4)
-def TransposeConvAttributeAddOutpad(builder, outpad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outpad), 0)
-def TransposeConvAttributeStartOutpadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def TransposeConvAttributeStart(builder): builder.StartObject(3)
+def TransposeConvAttributeAddOutPad(builder, outPad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outPad), 0)
+def TransposeConvAttributeStartOutPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def TransposeConvAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
 def TransposeConvAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeAddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
-def TransposeConvAttributeStartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def TransposeConvAttributeAddOutputShape(builder, outputShape): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(outputShape), 0)
+def TransposeConvAttributeAddOutputShape(builder, outputShape): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(outputShape), 0)
 def TransposeConvAttributeStartOutputShapeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def TransposeConvAttributeEnd(builder): return builder.EndObject()

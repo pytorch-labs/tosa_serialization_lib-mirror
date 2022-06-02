@@ -161,7 +161,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.intvecs.append((a.AddStride, stride))
         self.intvecs.append((a.AddDilation, dilation))
 
-    def TransposeConvAttribute(self, outpad, stride, dilation, output_shape):
+    def TransposeConvAttribute(self, outpad, stride, output_shape):
         from tosa import TransposeConvAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().TransposeConvAttribute
@@ -169,7 +169,6 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.intvecs.append((a.AddOutpad, outpad))
         self.intvecs.append((a.AddStride, stride))
-        self.intvecs.append((a.AddDilation, dilation))
         self.intvecs.append((a.AddOutputShape, output_shape))
 
     def PadAttribute(self, padding, pad_const_int, pad_const_fp):

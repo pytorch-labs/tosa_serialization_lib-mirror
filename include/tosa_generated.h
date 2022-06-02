@@ -782,31 +782,25 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
 struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef TransposeConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_OUTPAD = 4,
+    VT_OUT_PAD = 4,
     VT_STRIDE = 6,
-    VT_DILATION = 8,
-    VT_OUTPUT_SHAPE = 10
+    VT_OUTPUT_SHAPE = 8
   };
-  const flatbuffers::Vector<int32_t> *outpad() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUTPAD);
+  const flatbuffers::Vector<int32_t> *out_pad() const {
+    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
   }
   const flatbuffers::Vector<int32_t> *stride() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
-  }
-  const flatbuffers::Vector<int32_t> *dilation() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_DILATION);
   }
   const flatbuffers::Vector<int32_t> *output_shape() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SHAPE);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_OUTPAD) &&
-           verifier.VerifyVector(outpad()) &&
+           VerifyOffset(verifier, VT_OUT_PAD) &&
+           verifier.VerifyVector(out_pad()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
            verifier.VerifyVector(stride()) &&
-           VerifyOffset(verifier, VT_DILATION) &&
-           verifier.VerifyVector(dilation()) &&
            VerifyOffset(verifier, VT_OUTPUT_SHAPE) &&
            verifier.VerifyVector(output_shape()) &&
            verifier.EndTable();
@@ -817,14 +811,11 @@ struct TransposeConvAttributeBuilder {
   typedef TransposeConvAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_outpad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> outpad) {
-    fbb_.AddOffset(TransposeConvAttribute::VT_OUTPAD, outpad);
+  void add_out_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> out_pad) {
+    fbb_.AddOffset(TransposeConvAttribute::VT_OUT_PAD, out_pad);
   }
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(TransposeConvAttribute::VT_STRIDE, stride);
-  }
-  void add_dilation(flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation) {
-    fbb_.AddOffset(TransposeConvAttribute::VT_DILATION, dilation);
   }
   void add_output_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape) {
     fbb_.AddOffset(TransposeConvAttribute::VT_OUTPUT_SHAPE, output_shape);
@@ -843,33 +834,28 @@ struct TransposeConvAttributeBuilder {
 
 inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> outpad = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> out_pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0) {
   TransposeConvAttributeBuilder builder_(_fbb);
   builder_.add_output_shape(output_shape);
-  builder_.add_dilation(dilation);
   builder_.add_stride(stride);
-  builder_.add_outpad(outpad);
+  builder_.add_out_pad(out_pad);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *outpad = nullptr,
+    const std::vector<int32_t> *out_pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
-    const std::vector<int32_t> *dilation = nullptr,
     const std::vector<int32_t> *output_shape = nullptr) {
-  auto outpad__ = outpad ? _fbb.CreateVector<int32_t>(*outpad) : 0;
+  auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
   return tosa::CreateTransposeConvAttribute(
       _fbb,
-      outpad__,
+      out_pad__,
       stride__,
-      dilation__,
       output_shape__);
 }
 

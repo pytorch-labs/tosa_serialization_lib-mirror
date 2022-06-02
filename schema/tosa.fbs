@@ -172,9 +172,8 @@ table ConvAttribute {
 }
 
 table TransposeConvAttribute {
-  outpad: [int32];
+  out_pad: [int32];
   stride: [int32];
-  dilation: [int32];
   output_shape: [int32];
 }
 

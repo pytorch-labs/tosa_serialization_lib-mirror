@@ -36,10 +36,9 @@ DEF_ATTRIBUTE(Conv, 3,
               int32_t, V, stride,
               int32_t, V, dilation)
 
-DEF_ATTRIBUTE(TransposeConv, 4,
-              int32_t, V, outpad,
+DEF_ATTRIBUTE(TransposeConv, 3,
+              int32_t, V, out_pad,
               int32_t, V, stride,
-              int32_t, V, dilation,
               int32_t, V, output_shape)
 
 DEF_ATTRIBUTE(Pad, 3,
