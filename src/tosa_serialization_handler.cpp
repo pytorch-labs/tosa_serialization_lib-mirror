@@ -56,10 +56,7 @@ TosaSerializationTensor::TosaSerializationTensor()
 TosaSerializationTensor::~TosaSerializationTensor()
 {}
 
-void TosaSerializationOperator::InitializeAttributeQinfo(Attribute attribute_type,
-                                                         const TosaAttributeBase* attribute,
-                                                         QuantInfo qinfo_type,
-                                                         const TosaQuantInfoBase* qinfo)
+void TosaSerializationOperator::InitializeAttribute(Attribute attribute_type, const TosaAttributeBase* attribute)
 {
     _attribute_type = attribute_type;
 
@@ -80,32 +77,12 @@ void TosaSerializationOperator::InitializeAttributeQinfo(Attribute attribute_typ
             assert(0);
     }
 
-    _qinfo_type = qinfo_type;
-    switch (qinfo_type)
-    {
-        case QuantInfo_NONE:
-            _qinfo = new TosaNoneQuantInfo();
-            break;
-#define DEF_QUANTIZATION_INFO(NAME, ...)                                                                               \
-    case QuantInfo_##NAME##QuantInfo:                                                                                  \
-        _qinfo = new Tosa##NAME##QuantInfo(qinfo);                                                                     \
-        break;
-#include "quant_info.def"
-#undef DEF_QUANTIZATION_INFO
-        default:
-            printf("TosaSerializationOperator::TosaSerializationOperator(): QuantInfo %s not implemented yet\n",
-                   EnumNamesQuantInfo()[qinfo_type]);
-            assert(0);
-    }
-
-    assert(_attribute && _qinfo);
+    assert(_attribute);
 }
 
 TosaSerializationOperator::TosaSerializationOperator(Op op,
                                                      Attribute attribute_type,
                                                      const TosaAttributeBase* attribute,
-                                                     QuantInfo qinfo_type,
-                                                     const TosaQuantInfoBase* qinfo,
                                                      const std::vector<std::string>& input_tensor_names,
                                                      const std::vector<std::string>& output_tensor_names)
 {
@@ -113,14 +90,12 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _input_tensor_names  = input_tensor_names;
     _output_tensor_names = output_tensor_names;
 
-    InitializeAttributeQinfo(attribute_type, attribute, qinfo_type, qinfo);
+    InitializeAttribute(attribute_type, attribute);
 }
 
 TosaSerializationOperator::TosaSerializationOperator(Op op,
                                                      Attribute attribute_type,
                                                      const TosaAttributeBase* attribute,
-                                                     QuantInfo qinfo_type,
-                                                     const TosaQuantInfoBase* qinfo,
                                                      std::vector<std::string>&& input_tensor_names,
                                                      std::vector<std::string>&& output_tensor_names)
 {
@@ -128,13 +103,12 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _input_tensor_names  = std::move(input_tensor_names);
     _output_tensor_names = std::move(output_tensor_names);
 
-    InitializeAttributeQinfo(attribute_type, attribute, qinfo_type, qinfo);
+    InitializeAttribute(attribute_type, attribute);
 }
 
 TosaSerializationOperator::~TosaSerializationOperator()
 {
     delete _attribute;
-    delete _qinfo;
 }
 
 TosaSerializationBasicBlock::TosaSerializationBasicBlock(const std::string& name,
@@ -453,7 +427,6 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     std::vector<std::string> block_outputs_container;
 
     TosaAttributeBase* typed_attribute      = NULL;
-    TosaQuantInfoBase* typed_qinfo          = NULL;
     TosaSerializationOperator* new_operator = NULL;
     TosaSerializationBasicBlock* new_block  = NULL;
     TosaSerializationTensor* new_tensor     = NULL;
@@ -491,11 +464,9 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
         {
             auto curr_operator = fb_tosa_operators->Get(j);
 
-            auto operator_op         = curr_operator->op();
-            auto attribute_type      = curr_operator->attribute_type();
-            auto attribute           = curr_operator->attribute();
-            auto operator_qinfo_type = curr_operator->quant_info_type();
-            auto operator_qinfo      = curr_operator->quant_info();
+            auto operator_op    = curr_operator->op();
+            auto attribute_type = curr_operator->attribute_type();
+            auto attribute      = curr_operator->attribute();
 
             // input tensors
             auto operator_inputs = curr_operator->inputs();
@@ -538,27 +509,8 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
                     return TOSA_INTERNAL_ERROR;
             }
 
-            switch (operator_qinfo_type)
-            {
-                case QuantInfo_NONE:
-                    typed_qinfo = new TosaNoneQuantInfo();
-                    break;
-#define DEF_QUANTIZATION_INFO(NAME, ...)                                                                               \
-    case QuantInfo_##NAME##QuantInfo:                                                                                  \
-        typed_qinfo = new Tosa##NAME##QuantInfo(operator_qinfo);                                                       \
-        break;
-
-#include "quant_info.def"
-#undef DEF_QUANTIZATION_INFO
-                default:
-                    printf("TosaSerializationHandler::Deserialize(): QuantInfo %s not implemented yet\n",
-                           EnumNamesQuantInfo()[operator_qinfo_type]);
-                    return TOSA_INTERNAL_ERROR;
-            }
-
-            new_operator =
-                new TosaSerializationOperator(operator_op, attribute_type, typed_attribute, operator_qinfo_type,
-                                              typed_qinfo, operator_inputs_container, operator_outputs_container);
+            new_operator = new TosaSerializationOperator(operator_op, attribute_type, typed_attribute,
+                                                         operator_inputs_container, operator_outputs_container);
             if (new_operator)
             {
                 block_operators_container.push_back(new_operator);
@@ -570,8 +522,6 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
 
             if (typed_attribute)
                 delete typed_attribute;
-            if (typed_qinfo)
-                delete typed_qinfo;
         }
 
         auto fb_tosa_tensors = curr_block->tensors();
@@ -751,75 +701,8 @@ tosa_err_t TosaSerializationHandler::Serialize()
                     return TOSA_INTERNAL_ERROR;
             }
 
-            auto qinfo_type = op->GetQInfoType();
-            flatbuffers::Offset<void> fb_operator_qinfo;
-            switch (qinfo_type)
-            {
-                case QuantInfo_NONE:
-                    fb_operator_qinfo = 0;
-                    break;
-#define DEF_ARGS_S(NAME, T, V) , reinterpret_cast<Tosa##NAME*>(op->GetQInfo())->V()
-#define DEF_ARGS_V(NAME, T, V) , _builder.CreateVector<T>(reinterpret_cast<Tosa##NAME*>(op->GetQInfo())->V())
-
-#define DEF_ARGS_1(NAME, T0, F0, V0) DEF_ARGS_##F0(NAME, T0, V0)
-#define DEF_ARGS_2(NAME, T0, F0, V0, T1, F1, V1) DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1)
-#define DEF_ARGS_3(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2)                                                           \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2)
-#define DEF_ARGS_4(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3)                                               \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)
-#define DEF_ARGS_5(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4)                                   \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4)
-#define DEF_ARGS_6(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5)                       \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5)
-#define DEF_ARGS_7(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6)           \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5) DEF_ARGS_##F6(NAME, T6, V6)
-#define DEF_ARGS_8(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6, T7, F7,   \
-                   V7)                                                                                                 \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5) DEF_ARGS_##F6(NAME, T6, V6)                            \
-            DEF_ARGS_##F7(NAME, T7, V7)
-#define DEF_ARGS_9(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6, T7, F7,   \
-                   V7, T8, F8, V8)                                                                                     \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5) DEF_ARGS_##F6(NAME, T6, V6)                            \
-            DEF_ARGS_##F7(NAME, T7, V7) DEF_ARGS_##F8(NAME, T8, V8)
-#define DEF_ARGS_10(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6, T7, F7,  \
-                    V7, T8, F8, V8, T9, F9, V9)                                                                        \
-    DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1) DEF_ARGS_##F2(NAME, T2, V2) DEF_ARGS_##F3(NAME, T3, V3)    \
-        DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5) DEF_ARGS_##F6(NAME, T6, V6)                            \
-            DEF_ARGS_##F7(NAME, T7, V7) DEF_ARGS_##F8(NAME, T8, V8) DEF_ARGS_##F9(NAME, T9, V9)
-#define DEF_QUANTIZATION_INFO(NAME, NUM_ARGS, ...)                                                                     \
-    case QuantInfo_##NAME##QuantInfo:                                                                                  \
-        fb_operator_qinfo =                                                                                            \
-            Create##NAME##QuantInfo(_builder DEF_ARGS_##NUM_ARGS(NAME##QuantInfo, __VA_ARGS__)).Union();               \
-        break;
-
-#include "quant_info.def"
-#undef DEF_QUANTIZATION_INFO
-#undef DEF_ARGS_1
-#undef DEF_ARGS_2
-#undef DEF_ARGS_3
-#undef DEF_ARGS_4
-#undef DEF_ARGS_5
-#undef DEF_ARGS_6
-#undef DEF_ARGS_7
-#undef DEF_ARGS_8
-#undef DEF_ARGS_9
-#undef DEF_ARGS_10
-#undef DEF_ARGS_S
-#undef DEF_ARGS_V
-                default:
-                    printf("TosaSerializationHandler::Serialize(): Attribute %s not implemented yet\n",
-                           EnumNamesAttribute()[attribute_type]);
-                    return TOSA_INTERNAL_ERROR;
-            }
-
-            auto fboffset_operator =
-                CreateTosaOperator(_builder, operator_op, attribute_type, fb_attribute, fb_operator_inputs,
-                                   fb_operator_outputs, qinfo_type, fb_operator_qinfo);
+            auto fboffset_operator = CreateTosaOperator(_builder, operator_op, attribute_type, fb_attribute,
+                                                        fb_operator_inputs, fb_operator_outputs);
             fboffset_block_operators.push_back(fboffset_operator);
         }
 

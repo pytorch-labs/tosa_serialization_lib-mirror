@@ -19,7 +19,6 @@
 #include "flatbuffers/idl.h"
 #include "flatbuffers/util.h"
 #include "numpy_utils.h"
-#include "quant_info.h"
 #include "tosa_generated.h"
 #include <cstdint>
 #include <memory>
@@ -28,7 +27,7 @@
 
 // Keep version number in sync with the version default value with schema/tosa.fbs
 #define TOSA_VERSION_MAJOR 0
-#define TOSA_VERSION_MINOR 25
+#define TOSA_VERSION_MINOR 30
 #define TOSA_VERSION_PATCH 0
 #define TOSA_VERSION_DRAFT true
 #define TENSOR_BUFFER_FORCE_ALIGNMENT 8
@@ -172,15 +171,11 @@ public:
     TosaSerializationOperator(Op op,
                               Attribute attribute_type,
                               const TosaAttributeBase* attribute,
-                              QuantInfo qinfo_type,
-                              const TosaQuantInfoBase* qinfo,
                               const std::vector<std::string>& input_tensor_names,
                               const std::vector<std::string>& output_tensor_names);
     TosaSerializationOperator(Op op,
                               Attribute attribute_type,
                               const TosaAttributeBase* attribute,
-                              QuantInfo qinfo_type,
-                              const TosaQuantInfoBase* qinfo,
                               std::vector<std::string>&& input_tensor_names,
                               std::vector<std::string>&& output_tensor_names);
     ~TosaSerializationOperator();
@@ -198,14 +193,6 @@ public:
     {
         return _attribute;
     }
-    QuantInfo GetQInfoType() const
-    {
-        return _qinfo_type;
-    }
-    TosaQuantInfoBase* GetQInfo() const
-    {
-        return _qinfo;
-    }
     std::vector<std::string>& GetInputTensorNames()
     {
         return _input_tensor_names;
@@ -216,15 +203,10 @@ public:
     }
 
 private:
-    void InitializeAttributeQinfo(Attribute attribute_type,
-                                  const TosaAttributeBase* attribute,
-                                  QuantInfo qinfo_type,
-                                  const TosaQuantInfoBase* qinfo);
+    void InitializeAttribute(Attribute attribute_type, const TosaAttributeBase* attribute);
     Op _op;                        /* operator enum, see tosa_isa_generated.h for enumeration table */
     Attribute _attribute_type;     /* operator attribute enum, used for dynamic casting TosaAttributeBase class */
     TosaAttributeBase* _attribute; /* real attribute class goes here */
-    QuantInfo _qinfo_type;         /* QuantInfo enum */
-    TosaQuantInfoBase* _qinfo;     /* base class pointer of QuantInfo */
     std::vector<std::string> _input_tensor_names;  /* array of input tensor names */
     std::vector<std::string> _output_tensor_names; /* array of output tensor names */
 };

@@ -6,39 +6,39 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class MatMulQuantInfo(object):
+class NegateAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsMatMulQuantInfo(cls, buf, offset):
+    def GetRootAsNegateAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = MatMulQuantInfo()
+        x = NegateAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def MatMulQuantInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def NegateAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # MatMulQuantInfo
+    # NegateAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # MatMulQuantInfo
-    def AZp(self):
+    # NegateAttribute
+    def Input1Zp(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # MatMulQuantInfo
-    def BZp(self):
+    # NegateAttribute
+    def OutputZp(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def MatMulQuantInfoStart(builder): builder.StartObject(2)
-def MatMulQuantInfoAddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
-def MatMulQuantInfoAddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
-def MatMulQuantInfoEnd(builder): return builder.EndObject()
+def NegateAttributeStart(builder): builder.StartObject(2)
+def NegateAttributeAddInput1Zp(builder, input1Zp): builder.PrependInt32Slot(0, input1Zp, 0)
+def NegateAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(1, outputZp, 0)
+def NegateAttributeEnd(builder): return builder.EndObject()

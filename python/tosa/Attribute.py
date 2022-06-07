@@ -21,4 +21,7 @@ class Attribute(object):
     WhileLoopAttribute = 15
     TransposeAttribute = 16
     TableAttribute = 17
+    MatMulAttribute = 18
+    FullyConnectedAttribute = 19
+    NegateAttribute = 20
 

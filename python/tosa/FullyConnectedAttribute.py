@@ -6,39 +6,39 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class ConvQuantInfo(object):
+class FullyConnectedAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsConvQuantInfo(cls, buf, offset):
+    def GetRootAsFullyConnectedAttribute(cls, buf, offset):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = ConvQuantInfo()
+        x = FullyConnectedAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def ConvQuantInfoBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def FullyConnectedAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # ConvQuantInfo
+    # FullyConnectedAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # ConvQuantInfo
+    # FullyConnectedAttribute
     def InputZp(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # ConvQuantInfo
+    # FullyConnectedAttribute
     def WeightZp(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def ConvQuantInfoStart(builder): builder.StartObject(2)
-def ConvQuantInfoAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
-def ConvQuantInfoAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
-def ConvQuantInfoEnd(builder): return builder.EndObject()
+def FullyConnectedAttributeStart(builder): builder.StartObject(2)
+def FullyConnectedAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+def FullyConnectedAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
+def FullyConnectedAttributeEnd(builder): return builder.EndObject()

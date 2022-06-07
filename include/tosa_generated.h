@@ -59,17 +59,14 @@ struct TransposeAttributeBuilder;
 struct TableAttribute;
 struct TableAttributeBuilder;
 
-struct UnaryQuantInfo;
-struct UnaryQuantInfoBuilder;
+struct MatMulAttribute;
+struct MatMulAttributeBuilder;
 
-struct ConvQuantInfo;
-struct ConvQuantInfoBuilder;
+struct FullyConnectedAttribute;
+struct FullyConnectedAttributeBuilder;
 
-struct MatMulQuantInfo;
-struct MatMulQuantInfoBuilder;
-
-struct PadQuantInfo;
-struct PadQuantInfoBuilder;
+struct NegateAttribute;
+struct NegateAttributeBuilder;
 
 struct Version;
 struct VersionBuilder;
@@ -423,11 +420,14 @@ enum Attribute {
   Attribute_WhileLoopAttribute = 15,
   Attribute_TransposeAttribute = 16,
   Attribute_TableAttribute = 17,
+  Attribute_MatMulAttribute = 18,
+  Attribute_FullyConnectedAttribute = 19,
+  Attribute_NegateAttribute = 20,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_TableAttribute
+  Attribute_MAX = Attribute_NegateAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[18] {
+inline const Attribute (&EnumValuesAttribute())[21] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -446,13 +446,16 @@ inline const Attribute (&EnumValuesAttribute())[18] {
     Attribute_CondIfAttribute,
     Attribute_WhileLoopAttribute,
     Attribute_TransposeAttribute,
-    Attribute_TableAttribute
+    Attribute_TableAttribute,
+    Attribute_MatMulAttribute,
+    Attribute_FullyConnectedAttribute,
+    Attribute_NegateAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[19] = {
+  static const char * const names[22] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -471,13 +474,16 @@ inline const char * const *EnumNamesAttribute() {
     "WhileLoopAttribute",
     "TransposeAttribute",
     "TableAttribute",
+    "MatMulAttribute",
+    "FullyConnectedAttribute",
+    "NegateAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_TableAttribute)) return "";
+  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_NegateAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -554,77 +560,29 @@ template<> struct AttributeTraits<tosa::TableAttribute> {
   static const Attribute enum_value = Attribute_TableAttribute;
 };
 
+template<> struct AttributeTraits<tosa::MatMulAttribute> {
+  static const Attribute enum_value = Attribute_MatMulAttribute;
+};
+
+template<> struct AttributeTraits<tosa::FullyConnectedAttribute> {
+  static const Attribute enum_value = Attribute_FullyConnectedAttribute;
+};
+
+template<> struct AttributeTraits<tosa::NegateAttribute> {
+  static const Attribute enum_value = Attribute_NegateAttribute;
+};
+
 bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
 bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
-
-enum QuantInfo {
-  QuantInfo_NONE = 0,
-  QuantInfo_UnaryQuantInfo = 1,
-  QuantInfo_ConvQuantInfo = 2,
-  QuantInfo_MatMulQuantInfo = 3,
-  QuantInfo_PadQuantInfo = 4,
-  QuantInfo_MIN = QuantInfo_NONE,
-  QuantInfo_MAX = QuantInfo_PadQuantInfo
-};
-
-inline const QuantInfo (&EnumValuesQuantInfo())[5] {
-  static const QuantInfo values[] = {
-    QuantInfo_NONE,
-    QuantInfo_UnaryQuantInfo,
-    QuantInfo_ConvQuantInfo,
-    QuantInfo_MatMulQuantInfo,
-    QuantInfo_PadQuantInfo
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesQuantInfo() {
-  static const char * const names[6] = {
-    "NONE",
-    "UnaryQuantInfo",
-    "ConvQuantInfo",
-    "MatMulQuantInfo",
-    "PadQuantInfo",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameQuantInfo(QuantInfo e) {
-  if (flatbuffers::IsOutRange(e, QuantInfo_NONE, QuantInfo_PadQuantInfo)) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesQuantInfo()[index];
-}
-
-template<typename T> struct QuantInfoTraits {
-  static const QuantInfo enum_value = QuantInfo_NONE;
-};
-
-template<> struct QuantInfoTraits<tosa::UnaryQuantInfo> {
-  static const QuantInfo enum_value = QuantInfo_UnaryQuantInfo;
-};
-
-template<> struct QuantInfoTraits<tosa::ConvQuantInfo> {
-  static const QuantInfo enum_value = QuantInfo_ConvQuantInfo;
-};
-
-template<> struct QuantInfoTraits<tosa::MatMulQuantInfo> {
-  static const QuantInfo enum_value = QuantInfo_MatMulQuantInfo;
-};
-
-template<> struct QuantInfoTraits<tosa::PadQuantInfo> {
-  static const QuantInfo enum_value = QuantInfo_PadQuantInfo;
-};
-
-bool VerifyQuantInfo(flatbuffers::Verifier &verifier, const void *obj, QuantInfo type);
-bool VerifyQuantInfoVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
 
 struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef PoolAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
     VT_KERNEL = 6,
-    VT_STRIDE = 8
+    VT_STRIDE = 8,
+    VT_INPUT_ZP = 10,
+    VT_OUTPUT_ZP = 12
   };
   const flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -635,6 +593,12 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<int32_t> *stride() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
   }
+  int32_t input_zp() const {
+    return GetField<int32_t>(VT_INPUT_ZP, 0);
+  }
+  int32_t output_zp() const {
+    return GetField<int32_t>(VT_OUTPUT_ZP, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -643,6 +607,8 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(kernel()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
            verifier.VerifyVector(stride()) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
            verifier.EndTable();
   }
 };
@@ -660,6 +626,12 @@ struct PoolAttributeBuilder {
   void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(PoolAttribute::VT_STRIDE, stride);
   }
+  void add_input_zp(int32_t input_zp) {
+    fbb_.AddElement<int32_t>(PoolAttribute::VT_INPUT_ZP, input_zp, 0);
+  }
+  void add_output_zp(int32_t output_zp) {
+    fbb_.AddElement<int32_t>(PoolAttribute::VT_OUTPUT_ZP, output_zp, 0);
+  }
   explicit PoolAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -676,8 +648,12 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
+    int32_t input_zp = 0,
+    int32_t output_zp = 0) {
   PoolAttributeBuilder builder_(_fbb);
+  builder_.add_output_zp(output_zp);
+  builder_.add_input_zp(input_zp);
   builder_.add_stride(stride);
   builder_.add_kernel(kernel);
   builder_.add_pad(pad);
@@ -688,7 +664,9 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *kernel = nullptr,
-    const std::vector<int32_t> *stride = nullptr) {
+    const std::vector<int32_t> *stride = nullptr,
+    int32_t input_zp = 0,
+    int32_t output_zp = 0) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
@@ -696,7 +674,9 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
       _fbb,
       pad__,
       kernel__,
-      stride__);
+      stride__,
+      input_zp,
+      output_zp);
 }
 
 struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -704,7 +684,9 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
     VT_STRIDE = 6,
-    VT_DILATION = 8
+    VT_DILATION = 8,
+    VT_INPUT_ZP = 10,
+    VT_WEIGHT_ZP = 12
   };
   const flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -715,6 +697,12 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const flatbuffers::Vector<int32_t> *dilation() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_DILATION);
   }
+  int32_t input_zp() const {
+    return GetField<int32_t>(VT_INPUT_ZP, 0);
+  }
+  int32_t weight_zp() const {
+    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -723,6 +711,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(stride()) &&
            VerifyOffset(verifier, VT_DILATION) &&
            verifier.VerifyVector(dilation()) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
            verifier.EndTable();
   }
 };
@@ -740,6 +730,12 @@ struct ConvAttributeBuilder {
   void add_dilation(flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation) {
     fbb_.AddOffset(ConvAttribute::VT_DILATION, dilation);
   }
+  void add_input_zp(int32_t input_zp) {
+    fbb_.AddElement<int32_t>(ConvAttribute::VT_INPUT_ZP, input_zp, 0);
+  }
+  void add_weight_zp(int32_t weight_zp) {
+    fbb_.AddElement<int32_t>(ConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
   explicit ConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -756,8 +752,12 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0) {
   ConvAttributeBuilder builder_(_fbb);
+  builder_.add_weight_zp(weight_zp);
+  builder_.add_input_zp(input_zp);
   builder_.add_dilation(dilation);
   builder_.add_stride(stride);
   builder_.add_pad(pad);
@@ -768,7 +768,9 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
-    const std::vector<int32_t> *dilation = nullptr) {
+    const std::vector<int32_t> *dilation = nullptr,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
@@ -776,7 +778,9 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       _fbb,
       pad__,
       stride__,
-      dilation__);
+      dilation__,
+      input_zp,
+      weight_zp);
 }
 
 struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -784,7 +788,9 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUT_PAD = 4,
     VT_STRIDE = 6,
-    VT_OUTPUT_SHAPE = 8
+    VT_OUTPUT_SHAPE = 8,
+    VT_INPUT_ZP = 10,
+    VT_WEIGHT_ZP = 12
   };
   const flatbuffers::Vector<int32_t> *out_pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
@@ -795,6 +801,12 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   const flatbuffers::Vector<int32_t> *output_shape() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SHAPE);
   }
+  int32_t input_zp() const {
+    return GetField<int32_t>(VT_INPUT_ZP, 0);
+  }
+  int32_t weight_zp() const {
+    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUT_PAD) &&
@@ -803,6 +815,8 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            verifier.VerifyVector(stride()) &&
            VerifyOffset(verifier, VT_OUTPUT_SHAPE) &&
            verifier.VerifyVector(output_shape()) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
            verifier.EndTable();
   }
 };
@@ -820,6 +834,12 @@ struct TransposeConvAttributeBuilder {
   void add_output_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape) {
     fbb_.AddOffset(TransposeConvAttribute::VT_OUTPUT_SHAPE, output_shape);
   }
+  void add_input_zp(int32_t input_zp) {
+    fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_INPUT_ZP, input_zp, 0);
+  }
+  void add_weight_zp(int32_t weight_zp) {
+    fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
   explicit TransposeConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -836,8 +856,12 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> out_pad = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0) {
   TransposeConvAttributeBuilder builder_(_fbb);
+  builder_.add_weight_zp(weight_zp);
+  builder_.add_input_zp(input_zp);
   builder_.add_output_shape(output_shape);
   builder_.add_stride(stride);
   builder_.add_out_pad(out_pad);
@@ -848,7 +872,9 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *out_pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
-    const std::vector<int32_t> *output_shape = nullptr) {
+    const std::vector<int32_t> *output_shape = nullptr,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
@@ -856,7 +882,9 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
       _fbb,
       out_pad__,
       stride__,
-      output_shape__);
+      output_shape__,
+      input_zp,
+      weight_zp);
 }
 
 struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1797,112 +1825,8 @@ inline flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
       table__);
 }
 
-struct UnaryQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef UnaryQuantInfoBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INPUT_ZP = 4,
-    VT_OUTPUT_ZP = 6
-  };
-  int32_t input_zp() const {
-    return GetField<int32_t>(VT_INPUT_ZP, 0);
-  }
-  int32_t output_zp() const {
-    return GetField<int32_t>(VT_OUTPUT_ZP, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
-           verifier.EndTable();
-  }
-};
-
-struct UnaryQuantInfoBuilder {
-  typedef UnaryQuantInfo Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(UnaryQuantInfo::VT_INPUT_ZP, input_zp, 0);
-  }
-  void add_output_zp(int32_t output_zp) {
-    fbb_.AddElement<int32_t>(UnaryQuantInfo::VT_OUTPUT_ZP, output_zp, 0);
-  }
-  explicit UnaryQuantInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  UnaryQuantInfoBuilder &operator=(const UnaryQuantInfoBuilder &);
-  flatbuffers::Offset<UnaryQuantInfo> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<UnaryQuantInfo>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<UnaryQuantInfo> CreateUnaryQuantInfo(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t input_zp = 0,
-    int32_t output_zp = 0) {
-  UnaryQuantInfoBuilder builder_(_fbb);
-  builder_.add_output_zp(output_zp);
-  builder_.add_input_zp(input_zp);
-  return builder_.Finish();
-}
-
-struct ConvQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ConvQuantInfoBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INPUT_ZP = 4,
-    VT_WEIGHT_ZP = 6
-  };
-  int32_t input_zp() const {
-    return GetField<int32_t>(VT_INPUT_ZP, 0);
-  }
-  int32_t weight_zp() const {
-    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
-           verifier.EndTable();
-  }
-};
-
-struct ConvQuantInfoBuilder {
-  typedef ConvQuantInfo Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(ConvQuantInfo::VT_INPUT_ZP, input_zp, 0);
-  }
-  void add_weight_zp(int32_t weight_zp) {
-    fbb_.AddElement<int32_t>(ConvQuantInfo::VT_WEIGHT_ZP, weight_zp, 0);
-  }
-  explicit ConvQuantInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ConvQuantInfoBuilder &operator=(const ConvQuantInfoBuilder &);
-  flatbuffers::Offset<ConvQuantInfo> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ConvQuantInfo>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<ConvQuantInfo> CreateConvQuantInfo(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
-  ConvQuantInfoBuilder builder_(_fbb);
-  builder_.add_weight_zp(weight_zp);
-  builder_.add_input_zp(input_zp);
-  return builder_.Finish();
-}
-
-struct MatMulQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef MatMulQuantInfoBuilder Builder;
+struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef MatMulAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_A_ZP = 4,
     VT_B_ZP = 6
@@ -1921,77 +1845,139 @@ struct MatMulQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct MatMulQuantInfoBuilder {
-  typedef MatMulQuantInfo Table;
+struct MatMulAttributeBuilder {
+  typedef MatMulAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_a_zp(int32_t a_zp) {
-    fbb_.AddElement<int32_t>(MatMulQuantInfo::VT_A_ZP, a_zp, 0);
+    fbb_.AddElement<int32_t>(MatMulAttribute::VT_A_ZP, a_zp, 0);
   }
   void add_b_zp(int32_t b_zp) {
-    fbb_.AddElement<int32_t>(MatMulQuantInfo::VT_B_ZP, b_zp, 0);
+    fbb_.AddElement<int32_t>(MatMulAttribute::VT_B_ZP, b_zp, 0);
   }
-  explicit MatMulQuantInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit MatMulAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MatMulQuantInfoBuilder &operator=(const MatMulQuantInfoBuilder &);
-  flatbuffers::Offset<MatMulQuantInfo> Finish() {
+  MatMulAttributeBuilder &operator=(const MatMulAttributeBuilder &);
+  flatbuffers::Offset<MatMulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MatMulQuantInfo>(end);
+    auto o = flatbuffers::Offset<MatMulAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<MatMulQuantInfo> CreateMatMulQuantInfo(
+inline flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t a_zp = 0,
     int32_t b_zp = 0) {
-  MatMulQuantInfoBuilder builder_(_fbb);
+  MatMulAttributeBuilder builder_(_fbb);
   builder_.add_b_zp(b_zp);
   builder_.add_a_zp(a_zp);
   return builder_.Finish();
 }
 
-struct PadQuantInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef PadQuantInfoBuilder Builder;
+struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FullyConnectedAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INPUT_ZP = 4
+    VT_INPUT_ZP = 4,
+    VT_WEIGHT_ZP = 6
   };
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
   }
+  int32_t weight_zp() const {
+    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
            verifier.EndTable();
   }
 };
 
-struct PadQuantInfoBuilder {
-  typedef PadQuantInfo Table;
+struct FullyConnectedAttributeBuilder {
+  typedef FullyConnectedAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(PadQuantInfo::VT_INPUT_ZP, input_zp, 0);
+    fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_INPUT_ZP, input_zp, 0);
   }
-  explicit PadQuantInfoBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_weight_zp(int32_t weight_zp) {
+    fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
+  explicit FullyConnectedAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  PadQuantInfoBuilder &operator=(const PadQuantInfoBuilder &);
-  flatbuffers::Offset<PadQuantInfo> Finish() {
+  FullyConnectedAttributeBuilder &operator=(const FullyConnectedAttributeBuilder &);
+  flatbuffers::Offset<FullyConnectedAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PadQuantInfo>(end);
+    auto o = flatbuffers::Offset<FullyConnectedAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<PadQuantInfo> CreatePadQuantInfo(
+inline flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t input_zp = 0) {
-  PadQuantInfoBuilder builder_(_fbb);
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0) {
+  FullyConnectedAttributeBuilder builder_(_fbb);
+  builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
+  return builder_.Finish();
+}
+
+struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef NegateAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INPUT1_ZP = 4,
+    VT_OUTPUT_ZP = 6
+  };
+  int32_t input1_zp() const {
+    return GetField<int32_t>(VT_INPUT1_ZP, 0);
+  }
+  int32_t output_zp() const {
+    return GetField<int32_t>(VT_OUTPUT_ZP, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_INPUT1_ZP) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
+           verifier.EndTable();
+  }
+};
+
+struct NegateAttributeBuilder {
+  typedef NegateAttribute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_input1_zp(int32_t input1_zp) {
+    fbb_.AddElement<int32_t>(NegateAttribute::VT_INPUT1_ZP, input1_zp, 0);
+  }
+  void add_output_zp(int32_t output_zp) {
+    fbb_.AddElement<int32_t>(NegateAttribute::VT_OUTPUT_ZP, output_zp, 0);
+  }
+  explicit NegateAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  NegateAttributeBuilder &operator=(const NegateAttributeBuilder &);
+  flatbuffers::Offset<NegateAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<NegateAttribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t input1_zp = 0,
+    int32_t output_zp = 0) {
+  NegateAttributeBuilder builder_(_fbb);
+  builder_.add_output_zp(output_zp);
+  builder_.add_input1_zp(input1_zp);
   return builder_.Finish();
 }
 
@@ -2007,7 +1993,7 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<int32_t>(VT__MAJOR, 0);
   }
   int32_t _minor() const {
-    return GetField<int32_t>(VT__MINOR, 25);
+    return GetField<int32_t>(VT__MINOR, 30);
   }
   int32_t _patch() const {
     return GetField<int32_t>(VT__PATCH, 0);
@@ -2033,7 +2019,7 @@ struct VersionBuilder {
     fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, 0);
   }
   void add__minor(int32_t _minor) {
-    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 25);
+    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 30);
   }
   void add__patch(int32_t _patch) {
     fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, 0);
@@ -2056,7 +2042,7 @@ struct VersionBuilder {
 inline flatbuffers::Offset<Version> CreateVersion(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t _major = 0,
-    int32_t _minor = 25,
+    int32_t _minor = 30,
     int32_t _patch = 0,
     bool _draft = true) {
   VersionBuilder builder_(_fbb);
@@ -2167,9 +2153,7 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_ATTRIBUTE_TYPE = 6,
     VT_ATTRIBUTE = 8,
     VT_INPUTS = 10,
-    VT_OUTPUTS = 12,
-    VT_QUANT_INFO_TYPE = 14,
-    VT_QUANT_INFO = 16
+    VT_OUTPUTS = 12
   };
   tosa::Op op() const {
     return static_cast<tosa::Op>(GetField<uint32_t>(VT_OP, 0));
@@ -2232,30 +2216,20 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::TableAttribute *attribute_as_TableAttribute() const {
     return attribute_type() == tosa::Attribute_TableAttribute ? static_cast<const tosa::TableAttribute *>(attribute()) : nullptr;
   }
+  const tosa::MatMulAttribute *attribute_as_MatMulAttribute() const {
+    return attribute_type() == tosa::Attribute_MatMulAttribute ? static_cast<const tosa::MatMulAttribute *>(attribute()) : nullptr;
+  }
+  const tosa::FullyConnectedAttribute *attribute_as_FullyConnectedAttribute() const {
+    return attribute_type() == tosa::Attribute_FullyConnectedAttribute ? static_cast<const tosa::FullyConnectedAttribute *>(attribute()) : nullptr;
+  }
+  const tosa::NegateAttribute *attribute_as_NegateAttribute() const {
+    return attribute_type() == tosa::Attribute_NegateAttribute ? static_cast<const tosa::NegateAttribute *>(attribute()) : nullptr;
+  }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
   }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *outputs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_OUTPUTS);
-  }
-  tosa::QuantInfo quant_info_type() const {
-    return static_cast<tosa::QuantInfo>(GetField<uint8_t>(VT_QUANT_INFO_TYPE, 0));
-  }
-  const void *quant_info() const {
-    return GetPointer<const void *>(VT_QUANT_INFO);
-  }
-  template<typename T> const T *quant_info_as() const;
-  const tosa::UnaryQuantInfo *quant_info_as_UnaryQuantInfo() const {
-    return quant_info_type() == tosa::QuantInfo_UnaryQuantInfo ? static_cast<const tosa::UnaryQuantInfo *>(quant_info()) : nullptr;
-  }
-  const tosa::ConvQuantInfo *quant_info_as_ConvQuantInfo() const {
-    return quant_info_type() == tosa::QuantInfo_ConvQuantInfo ? static_cast<const tosa::ConvQuantInfo *>(quant_info()) : nullptr;
-  }
-  const tosa::MatMulQuantInfo *quant_info_as_MatMulQuantInfo() const {
-    return quant_info_type() == tosa::QuantInfo_MatMulQuantInfo ? static_cast<const tosa::MatMulQuantInfo *>(quant_info()) : nullptr;
-  }
-  const tosa::PadQuantInfo *quant_info_as_PadQuantInfo() const {
-    return quant_info_type() == tosa::QuantInfo_PadQuantInfo ? static_cast<const tosa::PadQuantInfo *>(quant_info()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2269,9 +2243,6 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            VerifyOffset(verifier, VT_OUTPUTS) &&
            verifier.VerifyVector(outputs()) &&
            verifier.VerifyVectorOfStrings(outputs()) &&
-           VerifyField<uint8_t>(verifier, VT_QUANT_INFO_TYPE) &&
-           VerifyOffset(verifier, VT_QUANT_INFO) &&
-           VerifyQuantInfo(verifier, quant_info(), quant_info_type()) &&
            verifier.EndTable();
   }
 };
@@ -2344,20 +2315,16 @@ template<> inline const tosa::TableAttribute *TosaOperator::attribute_as<tosa::T
   return attribute_as_TableAttribute();
 }
 
-template<> inline const tosa::UnaryQuantInfo *TosaOperator::quant_info_as<tosa::UnaryQuantInfo>() const {
-  return quant_info_as_UnaryQuantInfo();
+template<> inline const tosa::MatMulAttribute *TosaOperator::attribute_as<tosa::MatMulAttribute>() const {
+  return attribute_as_MatMulAttribute();
 }
 
-template<> inline const tosa::ConvQuantInfo *TosaOperator::quant_info_as<tosa::ConvQuantInfo>() const {
-  return quant_info_as_ConvQuantInfo();
+template<> inline const tosa::FullyConnectedAttribute *TosaOperator::attribute_as<tosa::FullyConnectedAttribute>() const {
+  return attribute_as_FullyConnectedAttribute();
 }
 
-template<> inline const tosa::MatMulQuantInfo *TosaOperator::quant_info_as<tosa::MatMulQuantInfo>() const {
-  return quant_info_as_MatMulQuantInfo();
-}
-
-template<> inline const tosa::PadQuantInfo *TosaOperator::quant_info_as<tosa::PadQuantInfo>() const {
-  return quant_info_as_PadQuantInfo();
+template<> inline const tosa::NegateAttribute *TosaOperator::attribute_as<tosa::NegateAttribute>() const {
+  return attribute_as_NegateAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2379,12 +2346,6 @@ struct TosaOperatorBuilder {
   void add_outputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs) {
     fbb_.AddOffset(TosaOperator::VT_OUTPUTS, outputs);
   }
-  void add_quant_info_type(tosa::QuantInfo quant_info_type) {
-    fbb_.AddElement<uint8_t>(TosaOperator::VT_QUANT_INFO_TYPE, static_cast<uint8_t>(quant_info_type), 0);
-  }
-  void add_quant_info(flatbuffers::Offset<void> quant_info) {
-    fbb_.AddOffset(TosaOperator::VT_QUANT_INFO, quant_info);
-  }
   explicit TosaOperatorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2403,16 +2364,12 @@ inline flatbuffers::Offset<TosaOperator> CreateTosaOperator(
     tosa::Attribute attribute_type = tosa::Attribute_NONE,
     flatbuffers::Offset<void> attribute = 0,
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs = 0,
-    tosa::QuantInfo quant_info_type = tosa::QuantInfo_NONE,
-    flatbuffers::Offset<void> quant_info = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs = 0) {
   TosaOperatorBuilder builder_(_fbb);
-  builder_.add_quant_info(quant_info);
   builder_.add_outputs(outputs);
   builder_.add_inputs(inputs);
   builder_.add_attribute(attribute);
   builder_.add_op(op);
-  builder_.add_quant_info_type(quant_info_type);
   builder_.add_attribute_type(attribute_type);
   return builder_.Finish();
 }
@@ -2423,9 +2380,7 @@ inline flatbuffers::Offset<TosaOperator> CreateTosaOperatorDirect(
     tosa::Attribute attribute_type = tosa::Attribute_NONE,
     flatbuffers::Offset<void> attribute = 0,
     const std::vector<flatbuffers::Offset<flatbuffers::String>> *inputs = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *outputs = nullptr,
-    tosa::QuantInfo quant_info_type = tosa::QuantInfo_NONE,
-    flatbuffers::Offset<void> quant_info = 0) {
+    const std::vector<flatbuffers::Offset<flatbuffers::String>> *outputs = nullptr) {
   auto inputs__ = inputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*inputs) : 0;
   auto outputs__ = outputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*outputs) : 0;
   return tosa::CreateTosaOperator(
@@ -2434,9 +2389,7 @@ inline flatbuffers::Offset<TosaOperator> CreateTosaOperatorDirect(
       attribute_type,
       attribute,
       inputs__,
-      outputs__,
-      quant_info_type,
-      quant_info);
+      outputs__);
 }
 
 struct TosaBasicBlock FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -2690,6 +2643,18 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
       auto ptr = reinterpret_cast<const tosa::TableAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case Attribute_MatMulAttribute: {
+      auto ptr = reinterpret_cast<const tosa::MatMulAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_FullyConnectedAttribute: {
+      auto ptr = reinterpret_cast<const tosa::FullyConnectedAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_NegateAttribute: {
+      auto ptr = reinterpret_cast<const tosa::NegateAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default: return true;
   }
 }
@@ -2700,43 +2665,6 @@ inline bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuf
   for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyAttribute(
         verifier,  values->Get(i), types->GetEnum<Attribute>(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-inline bool VerifyQuantInfo(flatbuffers::Verifier &verifier, const void *obj, QuantInfo type) {
-  switch (type) {
-    case QuantInfo_NONE: {
-      return true;
-    }
-    case QuantInfo_UnaryQuantInfo: {
-      auto ptr = reinterpret_cast<const tosa::UnaryQuantInfo *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case QuantInfo_ConvQuantInfo: {
-      auto ptr = reinterpret_cast<const tosa::ConvQuantInfo *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case QuantInfo_MatMulQuantInfo: {
-      auto ptr = reinterpret_cast<const tosa::MatMulQuantInfo *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    case QuantInfo_PadQuantInfo: {
-      auto ptr = reinterpret_cast<const tosa::PadQuantInfo *>(obj);
-      return verifier.VerifyTable(ptr);
-    }
-    default: return true;
-  }
-}
-
-inline bool VerifyQuantInfoVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types) {
-  if (!values || !types) return !values && !types;
-  if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
-    if (!VerifyQuantInfo(
-        verifier,  values->Get(i), types->GetEnum<QuantInfo>(i))) {
       return false;
     }
   }

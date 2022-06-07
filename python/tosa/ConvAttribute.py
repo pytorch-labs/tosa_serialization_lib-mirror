@@ -105,11 +105,27 @@ class ConvAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def ConvAttributeStart(builder): builder.StartObject(3)
+    # ConvAttribute
+    def InputZp(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # ConvAttribute
+    def WeightZp(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+def ConvAttributeStart(builder): builder.StartObject(5)
 def ConvAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
 def ConvAttributeStartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ConvAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
 def ConvAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ConvAttributeAddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
 def ConvAttributeStartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ConvAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(3, inputZp, 0)
+def ConvAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(4, weightZp, 0)
 def ConvAttributeEnd(builder): return builder.EndObject()
