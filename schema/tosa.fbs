@@ -282,7 +282,7 @@ table PadQuantInfo {
 
 table Version {
   _major: int32 = 0;
-  _minor: int32 = 24;
+  _minor: int32 = 25;
   _patch: int32 = 0;
   _draft: bool = true;
 }

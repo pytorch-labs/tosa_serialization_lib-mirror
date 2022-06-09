@@ -39,6 +39,10 @@ TOSA_VERSION = [
     TOSA_VERSION_PATCH,
     TOSA_VERSION_DRAFT,
 ]
+
+# File identifier needs to be kept in sync with schema/tosa.fbs
+TOSA_GRAPH_IDENTIFIER = b"\x54\x4F\x53\x41"
+
 # With the way flatc generates its python types, there is no programatic way
 # to get string names for the integer types.  Manually maintain a string table
 # here.
@@ -703,7 +707,7 @@ class TosaSerializer:
         TosaGraph.AddBlocks(builder, fbv_bb)
         graph = TosaGraph.End(builder)
 
-        self.builder.Finish(graph)
+        self.builder.Finish(graph, TOSA_GRAPH_IDENTIFIER)
         return self.builder.Output()
 
     def writeJson(self, tosa_filename):
