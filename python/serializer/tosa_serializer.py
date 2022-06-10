@@ -90,6 +90,7 @@ class TosaSerializerUnion:
         self.bools = []
         self.floats = []
         self.strings = []
+        self.int16vecs = []
         self.intvecs = []
         self.fpvecs = []
 
@@ -105,6 +106,9 @@ class TosaSerializerUnion:
 
         for fcn, val in self.intvecs:
             intVecList.append((fcn, TosaSerializer.serializeInt32Vec(builder, val)))
+
+        for fcn, val in self.int16vecs:
+            intVecList.append((fcn, TosaSerializer.serializeInt16Vec(builder, val)))
 
         for fcn, val in self.fpvecs:
             fpVecList.append((fcn, TosaSerializer.serializeFpVec(builder, val)))
@@ -220,20 +224,15 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.intvecs.append((a.AddMultiples, multiples))
 
-    def ResizeAttribute(
-        self, output_size, stride, offset, shift, stride_fp, offset_fp, mode
-    ):
+    def ResizeAttribute(self, scale, offset, border, mode):
         from tosa import ResizeAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ResizeAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddOutputSize, output_size))
-        self.intvecs.append((a.AddStride, stride))
-        self.intvecs.append((a.AddOffset, offset))
-        self.ints.append((a.AddShift, shift))
-        self.fpvecs.append((a.AddStrideFp, stride_fp))
-        self.fpvecs.append((a.AddOffsetFp, offset_fp))
+        self.int16vecs.append((a.AddScale, scale))
+        self.int16vecs.append((a.AddOffset, offset))
+        self.int16vecs.append((a.AddBorder, border))
         self.ints.append((a.AddMode, mode))
 
     def ClampAttribute(self, minint, maxint, minfp, maxfp):
@@ -757,6 +756,16 @@ class TosaSerializer:
             return builder.EndVector(len(vec))
 
     @staticmethod
+    def serializeInt16Vec(builder, vec):
+        builder.StartVector(2, len(vec), 4)
+        for v in vec[::-1]:
+            builder.PrependInt16(v)
+        try:
+            return builder.EndVector()
+        except TypeError:
+            return builder.EndVector(len(vec))
+
+    @staticmethod
     def serializeInt32Vec(builder, vec):
         builder.StartVector(4, len(vec), 4)
         for v in vec[::-1]:
@@ -963,26 +972,17 @@ class TosaSerializer:
 
         if not hasattr(ResizeAttribute, "Start"):
             ResizeAttribute.Start = ResizeAttribute.ResizeAttributeStart
-            ResizeAttribute.AddOutputSize = ResizeAttribute.ResizeAttributeAddOutputSize
-            ResizeAttribute.StartOutputSizeVector = (
-                ResizeAttribute.ResizeAttributeStartOutputSizeVector
-            )
-            ResizeAttribute.AddStride = ResizeAttribute.ResizeAttributeAddStride
-            ResizeAttribute.StartStrideVector = (
-                ResizeAttribute.ResizeAttributeStartStrideVector
+            ResizeAttribute.AddScale = ResizeAttribute.ResizeAttributeAddScale
+            ResizeAttribute.StartScaleVector = (
+                ResizeAttribute.ResizeAttributeStartScaleVector
             )
             ResizeAttribute.AddOffset = ResizeAttribute.ResizeAttributeAddOffset
             ResizeAttribute.StartOffsetVector = (
                 ResizeAttribute.ResizeAttributeStartOffsetVector
             )
-            ResizeAttribute.AddShift = ResizeAttribute.ResizeAttributeAddShift
-            ResizeAttribute.AddStrideFp = ResizeAttribute.ResizeAttributeAddStrideFp
-            ResizeAttribute.StartStrideFpVector = (
-                ResizeAttribute.ResizeAttributeStartStrideFpVector
-            )
-            ResizeAttribute.AddOffsetFp = ResizeAttribute.ResizeAttributeAddOffsetFp
-            ResizeAttribute.StartOffsetFpVector = (
-                ResizeAttribute.ResizeAttributeStartOffsetFpVector
+            ResizeAttribute.AddBorder = ResizeAttribute.ResizeAttributeAddBorder
+            ResizeAttribute.StartBorderVector = (
+                ResizeAttribute.ResizeAttributeStartBorderVector
             )
             ResizeAttribute.AddMode = ResizeAttribute.ResizeAttributeAddMode
             ResizeAttribute.End = ResizeAttribute.ResizeAttributeEnd

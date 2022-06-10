@@ -1178,48 +1178,31 @@ inline flatbuffers::Offset<TileAttribute> CreateTileAttributeDirect(
 struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef ResizeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_OUTPUT_SIZE = 4,
-    VT_STRIDE = 6,
-    VT_OFFSET = 8,
-    VT_SHIFT = 10,
-    VT_STRIDE_FP = 12,
-    VT_OFFSET_FP = 14,
-    VT_MODE = 16
+    VT_SCALE = 4,
+    VT_OFFSET = 6,
+    VT_BORDER = 8,
+    VT_MODE = 10
   };
-  const flatbuffers::Vector<int32_t> *output_size() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SIZE);
+  const flatbuffers::Vector<int16_t> *scale() const {
+    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_SCALE);
   }
-  const flatbuffers::Vector<int32_t> *stride() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  const flatbuffers::Vector<int16_t> *offset() const {
+    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_OFFSET);
   }
-  const flatbuffers::Vector<int32_t> *offset() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OFFSET);
-  }
-  int32_t shift() const {
-    return GetField<int32_t>(VT_SHIFT, 0);
-  }
-  const flatbuffers::Vector<float> *stride_fp() const {
-    return GetPointer<const flatbuffers::Vector<float> *>(VT_STRIDE_FP);
-  }
-  const flatbuffers::Vector<float> *offset_fp() const {
-    return GetPointer<const flatbuffers::Vector<float> *>(VT_OFFSET_FP);
+  const flatbuffers::Vector<int16_t> *border() const {
+    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_BORDER);
   }
   tosa::ResizeMode mode() const {
     return static_cast<tosa::ResizeMode>(GetField<uint32_t>(VT_MODE, 0));
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_OUTPUT_SIZE) &&
-           verifier.VerifyVector(output_size()) &&
-           VerifyOffset(verifier, VT_STRIDE) &&
-           verifier.VerifyVector(stride()) &&
+           VerifyOffset(verifier, VT_SCALE) &&
+           verifier.VerifyVector(scale()) &&
            VerifyOffset(verifier, VT_OFFSET) &&
            verifier.VerifyVector(offset()) &&
-           VerifyField<int32_t>(verifier, VT_SHIFT) &&
-           VerifyOffset(verifier, VT_STRIDE_FP) &&
-           verifier.VerifyVector(stride_fp()) &&
-           VerifyOffset(verifier, VT_OFFSET_FP) &&
-           verifier.VerifyVector(offset_fp()) &&
+           VerifyOffset(verifier, VT_BORDER) &&
+           verifier.VerifyVector(border()) &&
            VerifyField<uint32_t>(verifier, VT_MODE) &&
            verifier.EndTable();
   }
@@ -1229,23 +1212,14 @@ struct ResizeAttributeBuilder {
   typedef ResizeAttribute Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_output_size(flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_size) {
-    fbb_.AddOffset(ResizeAttribute::VT_OUTPUT_SIZE, output_size);
+  void add_scale(flatbuffers::Offset<flatbuffers::Vector<int16_t>> scale) {
+    fbb_.AddOffset(ResizeAttribute::VT_SCALE, scale);
   }
-  void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(ResizeAttribute::VT_STRIDE, stride);
-  }
-  void add_offset(flatbuffers::Offset<flatbuffers::Vector<int32_t>> offset) {
+  void add_offset(flatbuffers::Offset<flatbuffers::Vector<int16_t>> offset) {
     fbb_.AddOffset(ResizeAttribute::VT_OFFSET, offset);
   }
-  void add_shift(int32_t shift) {
-    fbb_.AddElement<int32_t>(ResizeAttribute::VT_SHIFT, shift, 0);
-  }
-  void add_stride_fp(flatbuffers::Offset<flatbuffers::Vector<float>> stride_fp) {
-    fbb_.AddOffset(ResizeAttribute::VT_STRIDE_FP, stride_fp);
-  }
-  void add_offset_fp(flatbuffers::Offset<flatbuffers::Vector<float>> offset_fp) {
-    fbb_.AddOffset(ResizeAttribute::VT_OFFSET_FP, offset_fp);
+  void add_border(flatbuffers::Offset<flatbuffers::Vector<int16_t>> border) {
+    fbb_.AddOffset(ResizeAttribute::VT_BORDER, border);
   }
   void add_mode(tosa::ResizeMode mode) {
     fbb_.AddElement<uint32_t>(ResizeAttribute::VT_MODE, static_cast<uint32_t>(mode), 0);
@@ -1264,46 +1238,32 @@ struct ResizeAttributeBuilder {
 
 inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_size = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> offset = 0,
-    int32_t shift = 0,
-    flatbuffers::Offset<flatbuffers::Vector<float>> stride_fp = 0,
-    flatbuffers::Offset<flatbuffers::Vector<float>> offset_fp = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int16_t>> scale = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int16_t>> offset = 0,
+    flatbuffers::Offset<flatbuffers::Vector<int16_t>> border = 0,
     tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
   ResizeAttributeBuilder builder_(_fbb);
   builder_.add_mode(mode);
-  builder_.add_offset_fp(offset_fp);
-  builder_.add_stride_fp(stride_fp);
-  builder_.add_shift(shift);
+  builder_.add_border(border);
   builder_.add_offset(offset);
-  builder_.add_stride(stride);
-  builder_.add_output_size(output_size);
+  builder_.add_scale(scale);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *output_size = nullptr,
-    const std::vector<int32_t> *stride = nullptr,
-    const std::vector<int32_t> *offset = nullptr,
-    int32_t shift = 0,
-    const std::vector<float> *stride_fp = nullptr,
-    const std::vector<float> *offset_fp = nullptr,
+    const std::vector<int16_t> *scale = nullptr,
+    const std::vector<int16_t> *offset = nullptr,
+    const std::vector<int16_t> *border = nullptr,
     tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
-  auto output_size__ = output_size ? _fbb.CreateVector<int32_t>(*output_size) : 0;
-  auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  auto offset__ = offset ? _fbb.CreateVector<int32_t>(*offset) : 0;
-  auto stride_fp__ = stride_fp ? _fbb.CreateVector<float>(*stride_fp) : 0;
-  auto offset_fp__ = offset_fp ? _fbb.CreateVector<float>(*offset_fp) : 0;
+  auto scale__ = scale ? _fbb.CreateVector<int16_t>(*scale) : 0;
+  auto offset__ = offset ? _fbb.CreateVector<int16_t>(*offset) : 0;
+  auto border__ = border ? _fbb.CreateVector<int16_t>(*border) : 0;
   return tosa::CreateResizeAttribute(
       _fbb,
-      output_size__,
-      stride__,
+      scale__,
       offset__,
-      shift,
-      stride_fp__,
-      offset_fp__,
+      border__,
       mode);
 }
 

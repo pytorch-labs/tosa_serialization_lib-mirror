@@ -210,12 +210,9 @@ table TileAttribute {
 }
 
 table ResizeAttribute {
-  output_size: [int32];
-  stride: [int32];
-  offset: [int32];
-  shift: int32;
-  stride_fp: [float];
-  offset_fp: [float];
+  scale: [int16];
+  offset: [int16];
+  border: [int16];
   mode: ResizeMode;
 }
 
