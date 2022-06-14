@@ -167,7 +167,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.utype = Attribute.Attribute().TransposeConvAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddOutpad, outpad))
+        self.intvecs.append((a.AddOutPad, outpad))
         self.intvecs.append((a.AddStride, stride))
         self.intvecs.append((a.AddOutputShape, output_shape))
 
@@ -1077,23 +1077,17 @@ class TosaSerializer:
             TransposeConvAttribute.Start = (
                 TransposeConvAttribute.TransposeConvAttributeStart
             )
-            TransposeConvAttribute.AddOutpad = (
-                TransposeConvAttribute.TransposeConvAttributeAddOutpad
+            TransposeConvAttribute.AddOutPad = (
+                TransposeConvAttribute.TransposeConvAttributeAddOutPad
             )
-            TransposeConvAttribute.StartOutpadVector = (
-                TransposeConvAttribute.TransposeConvAttributeStartOutpadVector
+            TransposeConvAttribute.StartOutPadVector = (
+                TransposeConvAttribute.TransposeConvAttributeStartOutPadVector
             )
             TransposeConvAttribute.AddStride = (
                 TransposeConvAttribute.TransposeConvAttributeAddStride
             )
             TransposeConvAttribute.StartStrideVector = (
                 TransposeConvAttribute.TransposeConvAttributeStartStrideVector
-            )
-            TransposeConvAttribute.AddDilation = (
-                TransposeConvAttribute.TransposeConvAttributeAddDilation
-            )
-            TransposeConvAttribute.StartDilationVector = (
-                TransposeConvAttribute.TransposeConvAttributeStartDilationVector
             )
             TransposeConvAttribute.AddOutputShape = (
                 TransposeConvAttribute.TransposeConvAttributeAddOutputShape
