@@ -854,8 +854,8 @@ tosa_err_t TosaSerializationHandler::ConvertBooltoU8(const std::vector<bool>& in
     out.clear();
     for (auto val : in)
     {
-        uint8_t* val_u8 = reinterpret_cast<uint8_t*>(&val);
-        out.push_back(*val_u8);
+        uint8_t val_u8 = val;
+        out.push_back(val_u8);
     }
     zero_pad(out);
     return TOSA_OK;
