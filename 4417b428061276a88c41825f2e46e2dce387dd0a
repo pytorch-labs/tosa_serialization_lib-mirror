@@ -1,0 +1,6 @@
+Code-Review+2: Eric Kunze <eric.kunze@arm.com>
+Submitted-by: Eric Kunze <eric.kunze@arm.com>
+Submitted-at: Mon, 11 Jul 2022 23:09:49 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/7908
+Project: tosa/serialization_lib
+Branch: refs/heads/main
