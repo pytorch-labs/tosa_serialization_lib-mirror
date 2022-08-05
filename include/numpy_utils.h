@@ -24,6 +24,8 @@
 #include <cstring>
 #include <vector>
 
+#include "half.hpp"
+
 class NumpyUtilities
 {
 public:
@@ -39,6 +41,8 @@ public:
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, float* databuf);
 
+    static NPError readFromNpyFile(const char* filename, const uint32_t elems, half_float::half* databuf);
+
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, int32_t* databuf);
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, int64_t* databuf);
@@ -48,6 +52,9 @@ public:
     static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const bool* databuf);
 
     static NPError writeToNpyFile(const char* filename, const uint32_t elems, const bool* databuf);
+
+    static NPError
+        writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const half_float::half* databuf);
 
     static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int32_t* databuf);
 

@@ -123,7 +123,14 @@ class ConvAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def ConvAttributeStart(builder): builder.StartObject(5)
+    # ConvAttribute
+    def AccumDtype(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
+def ConvAttributeStart(builder): builder.StartObject(6)
 def Start(builder):
     return ConvAttributeStart(builder)
 def ConvAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
@@ -150,6 +157,9 @@ def AddInputZp(builder, inputZp):
 def ConvAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(4, weightZp, 0)
 def AddWeightZp(builder, weightZp):
     return ConvAttributeAddWeightZp(builder, weightZp)
+def ConvAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(5, accumDtype, 0)
+def AddAccumDtype(builder, accumDtype):
+    return ConvAttributeAddAccumDtype(builder, accumDtype)
 def ConvAttributeEnd(builder): return builder.EndObject()
 def End(builder):
     return ConvAttributeEnd(builder)

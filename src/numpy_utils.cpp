@@ -14,6 +14,7 @@
 //    limitations under the License.
 
 #include "numpy_utils.h"
+#include "half.hpp"
 
 // Magic NUMPY header
 static const char NUMPY_HEADER_STR[] = "\x93NUMPY\x1\x0\x76\x0{";
@@ -43,6 +44,13 @@ NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, co
 {
     const char dtype_str[] = "'<f4'";
     return readFromNpyFileCommon(filename, dtype_str, sizeof(float), elems, databuf, false);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, half_float::half* databuf)
+{
+    const char dtype_str[] = "'<f2'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(half_float::half), elems, databuf, false);
 }
 
 NumpyUtilities::NPError NumpyUtilities::readFromNpyFileCommon(const char* filename,
@@ -305,6 +313,14 @@ NumpyUtilities::NPError
 {
     const char dtype_str[] = "'<f4'";
     return writeToNpyFileCommon(filename, dtype_str, sizeof(float), shape, databuf, false);
+}
+
+NumpyUtilities::NPError NumpyUtilities::writeToNpyFile(const char* filename,
+                                                       const std::vector<int32_t>& shape,
+                                                       const half_float::half* databuf)
+{
+    const char dtype_str[] = "'<f2'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(half_float::half), shape, databuf, false);
 }
 
 NumpyUtilities::NPError NumpyUtilities::writeToNpyFileCommon(const char* filename,

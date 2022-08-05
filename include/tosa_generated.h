@@ -94,11 +94,12 @@ enum DType : uint32_t {
   DType_INT48 = 7,
   DType_FLOAT = 8,
   DType_UINT16 = 9,
+  DType_FP16 = 10,
   DType_MIN = DType_UNKNOWN,
-  DType_MAX = DType_UINT16
+  DType_MAX = DType_FP16
 };
 
-inline const DType (&EnumValuesDType())[10] {
+inline const DType (&EnumValuesDType())[11] {
   static const DType values[] = {
     DType_UNKNOWN,
     DType_BOOL,
@@ -109,13 +110,14 @@ inline const DType (&EnumValuesDType())[10] {
     DType_INT32,
     DType_INT48,
     DType_FLOAT,
-    DType_UINT16
+    DType_UINT16,
+    DType_FP16
   };
   return values;
 }
 
 inline const char * const *EnumNamesDType() {
-  static const char * const names[11] = {
+  static const char * const names[12] = {
     "UNKNOWN",
     "BOOL",
     "UINT8",
@@ -126,13 +128,14 @@ inline const char * const *EnumNamesDType() {
     "INT48",
     "FLOAT",
     "UINT16",
+    "FP16",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameDType(DType e) {
-  if (flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_UINT16)) return "";
+  if (flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_FP16)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDType()[index];
 }
@@ -582,7 +585,8 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_KERNEL = 6,
     VT_STRIDE = 8,
     VT_INPUT_ZP = 10,
-    VT_OUTPUT_ZP = 12
+    VT_OUTPUT_ZP = 12,
+    VT_ACCUM_DTYPE = 14
   };
   const flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -599,6 +603,9 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t output_zp() const {
     return GetField<int32_t>(VT_OUTPUT_ZP, 0);
   }
+  tosa::DType accum_dtype() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -609,6 +616,7 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(stride()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
+           VerifyField<uint32_t>(verifier, VT_ACCUM_DTYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -632,6 +640,9 @@ struct PoolAttributeBuilder {
   void add_output_zp(int32_t output_zp) {
     fbb_.AddElement<int32_t>(PoolAttribute::VT_OUTPUT_ZP, output_zp, 0);
   }
+  void add_accum_dtype(tosa::DType accum_dtype) {
+    fbb_.AddElement<uint32_t>(PoolAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
+  }
   explicit PoolAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -649,8 +660,10 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     int32_t input_zp = 0,
-    int32_t output_zp = 0) {
+    int32_t output_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   PoolAttributeBuilder builder_(_fbb);
+  builder_.add_accum_dtype(accum_dtype);
   builder_.add_output_zp(output_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_stride(stride);
@@ -665,7 +678,8 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
     const std::vector<int32_t> *kernel = nullptr,
     const std::vector<int32_t> *stride = nullptr,
     int32_t input_zp = 0,
-    int32_t output_zp = 0) {
+    int32_t output_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
@@ -675,7 +689,8 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
       kernel__,
       stride__,
       input_zp,
-      output_zp);
+      output_zp,
+      accum_dtype);
 }
 
 struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -685,7 +700,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_STRIDE = 6,
     VT_DILATION = 8,
     VT_INPUT_ZP = 10,
-    VT_WEIGHT_ZP = 12
+    VT_WEIGHT_ZP = 12,
+    VT_ACCUM_DTYPE = 14
   };
   const flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -702,6 +718,9 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
+  tosa::DType accum_dtype() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -712,6 +731,7 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(dilation()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint32_t>(verifier, VT_ACCUM_DTYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -735,6 +755,9 @@ struct ConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(ConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
+  void add_accum_dtype(tosa::DType accum_dtype) {
+    fbb_.AddElement<uint32_t>(ConvAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
+  }
   explicit ConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -752,8 +775,10 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   ConvAttributeBuilder builder_(_fbb);
+  builder_.add_accum_dtype(accum_dtype);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_dilation(dilation);
@@ -768,7 +793,8 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *dilation = nullptr,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
@@ -778,7 +804,8 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       stride__,
       dilation__,
       input_zp,
-      weight_zp);
+      weight_zp,
+      accum_dtype);
 }
 
 struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -788,7 +815,8 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_STRIDE = 6,
     VT_OUTPUT_SHAPE = 8,
     VT_INPUT_ZP = 10,
-    VT_WEIGHT_ZP = 12
+    VT_WEIGHT_ZP = 12,
+    VT_ACCUM_DTYPE = 14
   };
   const flatbuffers::Vector<int32_t> *out_pad() const {
     return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
@@ -805,6 +833,9 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
+  tosa::DType accum_dtype() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUT_PAD) &&
@@ -815,6 +846,7 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            verifier.VerifyVector(output_shape()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint32_t>(verifier, VT_ACCUM_DTYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -838,6 +870,9 @@ struct TransposeConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
+  void add_accum_dtype(tosa::DType accum_dtype) {
+    fbb_.AddElement<uint32_t>(TransposeConvAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
+  }
   explicit TransposeConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -855,8 +890,10 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   TransposeConvAttributeBuilder builder_(_fbb);
+  builder_.add_accum_dtype(accum_dtype);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_output_shape(output_shape);
@@ -871,7 +908,8 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *output_shape = nullptr,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
@@ -881,7 +919,8 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
       stride__,
       output_shape__,
       input_zp,
-      weight_zp);
+      weight_zp,
+      accum_dtype);
 }
 
 struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1772,7 +1811,8 @@ struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef MatMulAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_A_ZP = 4,
-    VT_B_ZP = 6
+    VT_B_ZP = 6,
+    VT_ACCUM_DTYPE = 8
   };
   int32_t a_zp() const {
     return GetField<int32_t>(VT_A_ZP, 0);
@@ -1780,10 +1820,14 @@ struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t b_zp() const {
     return GetField<int32_t>(VT_B_ZP, 0);
   }
+  tosa::DType accum_dtype() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
+           VerifyField<uint32_t>(verifier, VT_ACCUM_DTYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1797,6 +1841,9 @@ struct MatMulAttributeBuilder {
   }
   void add_b_zp(int32_t b_zp) {
     fbb_.AddElement<int32_t>(MatMulAttribute::VT_B_ZP, b_zp, 0);
+  }
+  void add_accum_dtype(tosa::DType accum_dtype) {
+    fbb_.AddElement<uint32_t>(MatMulAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
   }
   explicit MatMulAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1812,8 +1859,10 @@ struct MatMulAttributeBuilder {
 inline flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t a_zp = 0,
-    int32_t b_zp = 0) {
+    int32_t b_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   MatMulAttributeBuilder builder_(_fbb);
+  builder_.add_accum_dtype(accum_dtype);
   builder_.add_b_zp(b_zp);
   builder_.add_a_zp(a_zp);
   return builder_.Finish();
@@ -1823,7 +1872,8 @@ struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   typedef FullyConnectedAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INPUT_ZP = 4,
-    VT_WEIGHT_ZP = 6
+    VT_WEIGHT_ZP = 6,
+    VT_ACCUM_DTYPE = 8
   };
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -1831,10 +1881,14 @@ struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
+  tosa::DType accum_dtype() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint32_t>(verifier, VT_ACCUM_DTYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1848,6 +1902,9 @@ struct FullyConnectedAttributeBuilder {
   }
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
+  void add_accum_dtype(tosa::DType accum_dtype) {
+    fbb_.AddElement<uint32_t>(FullyConnectedAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
   }
   explicit FullyConnectedAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1863,8 +1920,10 @@ struct FullyConnectedAttributeBuilder {
 inline flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
   FullyConnectedAttributeBuilder builder_(_fbb);
+  builder_.add_accum_dtype(accum_dtype);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   return builder_.Finish();

@@ -47,6 +47,7 @@ public:
 #define DEF_ARGS_VER0_S_float(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_bool(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_ResizeMode(V) DEF_ARGS_VER0_S_DEFAULT(V)
+#define DEF_ARGS_VER0_S_DType(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_string(V) DEF_ARGS_VER0_S_STR(V)
 
 #define DEF_ARGS_VER0_S(T, V) DEF_ARGS_VER0_S_##T(V)
@@ -153,6 +154,7 @@ public:
 #undef DEF_ARGS_VER0_S_float
 #undef DEF_ARGS_VER0_S_bool
 #undef DEF_ARGS_VER0_S_ResizeMode
+#undef DEF_ARGS_VER0_S_DType
 #undef DEF_ARGS_VER0_S_string
 #undef DEF_ARGS_VER0_S_STR
 #undef DEF_ARGS_VER0_S_DEFAULT

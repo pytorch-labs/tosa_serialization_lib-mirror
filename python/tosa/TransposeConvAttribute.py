@@ -123,7 +123,14 @@ class TransposeConvAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def TransposeConvAttributeStart(builder): builder.StartObject(5)
+    # TransposeConvAttribute
+    def AccumDtype(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
+def TransposeConvAttributeStart(builder): builder.StartObject(6)
 def Start(builder):
     return TransposeConvAttributeStart(builder)
 def TransposeConvAttributeAddOutPad(builder, outPad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outPad), 0)
@@ -150,6 +157,9 @@ def AddInputZp(builder, inputZp):
 def TransposeConvAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(4, weightZp, 0)
 def AddWeightZp(builder, weightZp):
     return TransposeConvAttributeAddWeightZp(builder, weightZp)
+def TransposeConvAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(5, accumDtype, 0)
+def AddAccumDtype(builder, accumDtype):
+    return TransposeConvAttributeAddAccumDtype(builder, accumDtype)
 def TransposeConvAttributeEnd(builder): return builder.EndObject()
 def End(builder):
     return TransposeConvAttributeEnd(builder)

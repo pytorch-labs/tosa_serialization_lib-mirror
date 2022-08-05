@@ -158,3 +158,10 @@ numpy file, (4) format and (5) usage.
 # License
 
 The *TOSA Serialization Library* is licensed under Apache-2.0.
+
+## Third Party Projects
+
+- The [half](https://half.sourceforge.net/) library is licensed under MIT license.
+
+Other third party projects are referenced as sub-modules and as such, are licensed under the licenses stated in their projects.
+

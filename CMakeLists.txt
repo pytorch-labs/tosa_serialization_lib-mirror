@@ -27,6 +27,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 option(BUILD_TESTS "Build test applications" ON)
 option(FLATBUFFERS_ROOT "Location where the flatbuffers 'include' and 'lib' folders to be found" Off)
 
+include_directories(${PROJECT_SOURCE_DIR}/third_party/half/include)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(tosa_serialization_lib

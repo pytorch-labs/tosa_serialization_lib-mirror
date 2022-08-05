@@ -14,6 +14,7 @@
 //    limitations under the License.
 
 #include "tosa_serialization_handler.h"
+#include "half.hpp"
 
 #include <iostream>
 using namespace tosa;
@@ -652,6 +653,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_bool(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_ResizeMode(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
+#define DEF_ARGS_S_DType(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_string(NAME, V) DEF_ARGS_S_STR(NAME, V)
 
 #define DEF_ARGS_S(NAME, T, V) DEF_ARGS_S_##T(NAME, V)
@@ -692,6 +694,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #undef DEF_ARGS_S_float
 #undef DEF_ARGS_S_bool
 #undef DEF_ARGS_S_ResizeMode
+#undef DEF_ARGS_S_DType
 #undef DEF_ARGS_S_string
 #undef DEF_ARGS_S_STR
 #undef DEF_ARGS_S_DEFAULT
@@ -744,6 +747,21 @@ void zero_pad(std::vector<uint8_t>& buf)
     {
         buf.push_back(0);
     }
+}
+
+tosa_err_t TosaSerializationHandler::ConvertF16toU8(const std::vector<float>& in, std::vector<uint8_t>& out)
+{
+    // Note: Converts fp32->fp16 before converting to uint8_t
+    out.clear();
+    for (auto val : in)
+    {
+        half_float::half val_f16 = half_float::half_cast<half_float::half, float>(val);
+        uint16_t* val_u16        = reinterpret_cast<uint16_t*>(&val_f16);
+        out.push_back(*val_u16 & 0xFF);
+        out.push_back((*val_u16 >> 8) & 0xFF);
+    }
+    zero_pad(out);
+    return TOSA_OK;
 }
 
 tosa_err_t TosaSerializationHandler::ConvertF32toU8(const std::vector<float>& in, std::vector<uint8_t>& out)
@@ -858,6 +876,32 @@ tosa_err_t TosaSerializationHandler::ConvertBooltoU8(const std::vector<bool>& in
         out.push_back(val_u8);
     }
     zero_pad(out);
+    return TOSA_OK;
+}
+
+tosa_err_t
+    TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out)
+{
+    // Note: fp16 values returned in fp32 type
+    out.clear();
+    if (in.size() < out_size * sizeof(int16_t))
+    {
+        printf("TosaSerializationHandler::ConvertU8toF16(): uint8 buffer size %ld must >= target size %ld\n", in.size(),
+               out_size * sizeof(int16_t));
+        return TOSA_USER_ERROR;
+    }
+
+    for (uint32_t i = 0; i < out_size; i++)
+    {
+        uint16_t f16_byte0 = in[i * sizeof(int16_t)];
+        uint16_t f16_byte1 = in[i * sizeof(int16_t) + 1];
+        uint16_t val_u16   = f16_byte0 + (f16_byte1 << 8);
+
+        // Reinterpret u16 byte as fp16 then convert to fp32
+        half_float::half val_f16 = *(half_float::half*)&val_u16;
+        float val_fp32           = half_float::half_cast<float, half_float::half>(val_f16);
+        out.push_back(val_fp32);
+    }
     return TOSA_OK;
 }
 

@@ -294,6 +294,7 @@ public:
     tosa_err_t LoadFileSchema(const char* schema_filename);
 
     // data format conversion. little-endian.
+    static tosa_err_t ConvertF16toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertF32toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertI48toU8(const std::vector<int64_t>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertI32toU8(const std::vector<int32_t>& in, std::vector<uint8_t>& out);
@@ -302,6 +303,7 @@ public:
     static tosa_err_t ConvertI4toU8(const std::vector<int8_t>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertBooltoU8(const std::vector<bool>& in, std::vector<uint8_t>& out);
 
+    static tosa_err_t ConvertU8toF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);
     static tosa_err_t ConvertU8toF32(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);
     static tosa_err_t ConvertU8toI48(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<int64_t>& out);
     static tosa_err_t ConvertU8toI32(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<int32_t>& out);

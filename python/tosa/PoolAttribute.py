@@ -123,7 +123,14 @@ class PoolAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def PoolAttributeStart(builder): builder.StartObject(5)
+    # PoolAttribute
+    def AccumDtype(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
+def PoolAttributeStart(builder): builder.StartObject(6)
 def Start(builder):
     return PoolAttributeStart(builder)
 def PoolAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
@@ -150,6 +157,9 @@ def AddInputZp(builder, inputZp):
 def PoolAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(4, outputZp, 0)
 def AddOutputZp(builder, outputZp):
     return PoolAttributeAddOutputZp(builder, outputZp)
+def PoolAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(5, accumDtype, 0)
+def AddAccumDtype(builder, accumDtype):
+    return PoolAttributeAddAccumDtype(builder, accumDtype)
 def PoolAttributeEnd(builder): return builder.EndObject()
 def End(builder):
     return PoolAttributeEnd(builder)

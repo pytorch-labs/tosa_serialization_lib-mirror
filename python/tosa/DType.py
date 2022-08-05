@@ -13,3 +13,4 @@ class DType(object):
     INT48 = 7
     FLOAT = 8
     UINT16 = 9
+    FP16 = 10

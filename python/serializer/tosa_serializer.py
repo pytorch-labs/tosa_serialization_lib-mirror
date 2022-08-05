@@ -58,6 +58,7 @@ DTypeNames = [
     "INT48",
     "FLOAT",
     "UINT16",
+    "FP16",
 ]
 
 ByteMask = np.uint64(0xFF)
@@ -145,7 +146,15 @@ class TosaSerializerAttribute(TosaSerializerUnion):
     def __init__(self):
         super().__init__()
 
-    def PoolAttribute(self, kernel, stride, pad, input_zp, output_zp):
+    def PoolAttribute(
+        self,
+        kernel,
+        stride,
+        pad,
+        input_zp,
+        output_zp,
+        accum_dtype,
+    ):
         from tosa import PoolAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().PoolAttribute
@@ -156,8 +165,9 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.intvecs.append((a.AddStride, stride))
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddOutputZp, output_zp))
+        self.ints.append((a.AddAccumDtype, accum_dtype))
 
-    def ConvAttribute(self, pad, stride, dilation, input_zp, weight_zp):
+    def ConvAttribute(self, pad, stride, dilation, input_zp, weight_zp, accum_dtype):
         from tosa import ConvAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ConvAttribute
@@ -168,8 +178,11 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.intvecs.append((a.AddDilation, dilation))
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
+        self.ints.append((a.AddAccumDtype, accum_dtype))
 
-    def TransposeConvAttribute(self, outpad, stride, output_shape, input_zp, weight_zp):
+    def TransposeConvAttribute(
+        self, outpad, stride, output_shape, input_zp, weight_zp, accum_dtype
+    ):
         from tosa import TransposeConvAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().TransposeConvAttribute
@@ -180,6 +193,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.intvecs.append((a.AddOutputShape, output_shape))
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
+        self.ints.append((a.AddAccumDtype, accum_dtype))
 
     def PadAttribute(self, padding, pad_const_int, pad_const_fp):
         from tosa import PadAttribute as a, Attribute
@@ -316,7 +330,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.intvecs.append((a.AddTable, table))
 
-    def MatMulAttribute(self, A_zp, B_zp):
+    def MatMulAttribute(self, A_zp, B_zp, accum_dtype):
         from tosa import MatMulAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().MatMulAttribute
@@ -324,8 +338,9 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddAZp, A_zp))
         self.ints.append((a.AddBZp, B_zp))
+        self.ints.append((a.AddAccumDtype, accum_dtype))
 
-    def FullyConnectedAttribute(self, input_zp, weight_zp):
+    def FullyConnectedAttribute(self, input_zp, weight_zp, accum_dtype):
         from tosa import FullyConnectedAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().FullyConnectedAttribute
@@ -333,6 +348,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
+        self.ints.append((a.AddAccumDtype, accum_dtype))
 
     def NegateAttribute(self, input1_zp, output_zp):
         from tosa import NegateAttribute as a, Attribute
@@ -364,6 +380,8 @@ class TosaSerializerTensor:
 
         if dtype == DType.FLOAT:
             fntype = np.float32
+        elif dtype == DType.FP16:
+            fntype = np.float16
         else:
             fntype = int
 
@@ -445,10 +463,18 @@ class TosaSerializerTensor:
                     b4 = (val_u64 >> np.uint64(32)) & ByteMask
                     b5 = (val_u64 >> np.uint64(40)) & ByteMask
                     u8_data.extend([b0, b1, b2, b3, b4, b5])
+            elif self.dtype == DType.FP16:
+                np_arr = np.array(self.data, dtype=np.float16)
+                u8_data.extend(np_arr.view(np.uint8))
             elif self.dtype == DType.FLOAT:
                 for val in self.data:
                     b = struct.pack("!f", val)
                     u8_data.extend([b[3], b[2], b[1], b[0]])
+            elif self.dtype == TosaDType.DType:
+                # Serialize DType enum data as uint8 bytes
+                for val in self.data:
+                    np_arr = np.array(self.data, dtype=np.uint32)
+                    u8_data.extend(np_arr.view(np.uint8))
             else:
                 raise Exception(
                     "unsupported data type {}".format(DTypeNames[self.dtype])
@@ -873,6 +899,7 @@ class TosaSerializer:
             )
             ConvAttribute.AddInputZp = ConvAttribute.ConvAttributeAddInputZp
             ConvAttribute.AddWeightZp = ConvAttribute.ConvAttributeAddWeightZp
+            ConvAttribute.AddAccumDtype = ConvAttribute.ConvAttributeAddAccumDtype
             ConvAttribute.End = ConvAttribute.ConvAttributeEnd
         from tosa import FullyConnectedAttribute
 
@@ -886,6 +913,9 @@ class TosaSerializer:
             FullyConnectedAttribute.AddWeightZp = (
                 FullyConnectedAttribute.FullyConnectedAttributeAddWeightZp
             )
+            FullyConnectedAttribute.AddAccumDtype = (
+                FullyConnectedAttribute.FullyConnectedAttributeAddAccumDtype
+            )
             FullyConnectedAttribute.End = (
                 FullyConnectedAttribute.FullyConnectedAttributeEnd
             )
@@ -895,6 +925,7 @@ class TosaSerializer:
             MatMulAttribute.Start = MatMulAttribute.MatMulAttributeStart
             MatMulAttribute.AddAZp = MatMulAttribute.MatMulAttributeAddAZp
             MatMulAttribute.AddBZp = MatMulAttribute.MatMulAttributeAddBZp
+            MatMulAttribute.AddAccumDtype = MatMulAttribute.MatMulAttributeAddAccumDtype
             MatMulAttribute.End = MatMulAttribute.MatMulAttributeEnd
         from tosa import PoolAttribute
 
@@ -910,6 +941,7 @@ class TosaSerializer:
             PoolAttribute.StartStrideVector = (
                 PoolAttribute.PoolAttributeStartStrideVector
             )
+            PoolAttribute.AddAccumDtype = PoolAttribute.PoolAttributeAddAccumDtype
             PoolAttribute.AddInputZp = PoolAttribute.PoolAttributeAddInputZp
             PoolAttribute.AddOutputZp = PoolAttribute.PoolAttributeAddOutputZp
             PoolAttribute.End = PoolAttribute.PoolAttributeEnd
@@ -944,6 +976,7 @@ class TosaSerializer:
             PoolAttribute.StartStrideVector = (
                 PoolAttribute.PoolAttributeStartStrideVector
             )
+            PoolAttribute.AddAccumDtype = PoolAttribute.PoolAttributeAddAccumDtype
             PoolAttribute.AddInputZp = PoolAttribute.PoolAttributeAddInputZp
             PoolAttribute.AddOutputZp = PoolAttribute.PoolAttributeAddOutputZp
             PoolAttribute.End = PoolAttribute.PoolAttributeEnd
@@ -1122,6 +1155,9 @@ class TosaSerializer:
             )
             TransposeConvAttribute.AddWeightZp = (
                 TransposeConvAttribute.TransposeConvAttributeAddWeightZp
+            )
+            TransposeConvAttribute.AddAccumDtype = (
+                TransposeConvAttribute.TransposeConvAttributeAddAccumDtype
             )
             TransposeConvAttribute.End = (
                 TransposeConvAttribute.TransposeConvAttributeEnd
