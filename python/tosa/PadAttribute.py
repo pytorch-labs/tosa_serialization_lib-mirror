@@ -10,12 +10,16 @@ class PadAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsPadAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = PadAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsPadAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def PadAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -66,8 +70,20 @@ class PadAttribute(object):
         return 0.0
 
 def PadAttributeStart(builder): builder.StartObject(3)
+def Start(builder):
+    return PadAttributeStart(builder)
 def PadAttributeAddPadding(builder, padding): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
+def AddPadding(builder, padding):
+    return PadAttributeAddPadding(builder, padding)
 def PadAttributeStartPaddingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartPaddingVector(builder, numElems):
+    return PadAttributeStartPaddingVector(builder, numElems)
 def PadAttributeAddPadConstInt(builder, padConstInt): builder.PrependInt32Slot(1, padConstInt, 0)
+def AddPadConstInt(builder, padConstInt):
+    return PadAttributeAddPadConstInt(builder, padConstInt)
 def PadAttributeAddPadConstFp(builder, padConstFp): builder.PrependFloat32Slot(2, padConstFp, 0.0)
+def AddPadConstFp(builder, padConstFp):
+    return PadAttributeAddPadConstFp(builder, padConstFp)
 def PadAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return PadAttributeEnd(builder)

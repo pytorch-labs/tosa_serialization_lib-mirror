@@ -10,12 +10,16 @@ class PoolAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsPoolAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = PoolAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsPoolAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def PoolAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -120,12 +124,32 @@ class PoolAttribute(object):
         return 0
 
 def PoolAttributeStart(builder): builder.StartObject(5)
+def Start(builder):
+    return PoolAttributeStart(builder)
 def PoolAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+def AddPad(builder, pad):
+    return PoolAttributeAddPad(builder, pad)
 def PoolAttributeStartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartPadVector(builder, numElems):
+    return PoolAttributeStartPadVector(builder, numElems)
 def PoolAttributeAddKernel(builder, kernel): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
+def AddKernel(builder, kernel):
+    return PoolAttributeAddKernel(builder, kernel)
 def PoolAttributeStartKernelVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartKernelVector(builder, numElems):
+    return PoolAttributeStartKernelVector(builder, numElems)
 def PoolAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def AddStride(builder, stride):
+    return PoolAttributeAddStride(builder, stride)
 def PoolAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartStrideVector(builder, numElems):
+    return PoolAttributeStartStrideVector(builder, numElems)
 def PoolAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(3, inputZp, 0)
+def AddInputZp(builder, inputZp):
+    return PoolAttributeAddInputZp(builder, inputZp)
 def PoolAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(4, outputZp, 0)
+def AddOutputZp(builder, outputZp):
+    return PoolAttributeAddOutputZp(builder, outputZp)
 def PoolAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return PoolAttributeEnd(builder)

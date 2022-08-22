@@ -72,4 +72,3 @@ class Op(object):
     CUSTOM = 66
     COND_IF = 67
     WHILE_LOOP = 68
-

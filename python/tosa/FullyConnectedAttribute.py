@@ -10,12 +10,16 @@ class FullyConnectedAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsFullyConnectedAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = FullyConnectedAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsFullyConnectedAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def FullyConnectedAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -39,6 +43,14 @@ class FullyConnectedAttribute(object):
         return 0
 
 def FullyConnectedAttributeStart(builder): builder.StartObject(2)
+def Start(builder):
+    return FullyConnectedAttributeStart(builder)
 def FullyConnectedAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+def AddInputZp(builder, inputZp):
+    return FullyConnectedAttributeAddInputZp(builder, inputZp)
 def FullyConnectedAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
+def AddWeightZp(builder, weightZp):
+    return FullyConnectedAttributeAddWeightZp(builder, weightZp)
 def FullyConnectedAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return FullyConnectedAttributeEnd(builder)

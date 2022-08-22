@@ -24,4 +24,3 @@ class Attribute(object):
     MatMulAttribute = 18
     FullyConnectedAttribute = 19
     NegateAttribute = 20
-

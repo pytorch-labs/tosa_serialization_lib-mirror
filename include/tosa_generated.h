@@ -83,7 +83,7 @@ struct TosaBasicBlockBuilder;
 struct TosaGraph;
 struct TosaGraphBuilder;
 
-enum DType {
+enum DType : uint32_t {
   DType_UNKNOWN = 0,
   DType_BOOL = 1,
   DType_UINT8 = 2,
@@ -137,7 +137,7 @@ inline const char *EnumNameDType(DType e) {
   return EnumNamesDType()[index];
 }
 
-enum ResizeMode {
+enum ResizeMode : uint32_t {
   ResizeMode_UNKNOWN = 0,
   ResizeMode_NEAREST = 1,
   ResizeMode_BILINEAR = 2,
@@ -170,7 +170,7 @@ inline const char *EnumNameResizeMode(ResizeMode e) {
   return EnumNamesResizeMode()[index];
 }
 
-enum Op {
+enum Op : uint32_t {
   Op_UNKNOWN = 0,
   Op_ARGMAX = 1,
   Op_AVG_POOL2D = 2,
@@ -401,7 +401,7 @@ inline const char *EnumNameOp(Op e) {
   return EnumNamesOp()[index];
 }
 
-enum Attribute {
+enum Attribute : uint8_t {
   Attribute_NONE = 0,
   Attribute_PoolAttribute = 1,
   Attribute_ConvAttribute = 2,
@@ -607,8 +607,8 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(kernel()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
            verifier.VerifyVector(stride()) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -636,7 +636,6 @@ struct PoolAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  PoolAttributeBuilder &operator=(const PoolAttributeBuilder &);
   flatbuffers::Offset<PoolAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PoolAttribute>(end);
@@ -711,8 +710,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(stride()) &&
            VerifyOffset(verifier, VT_DILATION) &&
            verifier.VerifyVector(dilation()) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -740,7 +739,6 @@ struct ConvAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ConvAttributeBuilder &operator=(const ConvAttributeBuilder &);
   flatbuffers::Offset<ConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ConvAttribute>(end);
@@ -815,8 +813,8 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
            verifier.VerifyVector(stride()) &&
            VerifyOffset(verifier, VT_OUTPUT_SHAPE) &&
            verifier.VerifyVector(output_shape()) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -844,7 +842,6 @@ struct TransposeConvAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TransposeConvAttributeBuilder &operator=(const TransposeConvAttributeBuilder &);
   flatbuffers::Offset<TransposeConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TransposeConvAttribute>(end);
@@ -907,8 +904,8 @@ struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PADDING) &&
            verifier.VerifyVector(padding()) &&
-           VerifyField<int32_t>(verifier, VT_PAD_CONST_INT) &&
-           VerifyField<float>(verifier, VT_PAD_CONST_FP) &&
+           VerifyField<int32_t>(verifier, VT_PAD_CONST_INT, 4) &&
+           VerifyField<float>(verifier, VT_PAD_CONST_FP, 4) &&
            verifier.EndTable();
   }
 };
@@ -930,7 +927,6 @@ struct PadAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  PadAttributeBuilder &operator=(const PadAttributeBuilder &);
   flatbuffers::Offset<PadAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<PadAttribute>(end);
@@ -973,7 +969,7 @@ struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_AXIS) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
            verifier.EndTable();
   }
 };
@@ -989,7 +985,6 @@ struct AxisAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  AxisAttributeBuilder &operator=(const AxisAttributeBuilder &);
   flatbuffers::Offset<AxisAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<AxisAttribute>(end);
@@ -1032,7 +1027,6 @@ struct ReshapeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ReshapeAttributeBuilder &operator=(const ReshapeAttributeBuilder &);
   flatbuffers::Offset<ReshapeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ReshapeAttribute>(end);
@@ -1093,7 +1087,6 @@ struct SliceAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  SliceAttributeBuilder &operator=(const SliceAttributeBuilder &);
   flatbuffers::Offset<SliceAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<SliceAttribute>(end);
@@ -1150,7 +1143,6 @@ struct TileAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TileAttributeBuilder &operator=(const TileAttributeBuilder &);
   flatbuffers::Offset<TileAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TileAttribute>(end);
@@ -1203,7 +1195,7 @@ struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyVector(offset()) &&
            VerifyOffset(verifier, VT_BORDER) &&
            verifier.VerifyVector(border()) &&
-           VerifyField<uint32_t>(verifier, VT_MODE) &&
+           VerifyField<uint32_t>(verifier, VT_MODE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1228,7 +1220,6 @@ struct ResizeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ResizeAttributeBuilder &operator=(const ResizeAttributeBuilder &);
   flatbuffers::Offset<ResizeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ResizeAttribute>(end);
@@ -1289,10 +1280,10 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_MIN_INT) &&
-           VerifyField<int32_t>(verifier, VT_MAX_INT) &&
-           VerifyField<float>(verifier, VT_MIN_FP) &&
-           VerifyField<float>(verifier, VT_MAX_FP) &&
+           VerifyField<int32_t>(verifier, VT_MIN_INT, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAX_INT, 4) &&
+           VerifyField<float>(verifier, VT_MIN_FP, 4) &&
+           VerifyField<float>(verifier, VT_MAX_FP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1317,7 +1308,6 @@ struct ClampAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ClampAttributeBuilder &operator=(const ClampAttributeBuilder &);
   flatbuffers::Offset<ClampAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ClampAttribute>(end);
@@ -1373,15 +1363,15 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
            VerifyOffset(verifier, VT_MULTIPLIER) &&
            verifier.VerifyVector(multiplier()) &&
            VerifyOffset(verifier, VT_SHIFT) &&
            verifier.VerifyVector(shift()) &&
-           VerifyField<uint8_t>(verifier, VT_SCALE32) &&
-           VerifyField<uint8_t>(verifier, VT_DOUBLE_ROUND) &&
-           VerifyField<uint8_t>(verifier, VT_PER_CHANNEL) &&
+           VerifyField<uint8_t>(verifier, VT_SCALE32, 1) &&
+           VerifyField<uint8_t>(verifier, VT_DOUBLE_ROUND, 1) &&
+           VerifyField<uint8_t>(verifier, VT_PER_CHANNEL, 1) &&
            verifier.EndTable();
   }
 };
@@ -1415,7 +1405,6 @@ struct RescaleAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  RescaleAttributeBuilder &operator=(const RescaleAttributeBuilder &);
   flatbuffers::Offset<RescaleAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<RescaleAttribute>(end);
@@ -1475,7 +1464,7 @@ struct MulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_SHIFT) &&
+           VerifyField<int32_t>(verifier, VT_SHIFT, 4) &&
            verifier.EndTable();
   }
 };
@@ -1491,7 +1480,6 @@ struct MulAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MulAttributeBuilder &operator=(const MulAttributeBuilder &);
   flatbuffers::Offset<MulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MulAttribute>(end);
@@ -1517,7 +1505,7 @@ struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffe
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ROUND) &&
+           VerifyField<uint8_t>(verifier, VT_ROUND, 1) &&
            verifier.EndTable();
   }
 };
@@ -1533,7 +1521,6 @@ struct ArithmeticRightShiftAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ArithmeticRightShiftAttributeBuilder &operator=(const ArithmeticRightShiftAttributeBuilder &);
   flatbuffers::Offset<ArithmeticRightShiftAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<ArithmeticRightShiftAttribute>(end);
@@ -1585,7 +1572,6 @@ struct CondIfAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  CondIfAttributeBuilder &operator=(const CondIfAttributeBuilder &);
   flatbuffers::Offset<CondIfAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<CondIfAttribute>(end);
@@ -1651,7 +1637,6 @@ struct WhileLoopAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  WhileLoopAttributeBuilder &operator=(const WhileLoopAttributeBuilder &);
   flatbuffers::Offset<WhileLoopAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<WhileLoopAttribute>(end);
@@ -1708,7 +1693,6 @@ struct TransposeAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TransposeAttributeBuilder &operator=(const TransposeAttributeBuilder &);
   flatbuffers::Offset<TransposeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TransposeAttribute>(end);
@@ -1760,7 +1744,6 @@ struct TableAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TableAttributeBuilder &operator=(const TableAttributeBuilder &);
   flatbuffers::Offset<TableAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TableAttribute>(end);
@@ -1799,8 +1782,8 @@ struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_A_ZP) &&
-           VerifyField<int32_t>(verifier, VT_B_ZP) &&
+           VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1819,7 +1802,6 @@ struct MatMulAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  MatMulAttributeBuilder &operator=(const MatMulAttributeBuilder &);
   flatbuffers::Offset<MatMulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<MatMulAttribute>(end);
@@ -1851,8 +1833,8 @@ struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP) &&
-           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1871,7 +1853,6 @@ struct FullyConnectedAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  FullyConnectedAttributeBuilder &operator=(const FullyConnectedAttributeBuilder &);
   flatbuffers::Offset<FullyConnectedAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<FullyConnectedAttribute>(end);
@@ -1903,8 +1884,8 @@ struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT1_ZP) &&
-           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP) &&
+           VerifyField<int32_t>(verifier, VT_INPUT1_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1923,7 +1904,6 @@ struct NegateAttributeBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  NegateAttributeBuilder &operator=(const NegateAttributeBuilder &);
   flatbuffers::Offset<NegateAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<NegateAttribute>(end);
@@ -1963,10 +1943,10 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT__MAJOR) &&
-           VerifyField<int32_t>(verifier, VT__MINOR) &&
-           VerifyField<int32_t>(verifier, VT__PATCH) &&
-           VerifyField<uint8_t>(verifier, VT__DRAFT) &&
+           VerifyField<int32_t>(verifier, VT__MAJOR, 4) &&
+           VerifyField<int32_t>(verifier, VT__MINOR, 4) &&
+           VerifyField<int32_t>(verifier, VT__PATCH, 4) &&
+           VerifyField<uint8_t>(verifier, VT__DRAFT, 1) &&
            verifier.EndTable();
   }
 };
@@ -1991,7 +1971,6 @@ struct VersionBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  VersionBuilder &operator=(const VersionBuilder &);
   flatbuffers::Offset<Version> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<Version>(end);
@@ -2039,7 +2018,7 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
            verifier.VerifyString(name()) &&
            VerifyOffset(verifier, VT_SHAPE) &&
            verifier.VerifyVector(shape()) &&
-           VerifyField<uint32_t>(verifier, VT_TYPE) &&
+           VerifyField<uint32_t>(verifier, VT_TYPE, 4) &&
            VerifyOffset(verifier, VT_DATA) &&
            verifier.VerifyVector(data()) &&
            verifier.EndTable();
@@ -2066,7 +2045,6 @@ struct TosaTensorBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TosaTensorBuilder &operator=(const TosaTensorBuilder &);
   flatbuffers::Offset<TosaTensor> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaTensor>(end);
@@ -2193,8 +2171,8 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_OP) &&
-           VerifyField<uint8_t>(verifier, VT_ATTRIBUTE_TYPE) &&
+           VerifyField<uint32_t>(verifier, VT_OP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_ATTRIBUTE_TYPE, 1) &&
            VerifyOffset(verifier, VT_ATTRIBUTE) &&
            VerifyAttribute(verifier, attribute(), attribute_type()) &&
            VerifyOffset(verifier, VT_INPUTS) &&
@@ -2310,7 +2288,6 @@ struct TosaOperatorBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TosaOperatorBuilder &operator=(const TosaOperatorBuilder &);
   flatbuffers::Offset<TosaOperator> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaOperator>(end);
@@ -2419,7 +2396,6 @@ struct TosaBasicBlockBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TosaBasicBlockBuilder &operator=(const TosaBasicBlockBuilder &);
   flatbuffers::Offset<TosaBasicBlock> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaBasicBlock>(end);
@@ -2501,7 +2477,6 @@ struct TosaGraphBuilder {
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  TosaGraphBuilder &operator=(const TosaGraphBuilder &);
   flatbuffers::Offset<TosaGraph> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaGraph>(end);
@@ -2646,6 +2621,11 @@ inline const char *TosaGraphIdentifier() {
 inline bool TosaGraphBufferHasIdentifier(const void *buf) {
   return flatbuffers::BufferHasIdentifier(
       buf, TosaGraphIdentifier());
+}
+
+inline bool SizePrefixedTosaGraphBufferHasIdentifier(const void *buf) {
+  return flatbuffers::BufferHasIdentifier(
+      buf, TosaGraphIdentifier(), true);
 }
 
 inline bool VerifyTosaGraphBuffer(

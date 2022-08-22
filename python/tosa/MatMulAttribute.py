@@ -10,12 +10,16 @@ class MatMulAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsMatMulAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = MatMulAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsMatMulAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def MatMulAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -39,6 +43,14 @@ class MatMulAttribute(object):
         return 0
 
 def MatMulAttributeStart(builder): builder.StartObject(2)
+def Start(builder):
+    return MatMulAttributeStart(builder)
 def MatMulAttributeAddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
+def AddAZp(builder, aZp):
+    return MatMulAttributeAddAZp(builder, aZp)
 def MatMulAttributeAddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
+def AddBZp(builder, bZp):
+    return MatMulAttributeAddBZp(builder, bZp)
 def MatMulAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return MatMulAttributeEnd(builder)

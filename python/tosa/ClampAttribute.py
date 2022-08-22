@@ -10,12 +10,16 @@ class ClampAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsClampAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ClampAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsClampAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def ClampAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -53,8 +57,20 @@ class ClampAttribute(object):
         return 0.0
 
 def ClampAttributeStart(builder): builder.StartObject(4)
+def Start(builder):
+    return ClampAttributeStart(builder)
 def ClampAttributeAddMinInt(builder, minInt): builder.PrependInt32Slot(0, minInt, 0)
+def AddMinInt(builder, minInt):
+    return ClampAttributeAddMinInt(builder, minInt)
 def ClampAttributeAddMaxInt(builder, maxInt): builder.PrependInt32Slot(1, maxInt, 0)
+def AddMaxInt(builder, maxInt):
+    return ClampAttributeAddMaxInt(builder, maxInt)
 def ClampAttributeAddMinFp(builder, minFp): builder.PrependFloat32Slot(2, minFp, 0.0)
+def AddMinFp(builder, minFp):
+    return ClampAttributeAddMinFp(builder, minFp)
 def ClampAttributeAddMaxFp(builder, maxFp): builder.PrependFloat32Slot(3, maxFp, 0.0)
+def AddMaxFp(builder, maxFp):
+    return ClampAttributeAddMaxFp(builder, maxFp)
 def ClampAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return ClampAttributeEnd(builder)

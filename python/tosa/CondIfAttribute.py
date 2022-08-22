@@ -10,12 +10,16 @@ class CondIfAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsCondIfAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = CondIfAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsCondIfAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def CondIfAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -39,6 +43,14 @@ class CondIfAttribute(object):
         return None
 
 def CondIfAttributeStart(builder): builder.StartObject(2)
+def Start(builder):
+    return CondIfAttributeStart(builder)
 def CondIfAttributeAddThenBranch(builder, thenBranch): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
+def AddThenBranch(builder, thenBranch):
+    return CondIfAttributeAddThenBranch(builder, thenBranch)
 def CondIfAttributeAddElseBranch(builder, elseBranch): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
+def AddElseBranch(builder, elseBranch):
+    return CondIfAttributeAddElseBranch(builder, elseBranch)
 def CondIfAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return CondIfAttributeEnd(builder)

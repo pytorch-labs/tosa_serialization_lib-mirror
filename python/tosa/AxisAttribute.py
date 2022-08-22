@@ -10,12 +10,16 @@ class AxisAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsAxisAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = AxisAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsAxisAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def AxisAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -32,5 +36,11 @@ class AxisAttribute(object):
         return 0
 
 def AxisAttributeStart(builder): builder.StartObject(1)
+def Start(builder):
+    return AxisAttributeStart(builder)
 def AxisAttributeAddAxis(builder, axis): builder.PrependInt32Slot(0, axis, 0)
+def AddAxis(builder, axis):
+    return AxisAttributeAddAxis(builder, axis)
 def AxisAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return AxisAttributeEnd(builder)

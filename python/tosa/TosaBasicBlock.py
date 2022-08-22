@@ -10,12 +10,16 @@ class TosaBasicBlock(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsTosaBasicBlock(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = TosaBasicBlock()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsTosaBasicBlock(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def TosaBasicBlockBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -122,13 +126,35 @@ class TosaBasicBlock(object):
         return o == 0
 
 def TosaBasicBlockStart(builder): builder.StartObject(5)
+def Start(builder):
+    return TosaBasicBlockStart(builder)
 def TosaBasicBlockAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+def AddName(builder, name):
+    return TosaBasicBlockAddName(builder, name)
 def TosaBasicBlockAddOperators(builder, operators): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(operators), 0)
+def AddOperators(builder, operators):
+    return TosaBasicBlockAddOperators(builder, operators)
 def TosaBasicBlockStartOperatorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartOperatorsVector(builder, numElems):
+    return TosaBasicBlockStartOperatorsVector(builder, numElems)
 def TosaBasicBlockAddTensors(builder, tensors): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(tensors), 0)
+def AddTensors(builder, tensors):
+    return TosaBasicBlockAddTensors(builder, tensors)
 def TosaBasicBlockStartTensorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartTensorsVector(builder, numElems):
+    return TosaBasicBlockStartTensorsVector(builder, numElems)
 def TosaBasicBlockAddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
+def AddInputs(builder, inputs):
+    return TosaBasicBlockAddInputs(builder, inputs)
 def TosaBasicBlockStartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartInputsVector(builder, numElems):
+    return TosaBasicBlockStartInputsVector(builder, numElems)
 def TosaBasicBlockAddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
+def AddOutputs(builder, outputs):
+    return TosaBasicBlockAddOutputs(builder, outputs)
 def TosaBasicBlockStartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartOutputsVector(builder, numElems):
+    return TosaBasicBlockStartOutputsVector(builder, numElems)
 def TosaBasicBlockEnd(builder): return builder.EndObject()
+def End(builder):
+    return TosaBasicBlockEnd(builder)

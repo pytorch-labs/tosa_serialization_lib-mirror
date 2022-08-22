@@ -10,12 +10,16 @@ class Version(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsVersion(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = Version()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsVersion(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def VersionBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -53,8 +57,19 @@ class Version(object):
         return True
 
 def VersionStart(builder): builder.StartObject(4)
-def VersionAdd_major(builder, Major): builder.PrependInt32Slot(0, Major, 0)
+def Start(builder):
+    return VersionStart(builder)
+def Add_major(builder, Major):
+    return VersionAdd_major(builder, Major)
 def VersionAdd_minor(builder, Minor): builder.PrependInt32Slot(1, Minor, 41)
+def Add_minor(builder, Minor):
+    return VersionAdd_minor(builder, Minor)
 def VersionAdd_patch(builder, Patch): builder.PrependInt32Slot(2, Patch, 0)
+def Add_patch(builder, Patch):
+    return VersionAdd_patch(builder, Patch)
 def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 1)
+def Add_draft(builder, Draft):
+    return VersionAdd_draft(builder, Draft)
 def VersionEnd(builder): return builder.EndObject()
+def End(builder):
+    return VersionEnd(builder)

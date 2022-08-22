@@ -10,12 +10,16 @@ class NegateAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsNegateAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = NegateAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsNegateAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def NegateAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -39,6 +43,14 @@ class NegateAttribute(object):
         return 0
 
 def NegateAttributeStart(builder): builder.StartObject(2)
+def Start(builder):
+    return NegateAttributeStart(builder)
 def NegateAttributeAddInput1Zp(builder, input1Zp): builder.PrependInt32Slot(0, input1Zp, 0)
+def AddInput1Zp(builder, input1Zp):
+    return NegateAttributeAddInput1Zp(builder, input1Zp)
 def NegateAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(1, outputZp, 0)
+def AddOutputZp(builder, outputZp):
+    return NegateAttributeAddOutputZp(builder, outputZp)
 def NegateAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return NegateAttributeEnd(builder)

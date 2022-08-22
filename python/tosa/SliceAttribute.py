@@ -10,12 +10,16 @@ class SliceAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsSliceAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = SliceAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsSliceAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def SliceAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -79,8 +83,20 @@ class SliceAttribute(object):
         return o == 0
 
 def SliceAttributeStart(builder): builder.StartObject(2)
+def Start(builder):
+    return SliceAttributeStart(builder)
 def SliceAttributeAddStart(builder, start): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(start), 0)
+def AddStart(builder, start):
+    return SliceAttributeAddStart(builder, start)
 def SliceAttributeStartStartVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartStartVector(builder, numElems):
+    return SliceAttributeStartStartVector(builder, numElems)
 def SliceAttributeAddSize(builder, size): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(size), 0)
+def AddSize(builder, size):
+    return SliceAttributeAddSize(builder, size)
 def SliceAttributeStartSizeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def StartSizeVector(builder, numElems):
+    return SliceAttributeStartSizeVector(builder, numElems)
 def SliceAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return SliceAttributeEnd(builder)

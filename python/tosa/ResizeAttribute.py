@@ -10,12 +10,16 @@ class ResizeAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsResizeAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = ResizeAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsResizeAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def ResizeAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -113,11 +117,29 @@ class ResizeAttribute(object):
         return 0
 
 def ResizeAttributeStart(builder): builder.StartObject(4)
+def Start(builder):
+    return ResizeAttributeStart(builder)
 def ResizeAttributeAddScale(builder, scale): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(scale), 0)
+def AddScale(builder, scale):
+    return ResizeAttributeAddScale(builder, scale)
 def ResizeAttributeStartScaleVector(builder, numElems): return builder.StartVector(2, numElems, 2)
+def StartScaleVector(builder, numElems):
+    return ResizeAttributeStartScaleVector(builder, numElems)
 def ResizeAttributeAddOffset(builder, offset): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(offset), 0)
+def AddOffset(builder, offset):
+    return ResizeAttributeAddOffset(builder, offset)
 def ResizeAttributeStartOffsetVector(builder, numElems): return builder.StartVector(2, numElems, 2)
+def StartOffsetVector(builder, numElems):
+    return ResizeAttributeStartOffsetVector(builder, numElems)
 def ResizeAttributeAddBorder(builder, border): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(border), 0)
+def AddBorder(builder, border):
+    return ResizeAttributeAddBorder(builder, border)
 def ResizeAttributeStartBorderVector(builder, numElems): return builder.StartVector(2, numElems, 2)
+def StartBorderVector(builder, numElems):
+    return ResizeAttributeStartBorderVector(builder, numElems)
 def ResizeAttributeAddMode(builder, mode): builder.PrependUint32Slot(3, mode, 0)
+def AddMode(builder, mode):
+    return ResizeAttributeAddMode(builder, mode)
 def ResizeAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return ResizeAttributeEnd(builder)

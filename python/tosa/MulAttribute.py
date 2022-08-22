@@ -10,12 +10,16 @@ class MulAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsMulAttribute(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = MulAttribute()
         x.Init(buf, n + offset)
         return x
 
+    @classmethod
+    def GetRootAsMulAttribute(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
     @classmethod
     def MulAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
@@ -32,5 +36,11 @@ class MulAttribute(object):
         return 0
 
 def MulAttributeStart(builder): builder.StartObject(1)
+def Start(builder):
+    return MulAttributeStart(builder)
 def MulAttributeAddShift(builder, shift): builder.PrependInt32Slot(0, shift, 0)
+def AddShift(builder, shift):
+    return MulAttributeAddShift(builder, shift)
 def MulAttributeEnd(builder): return builder.EndObject()
+def End(builder):
+    return MulAttributeEnd(builder)
