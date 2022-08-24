@@ -354,6 +354,10 @@ tosa_err_t TosaSerializationHandler::Clear()
 
 tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
 {
+    if (!TosaGraphBufferHasIdentifier(buf))
+    {
+        printf("WARNING: TOSA file does not have TOSA file identifier\n");
+    }
     auto fb_tosa_graph   = GetTosaGraph(buf);
     auto fb_tosa_version = fb_tosa_graph->version();
     auto fb_tosa_blocks  = fb_tosa_graph->blocks();
@@ -764,7 +768,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
         CreateVersion(_builder, TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
 
     auto fb_graph = CreateTosaGraph(_builder, fb_version, fb_blocks);
-    _builder.Finish(fb_graph);
+    _builder.Finish(fb_graph, TosaGraphIdentifier());
 
     return TOSA_OK;
 }

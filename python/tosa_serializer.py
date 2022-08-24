@@ -60,6 +60,9 @@ DTypeNames = [
     "FLOAT",
 ]
 
+# File identifier needs to be kept in sync with schema/tosa.fbs
+TOSA_GRAPH_IDENTIFIER = b"\x54\x4F\x53\x41"
+
 ByteMask = np.uint64(0xFF)
 
 
@@ -713,7 +716,7 @@ class TosaSerializer:
         TosaGraph.TosaGraphAddBlocks(builder, fbv_bb)
         graph = TosaGraph.TosaGraphEnd(builder)
 
-        self.builder.Finish(graph)
+        self.builder.Finish(graph, TOSA_GRAPH_IDENTIFIER)
         return self.builder.Output()
 
     def writeJson(self, tosa_filename):
