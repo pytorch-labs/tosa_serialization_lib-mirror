@@ -276,7 +276,7 @@ table NegateAttribute {
 
 table Version {
   _major: int32 = 0;
-  _minor: int32 = 31;
+  _minor: int32 = 40;
   _patch: int32 = 0;
   _draft: bool = true;
 }
