@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2021, ARM Limited.
+// Copyright (c) 2020-2023, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -112,11 +112,13 @@ public:
     TosaSerializationTensor(const flatbuffers::String* name,
                             const flatbuffers::Vector<int32_t>* shape,
                             DType dtype,
-                            const flatbuffers::Vector<uint8_t>* data);
+                            const flatbuffers::Vector<uint8_t>* data,
+                            bool variable = false);
     TosaSerializationTensor(const std::string& name,
                             const std::vector<int32_t>& shape,
                             DType dtype,
-                            const std::vector<uint8_t>& data);
+                            const std::vector<uint8_t>& data,
+                            bool variable = false);
     TosaSerializationTensor();
     ~TosaSerializationTensor();
 
@@ -129,9 +131,13 @@ public:
     {
         return _shape;
     }
-    DType GetDtype()
+    DType GetDtype() const
     {
         return _dtype;
+    }
+    bool GetVariable() const
+    {
+        return _variable;
     }
     const std::vector<uint8_t>& GetData() const
     {
@@ -169,6 +175,7 @@ private:
     DType _dtype;                /* data type enumeration, see tosa_isa_generated.h */
     std::vector<int32_t> _shape; /* shape of the tensor */
     std::string _name;           /* name of the tensor, used for solving dependency */
+    bool _variable;              /* is this a variable tensor */
     std::vector<uint8_t> _data;  /* data array */
 };
 
@@ -367,6 +374,8 @@ public:
     static tosa_err_t ConvertU8toI8(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<int8_t>& out);
     static tosa_err_t ConvertU8toI4(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<int8_t>& out);
     static tosa_err_t ConvertU8toBool(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<bool>& out);
+
+    static void ForceAlignTensorData(std::vector<uint8_t>& buf);
 
     // version
     const TosaVersion& GetVersion()

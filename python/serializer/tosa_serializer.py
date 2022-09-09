@@ -711,7 +711,13 @@ class TosaSerializerRegion:
         return tens
 
     def addInputTensor(self, tensor):
-        self.currBasicBlock.addTensor(tensor.name, tensor.shape, tensor.dtype, tensor.data, tensor.placeholderFilename)
+        self.currBasicBlock.addTensor(
+            tensor.name,
+            tensor.shape,
+            tensor.dtype,
+            tensor.data,
+            tensor.placeholderFilename,
+        )
         self.currBasicBlock.addInput(tensor.name)
 
     def addOutputTensor(self, tensor):
