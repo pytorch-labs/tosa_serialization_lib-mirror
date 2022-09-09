@@ -96,8 +96,15 @@ class TosaTensor(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         return o == 0
 
+    # TosaTensor
+    def Variable(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
 def TosaTensorStart(builder):
-    builder.StartObject(4)
+    builder.StartObject(5)
 
 def Start(builder):
     TosaTensorStart(builder)
@@ -137,6 +144,12 @@ def TosaTensorStartDataVector(builder, numElems):
 
 def StartDataVector(builder, numElems: int) -> int:
     return TosaTensorStartDataVector(builder, numElems)
+
+def TosaTensorAddVariable(builder, variable):
+    builder.PrependBoolSlot(4, variable, 0)
+
+def AddVariable(builder, variable):
+    TosaTensorAddVariable(builder, variable)
 
 def TosaTensorEnd(builder):
     return builder.EndObject()

@@ -2204,7 +2204,8 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_NAME = 4,
     VT_SHAPE = 6,
     VT_TYPE = 8,
-    VT_DATA = 10
+    VT_DATA = 10,
+    VT_VARIABLE = 12
   };
   const ::flatbuffers::String *name() const {
     return GetPointer<const ::flatbuffers::String *>(VT_NAME);
@@ -2218,6 +2219,9 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::Vector<uint8_t> *data() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_DATA);
   }
+  bool variable() const {
+    return GetField<uint8_t>(VT_VARIABLE, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
@@ -2227,6 +2231,7 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint32_t>(verifier, VT_TYPE, 4) &&
            VerifyOffset(verifier, VT_DATA) &&
            verifier.VerifyVector(data()) &&
+           VerifyField<uint8_t>(verifier, VT_VARIABLE, 1) &&
            verifier.EndTable();
   }
 };
@@ -2247,6 +2252,9 @@ struct TosaTensorBuilder {
   void add_data(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> data) {
     fbb_.AddOffset(TosaTensor::VT_DATA, data);
   }
+  void add_variable(bool variable) {
+    fbb_.AddElement<uint8_t>(TosaTensor::VT_VARIABLE, static_cast<uint8_t>(variable), 0);
+  }
   explicit TosaTensorBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -2263,12 +2271,14 @@ inline ::flatbuffers::Offset<TosaTensor> CreateTosaTensor(
     ::flatbuffers::Offset<::flatbuffers::String> name = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shape = 0,
     tosa::DType type = tosa::DType_UNKNOWN,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> data = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> data = 0,
+    bool variable = false) {
   TosaTensorBuilder builder_(_fbb);
   builder_.add_data(data);
   builder_.add_type(type);
   builder_.add_shape(shape);
   builder_.add_name(name);
+  builder_.add_variable(variable);
   return builder_.Finish();
 }
 
@@ -2277,7 +2287,8 @@ inline ::flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
     const char *name = nullptr,
     const std::vector<int32_t> *shape = nullptr,
     tosa::DType type = tosa::DType_UNKNOWN,
-    const std::vector<uint8_t> *data = nullptr) {
+    const std::vector<uint8_t> *data = nullptr,
+    bool variable = false) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
   if (data) { _fbb.ForceVectorAlignment(data->size(), sizeof(uint8_t), 8); }
@@ -2287,7 +2298,8 @@ inline ::flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
       name__,
       shape__,
       type,
-      data__);
+      data__,
+      variable);
 }
 
 struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

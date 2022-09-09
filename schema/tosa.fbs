@@ -281,6 +281,7 @@ table TosaTensor {
   shape:[int32];                    // shape of the tensor
   type:DType;                       // data type of the tensor
   data: [ubyte] (force_align: 8);   // raw data array if it's a constant tensor.
+  variable: bool;                   // is this a variable tensor
 }
 
 table TosaOperator {
