@@ -59,6 +59,7 @@ class Version(object):
 def VersionStart(builder): builder.StartObject(4)
 def Start(builder):
     return VersionStart(builder)
+def VersionAdd_major(builder, Major): builder.PrependInt32Slot(0, Major, 0)
 def Add_major(builder, Major):
     return VersionAdd_major(builder, Major)
 def VersionAdd_minor(builder, Minor): builder.PrependInt32Slot(1, Minor, 41)

@@ -362,12 +362,17 @@ class TosaSerializerTensor:
         self.shape = shape
         self.dtype = dtype
 
+        if dtype == DType.FLOAT:
+            fntype = np.float32
+        else:
+            fntype = int
+
         if isinstance(data, np.ndarray):
-            data = data.flatten().astype(int).tolist()
-            data = list(map(int, data))
+            data = data.flatten().astype(fntype).tolist()
+            data = list(map(fntype, data))
             self.data = data
         elif isinstance(data, list):
-            data = list(map(int, data))
+            data = list(map(fntype, data))
             self.data = data
         else:
             self.data = None
@@ -569,7 +574,7 @@ class TensorDir(IntEnum):
 
 
 class TosaSerializer:
-    def __init__(self, pathPrefix):
+    def __init__(self, pathPrefix, saveConstsToFile=False):
         self.add_compat_methods()
         # Get the global TOSA version if not already defined
 
@@ -578,6 +583,9 @@ class TosaSerializer:
         self.basicBlocks = []
         self.startBasicBlock("main")
         self.pathPrefix = pathPrefix
+
+        # Enables inspection of constant data outside of graph
+        self.saveConstsToFile = saveConstsToFile
 
         # Indicies used for adding/naming tensors
         self.currInputIdx = 0
@@ -623,6 +631,10 @@ class TosaSerializer:
         tens = self.currBasicBlock.addTensor(name, shape, dtype, vals)
         # Add the operator now
         self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name)
+
+        if self.saveConstsToFile:
+            filename = "{}.npy".format(name)
+            np.save(os.path.join(self.pathPrefix, filename), vals, False)
 
         return tens
 
