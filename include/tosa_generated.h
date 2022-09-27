@@ -92,7 +92,7 @@ enum DType : uint32_t {
   DType_INT16 = 5,
   DType_INT32 = 6,
   DType_INT48 = 7,
-  DType_FLOAT = 8,
+  DType_FP32 = 8,
   DType_UINT16 = 9,
   DType_FP16 = 10,
   DType_MIN = DType_UNKNOWN,
@@ -109,7 +109,7 @@ inline const DType (&EnumValuesDType())[11] {
     DType_INT16,
     DType_INT32,
     DType_INT48,
-    DType_FLOAT,
+    DType_FP32,
     DType_UINT16,
     DType_FP16
   };
@@ -126,7 +126,7 @@ inline const char * const *EnumNamesDType() {
     "INT16",
     "INT32",
     "INT48",
-    "FLOAT",
+    "FP32",
     "UINT16",
     "FP16",
     nullptr

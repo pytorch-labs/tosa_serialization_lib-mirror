@@ -29,7 +29,7 @@ enum DType:uint32 {
   INT16,
   INT32,
   INT48,
-  FLOAT,
+  FP32,
   UINT16,
   FP16,
 }
