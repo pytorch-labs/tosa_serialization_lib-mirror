@@ -80,6 +80,9 @@ struct TosaOperatorBuilder;
 struct TosaBasicBlock;
 struct TosaBasicBlockBuilder;
 
+struct TosaRegion;
+struct TosaRegionBuilder;
+
 struct TosaGraph;
 struct TosaGraphBuilder;
 
@@ -2502,25 +2505,91 @@ inline flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlockDirect(
       outputs__);
 }
 
-struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef TosaGraphBuilder Builder;
+struct TosaRegion FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TosaRegionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_VERSION = 4,
+    VT_NAME = 4,
     VT_BLOCKS = 6
   };
-  const tosa::Version *version() const {
-    return GetPointer<const tosa::Version *>(VT_VERSION);
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
   }
   const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *>(VT_BLOCKS);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_VERSION) &&
-           verifier.VerifyTable(version()) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
            VerifyOffset(verifier, VT_BLOCKS) &&
            verifier.VerifyVector(blocks()) &&
            verifier.VerifyVectorOfTables(blocks()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TosaRegionBuilder {
+  typedef TosaRegion Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(TosaRegion::VT_NAME, name);
+  }
+  void add_blocks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks) {
+    fbb_.AddOffset(TosaRegion::VT_BLOCKS, blocks);
+  }
+  explicit TosaRegionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<TosaRegion> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<TosaRegion>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<TosaRegion> CreateTosaRegion(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks = 0) {
+  TosaRegionBuilder builder_(_fbb);
+  builder_.add_blocks(blocks);
+  builder_.add_name(name);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<TosaRegion> CreateTosaRegionDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    const std::vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto blocks__ = blocks ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaBasicBlock>>(*blocks) : 0;
+  return tosa::CreateTosaRegion(
+      _fbb,
+      name__,
+      blocks__);
+}
+
+struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef TosaGraphBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_VERSION = 4,
+    VT_REGIONS = 6
+  };
+  const tosa::Version *version() const {
+    return GetPointer<const tosa::Version *>(VT_VERSION);
+  }
+  const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>> *regions() const {
+    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>> *>(VT_REGIONS);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_VERSION) &&
+           verifier.VerifyTable(version()) &&
+           VerifyOffset(verifier, VT_REGIONS) &&
+           verifier.VerifyVector(regions()) &&
+           verifier.VerifyVectorOfTables(regions()) &&
            verifier.EndTable();
   }
 };
@@ -2532,8 +2601,8 @@ struct TosaGraphBuilder {
   void add_version(flatbuffers::Offset<tosa::Version> version) {
     fbb_.AddOffset(TosaGraph::VT_VERSION, version);
   }
-  void add_blocks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks) {
-    fbb_.AddOffset(TosaGraph::VT_BLOCKS, blocks);
+  void add_regions(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>>> regions) {
+    fbb_.AddOffset(TosaGraph::VT_REGIONS, regions);
   }
   explicit TosaGraphBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2549,9 +2618,9 @@ struct TosaGraphBuilder {
 inline flatbuffers::Offset<TosaGraph> CreateTosaGraph(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<tosa::Version> version = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks = 0) {
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>>> regions = 0) {
   TosaGraphBuilder builder_(_fbb);
-  builder_.add_blocks(blocks);
+  builder_.add_regions(regions);
   builder_.add_version(version);
   return builder_.Finish();
 }
@@ -2559,12 +2628,12 @@ inline flatbuffers::Offset<TosaGraph> CreateTosaGraph(
 inline flatbuffers::Offset<TosaGraph> CreateTosaGraphDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<tosa::Version> version = 0,
-    const std::vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks = nullptr) {
-  auto blocks__ = blocks ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaBasicBlock>>(*blocks) : 0;
+    const std::vector<flatbuffers::Offset<tosa::TosaRegion>> *regions = nullptr) {
+  auto regions__ = regions ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaRegion>>(*regions) : 0;
   return tosa::CreateTosaGraph(
       _fbb,
       version,
-      blocks__);
+      regions__);
 }
 
 inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type) {

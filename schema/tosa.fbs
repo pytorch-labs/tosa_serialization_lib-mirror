@@ -297,7 +297,7 @@ table TosaTensor {
 
 table TosaOperator {
   op:Op;                    // operator enum
-  attribute: Attribute;     // union structure. operator attribute
+  attribute:Attribute;      // union structure. operator attribute
   inputs:[string];          // list of input tensor names
   outputs:[string];         // list of output tensor names
 }
@@ -310,9 +310,14 @@ table TosaBasicBlock {
   outputs:[string];         // name of graph outputs
 }
 
+table TosaRegion {
+  name:string;             // name of region
+  blocks:[TosaBasicBlock]; // basic blocks array
+}
+
 table TosaGraph {
-  version: Version;
-  blocks:[TosaBasicBlock];  // basic blocks array
+  version:Version;
+  regions:[TosaRegion];       // regions array
 }
 
 root_type TosaGraph;

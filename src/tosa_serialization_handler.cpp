@@ -113,29 +113,33 @@ TosaSerializationOperator::~TosaSerializationOperator()
 }
 
 TosaSerializationBasicBlock::TosaSerializationBasicBlock(const std::string& name,
+                                                         const std::string& region_name,
                                                          const std::vector<TosaSerializationOperator*>& operators,
                                                          const std::vector<TosaSerializationTensor*>& tensors,
                                                          const std::vector<std::string>& inputs,
                                                          const std::vector<std::string>& outputs)
 {
-    _name      = name;
-    _operators = operators;
-    _tensors   = tensors;
-    _inputs    = inputs;
-    _outputs   = outputs;
+    _name        = name;
+    _region_name = region_name;
+    _operators   = operators;
+    _tensors     = tensors;
+    _inputs      = inputs;
+    _outputs     = outputs;
 }
 
 TosaSerializationBasicBlock::TosaSerializationBasicBlock(std::string&& name,
+                                                         std::string&& region_name,
                                                          std::vector<TosaSerializationOperator*>&& operators,
                                                          std::vector<TosaSerializationTensor*>&& tensors,
                                                          std::vector<std::string>&& inputs,
                                                          std::vector<std::string>&& outputs)
 {
-    _name      = std::move(name);
-    _operators = std::move(operators);
-    _tensors   = std::move(tensors);
-    _inputs    = std::move(inputs);
-    _outputs   = std::move(outputs);
+    _name        = std::move(name);
+    _region_name = std::move(region_name);
+    _operators   = std::move(operators);
+    _tensors     = std::move(tensors);
+    _inputs      = std::move(inputs);
+    _outputs     = std::move(outputs);
 }
 
 TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
@@ -150,6 +154,29 @@ TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
     for (auto ts : GetTensors())
     {
         delete ts;    // ~TosaSerializationTensor()
+    }
+}
+
+TosaSerializationRegion::TosaSerializationRegion(const std::string& name,
+                                                 const std::vector<TosaSerializationBasicBlock*>& blocks)
+{
+    _name   = name;
+    _blocks = blocks;
+}
+
+TosaSerializationRegion::TosaSerializationRegion(const std::string&& name,
+                                                 const std::vector<TosaSerializationBasicBlock*>&& blocks)
+{
+    _name   = std::move(name);
+    _blocks = std::move(blocks);
+}
+
+TosaSerializationRegion::~TosaSerializationRegion()
+{
+    // deallocate all blocks
+    for (auto block : GetBlocks())
+    {
+        delete block;    // ~TosaSerializationBasicBlock()
     }
 }
 
@@ -400,11 +427,11 @@ tosa_err_t TosaSerializationHandler::SaveFileTosaFlatbuffer(const char* filename
 tosa_err_t TosaSerializationHandler::Clear()
 {
     // deallocate all basic blocks
-    for (auto bb : GetBlocks())
+    for (auto region : GetRegions())
     {
-        delete bb;
+        delete region;
     }
-    _blocks.clear();
+    _regions.clear();
 
     return TOSA_OK;
 }
@@ -417,10 +444,12 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     }
     auto fb_tosa_graph   = GetTosaGraph(buf);
     auto fb_tosa_version = fb_tosa_graph->version();
-    auto fb_tosa_blocks  = fb_tosa_graph->blocks();
+    auto fb_tosa_regions = fb_tosa_graph->regions();
 
     std::vector<std::string> operator_inputs_container;
     std::vector<std::string> operator_outputs_container;
+
+    std::vector<TosaSerializationBasicBlock*> region_blocks_container;
 
     std::vector<TosaSerializationOperator*> block_operators_container;
     std::vector<TosaSerializationTensor*> block_tensors_container;
@@ -431,6 +460,7 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     TosaSerializationOperator* new_operator = NULL;
     TosaSerializationBasicBlock* new_block  = NULL;
     TosaSerializationTensor* new_tensor     = NULL;
+    TosaSerializationRegion* new_region     = NULL;
 
     // erase container
     Clear();
@@ -453,127 +483,137 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
             return TOSA_VERSION_MISMATCH;
     }
 
-    for (size_t i = 0; i < fb_tosa_blocks->size(); i++)
+    for (size_t i = 0; i < fb_tosa_regions->size(); i++)
     {
-        auto curr_block = fb_tosa_blocks->Get(i);
+        auto curr_region    = fb_tosa_regions->Get(i);
+        auto region_name    = curr_region->name()->str();
+        auto fb_tosa_blocks = curr_region->blocks();
 
-        auto block_name = curr_block->name()->str();
+        new_region = new TosaSerializationRegion(curr_region->name()->str(), region_blocks_container);
+        this->GetRegions().push_back(new_region);
 
-        auto fb_tosa_operators = curr_block->operators();
-        block_operators_container.clear();
-        for (size_t j = 0; j < fb_tosa_operators->size(); j++)
+        for (size_t i = 0; i < fb_tosa_blocks->size(); i++)
         {
-            auto curr_operator = fb_tosa_operators->Get(j);
+            auto curr_block = fb_tosa_blocks->Get(i);
 
-            auto operator_op    = curr_operator->op();
-            auto attribute_type = curr_operator->attribute_type();
-            auto attribute      = curr_operator->attribute();
+            auto block_name = curr_block->name()->str();
 
-            // input tensors
-            auto operator_inputs = curr_operator->inputs();
-            operator_inputs_container.clear();
-            if (operator_inputs)
+            auto fb_tosa_operators = curr_block->operators();
+            block_operators_container.clear();
+            for (size_t j = 0; j < fb_tosa_operators->size(); j++)
             {
-                for (size_t k = 0; k < operator_inputs->size(); k++)
+                auto curr_operator = fb_tosa_operators->Get(j);
+
+                auto operator_op    = curr_operator->op();
+                auto attribute_type = curr_operator->attribute_type();
+                auto attribute      = curr_operator->attribute();
+
+                // input tensors
+                auto operator_inputs = curr_operator->inputs();
+                operator_inputs_container.clear();
+                if (operator_inputs)
                 {
-                    auto curr_input = operator_inputs->Get(k);
-                    operator_inputs_container.push_back(curr_input->str());
+                    for (size_t k = 0; k < operator_inputs->size(); k++)
+                    {
+                        auto curr_input = operator_inputs->Get(k);
+                        operator_inputs_container.push_back(curr_input->str());
+                    }
                 }
-            }
 
-            // output tensors
-            auto operator_outputs = curr_operator->outputs();
-            operator_outputs_container.clear();
-            if (operator_outputs)
-            {
-                for (size_t k = 0; k < operator_outputs->size(); k++)
+                // output tensors
+                auto operator_outputs = curr_operator->outputs();
+                operator_outputs_container.clear();
+                if (operator_outputs)
                 {
-                    auto curr_output = operator_outputs->Get(k);
-                    operator_outputs_container.push_back(curr_output->str());
+                    for (size_t k = 0; k < operator_outputs->size(); k++)
+                    {
+                        auto curr_output = operator_outputs->Get(k);
+                        operator_outputs_container.push_back(curr_output->str());
+                    }
                 }
-            }
 
-            switch (attribute_type)
-            {
-                case Attribute_NONE:
-                    typed_attribute = new TosaNoneAttribute();
-                    break;
+                switch (attribute_type)
+                {
+                    case Attribute_NONE:
+                        typed_attribute = new TosaNoneAttribute();
+                        break;
 #define DEF_ATTRIBUTE(NAME, ...)                                                                                       \
     case Attribute_##NAME##Attribute:                                                                                  \
         typed_attribute = new Tosa##NAME##Attribute(attribute);                                                        \
         break;
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
-                default:
-                    printf("TosaSerializationHandler::Deserialize(): Attribute %s not implemented yet\n",
-                           EnumNamesAttribute()[attribute_type]);
-                    return TOSA_INTERNAL_ERROR;
+                    default:
+                        printf("TosaSerializationHandler::Deserialize(): Attribute %s not implemented yet\n",
+                               EnumNamesAttribute()[attribute_type]);
+                        return TOSA_INTERNAL_ERROR;
+                }
+
+                new_operator = new TosaSerializationOperator(operator_op, attribute_type, typed_attribute,
+                                                             operator_inputs_container, operator_outputs_container);
+                if (new_operator)
+                {
+                    block_operators_container.push_back(new_operator);
+                }
+                else
+                {
+                    return TOSA_MEMORY_ERROR;
+                }
+
+                if (typed_attribute)
+                    delete typed_attribute;
             }
 
-            new_operator = new TosaSerializationOperator(operator_op, attribute_type, typed_attribute,
-                                                         operator_inputs_container, operator_outputs_container);
-            if (new_operator)
+            auto block_inputs  = curr_block->inputs();
+            auto block_outputs = curr_block->outputs();
+
+            block_inputs_container.clear();
+            block_outputs_container.clear();
+
+            for (size_t j = 0; j < block_inputs->size(); j++)
             {
-                block_operators_container.push_back(new_operator);
+                auto curr_block_input = block_inputs->Get(j);
+                block_inputs_container.push_back(curr_block_input->str());
+            }
+            for (size_t j = 0; j < block_outputs->size(); j++)
+            {
+                auto curr_block_output = block_outputs->Get(j);
+                block_outputs_container.push_back(curr_block_output->str());
+            }
+
+            auto fb_tosa_tensors = curr_block->tensors();
+            block_tensors_container.clear();
+            for (size_t j = 0; j < fb_tosa_tensors->size(); j++)
+            {
+                auto curr_tensor = fb_tosa_tensors->Get(j);
+
+                auto tensor_name  = curr_tensor->name();
+                auto tensor_shape = curr_tensor->shape();
+                auto tensor_type  = curr_tensor->type();
+                auto tensor_data  = curr_tensor->data();
+
+                new_tensor = new TosaSerializationTensor(tensor_name, tensor_shape, tensor_type, tensor_data);
+                if (new_tensor)
+                {
+                    block_tensors_container.push_back(new_tensor);
+                }
+                else
+                {
+                    return TOSA_MEMORY_ERROR;
+                }
+            }
+            new_block = new TosaSerializationBasicBlock(block_name, region_name, block_operators_container,
+                                                        block_tensors_container, block_inputs_container,
+                                                        block_outputs_container);
+            if (new_block)
+            {
+                this->GetRegions()[0]->GetBlocks().push_back(new_block);
             }
             else
             {
                 return TOSA_MEMORY_ERROR;
             }
-
-            if (typed_attribute)
-                delete typed_attribute;
-        }
-
-        auto fb_tosa_tensors = curr_block->tensors();
-        block_tensors_container.clear();
-        for (size_t j = 0; j < fb_tosa_tensors->size(); j++)
-        {
-            auto curr_tensor = fb_tosa_tensors->Get(j);
-
-            auto tensor_name  = curr_tensor->name();
-            auto tensor_shape = curr_tensor->shape();
-            auto tensor_type  = curr_tensor->type();
-            auto tensor_data  = curr_tensor->data();
-
-            new_tensor = new TosaSerializationTensor(tensor_name, tensor_shape, tensor_type, tensor_data);
-            if (new_tensor)
-            {
-                block_tensors_container.push_back(new_tensor);
-            }
-            else
-            {
-                return TOSA_MEMORY_ERROR;
-            }
-        }
-
-        auto block_inputs  = curr_block->inputs();
-        auto block_outputs = curr_block->outputs();
-
-        block_inputs_container.clear();
-        block_outputs_container.clear();
-
-        for (size_t j = 0; j < block_inputs->size(); j++)
-        {
-            auto curr_block_input = block_inputs->Get(j);
-            block_inputs_container.push_back(curr_block_input->str());
-        }
-        for (size_t j = 0; j < block_outputs->size(); j++)
-        {
-            auto curr_block_output = block_outputs->Get(j);
-            block_outputs_container.push_back(curr_block_output->str());
-        }
-
-        new_block = new TosaSerializationBasicBlock(block_name, block_operators_container, block_tensors_container,
-                                                    block_inputs_container, block_outputs_container);
-        if (new_block)
-        {
-            this->GetBlocks().push_back(new_block);
-        }
-        else
-        {
-            return TOSA_MEMORY_ERROR;
-        }
+        }    // end block for_loop
     }
 
     return TOSA_OK;
@@ -581,84 +621,76 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
 
 tosa_err_t TosaSerializationHandler::Serialize()
 {
-    std::vector<flatbuffers::Offset<TosaBasicBlock>> fboffset_blocks;
+    // regions
+    std::vector<flatbuffers::Offset<TosaRegion>> fboffset_regions;
 
+    // blocks
+    std::vector<flatbuffers::Offset<TosaBasicBlock>> fboffset_blocks;
     std::vector<flatbuffers::Offset<TosaOperator>> fboffset_block_operators;
     std::vector<flatbuffers::Offset<TosaTensor>> fboffset_block_tensors;
     std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_block_inputs;
     std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_block_outputs;
 
+    // operators
     std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_operator_inputs;
     std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_operator_outputs;
 
     // translate TosaFlatbufferOperator to flatbuffers::Offset<TosaOperator>
-    for (auto block : GetBlocks())
+    for (auto region : GetRegions())
     {
-        fboffset_block_operators.clear();
-        fboffset_block_tensors.clear();
-        fboffset_block_inputs.clear();
-        fboffset_block_outputs.clear();
-
-        auto block_name = _builder.CreateString(block->GetName().c_str());
-
-        for (auto tensor_str : block->GetInputs())
+        for (auto block : region->GetBlocks())
         {
-            auto tensor_name = _builder.CreateString(tensor_str.c_str());
-            fboffset_block_inputs.push_back(tensor_name);
-        }
-
-        for (auto tensor_str : block->GetOutputs())
-        {
-            auto tensor_name = _builder.CreateString(tensor_str.c_str());
-            fboffset_block_outputs.push_back(tensor_name);
-        }
-
-        auto fb_block_inputs  = _builder.CreateVector(fboffset_block_inputs);
-        auto fb_block_outputs = _builder.CreateVector(fboffset_block_outputs);
-
-        for (auto op : block->GetOperators())
-        {
-            fboffset_operator_inputs.clear();
-            fboffset_operator_outputs.clear();
-
-            auto operator_op    = op->GetOp();
-            auto attribute_type = op->GetAttributeType();
-
-            for (auto tensor_str : op->GetInputTensorNames())
+            fboffset_block_operators.clear();
+            fboffset_block_tensors.clear();
+            fboffset_block_inputs.clear();
+            fboffset_block_outputs.clear();
+            auto block_name = _builder.CreateString(block->GetName().c_str());
+            for (auto tensor_str : block->GetInputs())
             {
                 auto tensor_name = _builder.CreateString(tensor_str.c_str());
-                fboffset_operator_inputs.push_back(tensor_name);
+                fboffset_block_inputs.push_back(tensor_name);
             }
-
-            for (auto tensor_str : op->GetOutputTensorNames())
+            for (auto tensor_str : block->GetOutputs())
             {
                 auto tensor_name = _builder.CreateString(tensor_str.c_str());
-                fboffset_operator_outputs.push_back(tensor_name);
+                fboffset_block_outputs.push_back(tensor_name);
             }
-
-            auto fb_operator_inputs  = _builder.CreateVector(fboffset_operator_inputs);
-            auto fb_operator_outputs = _builder.CreateVector(fboffset_operator_outputs);
-
-            flatbuffers::Offset<void> fb_attribute;
-            switch (attribute_type)
+            auto fb_block_inputs  = _builder.CreateVector(fboffset_block_inputs);
+            auto fb_block_outputs = _builder.CreateVector(fboffset_block_outputs);
+            for (auto op : block->GetOperators())
             {
-                case Attribute_NONE:
-                    fb_attribute = 0;
-                    break;
-
+                fboffset_operator_inputs.clear();
+                fboffset_operator_outputs.clear();
+                auto operator_op    = op->GetOp();
+                auto attribute_type = op->GetAttributeType();
+                for (auto tensor_str : op->GetInputTensorNames())
+                {
+                    auto tensor_name = _builder.CreateString(tensor_str.c_str());
+                    fboffset_operator_inputs.push_back(tensor_name);
+                }
+                for (auto tensor_str : op->GetOutputTensorNames())
+                {
+                    auto tensor_name = _builder.CreateString(tensor_str.c_str());
+                    fboffset_operator_outputs.push_back(tensor_name);
+                }
+                auto fb_operator_inputs  = _builder.CreateVector(fboffset_operator_inputs);
+                auto fb_operator_outputs = _builder.CreateVector(fboffset_operator_outputs);
+                flatbuffers::Offset<void> fb_attribute;
+                switch (attribute_type)
+                {
+                    case Attribute_NONE:
+                        fb_attribute = 0;
+                        break;
 #define DEF_ARGS_S_STR(NAME, V) , _builder.CreateString(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V().c_str())
 #define DEF_ARGS_S_DEFAULT(NAME, V) , reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()
-
 #define DEF_ARGS_S_int32_t(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_bool(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_ResizeMode(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_DType(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_string(NAME, V) DEF_ARGS_S_STR(NAME, V)
-
 #define DEF_ARGS_S(NAME, T, V) DEF_ARGS_S_##T(NAME, V)
 #define DEF_ARGS_V(NAME, T, V) , _builder.CreateVector<T>(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V())
-
 #define DEF_ARGS_1(NAME, T0, F0, V0) DEF_ARGS_##F0(NAME, T0, V0)
 #define DEF_ARGS_2(NAME, T0, F0, V0, T1, F1, V1) DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1)
 #define DEF_ARGS_3(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2)                                                           \
@@ -678,7 +710,6 @@ tosa_err_t TosaSerializationHandler::Serialize()
     case Attribute_##NAME##Attribute:                                                                                  \
         fb_attribute = Create##NAME##Attribute(_builder DEF_ARGS_##NUM_ARGS(NAME##Attribute, __VA_ARGS__)).Union();    \
         break;
-
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
 #undef DEF_ARGS_1
@@ -698,44 +729,42 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #undef DEF_ARGS_S_string
 #undef DEF_ARGS_S_STR
 #undef DEF_ARGS_S_DEFAULT
-                default:
-                    printf("TosaSerializationHandler::Serialize(): Attribute %s not implemented yet\n",
-                           EnumNamesAttribute()[attribute_type]);
-                    return TOSA_INTERNAL_ERROR;
+                    default:
+                        printf("TosaSerializationHandler::Serialize(): Attribute %s not implemented yet\n",
+                               EnumNamesAttribute()[attribute_type]);
+                        return TOSA_INTERNAL_ERROR;
+                }
+                auto fboffset_operator = CreateTosaOperator(_builder, operator_op, attribute_type, fb_attribute,
+                                                            fb_operator_inputs, fb_operator_outputs);
+                fboffset_block_operators.push_back(fboffset_operator);
             }
+            auto fb_block_operators = _builder.CreateVector(fboffset_block_operators);
+            for (auto tensor : block->GetTensors())
+            {
+                auto tensor_name     = _builder.CreateString(tensor->GetName().c_str());
+                auto tensor_shape    = _builder.CreateVector(tensor->GetShape());
+                auto tensor_dtype    = tensor->GetDtype();
+                auto tensor_data     = _builder.CreateVector(tensor->GetData());
+                auto fboffset_tensor = CreateTosaTensor(_builder, tensor_name, tensor_shape, tensor_dtype, tensor_data);
+                fboffset_block_tensors.push_back(fboffset_tensor);
+            }
+            auto fb_block_tensors = _builder.CreateVector(fboffset_block_tensors);
+            auto fboffset_block   = CreateTosaBasicBlock(_builder, block_name, fb_block_operators, fb_block_tensors,
+                                                       fb_block_inputs, fb_block_outputs);
+            fboffset_blocks.push_back(fboffset_block);
+        }    // end block for_loop
+        auto fb_blocks = _builder.CreateVector(fboffset_blocks);
 
-            auto fboffset_operator = CreateTosaOperator(_builder, operator_op, attribute_type, fb_attribute,
-                                                        fb_operator_inputs, fb_operator_outputs);
-            fboffset_block_operators.push_back(fboffset_operator);
-        }
+        auto region_name     = _builder.CreateString(region->GetName().c_str());
+        auto fboffset_region = CreateTosaRegion(_builder, region_name, fb_blocks);
+        fboffset_regions.push_back(fboffset_region);
+    }    // end region for_loop
 
-        auto fb_block_operators = _builder.CreateVector(fboffset_block_operators);
-
-        for (auto tensor : block->GetTensors())
-        {
-
-            auto tensor_name  = _builder.CreateString(tensor->GetName().c_str());
-            auto tensor_shape = _builder.CreateVector(tensor->GetShape());
-            auto tensor_dtype = tensor->GetDtype();
-            auto tensor_data  = _builder.CreateVector(tensor->GetData());
-
-            auto fboffset_tensor = CreateTosaTensor(_builder, tensor_name, tensor_shape, tensor_dtype, tensor_data);
-            fboffset_block_tensors.push_back(fboffset_tensor);
-        }
-
-        auto fb_block_tensors = _builder.CreateVector(fboffset_block_tensors);
-
-        auto fboffset_block = CreateTosaBasicBlock(_builder, block_name, fb_block_operators, fb_block_tensors,
-                                                   fb_block_inputs, fb_block_outputs);
-        fboffset_blocks.push_back(fboffset_block);
-    }
-
-    auto fb_blocks = _builder.CreateVector(fboffset_blocks);
+    auto fb_regions = _builder.CreateVector(fboffset_regions);
 
     auto fb_version =
         CreateVersion(_builder, TOSA_VERSION_MAJOR, TOSA_VERSION_MINOR, TOSA_VERSION_PATCH, TOSA_VERSION_DRAFT);
-
-    auto fb_graph = CreateTosaGraph(_builder, fb_version, fb_blocks);
+    auto fb_graph = CreateTosaGraph(_builder, fb_version, fb_regions);
     _builder.Finish(fb_graph, TosaGraphIdentifier());
 
     return TOSA_OK;
