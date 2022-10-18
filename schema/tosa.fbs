@@ -32,6 +32,7 @@ enum DType:uint32 {
   FP32,
   UINT16,
   FP16,
+  BF16,
 }
 
 enum ResizeMode:uint32 {

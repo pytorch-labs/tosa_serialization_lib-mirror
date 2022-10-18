@@ -14,3 +14,4 @@ class DType(object):
     FP32 = 8
     UINT16 = 9
     FP16 = 10
+    BF16 = 11
