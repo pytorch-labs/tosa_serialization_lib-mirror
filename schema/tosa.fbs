@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2021, ARM Limited.
+// Copyright (c) 2020-2023, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -161,7 +161,8 @@ union Attribute {
   TableAttribute,
   MatMulAttribute,
   FullyConnectedAttribute,
-  NegateAttribute
+  NegateAttribute,
+  CustomAttribute
 }
 
 table PoolAttribute {
@@ -279,6 +280,12 @@ table FullyConnectedAttribute {
 table NegateAttribute {
   input1_zp: int32;
   output_zp: int32;
+}
+
+table CustomAttribute {
+  identifier:string;
+  config:string;
+  implementation_attrs:[ubyte];
 }
 
 table Version {
