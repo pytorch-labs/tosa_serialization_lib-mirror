@@ -1995,13 +1995,13 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<int32_t>(VT__MAJOR, 0);
   }
   int32_t _minor() const {
-    return GetField<int32_t>(VT__MINOR, 50);
+    return GetField<int32_t>(VT__MINOR, 51);
   }
   int32_t _patch() const {
     return GetField<int32_t>(VT__PATCH, 0);
   }
   bool _draft() const {
-    return GetField<uint8_t>(VT__DRAFT, 0) != 0;
+    return GetField<uint8_t>(VT__DRAFT, 1) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2021,13 +2021,13 @@ struct VersionBuilder {
     fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, 0);
   }
   void add__minor(int32_t _minor) {
-    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 50);
+    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 51);
   }
   void add__patch(int32_t _patch) {
     fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, 0);
   }
   void add__draft(bool _draft) {
-    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 0);
+    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 1);
   }
   explicit VersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2043,9 +2043,9 @@ struct VersionBuilder {
 inline flatbuffers::Offset<Version> CreateVersion(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t _major = 0,
-    int32_t _minor = 50,
+    int32_t _minor = 51,
     int32_t _patch = 0,
-    bool _draft = false) {
+    bool _draft = true) {
   VersionBuilder builder_(_fbb);
   builder_.add__patch(_patch);
   builder_.add__minor(_minor);

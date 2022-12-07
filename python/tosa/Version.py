@@ -40,7 +40,7 @@ class Version(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 50
+        return 51
 
     # Version
     def _patch(self):
@@ -54,7 +54,7 @@ class Version(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
-        return False
+        return True
 
 def VersionStart(builder): builder.StartObject(4)
 def Start(builder):
@@ -62,13 +62,13 @@ def Start(builder):
 def VersionAdd_major(builder, Major): builder.PrependInt32Slot(0, Major, 0)
 def Add_major(builder, Major):
     return VersionAdd_major(builder, Major)
-def VersionAdd_minor(builder, Minor): builder.PrependInt32Slot(1, Minor, 50)
+def VersionAdd_minor(builder, Minor): builder.PrependInt32Slot(1, Minor, 51)
 def Add_minor(builder, Minor):
     return VersionAdd_minor(builder, Minor)
 def VersionAdd_patch(builder, Patch): builder.PrependInt32Slot(2, Patch, 0)
 def Add_patch(builder, Patch):
     return VersionAdd_patch(builder, Patch)
-def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 0)
+def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 1)
 def Add_draft(builder, Draft):
     return VersionAdd_draft(builder, Draft)
 def VersionEnd(builder): return builder.EndObject()

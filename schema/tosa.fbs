@@ -283,9 +283,9 @@ table NegateAttribute {
 
 table Version {
   _major: int32 = 0;
-  _minor: int32 = 50;
+  _minor: int32 = 51;
   _patch: int32 = 0;
-  _draft: bool = false;
+  _draft: bool = true;
 }
 
 table TosaTensor {
