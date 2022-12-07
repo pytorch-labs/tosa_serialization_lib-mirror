@@ -968,15 +968,16 @@ struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t pad_const_int() const {
     return GetField<int32_t>(VT_PAD_CONST_INT, 0);
   }
-  float pad_const_fp() const {
-    return GetField<float>(VT_PAD_CONST_FP, 0.0f);
+  const flatbuffers::Vector<uint8_t> *pad_const_fp() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST_FP);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PADDING) &&
            verifier.VerifyVector(padding()) &&
            VerifyField<int32_t>(verifier, VT_PAD_CONST_INT, 4) &&
-           VerifyField<float>(verifier, VT_PAD_CONST_FP, 4) &&
+           VerifyOffset(verifier, VT_PAD_CONST_FP) &&
+           verifier.VerifyVector(pad_const_fp()) &&
            verifier.EndTable();
   }
 };
@@ -991,8 +992,8 @@ struct PadAttributeBuilder {
   void add_pad_const_int(int32_t pad_const_int) {
     fbb_.AddElement<int32_t>(PadAttribute::VT_PAD_CONST_INT, pad_const_int, 0);
   }
-  void add_pad_const_fp(float pad_const_fp) {
-    fbb_.AddElement<float>(PadAttribute::VT_PAD_CONST_FP, pad_const_fp, 0.0f);
+  void add_pad_const_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> pad_const_fp) {
+    fbb_.AddOffset(PadAttribute::VT_PAD_CONST_FP, pad_const_fp);
   }
   explicit PadAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1009,7 +1010,7 @@ inline flatbuffers::Offset<PadAttribute> CreatePadAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
     int32_t pad_const_int = 0,
-    float pad_const_fp = 0.0f) {
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> pad_const_fp = 0) {
   PadAttributeBuilder builder_(_fbb);
   builder_.add_pad_const_fp(pad_const_fp);
   builder_.add_pad_const_int(pad_const_int);
@@ -1021,13 +1022,15 @@ inline flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *padding = nullptr,
     int32_t pad_const_int = 0,
-    float pad_const_fp = 0.0f) {
+    const std::vector<uint8_t> *pad_const_fp = nullptr) {
   auto padding__ = padding ? _fbb.CreateVector<int32_t>(*padding) : 0;
+  if (pad_const_fp) { _fbb.ForceVectorAlignment(pad_const_fp->size(), sizeof(uint8_t), 8); }
+  auto pad_const_fp__ = pad_const_fp ? _fbb.CreateVector<uint8_t>(*pad_const_fp) : 0;
   return tosa::CreatePadAttribute(
       _fbb,
       padding__,
       pad_const_int,
-      pad_const_fp);
+      pad_const_fp__);
 }
 
 struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -1343,18 +1346,20 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t max_int() const {
     return GetField<int32_t>(VT_MAX_INT, 0);
   }
-  float min_fp() const {
-    return GetField<float>(VT_MIN_FP, 0.0f);
+  const flatbuffers::Vector<uint8_t> *min_fp() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_MIN_FP);
   }
-  float max_fp() const {
-    return GetField<float>(VT_MAX_FP, 0.0f);
+  const flatbuffers::Vector<uint8_t> *max_fp() const {
+    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_MAX_FP);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_MIN_INT, 4) &&
            VerifyField<int32_t>(verifier, VT_MAX_INT, 4) &&
-           VerifyField<float>(verifier, VT_MIN_FP, 4) &&
-           VerifyField<float>(verifier, VT_MAX_FP, 4) &&
+           VerifyOffset(verifier, VT_MIN_FP) &&
+           verifier.VerifyVector(min_fp()) &&
+           VerifyOffset(verifier, VT_MAX_FP) &&
+           verifier.VerifyVector(max_fp()) &&
            verifier.EndTable();
   }
 };
@@ -1369,11 +1374,11 @@ struct ClampAttributeBuilder {
   void add_max_int(int32_t max_int) {
     fbb_.AddElement<int32_t>(ClampAttribute::VT_MAX_INT, max_int, 0);
   }
-  void add_min_fp(float min_fp) {
-    fbb_.AddElement<float>(ClampAttribute::VT_MIN_FP, min_fp, 0.0f);
+  void add_min_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> min_fp) {
+    fbb_.AddOffset(ClampAttribute::VT_MIN_FP, min_fp);
   }
-  void add_max_fp(float max_fp) {
-    fbb_.AddElement<float>(ClampAttribute::VT_MAX_FP, max_fp, 0.0f);
+  void add_max_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> max_fp) {
+    fbb_.AddOffset(ClampAttribute::VT_MAX_FP, max_fp);
   }
   explicit ClampAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1390,14 +1395,32 @@ inline flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
     flatbuffers::FlatBufferBuilder &_fbb,
     int32_t min_int = 0,
     int32_t max_int = 0,
-    float min_fp = 0.0f,
-    float max_fp = 0.0f) {
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> min_fp = 0,
+    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> max_fp = 0) {
   ClampAttributeBuilder builder_(_fbb);
   builder_.add_max_fp(max_fp);
   builder_.add_min_fp(min_fp);
   builder_.add_max_int(max_int);
   builder_.add_min_int(min_int);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t min_int = 0,
+    int32_t max_int = 0,
+    const std::vector<uint8_t> *min_fp = nullptr,
+    const std::vector<uint8_t> *max_fp = nullptr) {
+  if (min_fp) { _fbb.ForceVectorAlignment(min_fp->size(), sizeof(uint8_t), 8); }
+  auto min_fp__ = min_fp ? _fbb.CreateVector<uint8_t>(*min_fp) : 0;
+  if (max_fp) { _fbb.ForceVectorAlignment(max_fp->size(), sizeof(uint8_t), 8); }
+  auto max_fp__ = max_fp ? _fbb.CreateVector<uint8_t>(*max_fp) : 0;
+  return tosa::CreateClampAttribute(
+      _fbb,
+      min_int,
+      max_int,
+      min_fp__,
+      max_fp__);
 }
 
 struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
