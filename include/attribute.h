@@ -40,11 +40,39 @@ public:
     {}
 };
 
+inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out)
+{
+    out.clear();
+    if (in.size() < out_size * sizeof(float))
+    {
+        printf("convertFlatbuffersU8toF32(): uint8 Flatbuffers buffer size %u must be >= target size %ld\n", in.size(),
+               out_size * sizeof(float));
+        return 1;
+    }
+    for (uint32_t i = 0; i < out_size; i++)
+    {
+        uint32_t byte0   = in[i * sizeof(float)];
+        uint32_t byte1   = in[i * sizeof(float) + 1];
+        uint32_t byte2   = in[i * sizeof(float) + 2];
+        uint32_t byte3   = in[i * sizeof(float) + 3];
+        uint32_t val_u32 = byte0 + (byte1 << 8) + (byte2 << 16) + (byte3 << 24);
+        float* val_fp32  = reinterpret_cast<float*>(&val_u32);
+        out.push_back(*val_fp32);
+    }
+    return 0;
+}
+
 #define DEF_ARGS_VER0_S_STR(V) _##V = p->V()->str();
 #define DEF_ARGS_VER0_S_DEFAULT(V) _##V = p->V();
+#define DEF_ARGS_VER0_S_float_as_bytes(V)                                                                              \
+    {                                                                                                                  \
+        std::vector<float> attr_vec;                                                                                   \
+        assert(!convertFlatbuffersU8toF32(*(p->V()), 1, attr_vec));                                                    \
+        _##V = attr_vec[0];                                                                                            \
+    }
 
 #define DEF_ARGS_VER0_S_int32_t(V) DEF_ARGS_VER0_S_DEFAULT(V)
-#define DEF_ARGS_VER0_S_float(V) DEF_ARGS_VER0_S_DEFAULT(V)
+#define DEF_ARGS_VER0_S_float(V) DEF_ARGS_VER0_S_float_as_bytes(V)
 #define DEF_ARGS_VER0_S_bool(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_ResizeMode(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_DType(V) DEF_ARGS_VER0_S_DEFAULT(V)

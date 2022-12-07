@@ -619,6 +619,14 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     return TOSA_OK;
 }
 
+std::vector<uint8_t> float_to_u8_wrapper(float f_in)
+{
+    const std::vector<float> f_vec{ f_in };
+    std::vector<uint8_t> u8_out;
+    TosaSerializationHandler::ConvertF32toU8(f_vec, u8_out);
+    return u8_out;
+}
+
 tosa_err_t TosaSerializationHandler::Serialize()
 {
     // regions
@@ -682,9 +690,11 @@ tosa_err_t TosaSerializationHandler::Serialize()
                         fb_attribute = 0;
                         break;
 #define DEF_ARGS_S_STR(NAME, V) , _builder.CreateString(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V().c_str())
+#define DEF_ARGS_S_FP_as_U8(NAME, V)                                                                                   \
+    , _builder.CreateVector<uint8_t>(float_to_u8_wrapper(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()))
 #define DEF_ARGS_S_DEFAULT(NAME, V) , reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()
 #define DEF_ARGS_S_int32_t(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
-#define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
+#define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_FP_as_U8(NAME, V)
 #define DEF_ARGS_S_bool(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_ResizeMode(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_DType(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
