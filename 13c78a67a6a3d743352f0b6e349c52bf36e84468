@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9c60d5_3d934f0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000688
+      },
+      "writtenOn": "2022-12-17T00:47:44Z",
+      "side": 1,
+      "message": "Hi all, \n\nSame patch for adding Region to Tosa Serialization_lib for MLPlatform.\n\nThanks a lot for reviewing.\n\nJerry ",
+      "revId": "13c78a67a6a3d743352f0b6e349c52bf36e84468",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    }
+  ]
+}
