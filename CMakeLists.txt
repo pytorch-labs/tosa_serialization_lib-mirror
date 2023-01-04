@@ -1,6 +1,6 @@
 #TOSA serialization library
 
-# Copyright (c) 2020-2022, ARM Limited.
+# Copyright (c) 2020-2023, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -80,14 +80,6 @@ set_target_properties(tosa_serialization_lib PROPERTIES PUBLIC_HEADER "${public_
 
 # Optionally build test executables.
 if (BUILD_TESTS)
-    add_executable(serialization_read_write
-      test/src/serialization_read_write.cpp
-    )
-
-    target_link_libraries(serialization_read_write
-      tosa_serialization_lib
-    )
-
     add_executable(serialization_npy_test
       test/src/serialization_npy_test.cpp
     )
