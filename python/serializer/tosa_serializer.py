@@ -533,11 +533,9 @@ class TosaSerializerOperator:
 
 
 class TosaSerializerBasicBlock:
-    def __init__(self, name, pathPrefix, saveConstsToFile=False):
+    def __init__(self, name):
         self.name = name
-        self.pathPrefix = pathPrefix
         self.operators = []
-        self.saveConstsToFile = saveConstsToFile
 
         # Dict assures uniqueness, but allows us to look up by name
         self.tensors = dict()
@@ -606,10 +604,8 @@ class TosaSerializerRegion:
         self.pathPrefix = pathPrefix
         self.saveConstsToFile = saveConstsToFile
 
-    def addBasicBlock(self, name, pathPrefix, saveConstsToFile):
-        self.currBasicBlock = TosaSerializerBasicBlock(
-            name, pathPrefix, saveConstsToFile
-        )
+    def addBasicBlock(self, name):
+        self.currBasicBlock = TosaSerializerBasicBlock(name)
         self.basicBlocks.append(self.currBasicBlock)
 
     def serialize(self, builder):
@@ -716,7 +712,7 @@ class TosaSerializer:
         # Enables inspection of constant data outside of graph
         self.saveConstsToFile = saveConstsToFile
 
-        self.currRegion.addBasicBlock("main", pathPrefix, self.saveConstsToFile)
+        self.currRegion.addBasicBlock("main")
 
         # Is this an illegal test that is expected to fail?
         self.expectedReturnCode = 0
@@ -749,6 +745,9 @@ class TosaSerializer:
 
     def addOperator(self, op, inputs, outputs, attributes=None):
         return self.currRegion.addOperator(op, inputs, outputs, attributes)
+
+    def addBasicBlock(self, name):
+        self.currRegion.addBasicBlock(name)
 
     def setExpectedReturnCode(self, val, fail, desc=""):
 
@@ -792,7 +791,7 @@ class TosaSerializer:
 
         for region in self.regions:
             for block in region.basicBlocks:
-                if block:
+                if block and block.name == "main":
                     for i in block.inputs:
                         ifm_name.append(i)
                         ifm_file.append(block.tensors[i].placeholderFilename)
