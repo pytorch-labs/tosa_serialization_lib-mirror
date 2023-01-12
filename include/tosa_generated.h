@@ -71,6 +71,9 @@ struct NegateAttributeBuilder;
 struct CustomAttribute;
 struct CustomAttributeBuilder;
 
+struct FFTAttribute;
+struct FFTAttributeBuilder;
+
 struct Version;
 struct VersionBuilder;
 
@@ -252,11 +255,13 @@ enum Op : uint32_t {
   Op_CUSTOM = 66,
   Op_COND_IF = 67,
   Op_WHILE_LOOP = 68,
+  Op_FFT2D = 69,
+  Op_RFFT2D = 70,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_WHILE_LOOP
+  Op_MAX = Op_RFFT2D
 };
 
-inline const Op (&EnumValuesOp())[69] {
+inline const Op (&EnumValuesOp())[71] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -326,13 +331,15 @@ inline const Op (&EnumValuesOp())[69] {
     Op_IDENTITY,
     Op_CUSTOM,
     Op_COND_IF,
-    Op_WHILE_LOOP
+    Op_WHILE_LOOP,
+    Op_FFT2D,
+    Op_RFFT2D
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[70] = {
+  static const char * const names[72] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -402,13 +409,15 @@ inline const char * const *EnumNamesOp() {
     "CUSTOM",
     "COND_IF",
     "WHILE_LOOP",
+    "FFT2D",
+    "RFFT2D",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_WHILE_LOOP)) return "";
+  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RFFT2D)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
@@ -436,11 +445,12 @@ enum Attribute : uint8_t {
   Attribute_FullyConnectedAttribute = 19,
   Attribute_NegateAttribute = 20,
   Attribute_CustomAttribute = 21,
+  Attribute_FFTAttribute = 22,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_CustomAttribute
+  Attribute_MAX = Attribute_FFTAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[22] {
+inline const Attribute (&EnumValuesAttribute())[23] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -463,13 +473,14 @@ inline const Attribute (&EnumValuesAttribute())[22] {
     Attribute_MatMulAttribute,
     Attribute_FullyConnectedAttribute,
     Attribute_NegateAttribute,
-    Attribute_CustomAttribute
+    Attribute_CustomAttribute,
+    Attribute_FFTAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[23] = {
+  static const char * const names[24] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -492,13 +503,14 @@ inline const char * const *EnumNamesAttribute() {
     "FullyConnectedAttribute",
     "NegateAttribute",
     "CustomAttribute",
+    "FFTAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_CustomAttribute)) return "";
+  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_FFTAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -589,6 +601,10 @@ template<> struct AttributeTraits<tosa::NegateAttribute> {
 
 template<> struct AttributeTraits<tosa::CustomAttribute> {
   static const Attribute enum_value = Attribute_CustomAttribute;
+};
+
+template<> struct AttributeTraits<tosa::FFTAttribute> {
+  static const Attribute enum_value = Attribute_FFTAttribute;
 };
 
 bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
@@ -2075,6 +2091,47 @@ inline flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
       implementation_attrs__);
 }
 
+struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef FFTAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INVERSE = 4
+  };
+  bool inverse() const {
+    return GetField<uint8_t>(VT_INVERSE, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_INVERSE, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct FFTAttributeBuilder {
+  typedef FFTAttribute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_inverse(bool inverse) {
+    fbb_.AddElement<uint8_t>(FFTAttribute::VT_INVERSE, static_cast<uint8_t>(inverse), 0);
+  }
+  explicit FFTAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<FFTAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<FFTAttribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<FFTAttribute> CreateFFTAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    bool inverse = false) {
+  FFTAttributeBuilder builder_(_fbb);
+  builder_.add_inverse(inverse);
+  return builder_.Finish();
+}
+
 struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef VersionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2320,6 +2377,9 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::CustomAttribute *attribute_as_CustomAttribute() const {
     return attribute_type() == tosa::Attribute_CustomAttribute ? static_cast<const tosa::CustomAttribute *>(attribute()) : nullptr;
   }
+  const tosa::FFTAttribute *attribute_as_FFTAttribute() const {
+    return attribute_type() == tosa::Attribute_FFTAttribute ? static_cast<const tosa::FFTAttribute *>(attribute()) : nullptr;
+  }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
   }
@@ -2424,6 +2484,10 @@ template<> inline const tosa::NegateAttribute *TosaOperator::attribute_as<tosa::
 
 template<> inline const tosa::CustomAttribute *TosaOperator::attribute_as<tosa::CustomAttribute>() const {
   return attribute_as_CustomAttribute();
+}
+
+template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFTAttribute>() const {
+  return attribute_as_FFTAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2819,6 +2883,10 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
     }
     case Attribute_CustomAttribute: {
       auto ptr = reinterpret_cast<const tosa::CustomAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_FFTAttribute: {
+      auto ptr = reinterpret_cast<const tosa::FFTAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

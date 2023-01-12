@@ -72,3 +72,5 @@ class Op(object):
     CUSTOM = 66
     COND_IF = 67
     WHILE_LOOP = 68
+    FFT2D = 69
+    RFFT2D = 70

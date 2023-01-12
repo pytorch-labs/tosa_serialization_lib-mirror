@@ -361,6 +361,14 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddInput1Zp, input1_zp))
         self.ints.append((a.AddOutputZp, output_zp))
 
+    def FFTAttribute(self, inverse):
+        from tosa import FFTAttribute as a, Attribute
+
+        self.utype = Attribute.Attribute().FFTAttribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddInverse, inverse))
+
 
 class TosaSerializerTensor:
     def __init__(

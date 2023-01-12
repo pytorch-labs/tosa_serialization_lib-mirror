@@ -20,6 +20,9 @@ file_identifier "TOSA";
 // File extension of any written files.
 file_extension "tosa";
 
+// NOTE: New values added to the schema should be placed
+// at the end of the list in order to keep schema stable.
+
 enum DType:uint32 {
   UNKNOWN = 0,
   BOOL,
@@ -43,8 +46,6 @@ enum ResizeMode:uint32 {
 
 enum Op:uint32 {
   UNKNOWN = 0,
-
-  // Tensor Operator
   ARGMAX,
   AVG_POOL2D,
   CONV2D,
@@ -54,14 +55,10 @@ enum Op:uint32 {
   MATMUL,
   MAX_POOL2D,
   TRANSPOSE_CONV2D,
-
-  // Activation
   CLAMP,
   RESERVED,
   SIGMOID,
   TANH,
-
-  // Elementwise-Binary
   ADD,
   ARITHMETIC_RIGHT_SHIFT,
   BITWISE_AND,
@@ -79,8 +76,6 @@ enum Op:uint32 {
   POW,
   SUB,
   TABLE,
-
-  // Elementwise-Unary
   ABS,
   BITWISE_NOT,
   CEIL,
@@ -92,24 +87,16 @@ enum Op:uint32 {
   NEGATE,
   RECIPROCAL,
   RSQRT,
-
-  // Elementwise-Ternary
   SELECT,
-
-  // Logical
   EQUAL,
   GREATER,
   GREATER_EQUAL,
-
-  // Reduction
   REDUCE_ANY,
   REDUCE_ALL,
   REDUCE_MAX,
   REDUCE_MIN,
   REDUCE_PRODUCT,
   REDUCE_SUM,
-
-  // Data layout operation
   CONCAT,
   PAD,
   RESHAPE,
@@ -117,28 +104,18 @@ enum Op:uint32 {
   SLICE,
   TILE,
   TRANSPOSE,
-
-  // Gather/scatter operation
   GATHER,
   SCATTER,
-
-  // Image
   RESIZE,
-
-  // Type conversion
   CAST,
   RESCALE,
-
-  // Data Nodes
   CONST,
   IDENTITY,
-
-  // Custom operations
   CUSTOM,
-
-  // Control flow operators
   COND_IF,
   WHILE_LOOP,
+  FFT2D,
+  RFFT2D,
 }
 
 union Attribute {
@@ -162,7 +139,8 @@ union Attribute {
   MatMulAttribute,
   FullyConnectedAttribute,
   NegateAttribute,
-  CustomAttribute
+  CustomAttribute,
+  FFTAttribute,
 }
 
 table PoolAttribute {
@@ -286,6 +264,10 @@ table CustomAttribute {
   identifier:string;
   config:string;
   implementation_attrs:[ubyte];
+}
+
+table FFTAttribute {
+  inverse: bool;
 }
 
 table Version {

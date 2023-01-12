@@ -127,3 +127,6 @@ DEF_ATTRIBUTE(Custom, 3,
               string, S, identifier,
               string, S, config,
               uint8_t, V, implementation_attrs)
+
+DEF_ATTRIBUTE(FFT, 1,
+              bool, S, inverse)

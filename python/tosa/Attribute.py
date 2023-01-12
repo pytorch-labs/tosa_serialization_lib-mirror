@@ -25,3 +25,4 @@ class Attribute(object):
     FullyConnectedAttribute = 19
     NegateAttribute = 20
     CustomAttribute = 21
+    FFTAttribute = 22
