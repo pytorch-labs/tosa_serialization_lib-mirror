@@ -34,21 +34,19 @@ DEF_ATTRIBUTE(Pool, 6,
               int32_t, S, output_zp,
               DType,   S, accum_dtype)
 
-DEF_ATTRIBUTE(Conv, 6,
+DEF_ATTRIBUTE(Conv, 5,
               int32_t, V, pad,
               int32_t, V, stride,
               int32_t, V, dilation,
               int32_t, S, input_zp,
-              int32_t, S, weight_zp,
-              DType,   S, accum_dtype)
+              int32_t, S, weight_zp)
 
-DEF_ATTRIBUTE(TransposeConv, 6,
+DEF_ATTRIBUTE(TransposeConv, 5,
               int32_t, V, out_pad,
               int32_t, V, stride,
               int32_t, V, output_shape,
               int32_t, S, input_zp,
-              int32_t, S, weight_zp,
-              DType,   S, accum_dtype)
+              int32_t, S, weight_zp)
 
 DEF_ATTRIBUTE(Pad, 3,
               int32_t, V, padding,
@@ -109,15 +107,13 @@ DEF_ATTRIBUTE(Transpose, 1,
 DEF_ATTRIBUTE(Table, 1,
               int16_t, V, table)
 
-DEF_ATTRIBUTE(MatMul, 3,
+DEF_ATTRIBUTE(MatMul, 2,
               int32_t, S, a_zp,
-              int32_t, S, b_zp,
-              DType,   S, accum_dtype)
+              int32_t, S, b_zp)
 
-DEF_ATTRIBUTE(FullyConnected, 3,
+DEF_ATTRIBUTE(FullyConnected, 2,
               int32_t, S, input_zp,
-              int32_t, S, weight_zp,
-              DType,   S, accum_dtype)
+              int32_t, S, weight_zp)
 
 DEF_ATTRIBUTE(Negate, 2,
               int32_t, S, input1_zp,

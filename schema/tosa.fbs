@@ -158,7 +158,6 @@ table ConvAttribute {
   dilation: [int32];
   input_zp: int32;
   weight_zp: int32;
-  accum_dtype: DType;
 }
 
 table TransposeConvAttribute {
@@ -167,7 +166,6 @@ table TransposeConvAttribute {
   output_shape: [int32];
   input_zp: int32;
   weight_zp: int32;
-  accum_dtype: DType;
 }
 
 table PadAttribute {
@@ -246,13 +244,11 @@ table TableAttribute {
 table MatMulAttribute {
   a_zp: int32;
   b_zp: int32;
-  accum_dtype: DType;
 }
 
 table FullyConnectedAttribute {
   input_zp: int32;
   weight_zp: int32;
-  accum_dtype: DType;
 }
 
 table NegateAttribute {

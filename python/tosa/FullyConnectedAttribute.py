@@ -42,14 +42,7 @@ class FullyConnectedAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # FullyConnectedAttribute
-    def AccumDtype(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
-        return 0
-
-def FullyConnectedAttributeStart(builder): builder.StartObject(3)
+def FullyConnectedAttributeStart(builder): builder.StartObject(2)
 def Start(builder):
     return FullyConnectedAttributeStart(builder)
 def FullyConnectedAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
@@ -58,9 +51,6 @@ def AddInputZp(builder, inputZp):
 def FullyConnectedAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
 def AddWeightZp(builder, weightZp):
     return FullyConnectedAttributeAddWeightZp(builder, weightZp)
-def FullyConnectedAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(2, accumDtype, 0)
-def AddAccumDtype(builder, accumDtype):
-    return FullyConnectedAttributeAddAccumDtype(builder, accumDtype)
 def FullyConnectedAttributeEnd(builder): return builder.EndObject()
 def End(builder):
     return FullyConnectedAttributeEnd(builder)

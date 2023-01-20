@@ -42,14 +42,7 @@ class MatMulAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-    # MatMulAttribute
-    def AccumDtype(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
-        return 0
-
-def MatMulAttributeStart(builder): builder.StartObject(3)
+def MatMulAttributeStart(builder): builder.StartObject(2)
 def Start(builder):
     return MatMulAttributeStart(builder)
 def MatMulAttributeAddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
@@ -58,9 +51,6 @@ def AddAZp(builder, aZp):
 def MatMulAttributeAddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
 def AddBZp(builder, bZp):
     return MatMulAttributeAddBZp(builder, bZp)
-def MatMulAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(2, accumDtype, 0)
-def AddAccumDtype(builder, accumDtype):
-    return MatMulAttributeAddAccumDtype(builder, accumDtype)
 def MatMulAttributeEnd(builder): return builder.EndObject()
 def End(builder):
     return MatMulAttributeEnd(builder)
