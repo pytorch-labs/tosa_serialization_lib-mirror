@@ -619,11 +619,16 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     return TOSA_OK;
 }
 
-std::vector<uint8_t> float_to_u8_wrapper(float f_in)
+std::vector<uint8_t> float_to_u8_helper(float f_in)
 {
-    const std::vector<float> f_vec{ f_in };
+    // Push back a single float value to the buffer with *NO PADDING*
+    // Therefore ConvertF32toU8 function not used
     std::vector<uint8_t> u8_out;
-    TosaSerializationHandler::ConvertF32toU8(f_vec, u8_out);
+    uint32_t* val_u32 = reinterpret_cast<uint32_t*>(&f_in);
+    u8_out.push_back(*val_u32 & 0xFF);
+    u8_out.push_back((*val_u32 >> 8) & 0xFF);
+    u8_out.push_back((*val_u32 >> 16) & 0xFF);
+    u8_out.push_back((*val_u32 >> 24) & 0xFF);
     return u8_out;
 }
 
@@ -691,7 +696,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
                         break;
 #define DEF_ARGS_S_STR(NAME, V) , _builder.CreateString(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V().c_str())
 #define DEF_ARGS_S_FP_as_U8(NAME, V)                                                                                   \
-    , _builder.CreateVector<uint8_t>(float_to_u8_wrapper(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()))
+    , _builder.CreateVector<uint8_t>(float_to_u8_helper(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()))
 #define DEF_ARGS_S_DEFAULT(NAME, V) , reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V()
 #define DEF_ARGS_S_int32_t(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_FP_as_U8(NAME, V)
