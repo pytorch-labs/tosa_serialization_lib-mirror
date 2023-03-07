@@ -1,6 +1,7 @@
 // half - IEEE 754-based half-precision floating-point library.
 //
 // Copyright (c) 2012-2021 Christian Rau <rauy@users.sourceforge.net>
+// Copyright (c) 2023, ARM Limited.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 // files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
@@ -4569,6 +4570,8 @@ namespace half_float
 	/// \throw std::overflow_error if `FE_OVERFLOW` is selected and set
 	/// \throw std::underflow_error if `FE_UNDERFLOW` is selected and set
 	/// \throw std::range_error if `FE_INEXACT` is selected and set
+
+    #if not defined HALF_ENABLE_CPP11_NOEXCEPT
 	inline void fethrowexcept(int excepts, const char *msg = "")
 	{
 		excepts &= detail::errflags();
@@ -4581,6 +4584,7 @@ namespace half_float
 		if(excepts & FE_INEXACT)
 			throw std::range_error(msg);
 	}
+    #endif //HALF_ENABLE_CPP11_NOEXCEPT
 	/// \}
 }
 
