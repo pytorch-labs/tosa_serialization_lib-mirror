@@ -126,3 +126,7 @@ DEF_ATTRIBUTE(Custom, 3,
 
 DEF_ATTRIBUTE(FFT, 1,
               bool, S, inverse)
+
+DEF_ATTRIBUTE(Sort, 2,
+              int32_t, S, axis,
+              bool, S, descending)

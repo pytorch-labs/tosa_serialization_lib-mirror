@@ -23,6 +23,9 @@ struct PadAttributeBuilder;
 struct AxisAttribute;
 struct AxisAttributeBuilder;
 
+struct SortAttribute;
+struct SortAttributeBuilder;
+
 struct ReshapeAttribute;
 struct ReshapeAttributeBuilder;
 
@@ -257,11 +260,12 @@ enum Op : uint32_t {
   Op_WHILE_LOOP = 68,
   Op_FFT2D = 69,
   Op_RFFT2D = 70,
+  Op_ARGSORT = 71,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_RFFT2D
+  Op_MAX = Op_ARGSORT
 };
 
-inline const Op (&EnumValuesOp())[71] {
+inline const Op (&EnumValuesOp())[72] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -333,13 +337,14 @@ inline const Op (&EnumValuesOp())[71] {
     Op_COND_IF,
     Op_WHILE_LOOP,
     Op_FFT2D,
-    Op_RFFT2D
+    Op_RFFT2D,
+    Op_ARGSORT
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[72] = {
+  static const char * const names[73] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -411,13 +416,14 @@ inline const char * const *EnumNamesOp() {
     "WHILE_LOOP",
     "FFT2D",
     "RFFT2D",
+    "ARGSORT",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RFFT2D)) return "";
+  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_ARGSORT)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
@@ -446,11 +452,12 @@ enum Attribute : uint8_t {
   Attribute_NegateAttribute = 20,
   Attribute_CustomAttribute = 21,
   Attribute_FFTAttribute = 22,
+  Attribute_SortAttribute = 23,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_FFTAttribute
+  Attribute_MAX = Attribute_SortAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[23] {
+inline const Attribute (&EnumValuesAttribute())[24] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -474,13 +481,14 @@ inline const Attribute (&EnumValuesAttribute())[23] {
     Attribute_FullyConnectedAttribute,
     Attribute_NegateAttribute,
     Attribute_CustomAttribute,
-    Attribute_FFTAttribute
+    Attribute_FFTAttribute,
+    Attribute_SortAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[24] = {
+  static const char * const names[25] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -504,13 +512,14 @@ inline const char * const *EnumNamesAttribute() {
     "NegateAttribute",
     "CustomAttribute",
     "FFTAttribute",
+    "SortAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_FFTAttribute)) return "";
+  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_SortAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -605,6 +614,10 @@ template<> struct AttributeTraits<tosa::CustomAttribute> {
 
 template<> struct AttributeTraits<tosa::FFTAttribute> {
   static const Attribute enum_value = Attribute_FFTAttribute;
+};
+
+template<> struct AttributeTraits<tosa::SortAttribute> {
+  static const Attribute enum_value = Attribute_SortAttribute;
 };
 
 bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
@@ -1047,6 +1060,57 @@ inline flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
     int32_t axis = 0) {
   AxisAttributeBuilder builder_(_fbb);
   builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct SortAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SortAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4,
+    VT_DESCENDING = 6
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool descending() const {
+    return GetField<uint8_t>(VT_DESCENDING, 0) != 0;
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           VerifyField<uint8_t>(verifier, VT_DESCENDING, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct SortAttributeBuilder {
+  typedef SortAttribute Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(SortAttribute::VT_AXIS, axis, 0);
+  }
+  void add_descending(bool descending) {
+    fbb_.AddElement<uint8_t>(SortAttribute::VT_DESCENDING, static_cast<uint8_t>(descending), 0);
+  }
+  explicit SortAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SortAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SortAttribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SortAttribute> CreateSortAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0,
+    bool descending = false) {
+  SortAttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  builder_.add_descending(descending);
   return builder_.Finish();
 }
 
@@ -2359,6 +2423,9 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::FFTAttribute *attribute_as_FFTAttribute() const {
     return attribute_type() == tosa::Attribute_FFTAttribute ? static_cast<const tosa::FFTAttribute *>(attribute()) : nullptr;
   }
+  const tosa::SortAttribute *attribute_as_SortAttribute() const {
+    return attribute_type() == tosa::Attribute_SortAttribute ? static_cast<const tosa::SortAttribute *>(attribute()) : nullptr;
+  }
   const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
     return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
   }
@@ -2467,6 +2534,10 @@ template<> inline const tosa::CustomAttribute *TosaOperator::attribute_as<tosa::
 
 template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFTAttribute>() const {
   return attribute_as_FFTAttribute();
+}
+
+template<> inline const tosa::SortAttribute *TosaOperator::attribute_as<tosa::SortAttribute>() const {
+  return attribute_as_SortAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2866,6 +2937,10 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
     }
     case Attribute_FFTAttribute: {
       auto ptr = reinterpret_cast<const tosa::FFTAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SortAttribute: {
+      auto ptr = reinterpret_cast<const tosa::SortAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

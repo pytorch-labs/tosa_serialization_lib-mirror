@@ -116,6 +116,7 @@ enum Op:uint32 {
   WHILE_LOOP,
   FFT2D,
   RFFT2D,
+  ARGSORT,
 }
 
 union Attribute {
@@ -141,6 +142,7 @@ union Attribute {
   NegateAttribute,
   CustomAttribute,
   FFTAttribute,
+  SortAttribute,
 }
 
 table PoolAttribute {
@@ -176,6 +178,11 @@ table PadAttribute {
 
 table AxisAttribute {
   axis: int32;
+}
+
+table SortAttribute {
+  axis: int32;
+  descending: bool;
 }
 
 table ReshapeAttribute {

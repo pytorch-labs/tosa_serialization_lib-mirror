@@ -381,6 +381,15 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.bools.append((a.AddInverse, inverse))
 
+    def SortAttribute(self, axis, descending):
+        from tosa import SortAttribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SortAttribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddDescending, descending))
+        self.ints.append((a.AddAxis, axis))
+
 
 class TosaSerializerTensor:
     def __init__(

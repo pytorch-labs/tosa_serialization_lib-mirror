@@ -26,3 +26,4 @@ class Attribute(object):
     NegateAttribute = 20
     CustomAttribute = 21
     FFTAttribute = 22
+    SortAttribute = 23
