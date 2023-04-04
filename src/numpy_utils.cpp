@@ -46,6 +46,12 @@ NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, co
     return readFromNpyFileCommon(filename, dtype_str, sizeof(float), elems, databuf, false);
 }
 
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, double* databuf)
+{
+    const char dtype_str[] = "'<f8'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(double), elems, databuf, false);
+}
+
 NumpyUtilities::NPError
     NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, half_float::half* databuf)
 {
@@ -313,6 +319,20 @@ NumpyUtilities::NPError
 {
     const char dtype_str[] = "'<f4'";
     return writeToNpyFileCommon(filename, dtype_str, sizeof(float), shape, databuf, false);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const uint32_t elems, const double* databuf)
+{
+    std::vector<int32_t> shape = { (int32_t)elems };
+    return writeToNpyFile(filename, shape, databuf);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const double* databuf)
+{
+    const char dtype_str[] = "'<f8'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(double), shape, databuf, false);
 }
 
 NumpyUtilities::NPError NumpyUtilities::writeToNpyFile(const char* filename,

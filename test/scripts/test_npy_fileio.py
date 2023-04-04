@@ -122,7 +122,7 @@ def main():
     xunit_suite = xunit_result.create_suite("basic_serialization")
 
     max_size = 128
-    datatypes = ["int32", "int64", "float", "bool"]
+    datatypes = ["int32", "int64", "float", "bool", "double"]
     random.seed(args.seed)
 
     failed = 0
