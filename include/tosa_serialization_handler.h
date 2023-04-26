@@ -155,6 +155,15 @@ public:
     {
         _data = std::move(data);
     }
+    void SetDimSize(size_t dim, uint32_t new_size)
+    {
+        if (dim < 0 || dim >= _shape.size())
+        {
+            printf("dim is out of bound\n");
+            assert(0);
+        }
+        _shape[dim] = new_size;
+    }
 
 private:
     DType _dtype;                /* data type enumeration, see tosa_isa_generated.h */
