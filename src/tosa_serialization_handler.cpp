@@ -26,7 +26,10 @@ TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name
 {
     _dtype = dtype;
 
-    std::copy(shape->begin(), shape->end(), std::back_inserter(_shape));
+    if (shape)
+    {
+        std::copy(shape->begin(), shape->end(), std::back_inserter(_shape));
+    }
 
     assert(name);
     _name = name->str();
