@@ -45,6 +45,14 @@ public:
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, half_float::half* databuf);
 
+    static NPError readFromNpyFile(const char* filename, const uint32_t elems, uint8_t* databuf);
+
+    static NPError readFromNpyFile(const char* filename, const uint32_t elems, int8_t* databuf);
+
+    static NPError readFromNpyFile(const char* filename, const uint32_t elems, uint16_t* databuf);
+
+    static NPError readFromNpyFile(const char* filename, const uint32_t elems, int16_t* databuf);
+
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, int32_t* databuf);
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, int64_t* databuf);
@@ -57,6 +65,22 @@ public:
 
     static NPError
         writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const half_float::half* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const uint8_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const uint32_t elems, const uint8_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int8_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const uint32_t elems, const int8_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const uint16_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const uint32_t elems, const uint16_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int16_t* databuf);
+
+    static NPError writeToNpyFile(const char* filename, const uint32_t elems, const int16_t* databuf);
 
     static NPError writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int32_t* databuf);
 

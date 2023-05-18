@@ -28,6 +28,30 @@ NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, co
     return readFromNpyFileCommon(filename, dtype_str, 1, elems, databuf, true);
 }
 
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, uint8_t* databuf)
+{
+    const char dtype_str[] = "'|u1'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(uint8_t), elems, databuf, false);
+}
+
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, int8_t* databuf)
+{
+    const char dtype_str[] = "'|i1'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(int8_t), elems, databuf, false);
+}
+
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, uint16_t* databuf)
+{
+    const char dtype_str[] = "'<u2'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(uint16_t), elems, databuf, false);
+}
+
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, int16_t* databuf)
+{
+    const char dtype_str[] = "'<i2'";
+    return readFromNpyFileCommon(filename, dtype_str, sizeof(int16_t), elems, databuf, false);
+}
+
 NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, int32_t* databuf)
 {
     const char dtype_str[] = "'<i4'";
@@ -278,6 +302,62 @@ NumpyUtilities::NPError
 {
     const char dtype_str[] = "'|b1'";
     return writeToNpyFileCommon(filename, dtype_str, 1, shape, databuf, true);    // bools written as size 1
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const uint32_t elems, const uint8_t* databuf)
+{
+    std::vector<int32_t> shape = { (int32_t)elems };
+    return writeToNpyFile(filename, shape, databuf);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const uint8_t* databuf)
+{
+    const char dtype_str[] = "'|u1'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(uint8_t), shape, databuf, false);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const uint32_t elems, const int8_t* databuf)
+{
+    std::vector<int32_t> shape = { (int32_t)elems };
+    return writeToNpyFile(filename, shape, databuf);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int8_t* databuf)
+{
+    const char dtype_str[] = "'|i1'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(int8_t), shape, databuf, false);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const uint32_t elems, const uint16_t* databuf)
+{
+    std::vector<int32_t> shape = { (int32_t)elems };
+    return writeToNpyFile(filename, shape, databuf);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const uint16_t* databuf)
+{
+    const char dtype_str[] = "'<u2'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(uint16_t), shape, databuf, false);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const uint32_t elems, const int16_t* databuf)
+{
+    std::vector<int32_t> shape = { (int32_t)elems };
+    return writeToNpyFile(filename, shape, databuf);
+}
+
+NumpyUtilities::NPError
+    NumpyUtilities::writeToNpyFile(const char* filename, const std::vector<int32_t>& shape, const int16_t* databuf)
+{
+    const char dtype_str[] = "'<i2'";
+    return writeToNpyFileCommon(filename, dtype_str, sizeof(int16_t), shape, databuf, false);
 }
 
 NumpyUtilities::NPError
