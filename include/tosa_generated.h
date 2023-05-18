@@ -2120,16 +2120,16 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT__DRAFT = 10
   };
   int32_t _major() const {
-    return GetField<int32_t>(VT__MAJOR, 0);
+    return GetField<int32_t>(VT__MAJOR, -1);
   }
   int32_t _minor() const {
-    return GetField<int32_t>(VT__MINOR, 70);
+    return GetField<int32_t>(VT__MINOR, -1);
   }
   int32_t _patch() const {
-    return GetField<int32_t>(VT__PATCH, 0);
+    return GetField<int32_t>(VT__PATCH, -1);
   }
   bool _draft() const {
-    return GetField<uint8_t>(VT__DRAFT, 1) != 0;
+    return GetField<uint8_t>(VT__DRAFT, 255) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2146,16 +2146,16 @@ struct VersionBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add__major(int32_t _major) {
-    fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, 0);
+    fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, -1);
   }
   void add__minor(int32_t _minor) {
-    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, 70);
+    fbb_.AddElement<int32_t>(Version::VT__MINOR, _minor, -1);
   }
   void add__patch(int32_t _patch) {
-    fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, 0);
+    fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, -1);
   }
   void add__draft(bool _draft) {
-    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 1);
+    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 255);
   }
   explicit VersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2170,9 +2170,9 @@ struct VersionBuilder {
 
 inline flatbuffers::Offset<Version> CreateVersion(
     flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t _major = 0,
-    int32_t _minor = 70,
-    int32_t _patch = 0,
+    int32_t _major = -1,
+    int32_t _minor = -1,
+    int32_t _patch = -1,
     bool _draft = true) {
   VersionBuilder builder_(_fbb);
   builder_.add__patch(_patch);
@@ -2724,7 +2724,7 @@ struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_VERSION) &&
+           VerifyOffsetRequired(verifier, VT_VERSION) &&
            verifier.VerifyTable(version()) &&
            VerifyOffset(verifier, VT_REGIONS) &&
            verifier.VerifyVector(regions()) &&
@@ -2750,6 +2750,7 @@ struct TosaGraphBuilder {
   flatbuffers::Offset<TosaGraph> Finish() {
     const auto end = fbb_.EndTable(start_);
     auto o = flatbuffers::Offset<TosaGraph>(end);
+    fbb_.Required(o, TosaGraph::VT_VERSION);
     return o;
   }
 };

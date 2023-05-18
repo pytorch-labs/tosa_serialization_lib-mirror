@@ -267,10 +267,10 @@ table FFTAttribute {
 }
 
 table Version {
-  _major: int32 = 0;
-  _minor: int32 = 70;
-  _patch: int32 = 0;
-  _draft: bool = true;
+  _major: int32 = -1;
+  _minor: int32 = -1;
+  _patch: int32 = -1;
+  _draft: bool = 255;
 }
 
 table TosaTensor {
@@ -301,7 +301,7 @@ table TosaRegion {
 }
 
 table TosaGraph {
-  version:Version;
+  version:Version (required);
   regions:[TosaRegion];       // regions array
 }
 

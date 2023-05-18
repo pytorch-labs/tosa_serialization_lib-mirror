@@ -194,56 +194,6 @@ TosaSerializationHandler::~TosaSerializationHandler()
     Clear();    // deallocate all basic blocks
 }
 
-TosaVersion TosaSerializationHandler::ParseTosaSchemaVersion(std::string schema)
-{
-    // Parse all 4 version fields in schema file
-    static const char* keywords[4] = { "major: int32 = ", "minor: int32 = ", "patch: int32 = ", "draft: bool = " };
-    string keyword_str[4];
-    size_t search_pos = 0;
-    size_t keyword_pos;
-    size_t semicolon_pos;
-    // parse integer field first
-    for (int32_t i = 0; i < 4; i++)
-    {
-        keyword_pos = schema.find(keywords[i], search_pos);
-        if (keyword_pos == std::string::npos)
-        {
-            printf("ERROR: can't find keyword \"%s\" in schema\n", keywords[i]);
-            assert(0);
-        }
-        semicolon_pos = schema.find(';', keyword_pos);
-        if (keyword_pos == std::string::npos)
-        {
-            printf("ERROR: can't find ';' in schema\n");
-            assert(0);
-        }
-        keyword_str[i] =
-            schema.substr(keyword_pos + strlen(keywords[i]), semicolon_pos - keyword_pos - strlen(keywords[i]));
-        search_pos = semicolon_pos;
-    }
-
-    int32_t schema_major = 0;
-    int32_t schema_minor = 0;
-    int32_t schema_patch = 0;
-    bool schema_draft    = false;
-    try
-    {
-        schema_major = stoi(keyword_str[0]);
-        schema_minor = stoi(keyword_str[1]);
-        schema_patch = stoi(keyword_str[2]);
-        schema_draft = (keyword_str[3] == "true") ? true : false;
-    }
-    catch (std::invalid_argument& e)
-    {
-        printf("ERROR: fail at stoi(): %s\n", e.what());
-        assert(0);
-    }
-
-    TosaVersion schema_version(schema_major, schema_minor, schema_patch, schema_draft);
-
-    return schema_version;
-}
-
 tosa_err_t TosaSerializationHandler::LoadFileSchema(const char* schema_filename)
 {
     std::string schema;
@@ -257,23 +207,6 @@ tosa_err_t TosaSerializationHandler::LoadFileSchema(const char* schema_filename)
     }
 
     ok = _parser.Parse(schema.c_str());
-
-    TosaVersion schema_version = ParseTosaSchemaVersion(schema);
-
-    TosaVersion::compat_t is_compat = schema_version.is_compatible(GetVersion());
-    switch (is_compat)
-    {
-        case TosaVersion::compat_t::COMPLETELY_COMPATIBLE:
-            break;
-        case TosaVersion::compat_t::PARTIALLY_COMPATIBLE:
-            printf("WARNING: Schema flatbuffer version %s is partially compatible with serializer version %s\n",
-                   schema_version.to_string().c_str(), GetVersion().to_string().c_str());
-            break;
-        case TosaVersion::compat_t::NOT_COMPATIBLE:
-            printf("ERROR: Schema flatbuffer version %s is not compatible with serializer version %s\n",
-                   schema_version.to_string().c_str(), GetVersion().to_string().c_str());
-            return TOSA_VERSION_MISMATCH;
-    }
 
     if (!ok)
     {
