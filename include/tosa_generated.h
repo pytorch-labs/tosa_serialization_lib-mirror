@@ -2129,7 +2129,7 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     return GetField<int32_t>(VT__PATCH, -1);
   }
   bool _draft() const {
-    return GetField<uint8_t>(VT__DRAFT, 255) != 0;
+    return GetField<uint8_t>(VT__DRAFT, 1) != 0;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -2155,7 +2155,7 @@ struct VersionBuilder {
     fbb_.AddElement<int32_t>(Version::VT__PATCH, _patch, -1);
   }
   void add__draft(bool _draft) {
-    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 255);
+    fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 1);
   }
   explicit VersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {

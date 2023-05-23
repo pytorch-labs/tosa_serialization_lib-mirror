@@ -68,7 +68,7 @@ def Add_minor(builder, Minor):
 def VersionAdd_patch(builder, Patch): builder.PrependInt32Slot(2, Patch, -1)
 def Add_patch(builder, Patch):
     return VersionAdd_patch(builder, Patch)
-def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 255)
+def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 1)
 def Add_draft(builder, Draft):
     return VersionAdd_draft(builder, Draft)
 def VersionEnd(builder): return builder.EndObject()
