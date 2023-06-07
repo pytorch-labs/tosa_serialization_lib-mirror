@@ -67,7 +67,7 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #define DEF_ARGS_VER0_S_float_as_bytes(V)                                                                              \
     {                                                                                                                  \
         std::vector<float> attr_vec;                                                                                   \
-        if (convertFlatbuffersU8toF32(*(p->V()), 1, attr_vec))                                                         \
+        if (p->V() && convertFlatbuffersU8toF32(*(p->V()), 1, attr_vec))                                               \
             assert(0 && "Failed to convert u8 buffer to f32");                                                         \
         _##V = (!attr_vec.empty()) ? attr_vec[0] : 0.0f;                                                               \
     }
