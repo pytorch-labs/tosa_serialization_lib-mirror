@@ -257,11 +257,12 @@ enum Op : uint32_t {
   Op_WHILE_LOOP = 68,
   Op_FFT2D = 69,
   Op_RFFT2D = 70,
+  Op_ERF = 71,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_RFFT2D
+  Op_MAX = Op_ERF
 };
 
-inline const Op (&EnumValuesOp())[71] {
+inline const Op (&EnumValuesOp())[72] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -333,13 +334,14 @@ inline const Op (&EnumValuesOp())[71] {
     Op_COND_IF,
     Op_WHILE_LOOP,
     Op_FFT2D,
-    Op_RFFT2D
+    Op_RFFT2D,
+    Op_ERF
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[72] = {
+  static const char * const names[73] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -411,13 +413,14 @@ inline const char * const *EnumNamesOp() {
     "WHILE_LOOP",
     "FFT2D",
     "RFFT2D",
+    "ERF",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RFFT2D)) return "";
+  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_ERF)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }

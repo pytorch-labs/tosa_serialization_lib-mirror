@@ -116,6 +116,7 @@ enum Op:uint32 {
   WHILE_LOOP,
   FFT2D,
   RFFT2D,
+  ERF,
 }
 
 union Attribute {

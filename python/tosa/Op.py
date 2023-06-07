@@ -74,3 +74,4 @@ class Op(object):
     WHILE_LOOP = 68
     FFT2D = 69
     RFFT2D = 70
+    ERF = 71
