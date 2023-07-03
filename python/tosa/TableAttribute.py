@@ -55,15 +55,26 @@ class TableAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-def TableAttributeStart(builder): builder.StartObject(1)
+def TableAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return TableAttributeStart(builder)
-def TableAttributeAddTable(builder, table): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(table), 0)
+    TableAttributeStart(builder)
+
+def TableAttributeAddTable(builder, table):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(table), 0)
+
 def AddTable(builder, table):
-    return TableAttributeAddTable(builder, table)
-def TableAttributeStartTableVector(builder, numElems): return builder.StartVector(2, numElems, 2)
-def StartTableVector(builder, numElems):
+    TableAttributeAddTable(builder, table)
+
+def TableAttributeStartTableVector(builder, numElems):
+    return builder.StartVector(2, numElems, 2)
+
+def StartTableVector(builder, numElems: int) -> int:
     return TableAttributeStartTableVector(builder, numElems)
-def TableAttributeEnd(builder): return builder.EndObject()
+
+def TableAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return TableAttributeEnd(builder)

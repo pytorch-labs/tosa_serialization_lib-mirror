@@ -125,36 +125,68 @@ class TosaBasicBlock(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         return o == 0
 
-def TosaBasicBlockStart(builder): builder.StartObject(5)
+def TosaBasicBlockStart(builder):
+    builder.StartObject(5)
+
 def Start(builder):
-    return TosaBasicBlockStart(builder)
-def TosaBasicBlockAddName(builder, name): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+    TosaBasicBlockStart(builder)
+
+def TosaBasicBlockAddName(builder, name):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
+
 def AddName(builder, name):
-    return TosaBasicBlockAddName(builder, name)
-def TosaBasicBlockAddOperators(builder, operators): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(operators), 0)
+    TosaBasicBlockAddName(builder, name)
+
+def TosaBasicBlockAddOperators(builder, operators):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(operators), 0)
+
 def AddOperators(builder, operators):
-    return TosaBasicBlockAddOperators(builder, operators)
-def TosaBasicBlockStartOperatorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartOperatorsVector(builder, numElems):
+    TosaBasicBlockAddOperators(builder, operators)
+
+def TosaBasicBlockStartOperatorsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartOperatorsVector(builder, numElems: int) -> int:
     return TosaBasicBlockStartOperatorsVector(builder, numElems)
-def TosaBasicBlockAddTensors(builder, tensors): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(tensors), 0)
+
+def TosaBasicBlockAddTensors(builder, tensors):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(tensors), 0)
+
 def AddTensors(builder, tensors):
-    return TosaBasicBlockAddTensors(builder, tensors)
-def TosaBasicBlockStartTensorsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartTensorsVector(builder, numElems):
+    TosaBasicBlockAddTensors(builder, tensors)
+
+def TosaBasicBlockStartTensorsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartTensorsVector(builder, numElems: int) -> int:
     return TosaBasicBlockStartTensorsVector(builder, numElems)
-def TosaBasicBlockAddInputs(builder, inputs): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
+
+def TosaBasicBlockAddInputs(builder, inputs):
+    builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(inputs), 0)
+
 def AddInputs(builder, inputs):
-    return TosaBasicBlockAddInputs(builder, inputs)
-def TosaBasicBlockStartInputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartInputsVector(builder, numElems):
+    TosaBasicBlockAddInputs(builder, inputs)
+
+def TosaBasicBlockStartInputsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartInputsVector(builder, numElems: int) -> int:
     return TosaBasicBlockStartInputsVector(builder, numElems)
-def TosaBasicBlockAddOutputs(builder, outputs): builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
+
+def TosaBasicBlockAddOutputs(builder, outputs):
+    builder.PrependUOffsetTRelativeSlot(4, flatbuffers.number_types.UOffsetTFlags.py_type(outputs), 0)
+
 def AddOutputs(builder, outputs):
-    return TosaBasicBlockAddOutputs(builder, outputs)
-def TosaBasicBlockStartOutputsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartOutputsVector(builder, numElems):
+    TosaBasicBlockAddOutputs(builder, outputs)
+
+def TosaBasicBlockStartOutputsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartOutputsVector(builder, numElems: int) -> int:
     return TosaBasicBlockStartOutputsVector(builder, numElems)
-def TosaBasicBlockEnd(builder): return builder.EndObject()
+
+def TosaBasicBlockEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return TosaBasicBlockEnd(builder)

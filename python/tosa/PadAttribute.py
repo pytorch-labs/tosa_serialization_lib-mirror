@@ -89,24 +89,44 @@ class PadAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def PadAttributeStart(builder): builder.StartObject(3)
+def PadAttributeStart(builder):
+    builder.StartObject(3)
+
 def Start(builder):
-    return PadAttributeStart(builder)
-def PadAttributeAddPadding(builder, padding): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
+    PadAttributeStart(builder)
+
+def PadAttributeAddPadding(builder, padding):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(padding), 0)
+
 def AddPadding(builder, padding):
-    return PadAttributeAddPadding(builder, padding)
-def PadAttributeStartPaddingVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartPaddingVector(builder, numElems):
+    PadAttributeAddPadding(builder, padding)
+
+def PadAttributeStartPaddingVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartPaddingVector(builder, numElems: int) -> int:
     return PadAttributeStartPaddingVector(builder, numElems)
-def PadAttributeAddPadConstInt(builder, padConstInt): builder.PrependInt32Slot(1, padConstInt, 0)
+
+def PadAttributeAddPadConstInt(builder, padConstInt):
+    builder.PrependInt32Slot(1, padConstInt, 0)
+
 def AddPadConstInt(builder, padConstInt):
-    return PadAttributeAddPadConstInt(builder, padConstInt)
-def PadAttributeAddPadConstFp(builder, padConstFp): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(padConstFp), 0)
+    PadAttributeAddPadConstInt(builder, padConstInt)
+
+def PadAttributeAddPadConstFp(builder, padConstFp):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(padConstFp), 0)
+
 def AddPadConstFp(builder, padConstFp):
-    return PadAttributeAddPadConstFp(builder, padConstFp)
-def PadAttributeStartPadConstFpVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def StartPadConstFpVector(builder, numElems):
+    PadAttributeAddPadConstFp(builder, padConstFp)
+
+def PadAttributeStartPadConstFpVector(builder, numElems):
+    return builder.StartVector(1, numElems, 1)
+
+def StartPadConstFpVector(builder, numElems: int) -> int:
     return PadAttributeStartPadConstFpVector(builder, numElems)
-def PadAttributeEnd(builder): return builder.EndObject()
+
+def PadAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return PadAttributeEnd(builder)

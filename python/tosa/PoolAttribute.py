@@ -130,36 +130,68 @@ class PoolAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
-def PoolAttributeStart(builder): builder.StartObject(6)
+def PoolAttributeStart(builder):
+    builder.StartObject(6)
+
 def Start(builder):
-    return PoolAttributeStart(builder)
-def PoolAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+    PoolAttributeStart(builder)
+
+def PoolAttributeAddPad(builder, pad):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+
 def AddPad(builder, pad):
-    return PoolAttributeAddPad(builder, pad)
-def PoolAttributeStartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartPadVector(builder, numElems):
+    PoolAttributeAddPad(builder, pad)
+
+def PoolAttributeStartPadVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartPadVector(builder, numElems: int) -> int:
     return PoolAttributeStartPadVector(builder, numElems)
-def PoolAttributeAddKernel(builder, kernel): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
+
+def PoolAttributeAddKernel(builder, kernel):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
+
 def AddKernel(builder, kernel):
-    return PoolAttributeAddKernel(builder, kernel)
-def PoolAttributeStartKernelVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartKernelVector(builder, numElems):
+    PoolAttributeAddKernel(builder, kernel)
+
+def PoolAttributeStartKernelVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartKernelVector(builder, numElems: int) -> int:
     return PoolAttributeStartKernelVector(builder, numElems)
-def PoolAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+
+def PoolAttributeAddStride(builder, stride):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+
 def AddStride(builder, stride):
-    return PoolAttributeAddStride(builder, stride)
-def PoolAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartStrideVector(builder, numElems):
+    PoolAttributeAddStride(builder, stride)
+
+def PoolAttributeStartStrideVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartStrideVector(builder, numElems: int) -> int:
     return PoolAttributeStartStrideVector(builder, numElems)
-def PoolAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(3, inputZp, 0)
+
+def PoolAttributeAddInputZp(builder, inputZp):
+    builder.PrependInt32Slot(3, inputZp, 0)
+
 def AddInputZp(builder, inputZp):
-    return PoolAttributeAddInputZp(builder, inputZp)
-def PoolAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(4, outputZp, 0)
+    PoolAttributeAddInputZp(builder, inputZp)
+
+def PoolAttributeAddOutputZp(builder, outputZp):
+    builder.PrependInt32Slot(4, outputZp, 0)
+
 def AddOutputZp(builder, outputZp):
-    return PoolAttributeAddOutputZp(builder, outputZp)
-def PoolAttributeAddAccumDtype(builder, accumDtype): builder.PrependUint32Slot(5, accumDtype, 0)
+    PoolAttributeAddOutputZp(builder, outputZp)
+
+def PoolAttributeAddAccumDtype(builder, accumDtype):
+    builder.PrependUint32Slot(5, accumDtype, 0)
+
 def AddAccumDtype(builder, accumDtype):
-    return PoolAttributeAddAccumDtype(builder, accumDtype)
-def PoolAttributeEnd(builder): return builder.EndObject()
+    PoolAttributeAddAccumDtype(builder, accumDtype)
+
+def PoolAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return PoolAttributeEnd(builder)

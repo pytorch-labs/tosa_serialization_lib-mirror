@@ -35,12 +35,20 @@ class FFTAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-def FFTAttributeStart(builder): builder.StartObject(1)
+def FFTAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return FFTAttributeStart(builder)
-def FFTAttributeAddInverse(builder, inverse): builder.PrependBoolSlot(0, inverse, 0)
+    FFTAttributeStart(builder)
+
+def FFTAttributeAddInverse(builder, inverse):
+    builder.PrependBoolSlot(0, inverse, 0)
+
 def AddInverse(builder, inverse):
-    return FFTAttributeAddInverse(builder, inverse)
-def FFTAttributeEnd(builder): return builder.EndObject()
+    FFTAttributeAddInverse(builder, inverse)
+
+def FFTAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return FFTAttributeEnd(builder)

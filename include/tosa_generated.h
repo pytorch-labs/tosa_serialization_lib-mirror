@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
+              FLATBUFFERS_VERSION_MINOR == 5 &&
+              FLATBUFFERS_VERSION_REVISION == 26,
+             "Non-compatible flatbuffers version included");
+
 namespace tosa {
 
 struct PoolAttribute;
@@ -147,7 +154,7 @@ inline const char * const *EnumNamesDType() {
 }
 
 inline const char *EnumNameDType(DType e) {
-  if (flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_BF16)) return "";
+  if (::flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_BF16)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDType()[index];
 }
@@ -180,7 +187,7 @@ inline const char * const *EnumNamesResizeMode() {
 }
 
 inline const char *EnumNameResizeMode(ResizeMode e) {
-  if (flatbuffers::IsOutRange(e, ResizeMode_UNKNOWN, ResizeMode_BILINEAR)) return "";
+  if (::flatbuffers::IsOutRange(e, ResizeMode_UNKNOWN, ResizeMode_BILINEAR)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResizeMode()[index];
 }
@@ -420,7 +427,7 @@ inline const char * const *EnumNamesOp() {
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_ERF)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_ERF)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
@@ -513,7 +520,7 @@ inline const char * const *EnumNamesAttribute() {
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_FFTAttribute)) return "";
+  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_FFTAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -610,10 +617,10 @@ template<> struct AttributeTraits<tosa::FFTAttribute> {
   static const Attribute enum_value = Attribute_FFTAttribute;
 };
 
-bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type);
-bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
+bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type);
+bool VerifyAttributeVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types);
 
-struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PoolAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
@@ -623,14 +630,14 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_OUTPUT_ZP = 12,
     VT_ACCUM_DTYPE = 14
   };
-  const flatbuffers::Vector<int32_t> *pad() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
+  const ::flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
   }
-  const flatbuffers::Vector<int32_t> *kernel() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_KERNEL);
+  const ::flatbuffers::Vector<int32_t> *kernel() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_KERNEL);
   }
-  const flatbuffers::Vector<int32_t> *stride() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
   }
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -641,7 +648,7 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   tosa::DType accum_dtype() const {
     return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACCUM_DTYPE, 0));
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
            verifier.VerifyVector(pad()) &&
@@ -658,15 +665,15 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct PoolAttributeBuilder {
   typedef PoolAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
     fbb_.AddOffset(PoolAttribute::VT_PAD, pad);
   }
-  void add_kernel(flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel) {
+  void add_kernel(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel) {
     fbb_.AddOffset(PoolAttribute::VT_KERNEL, kernel);
   }
-  void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(PoolAttribute::VT_STRIDE, stride);
   }
   void add_input_zp(int32_t input_zp) {
@@ -678,22 +685,22 @@ struct PoolAttributeBuilder {
   void add_accum_dtype(tosa::DType accum_dtype) {
     fbb_.AddElement<uint32_t>(PoolAttribute::VT_ACCUM_DTYPE, static_cast<uint32_t>(accum_dtype), 0);
   }
-  explicit PoolAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit PoolAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<PoolAttribute> Finish() {
+  ::flatbuffers::Offset<PoolAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PoolAttribute>(end);
+    auto o = ::flatbuffers::Offset<PoolAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> kernel = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
+inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
     tosa::DType accum_dtype = tosa::DType_UNKNOWN) {
@@ -707,8 +714,8 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *kernel = nullptr,
     const std::vector<int32_t> *stride = nullptr,
@@ -728,7 +735,7 @@ inline flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
       accum_dtype);
 }
 
-struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
@@ -737,14 +744,14 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_INPUT_ZP = 10,
     VT_WEIGHT_ZP = 12
   };
-  const flatbuffers::Vector<int32_t> *pad() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PAD);
+  const ::flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
   }
-  const flatbuffers::Vector<int32_t> *stride() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
   }
-  const flatbuffers::Vector<int32_t> *dilation() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_DILATION);
+  const ::flatbuffers::Vector<int32_t> *dilation() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_DILATION);
   }
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -752,7 +759,7 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
            verifier.VerifyVector(pad()) &&
@@ -768,15 +775,15 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ConvAttributeBuilder {
   typedef ConvAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
     fbb_.AddOffset(ConvAttribute::VT_PAD, pad);
   }
-  void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(ConvAttribute::VT_STRIDE, stride);
   }
-  void add_dilation(flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation) {
+  void add_dilation(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation) {
     fbb_.AddOffset(ConvAttribute::VT_DILATION, dilation);
   }
   void add_input_zp(int32_t input_zp) {
@@ -785,22 +792,22 @@ struct ConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(ConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
-  explicit ConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ConvAttribute> Finish() {
+  ::flatbuffers::Offset<ConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ConvAttribute>(end);
+    auto o = ::flatbuffers::Offset<ConvAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> pad = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> dilation = 0,
+inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation = 0,
     int32_t input_zp = 0,
     int32_t weight_zp = 0) {
   ConvAttributeBuilder builder_(_fbb);
@@ -812,8 +819,8 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *dilation = nullptr,
@@ -831,7 +838,7 @@ inline flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       weight_zp);
 }
 
-struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TransposeConvAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUT_PAD = 4,
@@ -840,14 +847,14 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
     VT_INPUT_ZP = 10,
     VT_WEIGHT_ZP = 12
   };
-  const flatbuffers::Vector<int32_t> *out_pad() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
+  const ::flatbuffers::Vector<int32_t> *out_pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
   }
-  const flatbuffers::Vector<int32_t> *stride() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
   }
-  const flatbuffers::Vector<int32_t> *output_shape() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SHAPE);
+  const ::flatbuffers::Vector<int32_t> *output_shape() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SHAPE);
   }
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -855,7 +862,7 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUT_PAD) &&
            verifier.VerifyVector(out_pad()) &&
@@ -871,15 +878,15 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Tab
 
 struct TransposeConvAttributeBuilder {
   typedef TransposeConvAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_out_pad(flatbuffers::Offset<flatbuffers::Vector<int32_t>> out_pad) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_out_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> out_pad) {
     fbb_.AddOffset(TransposeConvAttribute::VT_OUT_PAD, out_pad);
   }
-  void add_stride(flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride) {
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(TransposeConvAttribute::VT_STRIDE, stride);
   }
-  void add_output_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape) {
+  void add_output_shape(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape) {
     fbb_.AddOffset(TransposeConvAttribute::VT_OUTPUT_SHAPE, output_shape);
   }
   void add_input_zp(int32_t input_zp) {
@@ -888,22 +895,22 @@ struct TransposeConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
-  explicit TransposeConvAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TransposeConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TransposeConvAttribute> Finish() {
+  ::flatbuffers::Offset<TransposeConvAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TransposeConvAttribute>(end);
+    auto o = ::flatbuffers::Offset<TransposeConvAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> out_pad = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> stride = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> output_shape = 0,
+inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> out_pad = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape = 0,
     int32_t input_zp = 0,
     int32_t weight_zp = 0) {
   TransposeConvAttributeBuilder builder_(_fbb);
@@ -915,8 +922,8 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *out_pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *output_shape = nullptr,
@@ -934,23 +941,23 @@ inline flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeD
       weight_zp);
 }
 
-struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct PadAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PadAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PADDING = 4,
     VT_PAD_CONST_INT = 6,
     VT_PAD_CONST_FP = 8
   };
-  const flatbuffers::Vector<int32_t> *padding() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PADDING);
+  const ::flatbuffers::Vector<int32_t> *padding() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PADDING);
   }
   int32_t pad_const_int() const {
     return GetField<int32_t>(VT_PAD_CONST_INT, 0);
   }
-  const flatbuffers::Vector<uint8_t> *pad_const_fp() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST_FP);
+  const ::flatbuffers::Vector<uint8_t> *pad_const_fp() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST_FP);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PADDING) &&
            verifier.VerifyVector(padding()) &&
@@ -963,33 +970,33 @@ struct PadAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct PadAttributeBuilder {
   typedef PadAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_padding(flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_padding(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> padding) {
     fbb_.AddOffset(PadAttribute::VT_PADDING, padding);
   }
   void add_pad_const_int(int32_t pad_const_int) {
     fbb_.AddElement<int32_t>(PadAttribute::VT_PAD_CONST_INT, pad_const_int, 0);
   }
-  void add_pad_const_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> pad_const_fp) {
+  void add_pad_const_fp(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const_fp) {
     fbb_.AddOffset(PadAttribute::VT_PAD_CONST_FP, pad_const_fp);
   }
-  explicit PadAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit PadAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<PadAttribute> Finish() {
+  ::flatbuffers::Offset<PadAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PadAttribute>(end);
+    auto o = ::flatbuffers::Offset<PadAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<PadAttribute> CreatePadAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> padding = 0,
+inline ::flatbuffers::Offset<PadAttribute> CreatePadAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> padding = 0,
     int32_t pad_const_int = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> pad_const_fp = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const_fp = 0) {
   PadAttributeBuilder builder_(_fbb);
   builder_.add_pad_const_fp(pad_const_fp);
   builder_.add_pad_const_int(pad_const_int);
@@ -997,8 +1004,8 @@ inline flatbuffers::Offset<PadAttribute> CreatePadAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *padding = nullptr,
     int32_t pad_const_int = 0,
     const std::vector<uint8_t> *pad_const_fp = nullptr) {
@@ -1012,7 +1019,7 @@ inline flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
       pad_const_fp__);
 }
 
-struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef AxisAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_AXIS = 4
@@ -1020,7 +1027,7 @@ struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t axis() const {
     return GetField<int32_t>(VT_AXIS, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
            verifier.EndTable();
@@ -1029,39 +1036,39 @@ struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct AxisAttributeBuilder {
   typedef AxisAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_axis(int32_t axis) {
     fbb_.AddElement<int32_t>(AxisAttribute::VT_AXIS, axis, 0);
   }
-  explicit AxisAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit AxisAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<AxisAttribute> Finish() {
+  ::flatbuffers::Offset<AxisAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AxisAttribute>(end);
+    auto o = ::flatbuffers::Offset<AxisAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t axis = 0) {
   AxisAttributeBuilder builder_(_fbb);
   builder_.add_axis(axis);
   return builder_.Finish();
 }
 
-struct ReshapeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ReshapeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ReshapeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NEW_SHAPE = 4
   };
-  const flatbuffers::Vector<int32_t> *new_shape() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_NEW_SHAPE);
+  const ::flatbuffers::Vector<int32_t> *new_shape() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_NEW_SHAPE);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NEW_SHAPE) &&
            verifier.VerifyVector(new_shape()) &&
@@ -1071,32 +1078,32 @@ struct ReshapeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ReshapeAttributeBuilder {
   typedef ReshapeAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_new_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> new_shape) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_new_shape(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> new_shape) {
     fbb_.AddOffset(ReshapeAttribute::VT_NEW_SHAPE, new_shape);
   }
-  explicit ReshapeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ReshapeAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ReshapeAttribute> Finish() {
+  ::flatbuffers::Offset<ReshapeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ReshapeAttribute>(end);
+    auto o = ::flatbuffers::Offset<ReshapeAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> new_shape = 0) {
+inline ::flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> new_shape = 0) {
   ReshapeAttributeBuilder builder_(_fbb);
   builder_.add_new_shape(new_shape);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *new_shape = nullptr) {
   auto new_shape__ = new_shape ? _fbb.CreateVector<int32_t>(*new_shape) : 0;
   return tosa::CreateReshapeAttribute(
@@ -1104,19 +1111,19 @@ inline flatbuffers::Offset<ReshapeAttribute> CreateReshapeAttributeDirect(
       new_shape__);
 }
 
-struct SliceAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct SliceAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef SliceAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_START = 4,
     VT_SIZE = 6
   };
-  const flatbuffers::Vector<int32_t> *start() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_START);
+  const ::flatbuffers::Vector<int32_t> *start() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_START);
   }
-  const flatbuffers::Vector<int32_t> *size() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SIZE);
+  const ::flatbuffers::Vector<int32_t> *size() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_SIZE);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_START) &&
            verifier.VerifyVector(start()) &&
@@ -1128,37 +1135,37 @@ struct SliceAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct SliceAttributeBuilder {
   typedef SliceAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_start(flatbuffers::Offset<flatbuffers::Vector<int32_t>> start) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_start(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> start) {
     fbb_.AddOffset(SliceAttribute::VT_START, start);
   }
-  void add_size(flatbuffers::Offset<flatbuffers::Vector<int32_t>> size) {
+  void add_size(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> size) {
     fbb_.AddOffset(SliceAttribute::VT_SIZE, size);
   }
-  explicit SliceAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SliceAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SliceAttribute> Finish() {
+  ::flatbuffers::Offset<SliceAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SliceAttribute>(end);
+    auto o = ::flatbuffers::Offset<SliceAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SliceAttribute> CreateSliceAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> start = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> size = 0) {
+inline ::flatbuffers::Offset<SliceAttribute> CreateSliceAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> start = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> size = 0) {
   SliceAttributeBuilder builder_(_fbb);
   builder_.add_size(size);
   builder_.add_start(start);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<SliceAttribute> CreateSliceAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<SliceAttribute> CreateSliceAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *start = nullptr,
     const std::vector<int32_t> *size = nullptr) {
   auto start__ = start ? _fbb.CreateVector<int32_t>(*start) : 0;
@@ -1169,15 +1176,15 @@ inline flatbuffers::Offset<SliceAttribute> CreateSliceAttributeDirect(
       size__);
 }
 
-struct TileAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TileAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TileAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MULTIPLES = 4
   };
-  const flatbuffers::Vector<int32_t> *multiples() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_MULTIPLES);
+  const ::flatbuffers::Vector<int32_t> *multiples() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_MULTIPLES);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_MULTIPLES) &&
            verifier.VerifyVector(multiples()) &&
@@ -1187,32 +1194,32 @@ struct TileAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TileAttributeBuilder {
   typedef TileAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_multiples(flatbuffers::Offset<flatbuffers::Vector<int32_t>> multiples) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_multiples(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> multiples) {
     fbb_.AddOffset(TileAttribute::VT_MULTIPLES, multiples);
   }
-  explicit TileAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TileAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TileAttribute> Finish() {
+  ::flatbuffers::Offset<TileAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TileAttribute>(end);
+    auto o = ::flatbuffers::Offset<TileAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TileAttribute> CreateTileAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> multiples = 0) {
+inline ::flatbuffers::Offset<TileAttribute> CreateTileAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> multiples = 0) {
   TileAttributeBuilder builder_(_fbb);
   builder_.add_multiples(multiples);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TileAttribute> CreateTileAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TileAttribute> CreateTileAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *multiples = nullptr) {
   auto multiples__ = multiples ? _fbb.CreateVector<int32_t>(*multiples) : 0;
   return tosa::CreateTileAttribute(
@@ -1220,7 +1227,7 @@ inline flatbuffers::Offset<TileAttribute> CreateTileAttributeDirect(
       multiples__);
 }
 
-struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ResizeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_SCALE = 4,
@@ -1228,19 +1235,19 @@ struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_BORDER = 8,
     VT_MODE = 10
   };
-  const flatbuffers::Vector<int16_t> *scale() const {
-    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_SCALE);
+  const ::flatbuffers::Vector<int16_t> *scale() const {
+    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_SCALE);
   }
-  const flatbuffers::Vector<int16_t> *offset() const {
-    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_OFFSET);
+  const ::flatbuffers::Vector<int16_t> *offset() const {
+    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_OFFSET);
   }
-  const flatbuffers::Vector<int16_t> *border() const {
-    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_BORDER);
+  const ::flatbuffers::Vector<int16_t> *border() const {
+    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_BORDER);
   }
   tosa::ResizeMode mode() const {
     return static_cast<tosa::ResizeMode>(GetField<uint32_t>(VT_MODE, 0));
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SCALE) &&
            verifier.VerifyVector(scale()) &&
@@ -1255,36 +1262,36 @@ struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ResizeAttributeBuilder {
   typedef ResizeAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_scale(flatbuffers::Offset<flatbuffers::Vector<int16_t>> scale) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_scale(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> scale) {
     fbb_.AddOffset(ResizeAttribute::VT_SCALE, scale);
   }
-  void add_offset(flatbuffers::Offset<flatbuffers::Vector<int16_t>> offset) {
+  void add_offset(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> offset) {
     fbb_.AddOffset(ResizeAttribute::VT_OFFSET, offset);
   }
-  void add_border(flatbuffers::Offset<flatbuffers::Vector<int16_t>> border) {
+  void add_border(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> border) {
     fbb_.AddOffset(ResizeAttribute::VT_BORDER, border);
   }
   void add_mode(tosa::ResizeMode mode) {
     fbb_.AddElement<uint32_t>(ResizeAttribute::VT_MODE, static_cast<uint32_t>(mode), 0);
   }
-  explicit ResizeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ResizeAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ResizeAttribute> Finish() {
+  ::flatbuffers::Offset<ResizeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ResizeAttribute>(end);
+    auto o = ::flatbuffers::Offset<ResizeAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int16_t>> scale = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int16_t>> offset = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int16_t>> border = 0,
+inline ::flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> scale = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> offset = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> border = 0,
     tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
   ResizeAttributeBuilder builder_(_fbb);
   builder_.add_mode(mode);
@@ -1294,8 +1301,8 @@ inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ResizeAttribute> CreateResizeAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int16_t> *scale = nullptr,
     const std::vector<int16_t> *offset = nullptr,
     const std::vector<int16_t> *border = nullptr,
@@ -1311,7 +1318,7 @@ inline flatbuffers::Offset<ResizeAttribute> CreateResizeAttributeDirect(
       mode);
 }
 
-struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ClampAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MIN_INT = 4,
@@ -1325,13 +1332,13 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t max_int() const {
     return GetField<int32_t>(VT_MAX_INT, 0);
   }
-  const flatbuffers::Vector<uint8_t> *min_fp() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_MIN_FP);
+  const ::flatbuffers::Vector<uint8_t> *min_fp() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MIN_FP);
   }
-  const flatbuffers::Vector<uint8_t> *max_fp() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_MAX_FP);
+  const ::flatbuffers::Vector<uint8_t> *max_fp() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MAX_FP);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_MIN_INT, 4) &&
            VerifyField<int32_t>(verifier, VT_MAX_INT, 4) &&
@@ -1345,37 +1352,37 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ClampAttributeBuilder {
   typedef ClampAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_min_int(int32_t min_int) {
     fbb_.AddElement<int32_t>(ClampAttribute::VT_MIN_INT, min_int, 0);
   }
   void add_max_int(int32_t max_int) {
     fbb_.AddElement<int32_t>(ClampAttribute::VT_MAX_INT, max_int, 0);
   }
-  void add_min_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> min_fp) {
+  void add_min_fp(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_fp) {
     fbb_.AddOffset(ClampAttribute::VT_MIN_FP, min_fp);
   }
-  void add_max_fp(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> max_fp) {
+  void add_max_fp(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_fp) {
     fbb_.AddOffset(ClampAttribute::VT_MAX_FP, max_fp);
   }
-  explicit ClampAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ClampAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ClampAttribute> Finish() {
+  ::flatbuffers::Offset<ClampAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ClampAttribute>(end);
+    auto o = ::flatbuffers::Offset<ClampAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t min_int = 0,
     int32_t max_int = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> min_fp = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> max_fp = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_fp = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_fp = 0) {
   ClampAttributeBuilder builder_(_fbb);
   builder_.add_max_fp(max_fp);
   builder_.add_min_fp(min_fp);
@@ -1384,8 +1391,8 @@ inline flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t min_int = 0,
     int32_t max_int = 0,
     const std::vector<uint8_t> *min_fp = nullptr,
@@ -1402,7 +1409,7 @@ inline flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
       max_fp__);
 }
 
-struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef RescaleAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INPUT_ZP = 4,
@@ -1419,11 +1426,11 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t output_zp() const {
     return GetField<int32_t>(VT_OUTPUT_ZP, 0);
   }
-  const flatbuffers::Vector<int32_t> *multiplier() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_MULTIPLIER);
+  const ::flatbuffers::Vector<int32_t> *multiplier() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_MULTIPLIER);
   }
-  const flatbuffers::Vector<int32_t> *shift() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SHIFT);
+  const ::flatbuffers::Vector<int32_t> *shift() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_SHIFT);
   }
   bool scale32() const {
     return GetField<uint8_t>(VT_SCALE32, 0) != 0;
@@ -1434,7 +1441,7 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool per_channel() const {
     return GetField<uint8_t>(VT_PER_CHANNEL, 0) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
@@ -1451,18 +1458,18 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct RescaleAttributeBuilder {
   typedef RescaleAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_input_zp(int32_t input_zp) {
     fbb_.AddElement<int32_t>(RescaleAttribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_output_zp(int32_t output_zp) {
     fbb_.AddElement<int32_t>(RescaleAttribute::VT_OUTPUT_ZP, output_zp, 0);
   }
-  void add_multiplier(flatbuffers::Offset<flatbuffers::Vector<int32_t>> multiplier) {
+  void add_multiplier(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> multiplier) {
     fbb_.AddOffset(RescaleAttribute::VT_MULTIPLIER, multiplier);
   }
-  void add_shift(flatbuffers::Offset<flatbuffers::Vector<int32_t>> shift) {
+  void add_shift(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shift) {
     fbb_.AddOffset(RescaleAttribute::VT_SHIFT, shift);
   }
   void add_scale32(bool scale32) {
@@ -1474,23 +1481,23 @@ struct RescaleAttributeBuilder {
   void add_per_channel(bool per_channel) {
     fbb_.AddElement<uint8_t>(RescaleAttribute::VT_PER_CHANNEL, static_cast<uint8_t>(per_channel), 0);
   }
-  explicit RescaleAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RescaleAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<RescaleAttribute> Finish() {
+  ::flatbuffers::Offset<RescaleAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<RescaleAttribute>(end);
+    auto o = ::flatbuffers::Offset<RescaleAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> multiplier = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> shift = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> multiplier = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shift = 0,
     bool scale32 = false,
     bool double_round = false,
     bool per_channel = false) {
@@ -1505,8 +1512,8 @@ inline flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<RescaleAttribute> CreateRescaleAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
     const std::vector<int32_t> *multiplier = nullptr,
@@ -1527,7 +1534,7 @@ inline flatbuffers::Offset<RescaleAttribute> CreateRescaleAttributeDirect(
       per_channel);
 }
 
-struct MulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct MulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef MulAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_SHIFT = 4
@@ -1535,7 +1542,7 @@ struct MulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t shift() const {
     return GetField<int32_t>(VT_SHIFT, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_SHIFT, 4) &&
            verifier.EndTable();
@@ -1544,31 +1551,31 @@ struct MulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct MulAttributeBuilder {
   typedef MulAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_shift(int32_t shift) {
     fbb_.AddElement<int32_t>(MulAttribute::VT_SHIFT, shift, 0);
   }
-  explicit MulAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit MulAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<MulAttribute> Finish() {
+  ::flatbuffers::Offset<MulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MulAttribute>(end);
+    auto o = ::flatbuffers::Offset<MulAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<MulAttribute> CreateMulAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<MulAttribute> CreateMulAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t shift = 0) {
   MulAttributeBuilder builder_(_fbb);
   builder_.add_shift(shift);
   return builder_.Finish();
 }
 
-struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ArithmeticRightShiftAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ROUND = 4
@@ -1576,7 +1583,7 @@ struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffe
   bool round() const {
     return GetField<uint8_t>(VT_ROUND, 0) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_ROUND, 1) &&
            verifier.EndTable();
@@ -1585,43 +1592,43 @@ struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffe
 
 struct ArithmeticRightShiftAttributeBuilder {
   typedef ArithmeticRightShiftAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_round(bool round) {
     fbb_.AddElement<uint8_t>(ArithmeticRightShiftAttribute::VT_ROUND, static_cast<uint8_t>(round), 0);
   }
-  explicit ArithmeticRightShiftAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ArithmeticRightShiftAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ArithmeticRightShiftAttribute> Finish() {
+  ::flatbuffers::Offset<ArithmeticRightShiftAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ArithmeticRightShiftAttribute>(end);
+    auto o = ::flatbuffers::Offset<ArithmeticRightShiftAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ArithmeticRightShiftAttribute> CreateArithmeticRightShiftAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ArithmeticRightShiftAttribute> CreateArithmeticRightShiftAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     bool round = false) {
   ArithmeticRightShiftAttributeBuilder builder_(_fbb);
   builder_.add_round(round);
   return builder_.Finish();
 }
 
-struct CondIfAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct CondIfAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CondIfAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_THEN_BRANCH = 4,
     VT_ELSE_BRANCH = 6
   };
-  const flatbuffers::String *then_branch() const {
-    return GetPointer<const flatbuffers::String *>(VT_THEN_BRANCH);
+  const ::flatbuffers::String *then_branch() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_THEN_BRANCH);
   }
-  const flatbuffers::String *else_branch() const {
-    return GetPointer<const flatbuffers::String *>(VT_ELSE_BRANCH);
+  const ::flatbuffers::String *else_branch() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ELSE_BRANCH);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_THEN_BRANCH) &&
            verifier.VerifyString(then_branch()) &&
@@ -1633,37 +1640,37 @@ struct CondIfAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct CondIfAttributeBuilder {
   typedef CondIfAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_then_branch(flatbuffers::Offset<flatbuffers::String> then_branch) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_then_branch(::flatbuffers::Offset<::flatbuffers::String> then_branch) {
     fbb_.AddOffset(CondIfAttribute::VT_THEN_BRANCH, then_branch);
   }
-  void add_else_branch(flatbuffers::Offset<flatbuffers::String> else_branch) {
+  void add_else_branch(::flatbuffers::Offset<::flatbuffers::String> else_branch) {
     fbb_.AddOffset(CondIfAttribute::VT_ELSE_BRANCH, else_branch);
   }
-  explicit CondIfAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CondIfAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<CondIfAttribute> Finish() {
+  ::flatbuffers::Offset<CondIfAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<CondIfAttribute>(end);
+    auto o = ::flatbuffers::Offset<CondIfAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<CondIfAttribute> CreateCondIfAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> then_branch = 0,
-    flatbuffers::Offset<flatbuffers::String> else_branch = 0) {
+inline ::flatbuffers::Offset<CondIfAttribute> CreateCondIfAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> then_branch = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> else_branch = 0) {
   CondIfAttributeBuilder builder_(_fbb);
   builder_.add_else_branch(else_branch);
   builder_.add_then_branch(then_branch);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<CondIfAttribute> CreateCondIfAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<CondIfAttribute> CreateCondIfAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *then_branch = nullptr,
     const char *else_branch = nullptr) {
   auto then_branch__ = then_branch ? _fbb.CreateString(then_branch) : 0;
@@ -1674,19 +1681,19 @@ inline flatbuffers::Offset<CondIfAttribute> CreateCondIfAttributeDirect(
       else_branch__);
 }
 
-struct WhileLoopAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct WhileLoopAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef WhileLoopAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_COND_BRANCH = 4,
     VT_BODY_BRANCH = 6
   };
-  const flatbuffers::String *cond_branch() const {
-    return GetPointer<const flatbuffers::String *>(VT_COND_BRANCH);
+  const ::flatbuffers::String *cond_branch() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_COND_BRANCH);
   }
-  const flatbuffers::String *body_branch() const {
-    return GetPointer<const flatbuffers::String *>(VT_BODY_BRANCH);
+  const ::flatbuffers::String *body_branch() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_BODY_BRANCH);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_COND_BRANCH) &&
            verifier.VerifyString(cond_branch()) &&
@@ -1698,37 +1705,37 @@ struct WhileLoopAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct WhileLoopAttributeBuilder {
   typedef WhileLoopAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_cond_branch(flatbuffers::Offset<flatbuffers::String> cond_branch) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_cond_branch(::flatbuffers::Offset<::flatbuffers::String> cond_branch) {
     fbb_.AddOffset(WhileLoopAttribute::VT_COND_BRANCH, cond_branch);
   }
-  void add_body_branch(flatbuffers::Offset<flatbuffers::String> body_branch) {
+  void add_body_branch(::flatbuffers::Offset<::flatbuffers::String> body_branch) {
     fbb_.AddOffset(WhileLoopAttribute::VT_BODY_BRANCH, body_branch);
   }
-  explicit WhileLoopAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit WhileLoopAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<WhileLoopAttribute> Finish() {
+  ::flatbuffers::Offset<WhileLoopAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<WhileLoopAttribute>(end);
+    auto o = ::flatbuffers::Offset<WhileLoopAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> cond_branch = 0,
-    flatbuffers::Offset<flatbuffers::String> body_branch = 0) {
+inline ::flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> cond_branch = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> body_branch = 0) {
   WhileLoopAttributeBuilder builder_(_fbb);
   builder_.add_body_branch(body_branch);
   builder_.add_cond_branch(cond_branch);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *cond_branch = nullptr,
     const char *body_branch = nullptr) {
   auto cond_branch__ = cond_branch ? _fbb.CreateString(cond_branch) : 0;
@@ -1739,15 +1746,15 @@ inline flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
       body_branch__);
 }
 
-struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TransposeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PERMS = 4
   };
-  const flatbuffers::Vector<int32_t> *perms() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_PERMS);
+  const ::flatbuffers::Vector<int32_t> *perms() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PERMS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PERMS) &&
            verifier.VerifyVector(perms()) &&
@@ -1757,32 +1764,32 @@ struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TransposeAttributeBuilder {
   typedef TransposeAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_perms(flatbuffers::Offset<flatbuffers::Vector<int32_t>> perms) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_perms(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms) {
     fbb_.AddOffset(TransposeAttribute::VT_PERMS, perms);
   }
-  explicit TransposeAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TransposeAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TransposeAttribute> Finish() {
+  ::flatbuffers::Offset<TransposeAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TransposeAttribute>(end);
+    auto o = ::flatbuffers::Offset<TransposeAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> perms = 0) {
+inline ::flatbuffers::Offset<TransposeAttribute> CreateTransposeAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms = 0) {
   TransposeAttributeBuilder builder_(_fbb);
   builder_.add_perms(perms);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *perms = nullptr) {
   auto perms__ = perms ? _fbb.CreateVector<int32_t>(*perms) : 0;
   return tosa::CreateTransposeAttribute(
@@ -1790,15 +1797,15 @@ inline flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
       perms__);
 }
 
-struct TableAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TableAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TableAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TABLE = 4
   };
-  const flatbuffers::Vector<int16_t> *table() const {
-    return GetPointer<const flatbuffers::Vector<int16_t> *>(VT_TABLE);
+  const ::flatbuffers::Vector<int16_t> *table() const {
+    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_TABLE);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_TABLE) &&
            verifier.VerifyVector(table()) &&
@@ -1808,32 +1815,32 @@ struct TableAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TableAttributeBuilder {
   typedef TableAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_table(flatbuffers::Offset<flatbuffers::Vector<int16_t>> table) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_table(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> table) {
     fbb_.AddOffset(TableAttribute::VT_TABLE, table);
   }
-  explicit TableAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TableAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TableAttribute> Finish() {
+  ::flatbuffers::Offset<TableAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TableAttribute>(end);
+    auto o = ::flatbuffers::Offset<TableAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TableAttribute> CreateTableAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::Vector<int16_t>> table = 0) {
+inline ::flatbuffers::Offset<TableAttribute> CreateTableAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> table = 0) {
   TableAttributeBuilder builder_(_fbb);
   builder_.add_table(table);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int16_t> *table = nullptr) {
   auto table__ = table ? _fbb.CreateVector<int16_t>(*table) : 0;
   return tosa::CreateTableAttribute(
@@ -1841,7 +1848,7 @@ inline flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
       table__);
 }
 
-struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef MatMulAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_A_ZP = 4,
@@ -1853,7 +1860,7 @@ struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t b_zp() const {
     return GetField<int32_t>(VT_B_ZP, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
@@ -1863,27 +1870,27 @@ struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct MatMulAttributeBuilder {
   typedef MatMulAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_a_zp(int32_t a_zp) {
     fbb_.AddElement<int32_t>(MatMulAttribute::VT_A_ZP, a_zp, 0);
   }
   void add_b_zp(int32_t b_zp) {
     fbb_.AddElement<int32_t>(MatMulAttribute::VT_B_ZP, b_zp, 0);
   }
-  explicit MatMulAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit MatMulAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<MatMulAttribute> Finish() {
+  ::flatbuffers::Offset<MatMulAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MatMulAttribute>(end);
+    auto o = ::flatbuffers::Offset<MatMulAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t a_zp = 0,
     int32_t b_zp = 0) {
   MatMulAttributeBuilder builder_(_fbb);
@@ -1892,7 +1899,7 @@ inline flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
   return builder_.Finish();
 }
 
-struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef FullyConnectedAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INPUT_ZP = 4,
@@ -1904,7 +1911,7 @@ struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
@@ -1914,27 +1921,27 @@ struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Ta
 
 struct FullyConnectedAttributeBuilder {
   typedef FullyConnectedAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_input_zp(int32_t input_zp) {
     fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
-  explicit FullyConnectedAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit FullyConnectedAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<FullyConnectedAttribute> Finish() {
+  ::flatbuffers::Offset<FullyConnectedAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FullyConnectedAttribute>(end);
+    auto o = ::flatbuffers::Offset<FullyConnectedAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input_zp = 0,
     int32_t weight_zp = 0) {
   FullyConnectedAttributeBuilder builder_(_fbb);
@@ -1943,7 +1950,7 @@ inline flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribut
   return builder_.Finish();
 }
 
-struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef NegateAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INPUT1_ZP = 4,
@@ -1955,7 +1962,7 @@ struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   int32_t output_zp() const {
     return GetField<int32_t>(VT_OUTPUT_ZP, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT1_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
@@ -1965,27 +1972,27 @@ struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct NegateAttributeBuilder {
   typedef NegateAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_input1_zp(int32_t input1_zp) {
     fbb_.AddElement<int32_t>(NegateAttribute::VT_INPUT1_ZP, input1_zp, 0);
   }
   void add_output_zp(int32_t output_zp) {
     fbb_.AddElement<int32_t>(NegateAttribute::VT_OUTPUT_ZP, output_zp, 0);
   }
-  explicit NegateAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit NegateAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<NegateAttribute> Finish() {
+  ::flatbuffers::Offset<NegateAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<NegateAttribute>(end);
+    auto o = ::flatbuffers::Offset<NegateAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input1_zp = 0,
     int32_t output_zp = 0) {
   NegateAttributeBuilder builder_(_fbb);
@@ -1994,23 +2001,23 @@ inline flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
   return builder_.Finish();
 }
 
-struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CustomAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_IDENTIFIER = 4,
     VT_CONFIG = 6,
     VT_IMPLEMENTATION_ATTRS = 8
   };
-  const flatbuffers::String *identifier() const {
-    return GetPointer<const flatbuffers::String *>(VT_IDENTIFIER);
+  const ::flatbuffers::String *identifier() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_IDENTIFIER);
   }
-  const flatbuffers::String *config() const {
-    return GetPointer<const flatbuffers::String *>(VT_CONFIG);
+  const ::flatbuffers::String *config() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CONFIG);
   }
-  const flatbuffers::Vector<uint8_t> *implementation_attrs() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_IMPLEMENTATION_ATTRS);
+  const ::flatbuffers::Vector<uint8_t> *implementation_attrs() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_IMPLEMENTATION_ATTRS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_IDENTIFIER) &&
            verifier.VerifyString(identifier()) &&
@@ -2024,33 +2031,33 @@ struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct CustomAttributeBuilder {
   typedef CustomAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_identifier(flatbuffers::Offset<flatbuffers::String> identifier) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_identifier(::flatbuffers::Offset<::flatbuffers::String> identifier) {
     fbb_.AddOffset(CustomAttribute::VT_IDENTIFIER, identifier);
   }
-  void add_config(flatbuffers::Offset<flatbuffers::String> config) {
+  void add_config(::flatbuffers::Offset<::flatbuffers::String> config) {
     fbb_.AddOffset(CustomAttribute::VT_CONFIG, config);
   }
-  void add_implementation_attrs(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> implementation_attrs) {
+  void add_implementation_attrs(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs) {
     fbb_.AddOffset(CustomAttribute::VT_IMPLEMENTATION_ATTRS, implementation_attrs);
   }
-  explicit CustomAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CustomAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<CustomAttribute> Finish() {
+  ::flatbuffers::Offset<CustomAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<CustomAttribute>(end);
+    auto o = ::flatbuffers::Offset<CustomAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<CustomAttribute> CreateCustomAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> identifier = 0,
-    flatbuffers::Offset<flatbuffers::String> config = 0,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> implementation_attrs = 0) {
+inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> identifier = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> config = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs = 0) {
   CustomAttributeBuilder builder_(_fbb);
   builder_.add_implementation_attrs(implementation_attrs);
   builder_.add_config(config);
@@ -2058,8 +2065,8 @@ inline flatbuffers::Offset<CustomAttribute> CreateCustomAttribute(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *identifier = nullptr,
     const char *config = nullptr,
     const std::vector<uint8_t> *implementation_attrs = nullptr) {
@@ -2073,7 +2080,7 @@ inline flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
       implementation_attrs__);
 }
 
-struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef FFTAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INVERSE = 4
@@ -2081,7 +2088,7 @@ struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool inverse() const {
     return GetField<uint8_t>(VT_INVERSE, 0) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INVERSE, 1) &&
            verifier.EndTable();
@@ -2090,31 +2097,31 @@ struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct FFTAttributeBuilder {
   typedef FFTAttribute Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_inverse(bool inverse) {
     fbb_.AddElement<uint8_t>(FFTAttribute::VT_INVERSE, static_cast<uint8_t>(inverse), 0);
   }
-  explicit FFTAttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit FFTAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<FFTAttribute> Finish() {
+  ::flatbuffers::Offset<FFTAttribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<FFTAttribute>(end);
+    auto o = ::flatbuffers::Offset<FFTAttribute>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<FFTAttribute> CreateFFTAttribute(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<FFTAttribute> CreateFFTAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     bool inverse = false) {
   FFTAttributeBuilder builder_(_fbb);
   builder_.add_inverse(inverse);
   return builder_.Finish();
 }
 
-struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct Version FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef VersionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT__MAJOR = 4,
@@ -2134,7 +2141,7 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool _draft() const {
     return GetField<uint8_t>(VT__DRAFT, 1) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT__MAJOR, 4) &&
            VerifyField<int32_t>(verifier, VT__MINOR, 4) &&
@@ -2146,8 +2153,8 @@ struct Version FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct VersionBuilder {
   typedef Version Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add__major(int32_t _major) {
     fbb_.AddElement<int32_t>(Version::VT__MAJOR, _major, -1);
   }
@@ -2160,19 +2167,19 @@ struct VersionBuilder {
   void add__draft(bool _draft) {
     fbb_.AddElement<uint8_t>(Version::VT__DRAFT, static_cast<uint8_t>(_draft), 1);
   }
-  explicit VersionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit VersionBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<Version> Finish() {
+  ::flatbuffers::Offset<Version> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<Version>(end);
+    auto o = ::flatbuffers::Offset<Version>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<Version> CreateVersion(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<Version> CreateVersion(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t _major = -1,
     int32_t _minor = -1,
     int32_t _patch = -1,
@@ -2185,7 +2192,7 @@ inline flatbuffers::Offset<Version> CreateVersion(
   return builder_.Finish();
 }
 
-struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TosaTensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TosaTensorBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NAME = 4,
@@ -2193,19 +2200,19 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_TYPE = 8,
     VT_DATA = 10
   };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  const ::flatbuffers::String *name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
   }
-  const flatbuffers::Vector<int32_t> *shape() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_SHAPE);
+  const ::flatbuffers::Vector<int32_t> *shape() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_SHAPE);
   }
   tosa::DType type() const {
     return static_cast<tosa::DType>(GetField<uint32_t>(VT_TYPE, 0));
   }
-  const flatbuffers::Vector<uint8_t> *data() const {
-    return GetPointer<const flatbuffers::Vector<uint8_t> *>(VT_DATA);
+  const ::flatbuffers::Vector<uint8_t> *data() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_DATA);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
@@ -2220,37 +2227,37 @@ struct TosaTensor FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TosaTensorBuilder {
   typedef TosaTensor Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name) {
     fbb_.AddOffset(TosaTensor::VT_NAME, name);
   }
-  void add_shape(flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape) {
+  void add_shape(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shape) {
     fbb_.AddOffset(TosaTensor::VT_SHAPE, shape);
   }
   void add_type(tosa::DType type) {
     fbb_.AddElement<uint32_t>(TosaTensor::VT_TYPE, static_cast<uint32_t>(type), 0);
   }
-  void add_data(flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data) {
+  void add_data(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> data) {
     fbb_.AddOffset(TosaTensor::VT_DATA, data);
   }
-  explicit TosaTensorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TosaTensorBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TosaTensor> Finish() {
+  ::flatbuffers::Offset<TosaTensor> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TosaTensor>(end);
+    auto o = ::flatbuffers::Offset<TosaTensor>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TosaTensor> CreateTosaTensor(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape = 0,
+inline ::flatbuffers::Offset<TosaTensor> CreateTosaTensor(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shape = 0,
     tosa::DType type = tosa::DType_UNKNOWN,
-    flatbuffers::Offset<flatbuffers::Vector<uint8_t>> data = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> data = 0) {
   TosaTensorBuilder builder_(_fbb);
   builder_.add_data(data);
   builder_.add_type(type);
@@ -2259,8 +2266,8 @@ inline flatbuffers::Offset<TosaTensor> CreateTosaTensor(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *name = nullptr,
     const std::vector<int32_t> *shape = nullptr,
     tosa::DType type = tosa::DType_UNKNOWN,
@@ -2277,7 +2284,7 @@ inline flatbuffers::Offset<TosaTensor> CreateTosaTensorDirect(
       data__);
 }
 
-struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TosaOperatorBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OP = 4,
@@ -2362,13 +2369,13 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::FFTAttribute *attribute_as_FFTAttribute() const {
     return attribute_type() == tosa::Attribute_FFTAttribute ? static_cast<const tosa::FFTAttribute *>(attribute()) : nullptr;
   }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *outputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_OUTPUTS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *outputs() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_OUTPUTS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_OP, 4) &&
            VerifyField<uint8_t>(verifier, VT_ATTRIBUTE_TYPE, 1) &&
@@ -2474,41 +2481,41 @@ template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFT
 
 struct TosaOperatorBuilder {
   typedef TosaOperator Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_op(tosa::Op op) {
     fbb_.AddElement<uint32_t>(TosaOperator::VT_OP, static_cast<uint32_t>(op), 0);
   }
   void add_attribute_type(tosa::Attribute attribute_type) {
     fbb_.AddElement<uint8_t>(TosaOperator::VT_ATTRIBUTE_TYPE, static_cast<uint8_t>(attribute_type), 0);
   }
-  void add_attribute(flatbuffers::Offset<void> attribute) {
+  void add_attribute(::flatbuffers::Offset<void> attribute) {
     fbb_.AddOffset(TosaOperator::VT_ATTRIBUTE, attribute);
   }
-  void add_inputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> inputs) {
+  void add_inputs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> inputs) {
     fbb_.AddOffset(TosaOperator::VT_INPUTS, inputs);
   }
-  void add_outputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs) {
+  void add_outputs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> outputs) {
     fbb_.AddOffset(TosaOperator::VT_OUTPUTS, outputs);
   }
-  explicit TosaOperatorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TosaOperatorBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TosaOperator> Finish() {
+  ::flatbuffers::Offset<TosaOperator> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TosaOperator>(end);
+    auto o = ::flatbuffers::Offset<TosaOperator>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TosaOperator> CreateTosaOperator(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TosaOperator> CreateTosaOperator(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     tosa::Op op = tosa::Op_UNKNOWN,
     tosa::Attribute attribute_type = tosa::Attribute_NONE,
-    flatbuffers::Offset<void> attribute = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs = 0) {
+    ::flatbuffers::Offset<void> attribute = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> inputs = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> outputs = 0) {
   TosaOperatorBuilder builder_(_fbb);
   builder_.add_outputs(outputs);
   builder_.add_inputs(inputs);
@@ -2518,15 +2525,15 @@ inline flatbuffers::Offset<TosaOperator> CreateTosaOperator(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TosaOperator> CreateTosaOperatorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TosaOperator> CreateTosaOperatorDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     tosa::Op op = tosa::Op_UNKNOWN,
     tosa::Attribute attribute_type = tosa::Attribute_NONE,
-    flatbuffers::Offset<void> attribute = 0,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *inputs = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *outputs = nullptr) {
-  auto inputs__ = inputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*inputs) : 0;
-  auto outputs__ = outputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*outputs) : 0;
+    ::flatbuffers::Offset<void> attribute = 0,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *outputs = nullptr) {
+  auto inputs__ = inputs ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*inputs) : 0;
+  auto outputs__ = outputs ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*outputs) : 0;
   return tosa::CreateTosaOperator(
       _fbb,
       op,
@@ -2536,7 +2543,7 @@ inline flatbuffers::Offset<TosaOperator> CreateTosaOperatorDirect(
       outputs__);
 }
 
-struct TosaBasicBlock FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TosaBasicBlock FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TosaBasicBlockBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NAME = 4,
@@ -2545,22 +2552,22 @@ struct TosaBasicBlock FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
     VT_INPUTS = 10,
     VT_OUTPUTS = 12
   };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  const ::flatbuffers::String *name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaOperator>> *operators() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaOperator>> *>(VT_OPERATORS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaOperator>> *operators() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaOperator>> *>(VT_OPERATORS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaTensor>> *tensors() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaTensor>> *>(VT_TENSORS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaTensor>> *tensors() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaTensor>> *>(VT_TENSORS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *inputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_INPUTS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *outputs() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>> *>(VT_OUTPUTS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *outputs() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_OUTPUTS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
@@ -2582,41 +2589,41 @@ struct TosaBasicBlock FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TosaBasicBlockBuilder {
   typedef TosaBasicBlock Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name) {
     fbb_.AddOffset(TosaBasicBlock::VT_NAME, name);
   }
-  void add_operators(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaOperator>>> operators) {
+  void add_operators(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaOperator>>> operators) {
     fbb_.AddOffset(TosaBasicBlock::VT_OPERATORS, operators);
   }
-  void add_tensors(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaTensor>>> tensors) {
+  void add_tensors(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaTensor>>> tensors) {
     fbb_.AddOffset(TosaBasicBlock::VT_TENSORS, tensors);
   }
-  void add_inputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> inputs) {
+  void add_inputs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> inputs) {
     fbb_.AddOffset(TosaBasicBlock::VT_INPUTS, inputs);
   }
-  void add_outputs(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs) {
+  void add_outputs(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> outputs) {
     fbb_.AddOffset(TosaBasicBlock::VT_OUTPUTS, outputs);
   }
-  explicit TosaBasicBlockBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TosaBasicBlockBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TosaBasicBlock> Finish() {
+  ::flatbuffers::Offset<TosaBasicBlock> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TosaBasicBlock>(end);
+    auto o = ::flatbuffers::Offset<TosaBasicBlock>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlock(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaOperator>>> operators = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaTensor>>> tensors = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> inputs = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> outputs = 0) {
+inline ::flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlock(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaOperator>>> operators = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaTensor>>> tensors = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> inputs = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>>> outputs = 0) {
   TosaBasicBlockBuilder builder_(_fbb);
   builder_.add_outputs(outputs);
   builder_.add_inputs(inputs);
@@ -2626,18 +2633,18 @@ inline flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlock(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlockDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlockDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *name = nullptr,
-    const std::vector<flatbuffers::Offset<tosa::TosaOperator>> *operators = nullptr,
-    const std::vector<flatbuffers::Offset<tosa::TosaTensor>> *tensors = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *inputs = nullptr,
-    const std::vector<flatbuffers::Offset<flatbuffers::String>> *outputs = nullptr) {
+    const std::vector<::flatbuffers::Offset<tosa::TosaOperator>> *operators = nullptr,
+    const std::vector<::flatbuffers::Offset<tosa::TosaTensor>> *tensors = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs = nullptr,
+    const std::vector<::flatbuffers::Offset<::flatbuffers::String>> *outputs = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto operators__ = operators ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaOperator>>(*operators) : 0;
-  auto tensors__ = tensors ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaTensor>>(*tensors) : 0;
-  auto inputs__ = inputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*inputs) : 0;
-  auto outputs__ = outputs ? _fbb.CreateVector<flatbuffers::Offset<flatbuffers::String>>(*outputs) : 0;
+  auto operators__ = operators ? _fbb.CreateVector<::flatbuffers::Offset<tosa::TosaOperator>>(*operators) : 0;
+  auto tensors__ = tensors ? _fbb.CreateVector<::flatbuffers::Offset<tosa::TosaTensor>>(*tensors) : 0;
+  auto inputs__ = inputs ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*inputs) : 0;
+  auto outputs__ = outputs ? _fbb.CreateVector<::flatbuffers::Offset<::flatbuffers::String>>(*outputs) : 0;
   return tosa::CreateTosaBasicBlock(
       _fbb,
       name__,
@@ -2647,19 +2654,19 @@ inline flatbuffers::Offset<TosaBasicBlock> CreateTosaBasicBlockDirect(
       outputs__);
 }
 
-struct TosaRegion FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TosaRegion FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TosaRegionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NAME = 4,
     VT_BLOCKS = 6
   };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  const ::flatbuffers::String *name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *>(VT_BLOCKS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaBasicBlock>> *>(VT_BLOCKS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NAME) &&
            verifier.VerifyString(name()) &&
@@ -2672,48 +2679,48 @@ struct TosaRegion FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TosaRegionBuilder {
   typedef TosaRegion Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name) {
     fbb_.AddOffset(TosaRegion::VT_NAME, name);
   }
-  void add_blocks(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks) {
+  void add_blocks(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks) {
     fbb_.AddOffset(TosaRegion::VT_BLOCKS, blocks);
   }
-  explicit TosaRegionBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TosaRegionBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TosaRegion> Finish() {
+  ::flatbuffers::Offset<TosaRegion> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TosaRegion>(end);
+    auto o = ::flatbuffers::Offset<TosaRegion>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TosaRegion> CreateTosaRegion(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks = 0) {
+inline ::flatbuffers::Offset<TosaRegion> CreateTosaRegion(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaBasicBlock>>> blocks = 0) {
   TosaRegionBuilder builder_(_fbb);
   builder_.add_blocks(blocks);
   builder_.add_name(name);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TosaRegion> CreateTosaRegionDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<TosaRegion> CreateTosaRegionDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *name = nullptr,
-    const std::vector<flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks = nullptr) {
+    const std::vector<::flatbuffers::Offset<tosa::TosaBasicBlock>> *blocks = nullptr) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
-  auto blocks__ = blocks ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaBasicBlock>>(*blocks) : 0;
+  auto blocks__ = blocks ? _fbb.CreateVector<::flatbuffers::Offset<tosa::TosaBasicBlock>>(*blocks) : 0;
   return tosa::CreateTosaRegion(
       _fbb,
       name__,
       blocks__);
 }
 
-struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct TosaGraph FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TosaGraphBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_VERSION = 4,
@@ -2722,10 +2729,10 @@ struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const tosa::Version *version() const {
     return GetPointer<const tosa::Version *>(VT_VERSION);
   }
-  const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>> *regions() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>> *>(VT_REGIONS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaRegion>> *regions() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaRegion>> *>(VT_REGIONS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffsetRequired(verifier, VT_VERSION) &&
            verifier.VerifyTable(version()) &&
@@ -2738,48 +2745,48 @@ struct TosaGraph FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct TosaGraphBuilder {
   typedef TosaGraph Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_version(flatbuffers::Offset<tosa::Version> version) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_version(::flatbuffers::Offset<tosa::Version> version) {
     fbb_.AddOffset(TosaGraph::VT_VERSION, version);
   }
-  void add_regions(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>>> regions) {
+  void add_regions(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaRegion>>> regions) {
     fbb_.AddOffset(TosaGraph::VT_REGIONS, regions);
   }
-  explicit TosaGraphBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TosaGraphBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<TosaGraph> Finish() {
+  ::flatbuffers::Offset<TosaGraph> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<TosaGraph>(end);
+    auto o = ::flatbuffers::Offset<TosaGraph>(end);
     fbb_.Required(o, TosaGraph::VT_VERSION);
     return o;
   }
 };
 
-inline flatbuffers::Offset<TosaGraph> CreateTosaGraph(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<tosa::Version> version = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<tosa::TosaRegion>>> regions = 0) {
+inline ::flatbuffers::Offset<TosaGraph> CreateTosaGraph(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<tosa::Version> version = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<tosa::TosaRegion>>> regions = 0) {
   TosaGraphBuilder builder_(_fbb);
   builder_.add_regions(regions);
   builder_.add_version(version);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<TosaGraph> CreateTosaGraphDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<tosa::Version> version = 0,
-    const std::vector<flatbuffers::Offset<tosa::TosaRegion>> *regions = nullptr) {
-  auto regions__ = regions ? _fbb.CreateVector<flatbuffers::Offset<tosa::TosaRegion>>(*regions) : 0;
+inline ::flatbuffers::Offset<TosaGraph> CreateTosaGraphDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<tosa::Version> version = 0,
+    const std::vector<::flatbuffers::Offset<tosa::TosaRegion>> *regions = nullptr) {
+  auto regions__ = regions ? _fbb.CreateVector<::flatbuffers::Offset<tosa::TosaRegion>>(*regions) : 0;
   return tosa::CreateTosaGraph(
       _fbb,
       version,
       regions__);
 }
 
-inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, Attribute type) {
+inline bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type) {
   switch (type) {
     case Attribute_NONE: {
       return true;
@@ -2876,10 +2883,10 @@ inline bool VerifyAttribute(flatbuffers::Verifier &verifier, const void *obj, At
   }
 }
 
-inline bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types) {
+inline bool VerifyAttributeVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types) {
   if (!values || !types) return !values && !types;
   if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+  for (::flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyAttribute(
         verifier,  values->Get(i), types->GetEnum<Attribute>(i))) {
       return false;
@@ -2889,11 +2896,11 @@ inline bool VerifyAttributeVector(flatbuffers::Verifier &verifier, const flatbuf
 }
 
 inline const tosa::TosaGraph *GetTosaGraph(const void *buf) {
-  return flatbuffers::GetRoot<tosa::TosaGraph>(buf);
+  return ::flatbuffers::GetRoot<tosa::TosaGraph>(buf);
 }
 
 inline const tosa::TosaGraph *GetSizePrefixedTosaGraph(const void *buf) {
-  return flatbuffers::GetSizePrefixedRoot<tosa::TosaGraph>(buf);
+  return ::flatbuffers::GetSizePrefixedRoot<tosa::TosaGraph>(buf);
 }
 
 inline const char *TosaGraphIdentifier() {
@@ -2901,22 +2908,22 @@ inline const char *TosaGraphIdentifier() {
 }
 
 inline bool TosaGraphBufferHasIdentifier(const void *buf) {
-  return flatbuffers::BufferHasIdentifier(
+  return ::flatbuffers::BufferHasIdentifier(
       buf, TosaGraphIdentifier());
 }
 
 inline bool SizePrefixedTosaGraphBufferHasIdentifier(const void *buf) {
-  return flatbuffers::BufferHasIdentifier(
+  return ::flatbuffers::BufferHasIdentifier(
       buf, TosaGraphIdentifier(), true);
 }
 
 inline bool VerifyTosaGraphBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifyBuffer<tosa::TosaGraph>(TosaGraphIdentifier());
 }
 
 inline bool VerifySizePrefixedTosaGraphBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<tosa::TosaGraph>(TosaGraphIdentifier());
 }
 
@@ -2925,14 +2932,14 @@ inline const char *TosaGraphExtension() {
 }
 
 inline void FinishTosaGraphBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<tosa::TosaGraph> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<tosa::TosaGraph> root) {
   fbb.Finish(root, TosaGraphIdentifier());
 }
 
 inline void FinishSizePrefixedTosaGraphBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<tosa::TosaGraph> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<tosa::TosaGraph> root) {
   fbb.FinishSizePrefixed(root, TosaGraphIdentifier());
 }
 

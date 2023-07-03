@@ -272,7 +272,7 @@ tosa_err_t TosaSerializationHandler::SaveFileJson(const char* filename)
 
     uint8_t* buf = _builder.GetBufferPointer();
 
-    if (!GenerateText(_parser, buf, &jsongen))
+    if (GenText(_parser, buf, &jsongen))
     {
         printf("Couldn't serialize parsed data to JSON!\n");
         return TOSA_FILE_ERROR;

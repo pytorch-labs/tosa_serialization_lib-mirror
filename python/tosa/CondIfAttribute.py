@@ -42,15 +42,26 @@ class CondIfAttribute(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def CondIfAttributeStart(builder): builder.StartObject(2)
+def CondIfAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return CondIfAttributeStart(builder)
-def CondIfAttributeAddThenBranch(builder, thenBranch): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
+    CondIfAttributeStart(builder)
+
+def CondIfAttributeAddThenBranch(builder, thenBranch):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
+
 def AddThenBranch(builder, thenBranch):
-    return CondIfAttributeAddThenBranch(builder, thenBranch)
-def CondIfAttributeAddElseBranch(builder, elseBranch): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
+    CondIfAttributeAddThenBranch(builder, thenBranch)
+
+def CondIfAttributeAddElseBranch(builder, elseBranch):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
+
 def AddElseBranch(builder, elseBranch):
-    return CondIfAttributeAddElseBranch(builder, elseBranch)
-def CondIfAttributeEnd(builder): return builder.EndObject()
+    CondIfAttributeAddElseBranch(builder, elseBranch)
+
+def CondIfAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return CondIfAttributeEnd(builder)

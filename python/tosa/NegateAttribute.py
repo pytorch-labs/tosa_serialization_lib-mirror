@@ -42,15 +42,26 @@ class NegateAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def NegateAttributeStart(builder): builder.StartObject(2)
+def NegateAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return NegateAttributeStart(builder)
-def NegateAttributeAddInput1Zp(builder, input1Zp): builder.PrependInt32Slot(0, input1Zp, 0)
+    NegateAttributeStart(builder)
+
+def NegateAttributeAddInput1Zp(builder, input1Zp):
+    builder.PrependInt32Slot(0, input1Zp, 0)
+
 def AddInput1Zp(builder, input1Zp):
-    return NegateAttributeAddInput1Zp(builder, input1Zp)
-def NegateAttributeAddOutputZp(builder, outputZp): builder.PrependInt32Slot(1, outputZp, 0)
+    NegateAttributeAddInput1Zp(builder, input1Zp)
+
+def NegateAttributeAddOutputZp(builder, outputZp):
+    builder.PrependInt32Slot(1, outputZp, 0)
+
 def AddOutputZp(builder, outputZp):
-    return NegateAttributeAddOutputZp(builder, outputZp)
-def NegateAttributeEnd(builder): return builder.EndObject()
+    NegateAttributeAddOutputZp(builder, outputZp)
+
+def NegateAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return NegateAttributeEnd(builder)

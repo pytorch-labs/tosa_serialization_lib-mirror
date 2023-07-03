@@ -35,12 +35,20 @@ class AxisAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def AxisAttributeStart(builder): builder.StartObject(1)
+def AxisAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return AxisAttributeStart(builder)
-def AxisAttributeAddAxis(builder, axis): builder.PrependInt32Slot(0, axis, 0)
+    AxisAttributeStart(builder)
+
+def AxisAttributeAddAxis(builder, axis):
+    builder.PrependInt32Slot(0, axis, 0)
+
 def AddAxis(builder, axis):
-    return AxisAttributeAddAxis(builder, axis)
-def AxisAttributeEnd(builder): return builder.EndObject()
+    AxisAttributeAddAxis(builder, axis)
+
+def AxisAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return AxisAttributeEnd(builder)

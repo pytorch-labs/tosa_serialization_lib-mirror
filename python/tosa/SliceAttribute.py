@@ -82,21 +82,38 @@ class SliceAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
-def SliceAttributeStart(builder): builder.StartObject(2)
+def SliceAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return SliceAttributeStart(builder)
-def SliceAttributeAddStart(builder, start): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(start), 0)
+    SliceAttributeStart(builder)
+
+def SliceAttributeAddStart(builder, start):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(start), 0)
+
 def AddStart(builder, start):
-    return SliceAttributeAddStart(builder, start)
-def SliceAttributeStartStartVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartStartVector(builder, numElems):
+    SliceAttributeAddStart(builder, start)
+
+def SliceAttributeStartStartVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartStartVector(builder, numElems: int) -> int:
     return SliceAttributeStartStartVector(builder, numElems)
-def SliceAttributeAddSize(builder, size): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(size), 0)
+
+def SliceAttributeAddSize(builder, size):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(size), 0)
+
 def AddSize(builder, size):
-    return SliceAttributeAddSize(builder, size)
-def SliceAttributeStartSizeVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartSizeVector(builder, numElems):
+    SliceAttributeAddSize(builder, size)
+
+def SliceAttributeStartSizeVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartSizeVector(builder, numElems: int) -> int:
     return SliceAttributeStartSizeVector(builder, numElems)
-def SliceAttributeEnd(builder): return builder.EndObject()
+
+def SliceAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return SliceAttributeEnd(builder)

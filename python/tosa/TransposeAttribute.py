@@ -55,15 +55,26 @@ class TransposeAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-def TransposeAttributeStart(builder): builder.StartObject(1)
+def TransposeAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return TransposeAttributeStart(builder)
-def TransposeAttributeAddPerms(builder, perms): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(perms), 0)
+    TransposeAttributeStart(builder)
+
+def TransposeAttributeAddPerms(builder, perms):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(perms), 0)
+
 def AddPerms(builder, perms):
-    return TransposeAttributeAddPerms(builder, perms)
-def TransposeAttributeStartPermsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartPermsVector(builder, numElems):
+    TransposeAttributeAddPerms(builder, perms)
+
+def TransposeAttributeStartPermsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartPermsVector(builder, numElems: int) -> int:
     return TransposeAttributeStartPermsVector(builder, numElems)
-def TransposeAttributeEnd(builder): return builder.EndObject()
+
+def TransposeAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return TransposeAttributeEnd(builder)

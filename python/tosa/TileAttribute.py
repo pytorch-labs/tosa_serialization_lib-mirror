@@ -55,15 +55,26 @@ class TileAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-def TileAttributeStart(builder): builder.StartObject(1)
+def TileAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return TileAttributeStart(builder)
-def TileAttributeAddMultiples(builder, multiples): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(multiples), 0)
+    TileAttributeStart(builder)
+
+def TileAttributeAddMultiples(builder, multiples):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(multiples), 0)
+
 def AddMultiples(builder, multiples):
-    return TileAttributeAddMultiples(builder, multiples)
-def TileAttributeStartMultiplesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartMultiplesVector(builder, numElems):
+    TileAttributeAddMultiples(builder, multiples)
+
+def TileAttributeStartMultiplesVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartMultiplesVector(builder, numElems: int) -> int:
     return TileAttributeStartMultiplesVector(builder, numElems)
-def TileAttributeEnd(builder): return builder.EndObject()
+
+def TileAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return TileAttributeEnd(builder)

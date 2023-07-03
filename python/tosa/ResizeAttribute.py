@@ -116,30 +116,56 @@ class ResizeAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
-def ResizeAttributeStart(builder): builder.StartObject(4)
+def ResizeAttributeStart(builder):
+    builder.StartObject(4)
+
 def Start(builder):
-    return ResizeAttributeStart(builder)
-def ResizeAttributeAddScale(builder, scale): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(scale), 0)
+    ResizeAttributeStart(builder)
+
+def ResizeAttributeAddScale(builder, scale):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(scale), 0)
+
 def AddScale(builder, scale):
-    return ResizeAttributeAddScale(builder, scale)
-def ResizeAttributeStartScaleVector(builder, numElems): return builder.StartVector(2, numElems, 2)
-def StartScaleVector(builder, numElems):
+    ResizeAttributeAddScale(builder, scale)
+
+def ResizeAttributeStartScaleVector(builder, numElems):
+    return builder.StartVector(2, numElems, 2)
+
+def StartScaleVector(builder, numElems: int) -> int:
     return ResizeAttributeStartScaleVector(builder, numElems)
-def ResizeAttributeAddOffset(builder, offset): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(offset), 0)
+
+def ResizeAttributeAddOffset(builder, offset):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(offset), 0)
+
 def AddOffset(builder, offset):
-    return ResizeAttributeAddOffset(builder, offset)
-def ResizeAttributeStartOffsetVector(builder, numElems): return builder.StartVector(2, numElems, 2)
-def StartOffsetVector(builder, numElems):
+    ResizeAttributeAddOffset(builder, offset)
+
+def ResizeAttributeStartOffsetVector(builder, numElems):
+    return builder.StartVector(2, numElems, 2)
+
+def StartOffsetVector(builder, numElems: int) -> int:
     return ResizeAttributeStartOffsetVector(builder, numElems)
-def ResizeAttributeAddBorder(builder, border): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(border), 0)
+
+def ResizeAttributeAddBorder(builder, border):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(border), 0)
+
 def AddBorder(builder, border):
-    return ResizeAttributeAddBorder(builder, border)
-def ResizeAttributeStartBorderVector(builder, numElems): return builder.StartVector(2, numElems, 2)
-def StartBorderVector(builder, numElems):
+    ResizeAttributeAddBorder(builder, border)
+
+def ResizeAttributeStartBorderVector(builder, numElems):
+    return builder.StartVector(2, numElems, 2)
+
+def StartBorderVector(builder, numElems: int) -> int:
     return ResizeAttributeStartBorderVector(builder, numElems)
-def ResizeAttributeAddMode(builder, mode): builder.PrependUint32Slot(3, mode, 0)
+
+def ResizeAttributeAddMode(builder, mode):
+    builder.PrependUint32Slot(3, mode, 0)
+
 def AddMode(builder, mode):
-    return ResizeAttributeAddMode(builder, mode)
-def ResizeAttributeEnd(builder): return builder.EndObject()
+    ResizeAttributeAddMode(builder, mode)
+
+def ResizeAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return ResizeAttributeEnd(builder)

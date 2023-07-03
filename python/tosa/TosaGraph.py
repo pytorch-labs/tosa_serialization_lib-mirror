@@ -64,18 +64,32 @@ class TosaGraph(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
-def TosaGraphStart(builder): builder.StartObject(2)
+def TosaGraphStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return TosaGraphStart(builder)
-def TosaGraphAddVersion(builder, version): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(version), 0)
+    TosaGraphStart(builder)
+
+def TosaGraphAddVersion(builder, version):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(version), 0)
+
 def AddVersion(builder, version):
-    return TosaGraphAddVersion(builder, version)
-def TosaGraphAddRegions(builder, regions): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(regions), 0)
+    TosaGraphAddVersion(builder, version)
+
+def TosaGraphAddRegions(builder, regions):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(regions), 0)
+
 def AddRegions(builder, regions):
-    return TosaGraphAddRegions(builder, regions)
-def TosaGraphStartRegionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartRegionsVector(builder, numElems):
+    TosaGraphAddRegions(builder, regions)
+
+def TosaGraphStartRegionsVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartRegionsVector(builder, numElems: int) -> int:
     return TosaGraphStartRegionsVector(builder, numElems)
-def TosaGraphEnd(builder): return builder.EndObject()
+
+def TosaGraphEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return TosaGraphEnd(builder)

@@ -69,21 +69,38 @@ class CustomAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-def CustomAttributeStart(builder): builder.StartObject(3)
+def CustomAttributeStart(builder):
+    builder.StartObject(3)
+
 def Start(builder):
-    return CustomAttributeStart(builder)
-def CustomAttributeAddIdentifier(builder, identifier): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(identifier), 0)
+    CustomAttributeStart(builder)
+
+def CustomAttributeAddIdentifier(builder, identifier):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(identifier), 0)
+
 def AddIdentifier(builder, identifier):
-    return CustomAttributeAddIdentifier(builder, identifier)
-def CustomAttributeAddConfig(builder, config): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(config), 0)
+    CustomAttributeAddIdentifier(builder, identifier)
+
+def CustomAttributeAddConfig(builder, config):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(config), 0)
+
 def AddConfig(builder, config):
-    return CustomAttributeAddConfig(builder, config)
-def CustomAttributeAddImplementationAttrs(builder, implementationAttrs): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(implementationAttrs), 0)
+    CustomAttributeAddConfig(builder, config)
+
+def CustomAttributeAddImplementationAttrs(builder, implementationAttrs):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(implementationAttrs), 0)
+
 def AddImplementationAttrs(builder, implementationAttrs):
-    return CustomAttributeAddImplementationAttrs(builder, implementationAttrs)
-def CustomAttributeStartImplementationAttrsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def StartImplementationAttrsVector(builder, numElems):
+    CustomAttributeAddImplementationAttrs(builder, implementationAttrs)
+
+def CustomAttributeStartImplementationAttrsVector(builder, numElems):
+    return builder.StartVector(1, numElems, 1)
+
+def StartImplementationAttrsVector(builder, numElems: int) -> int:
     return CustomAttributeStartImplementationAttrsVector(builder, numElems)
-def CustomAttributeEnd(builder): return builder.EndObject()
+
+def CustomAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return CustomAttributeEnd(builder)

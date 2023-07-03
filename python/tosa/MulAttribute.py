@@ -35,12 +35,20 @@ class MulAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def MulAttributeStart(builder): builder.StartObject(1)
+def MulAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return MulAttributeStart(builder)
-def MulAttributeAddShift(builder, shift): builder.PrependInt32Slot(0, shift, 0)
+    MulAttributeStart(builder)
+
+def MulAttributeAddShift(builder, shift):
+    builder.PrependInt32Slot(0, shift, 0)
+
 def AddShift(builder, shift):
-    return MulAttributeAddShift(builder, shift)
-def MulAttributeEnd(builder): return builder.EndObject()
+    MulAttributeAddShift(builder, shift)
+
+def MulAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return MulAttributeEnd(builder)

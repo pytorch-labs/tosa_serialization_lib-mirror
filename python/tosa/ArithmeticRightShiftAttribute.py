@@ -35,12 +35,20 @@ class ArithmeticRightShiftAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-def ArithmeticRightShiftAttributeStart(builder): builder.StartObject(1)
+def ArithmeticRightShiftAttributeStart(builder):
+    builder.StartObject(1)
+
 def Start(builder):
-    return ArithmeticRightShiftAttributeStart(builder)
-def ArithmeticRightShiftAttributeAddRound(builder, round): builder.PrependBoolSlot(0, round, 0)
+    ArithmeticRightShiftAttributeStart(builder)
+
+def ArithmeticRightShiftAttributeAddRound(builder, round):
+    builder.PrependBoolSlot(0, round, 0)
+
 def AddRound(builder, round):
-    return ArithmeticRightShiftAttributeAddRound(builder, round)
-def ArithmeticRightShiftAttributeEnd(builder): return builder.EndObject()
+    ArithmeticRightShiftAttributeAddRound(builder, round)
+
+def ArithmeticRightShiftAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return ArithmeticRightShiftAttributeEnd(builder)

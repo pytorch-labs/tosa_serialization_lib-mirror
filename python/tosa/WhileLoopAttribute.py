@@ -42,15 +42,26 @@ class WhileLoopAttribute(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def WhileLoopAttributeStart(builder): builder.StartObject(2)
+def WhileLoopAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return WhileLoopAttributeStart(builder)
-def WhileLoopAttributeAddCondBranch(builder, condBranch): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(condBranch), 0)
+    WhileLoopAttributeStart(builder)
+
+def WhileLoopAttributeAddCondBranch(builder, condBranch):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(condBranch), 0)
+
 def AddCondBranch(builder, condBranch):
-    return WhileLoopAttributeAddCondBranch(builder, condBranch)
-def WhileLoopAttributeAddBodyBranch(builder, bodyBranch): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(bodyBranch), 0)
+    WhileLoopAttributeAddCondBranch(builder, condBranch)
+
+def WhileLoopAttributeAddBodyBranch(builder, bodyBranch):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(bodyBranch), 0)
+
 def AddBodyBranch(builder, bodyBranch):
-    return WhileLoopAttributeAddBodyBranch(builder, bodyBranch)
-def WhileLoopAttributeEnd(builder): return builder.EndObject()
+    WhileLoopAttributeAddBodyBranch(builder, bodyBranch)
+
+def WhileLoopAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return WhileLoopAttributeEnd(builder)

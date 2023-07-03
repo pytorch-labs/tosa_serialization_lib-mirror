@@ -96,27 +96,50 @@ class ClampAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         return o == 0
 
-def ClampAttributeStart(builder): builder.StartObject(4)
+def ClampAttributeStart(builder):
+    builder.StartObject(4)
+
 def Start(builder):
-    return ClampAttributeStart(builder)
-def ClampAttributeAddMinInt(builder, minInt): builder.PrependInt32Slot(0, minInt, 0)
+    ClampAttributeStart(builder)
+
+def ClampAttributeAddMinInt(builder, minInt):
+    builder.PrependInt32Slot(0, minInt, 0)
+
 def AddMinInt(builder, minInt):
-    return ClampAttributeAddMinInt(builder, minInt)
-def ClampAttributeAddMaxInt(builder, maxInt): builder.PrependInt32Slot(1, maxInt, 0)
+    ClampAttributeAddMinInt(builder, minInt)
+
+def ClampAttributeAddMaxInt(builder, maxInt):
+    builder.PrependInt32Slot(1, maxInt, 0)
+
 def AddMaxInt(builder, maxInt):
-    return ClampAttributeAddMaxInt(builder, maxInt)
-def ClampAttributeAddMinFp(builder, minFp): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(minFp), 0)
+    ClampAttributeAddMaxInt(builder, maxInt)
+
+def ClampAttributeAddMinFp(builder, minFp):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(minFp), 0)
+
 def AddMinFp(builder, minFp):
-    return ClampAttributeAddMinFp(builder, minFp)
-def ClampAttributeStartMinFpVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def StartMinFpVector(builder, numElems):
+    ClampAttributeAddMinFp(builder, minFp)
+
+def ClampAttributeStartMinFpVector(builder, numElems):
+    return builder.StartVector(1, numElems, 1)
+
+def StartMinFpVector(builder, numElems: int) -> int:
     return ClampAttributeStartMinFpVector(builder, numElems)
-def ClampAttributeAddMaxFp(builder, maxFp): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(maxFp), 0)
+
+def ClampAttributeAddMaxFp(builder, maxFp):
+    builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(maxFp), 0)
+
 def AddMaxFp(builder, maxFp):
-    return ClampAttributeAddMaxFp(builder, maxFp)
-def ClampAttributeStartMaxFpVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def StartMaxFpVector(builder, numElems):
+    ClampAttributeAddMaxFp(builder, maxFp)
+
+def ClampAttributeStartMaxFpVector(builder, numElems):
+    return builder.StartVector(1, numElems, 1)
+
+def StartMaxFpVector(builder, numElems: int) -> int:
     return ClampAttributeStartMaxFpVector(builder, numElems)
-def ClampAttributeEnd(builder): return builder.EndObject()
+
+def ClampAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return ClampAttributeEnd(builder)

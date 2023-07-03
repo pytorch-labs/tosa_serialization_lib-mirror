@@ -42,15 +42,26 @@ class MatMulAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def MatMulAttributeStart(builder): builder.StartObject(2)
+def MatMulAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return MatMulAttributeStart(builder)
-def MatMulAttributeAddAZp(builder, aZp): builder.PrependInt32Slot(0, aZp, 0)
+    MatMulAttributeStart(builder)
+
+def MatMulAttributeAddAZp(builder, aZp):
+    builder.PrependInt32Slot(0, aZp, 0)
+
 def AddAZp(builder, aZp):
-    return MatMulAttributeAddAZp(builder, aZp)
-def MatMulAttributeAddBZp(builder, bZp): builder.PrependInt32Slot(1, bZp, 0)
+    MatMulAttributeAddAZp(builder, aZp)
+
+def MatMulAttributeAddBZp(builder, bZp):
+    builder.PrependInt32Slot(1, bZp, 0)
+
 def AddBZp(builder, bZp):
-    return MatMulAttributeAddBZp(builder, bZp)
-def MatMulAttributeEnd(builder): return builder.EndObject()
+    MatMulAttributeAddBZp(builder, bZp)
+
+def MatMulAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return MatMulAttributeEnd(builder)

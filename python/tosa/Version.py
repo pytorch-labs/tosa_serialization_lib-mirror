@@ -29,48 +29,65 @@ class Version(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # Version
-    def _major(self):
+    def _Major(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return -1
 
     # Version
-    def _minor(self):
+    def _Minor(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return -1
 
     # Version
-    def _patch(self):
+    def _Patch(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return -1
 
     # Version
-    def _draft(self):
+    def _Draft(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return True
 
-def VersionStart(builder): builder.StartObject(4)
+def VersionStart(builder):
+    builder.StartObject(4)
+
 def Start(builder):
-    return VersionStart(builder)
-def VersionAdd_major(builder, Major): builder.PrependInt32Slot(0, Major, -1)
-def Add_major(builder, Major):
-    return VersionAdd_major(builder, Major)
-def VersionAdd_minor(builder, Minor): builder.PrependInt32Slot(1, Minor, -1)
-def Add_minor(builder, Minor):
-    return VersionAdd_minor(builder, Minor)
-def VersionAdd_patch(builder, Patch): builder.PrependInt32Slot(2, Patch, -1)
-def Add_patch(builder, Patch):
-    return VersionAdd_patch(builder, Patch)
-def VersionAdd_draft(builder, Draft): builder.PrependBoolSlot(3, Draft, 1)
-def Add_draft(builder, Draft):
-    return VersionAdd_draft(builder, Draft)
-def VersionEnd(builder): return builder.EndObject()
+    VersionStart(builder)
+
+def VersionAdd_Major(builder, _Major):
+    builder.PrependInt32Slot(0, _Major, -1)
+
+def Add_Major(builder, _Major):
+    VersionAdd_Major(builder, _Major)
+
+def VersionAdd_Minor(builder, _Minor):
+    builder.PrependInt32Slot(1, _Minor, -1)
+
+def Add_Minor(builder, _Minor):
+    VersionAdd_Minor(builder, _Minor)
+
+def VersionAdd_Patch(builder, _Patch):
+    builder.PrependInt32Slot(2, _Patch, -1)
+
+def Add_Patch(builder, _Patch):
+    VersionAdd_Patch(builder, _Patch)
+
+def VersionAdd_Draft(builder, _Draft):
+    builder.PrependBoolSlot(3, _Draft, 1)
+
+def Add_Draft(builder, _Draft):
+    VersionAdd_Draft(builder, _Draft)
+
+def VersionEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return VersionEnd(builder)

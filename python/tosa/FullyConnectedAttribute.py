@@ -42,15 +42,26 @@ class FullyConnectedAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def FullyConnectedAttributeStart(builder): builder.StartObject(2)
+def FullyConnectedAttributeStart(builder):
+    builder.StartObject(2)
+
 def Start(builder):
-    return FullyConnectedAttributeStart(builder)
-def FullyConnectedAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(0, inputZp, 0)
+    FullyConnectedAttributeStart(builder)
+
+def FullyConnectedAttributeAddInputZp(builder, inputZp):
+    builder.PrependInt32Slot(0, inputZp, 0)
+
 def AddInputZp(builder, inputZp):
-    return FullyConnectedAttributeAddInputZp(builder, inputZp)
-def FullyConnectedAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(1, weightZp, 0)
+    FullyConnectedAttributeAddInputZp(builder, inputZp)
+
+def FullyConnectedAttributeAddWeightZp(builder, weightZp):
+    builder.PrependInt32Slot(1, weightZp, 0)
+
 def AddWeightZp(builder, weightZp):
-    return FullyConnectedAttributeAddWeightZp(builder, weightZp)
-def FullyConnectedAttributeEnd(builder): return builder.EndObject()
+    FullyConnectedAttributeAddWeightZp(builder, weightZp)
+
+def FullyConnectedAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return FullyConnectedAttributeEnd(builder)

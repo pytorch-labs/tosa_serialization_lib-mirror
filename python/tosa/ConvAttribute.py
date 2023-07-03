@@ -123,33 +123,62 @@ class ConvAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
-def ConvAttributeStart(builder): builder.StartObject(5)
+def ConvAttributeStart(builder):
+    builder.StartObject(5)
+
 def Start(builder):
-    return ConvAttributeStart(builder)
-def ConvAttributeAddPad(builder, pad): builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+    ConvAttributeStart(builder)
+
+def ConvAttributeAddPad(builder, pad):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
+
 def AddPad(builder, pad):
-    return ConvAttributeAddPad(builder, pad)
-def ConvAttributeStartPadVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartPadVector(builder, numElems):
+    ConvAttributeAddPad(builder, pad)
+
+def ConvAttributeStartPadVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartPadVector(builder, numElems: int) -> int:
     return ConvAttributeStartPadVector(builder, numElems)
-def ConvAttributeAddStride(builder, stride): builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+
+def ConvAttributeAddStride(builder, stride):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+
 def AddStride(builder, stride):
-    return ConvAttributeAddStride(builder, stride)
-def ConvAttributeStartStrideVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartStrideVector(builder, numElems):
+    ConvAttributeAddStride(builder, stride)
+
+def ConvAttributeStartStrideVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartStrideVector(builder, numElems: int) -> int:
     return ConvAttributeStartStrideVector(builder, numElems)
-def ConvAttributeAddDilation(builder, dilation): builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
+
+def ConvAttributeAddDilation(builder, dilation):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(dilation), 0)
+
 def AddDilation(builder, dilation):
-    return ConvAttributeAddDilation(builder, dilation)
-def ConvAttributeStartDilationVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def StartDilationVector(builder, numElems):
+    ConvAttributeAddDilation(builder, dilation)
+
+def ConvAttributeStartDilationVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
+
+def StartDilationVector(builder, numElems: int) -> int:
     return ConvAttributeStartDilationVector(builder, numElems)
-def ConvAttributeAddInputZp(builder, inputZp): builder.PrependInt32Slot(3, inputZp, 0)
+
+def ConvAttributeAddInputZp(builder, inputZp):
+    builder.PrependInt32Slot(3, inputZp, 0)
+
 def AddInputZp(builder, inputZp):
-    return ConvAttributeAddInputZp(builder, inputZp)
-def ConvAttributeAddWeightZp(builder, weightZp): builder.PrependInt32Slot(4, weightZp, 0)
+    ConvAttributeAddInputZp(builder, inputZp)
+
+def ConvAttributeAddWeightZp(builder, weightZp):
+    builder.PrependInt32Slot(4, weightZp, 0)
+
 def AddWeightZp(builder, weightZp):
-    return ConvAttributeAddWeightZp(builder, weightZp)
-def ConvAttributeEnd(builder): return builder.EndObject()
+    ConvAttributeAddWeightZp(builder, weightZp)
+
+def ConvAttributeEnd(builder):
+    return builder.EndObject()
+
 def End(builder):
     return ConvAttributeEnd(builder)
