@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2021, ARM Limited.
+// Copyright (c) 2020-2023, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ public:
         FILE_TYPE_MISMATCH,
         HEADER_PARSE_ERROR,
         BUFFER_SIZE_MISMATCH,
+        DATA_TYPE_NOT_SUPPORTED,
     };
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, float* databuf);
@@ -44,14 +45,6 @@ public:
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, double* databuf);
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, half_float::half* databuf);
-
-    static NPError readFromNpyFile(const char* filename, const uint32_t elems, uint8_t* databuf);
-
-    static NPError readFromNpyFile(const char* filename, const uint32_t elems, int8_t* databuf);
-
-    static NPError readFromNpyFile(const char* filename, const uint32_t elems, uint16_t* databuf);
-
-    static NPError readFromNpyFile(const char* filename, const uint32_t elems, int16_t* databuf);
 
     static NPError readFromNpyFile(const char* filename, const uint32_t elems, int32_t* databuf);
 
@@ -112,6 +105,7 @@ private:
                                          void* databuf,
                                          bool bool_translate);
     static NPError checkNpyHeader(FILE* infile, const uint32_t elems, const char* dtype_str);
+    static NPError getHeader(FILE* infile, bool& is_signed, int& bit_length, char& byte_order);
     static NPError writeNpyHeader(FILE* outfile, const std::vector<int32_t>& shape, const char* dtype_str);
 };
 
