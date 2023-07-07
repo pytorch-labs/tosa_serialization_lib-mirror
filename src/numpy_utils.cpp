@@ -236,34 +236,31 @@ NumpyUtilities::NPError NumpyUtilities::getHeader(FILE* infile, bool& is_signed,
         return HEADER_PARSE_ERROR;
     }
     char* ptr;
-    ptr = buf + sizeof(NUMPY_HEADER_STR) - 1;
 
-    std::string dic_string(ptr);
-    auto descr_loc = dic_string.find("descr");
+    // Validate the numpy magic number
+    if (memcmp(buf, NUMPY_HEADER_STR, sizeof(NUMPY_HEADER_STR) - 1))
+    {
+        return HEADER_PARSE_ERROR;
+    }
 
-    // Reference: https://en.cppreference.com/w/cpp/algorithm/remove
-    // remove all the white spaces for the following offset NUMPY_HEADER_DESC_OFFSET to work
-    dic_string.erase(
-        std::remove_if(dic_string.begin(), dic_string.end(), [](unsigned char x) { return std::isspace(x); }),
-        dic_string.end());
-    // The dic_string is constant: descr': ', add a offset of NUMPY_HEADER_DESC_OFFSET
-    // to the actual dtype string station
-    dic_string = dic_string.substr(descr_loc + NUMPY_HEADER_DESC_OFFSET, 3);
+    std::string dic_string(buf, NUMPY_HEADER_SZ);
 
-    // Fill byte_order;
-    char byte_order_c[1];
-    strcpy(byte_order_c, dic_string.substr(0, 1).c_str());
-    byte_order = byte_order_c[0];
+    std::string desc_str("descr':");
+    size_t offset = dic_string.find(desc_str);
+    if (offset == std::string::npos)
+        return HEADER_PARSE_ERROR;
 
-    // Fill is_signed
-    char is_signed_c[1];
-    strcpy(is_signed_c, dic_string.substr(1, 1).c_str());
-    is_signed = is_signed_c[0] == 'u' ? false : true;
+    offset += desc_str.size() + 1;
+    // Skip whitespace and the opening '
+    while (offset < dic_string.size() && (std::isspace(dic_string[offset]) || dic_string[offset] == '\''))
+        offset++;
+    // Check for overflow
+    if (offset + 2 > dic_string.size())
+        return HEADER_PARSE_ERROR;
 
-    // Fill bit_length
-    char bit_length_c[1];
-    strcpy(bit_length_c, dic_string.substr(2, 1).c_str());
-    bit_length = (int)(bit_length_c[0] - '0');
+    byte_order = dic_string[offset];
+    is_signed  = dic_string[offset + 1] == 'u' ? false : true;
+    bit_length = (int)dic_string[offset + 2] - '0';
 
     rewind(infile);
     return rc;
