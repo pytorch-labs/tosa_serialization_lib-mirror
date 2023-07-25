@@ -615,8 +615,16 @@ class TosaSerializerBasicBlock:
         return TosaBasicBlock.End(builder)
 
 
+# How CONSTs are treated in the flatbuffer
+@unique
+class ConstMode(IntEnum):
+    EMBED = 0
+    EMBED_DUMP = 1
+    INPUTS = 2
+
+
 class TosaSerializerRegion:
-    def __init__(self, name, pathPrefix, saveConstsToFile=False):
+    def __init__(self, name, pathPrefix, constMode=ConstMode.EMBED):
         self.name = name
         self.basicBlocks = []
         self.currInputIdx = 0
@@ -624,7 +632,7 @@ class TosaSerializerRegion:
         self.currLayerIdx = 1
         self.currResultIdx = 0
         self.pathPrefix = pathPrefix
-        self.saveConstsToFile = saveConstsToFile
+        self.constMode = constMode
 
     def addBasicBlock(self, name):
         self.currBasicBlock = TosaSerializerBasicBlock(name)
@@ -665,11 +673,25 @@ class TosaSerializerRegion:
         name = "const-{}".format(self.currInputIdx)
         self.currInputIdx = self.currInputIdx + 1
 
-        tens = self.currBasicBlock.addTensor(name, shape, dtype, vals)
+        if self.constMode == ConstMode.INPUTS:
+            # Save const as input file
+            filename = "{}.npy".format(name)
+            tensor_vals = None
+            self.currBasicBlock.addInput(name)
+        else:
+            # Embed const in flatbuffer
+            filename = None
+            tensor_vals = vals
+
+        tens = self.currBasicBlock.addTensor(name, shape, dtype, tensor_vals, filename)
         # Add the operator now
         self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name)
 
-        if self.saveConstsToFile:
+        # Save the const data to file for debug or as input files
+        if vals is not None and self.constMode in [
+            ConstMode.EMBED_DUMP,
+            ConstMode.INPUTS,
+        ]:
             filename = "{}.npy".format(name)
             np.save(os.path.join(self.pathPrefix, filename), vals, False)
 
@@ -725,14 +747,14 @@ class TensorDir(IntEnum):
 
 
 class TosaSerializer:
-    def __init__(self, pathPrefix, saveConstsToFile=False):
+    def __init__(self, pathPrefix, constMode=ConstMode.EMBED):
         self.builder = flatbuffers.Builder(0)
 
-        self.regions = []
-        self.startRegion("main", pathPrefix, saveConstsToFile)
-
         # Enables inspection of constant data outside of graph
-        self.saveConstsToFile = saveConstsToFile
+        self.constMode = constMode
+
+        self.regions = []
+        self.startRegion("main", pathPrefix)
 
         self.currRegion.addBasicBlock("main")
 
@@ -834,8 +856,8 @@ class TosaSerializer:
 
         return json.dumps(test_desc, indent="  ")
 
-    def startRegion(self, name, pathPrefix, saveConstsToFile):
-        self.currRegion = TosaSerializerRegion(name, pathPrefix, saveConstsToFile)
+    def startRegion(self, name, pathPrefix):
+        self.currRegion = TosaSerializerRegion(name, pathPrefix, self.constMode)
         self.regions.append(self.currRegion)
 
     @staticmethod
