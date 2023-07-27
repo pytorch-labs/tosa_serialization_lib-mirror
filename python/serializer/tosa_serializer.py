@@ -804,10 +804,10 @@ class TosaSerializer:
         builder = self.builder
 
         Version.Start(builder)
-        Version.Add_major(builder, TOSA_VERSION[0])
-        Version.Add_minor(builder, TOSA_VERSION[1])
-        Version.Add_patch(builder, TOSA_VERSION[2])
-        Version.Add_draft(builder, TOSA_VERSION[3])
+        Version.Add_Major(builder, TOSA_VERSION[0])
+        Version.Add_Minor(builder, TOSA_VERSION[1])
+        Version.Add_Patch(builder, TOSA_VERSION[2])
+        Version.Add_Draft(builder, TOSA_VERSION[3])
         version = Version.End(builder)
 
         fbv_region = TosaSerializer.serializeObjVec(
