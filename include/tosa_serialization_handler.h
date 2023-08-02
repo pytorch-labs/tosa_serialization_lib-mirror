@@ -57,7 +57,7 @@ struct TosaVersion
     enum class compat_t
     {
         COMPLETELY_COMPATIBLE,
-        PARTIALLY_COMPATIBLE,
+        BACKWARD_COMPATIBLE,
         NOT_COMPATIBLE
     };
 
@@ -86,17 +86,54 @@ struct TosaVersion
         return str;
     }
 
-    compat_t is_compatible(const TosaVersion& rhs) const
+    static bool less_than(const TosaVersion& version1, const TosaVersion& version2)
     {
-        if (rhs._major == _major && rhs._minor == _minor)
+        if (version1._major < version2._major)
         {
-            if (rhs._patch == _patch && rhs._draft == _draft)
+            return true;
+        }
+        else if (version1._major == version2._major)
+        {
+            if (version1._minor < version2._minor)
             {
-                return TosaVersion::compat_t::COMPLETELY_COMPATIBLE;
+                return true;
             }
-            else
+            else if (version1._minor == version2._minor)
             {
-                return TosaVersion::compat_t::PARTIALLY_COMPATIBLE;
+                if (version1._patch < version2._patch)
+                {
+                    return true;
+                }
+                else if (version1._patch == version2._patch)
+                {
+                    if (version1._draft == true && version2._draft == false)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    static TosaVersion::compat_t is_compatible(const TosaVersion& tosa_fb_version,
+                                               const TosaVersion& serializer_version)
+    {
+        bool major_match = (serializer_version._major == tosa_fb_version._major);
+        bool minor_match = (serializer_version._minor == tosa_fb_version._minor);
+        bool patch_match = (serializer_version._patch == tosa_fb_version._patch);
+        bool draft_match = (serializer_version._draft == tosa_fb_version._draft);
+
+        if (major_match && minor_match && patch_match && draft_match)
+            return TosaVersion::compat_t::COMPLETELY_COMPATIBLE;
+
+        // We currently support backward compatibility starting from 0.70.0
+        // TODO: need to double-check this logic right before TOSA 1.0.0 release
+        if ((tosa_fb_version._major == 0 && tosa_fb_version._minor >= 70) || (tosa_fb_version._major > 0))
+        {
+            if (less_than(tosa_fb_version, serializer_version))
+            {
+                return TosaVersion::compat_t::BACKWARD_COMPATIBLE;
             }
         }
         return TosaVersion::compat_t::NOT_COMPATIBLE;

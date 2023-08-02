@@ -403,17 +403,19 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
     TosaVersion read_version(fb_tosa_version->_major(), fb_tosa_version->_minor(), fb_tosa_version->_patch(),
                              fb_tosa_version->_draft());
 
-    TosaVersion::compat_t is_compat = read_version.is_compatible(GetVersion());
+    TosaVersion::compat_t is_compat = TosaVersion::is_compatible(read_version, GetVersion());
     switch (is_compat)
     {
         case TosaVersion::compat_t::COMPLETELY_COMPATIBLE:
             break;
-        case TosaVersion::compat_t::PARTIALLY_COMPATIBLE:
-            printf("WARNING: Read flatbuffer version %s is partially compatible with serializer version %s\n",
+        case TosaVersion::compat_t::BACKWARD_COMPATIBLE:
+            printf("WARNING: Different Tosa flatbuffer and serializer versions detected. Read Tosa flatbuffer version "
+                   "%s is backward "
+                   "compatible with serializer version %s\n",
                    read_version.to_string().c_str(), GetVersion().to_string().c_str());
             break;
         case TosaVersion::compat_t::NOT_COMPATIBLE:
-            printf("ERROR: Read flatbuffer version %s is not compatible with serializer version %s\n",
+            printf("ERROR: Read Tosa flatbuffer version %s is not compatible with serializer version %s\n",
                    read_version.to_string().c_str(), GetVersion().to_string().c_str());
             return TOSA_VERSION_MISMATCH;
     }
