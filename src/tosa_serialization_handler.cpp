@@ -682,7 +682,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
             }
             auto fb_block_tensors = _builder.CreateVector(fboffset_block_tensors);
             auto fboffset_block   = CreateTosaBasicBlock(_builder, block_name, fb_block_operators, fb_block_tensors,
-                                                       fb_block_inputs, fb_block_outputs);
+                                                         fb_block_inputs, fb_block_outputs);
             fboffset_blocks.push_back(fboffset_block);
         }    // end block for_loop
         auto fb_blocks = _builder.CreateVector(fboffset_blocks);

@@ -75,3 +75,4 @@ class Op(object):
     FFT2D = 69
     RFFT2D = 70
     ERF = 71
+    DIM = 72

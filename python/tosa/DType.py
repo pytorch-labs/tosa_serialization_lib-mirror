@@ -15,3 +15,4 @@ class DType(object):
     UINT16 = 9
     FP16 = 10
     BF16 = 11
+    SHAPE = 12

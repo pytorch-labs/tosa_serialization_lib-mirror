@@ -36,6 +36,7 @@ enum DType:uint32 {
   UINT16,
   FP16,
   BF16,
+  SHAPE,
 }
 
 enum ResizeMode:uint32 {
@@ -117,6 +118,7 @@ enum Op:uint32 {
   FFT2D,
   RFFT2D,
   ERF,
+  DIM,
 }
 
 union Attribute {

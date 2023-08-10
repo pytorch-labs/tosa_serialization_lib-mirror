@@ -112,11 +112,12 @@ enum DType : uint32_t {
   DType_UINT16 = 9,
   DType_FP16 = 10,
   DType_BF16 = 11,
+  DType_SHAPE = 12,
   DType_MIN = DType_UNKNOWN,
-  DType_MAX = DType_BF16
+  DType_MAX = DType_SHAPE
 };
 
-inline const DType (&EnumValuesDType())[12] {
+inline const DType (&EnumValuesDType())[13] {
   static const DType values[] = {
     DType_UNKNOWN,
     DType_BOOL,
@@ -129,13 +130,14 @@ inline const DType (&EnumValuesDType())[12] {
     DType_FP32,
     DType_UINT16,
     DType_FP16,
-    DType_BF16
+    DType_BF16,
+    DType_SHAPE
   };
   return values;
 }
 
 inline const char * const *EnumNamesDType() {
-  static const char * const names[13] = {
+  static const char * const names[14] = {
     "UNKNOWN",
     "BOOL",
     "UINT8",
@@ -148,13 +150,14 @@ inline const char * const *EnumNamesDType() {
     "UINT16",
     "FP16",
     "BF16",
+    "SHAPE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameDType(DType e) {
-  if (::flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_BF16)) return "";
+  if (::flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_SHAPE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDType()[index];
 }
@@ -265,11 +268,12 @@ enum Op : uint32_t {
   Op_FFT2D = 69,
   Op_RFFT2D = 70,
   Op_ERF = 71,
+  Op_DIM = 72,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_ERF
+  Op_MAX = Op_DIM
 };
 
-inline const Op (&EnumValuesOp())[72] {
+inline const Op (&EnumValuesOp())[73] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -342,13 +346,14 @@ inline const Op (&EnumValuesOp())[72] {
     Op_WHILE_LOOP,
     Op_FFT2D,
     Op_RFFT2D,
-    Op_ERF
+    Op_ERF,
+    Op_DIM
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[73] = {
+  static const char * const names[74] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -421,13 +426,14 @@ inline const char * const *EnumNamesOp() {
     "FFT2D",
     "RFFT2D",
     "ERF",
+    "DIM",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_ERF)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_DIM)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
