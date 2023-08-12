@@ -62,6 +62,7 @@ DTypeNames = [
     "UINT16",
     "FP16",
     "BF16",
+    "SHAPE",
 ]
 
 ByteMask = np.uint64(0xFF)
@@ -475,7 +476,7 @@ class TosaSerializerTensor:
                     b2 = (val_u32 >> np.uint32(16)) & ByteMask
                     b3 = (val_u32 >> np.uint32(24)) & ByteMask
                     u8_data.extend([b0, b1, b2, b3])
-            elif self.dtype == DType.INT48:
+            elif self.dtype == DType.INT48 or self.dtype == DType.SHAPE:
                 for val in self.data:
                     val_u64 = np.uint64(val)
                     b0 = val_u64 & ByteMask
