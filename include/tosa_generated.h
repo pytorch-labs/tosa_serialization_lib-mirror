@@ -1424,7 +1424,9 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_SHIFT = 10,
     VT_SCALE32 = 12,
     VT_DOUBLE_ROUND = 14,
-    VT_PER_CHANNEL = 16
+    VT_PER_CHANNEL = 16,
+    VT_INPUT_UNSIGNED = 18,
+    VT_OUTPUT_UNSIGNED = 20
   };
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -1447,6 +1449,12 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool per_channel() const {
     return GetField<uint8_t>(VT_PER_CHANNEL, 0) != 0;
   }
+  bool input_unsigned() const {
+    return GetField<uint8_t>(VT_INPUT_UNSIGNED, 0) != 0;
+  }
+  bool output_unsigned() const {
+    return GetField<uint8_t>(VT_OUTPUT_UNSIGNED, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
@@ -1458,6 +1466,8 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<uint8_t>(verifier, VT_SCALE32, 1) &&
            VerifyField<uint8_t>(verifier, VT_DOUBLE_ROUND, 1) &&
            VerifyField<uint8_t>(verifier, VT_PER_CHANNEL, 1) &&
+           VerifyField<uint8_t>(verifier, VT_INPUT_UNSIGNED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OUTPUT_UNSIGNED, 1) &&
            verifier.EndTable();
   }
 };
@@ -1487,6 +1497,12 @@ struct RescaleAttributeBuilder {
   void add_per_channel(bool per_channel) {
     fbb_.AddElement<uint8_t>(RescaleAttribute::VT_PER_CHANNEL, static_cast<uint8_t>(per_channel), 0);
   }
+  void add_input_unsigned(bool input_unsigned) {
+    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_INPUT_UNSIGNED, static_cast<uint8_t>(input_unsigned), 0);
+  }
+  void add_output_unsigned(bool output_unsigned) {
+    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_OUTPUT_UNSIGNED, static_cast<uint8_t>(output_unsigned), 0);
+  }
   explicit RescaleAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1506,12 +1522,16 @@ inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shift = 0,
     bool scale32 = false,
     bool double_round = false,
-    bool per_channel = false) {
+    bool per_channel = false,
+    bool input_unsigned = false,
+    bool output_unsigned = false) {
   RescaleAttributeBuilder builder_(_fbb);
   builder_.add_shift(shift);
   builder_.add_multiplier(multiplier);
   builder_.add_output_zp(output_zp);
   builder_.add_input_zp(input_zp);
+  builder_.add_output_unsigned(output_unsigned);
+  builder_.add_input_unsigned(input_unsigned);
   builder_.add_per_channel(per_channel);
   builder_.add_double_round(double_round);
   builder_.add_scale32(scale32);
@@ -1526,7 +1546,9 @@ inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttributeDirect(
     const std::vector<int32_t> *shift = nullptr,
     bool scale32 = false,
     bool double_round = false,
-    bool per_channel = false) {
+    bool per_channel = false,
+    bool input_unsigned = false,
+    bool output_unsigned = false) {
   auto multiplier__ = multiplier ? _fbb.CreateVector<int32_t>(*multiplier) : 0;
   auto shift__ = shift ? _fbb.CreateVector<int32_t>(*shift) : 0;
   return tosa::CreateRescaleAttribute(
@@ -1537,7 +1559,9 @@ inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttributeDirect(
       shift__,
       scale32,
       double_round,
-      per_channel);
+      per_channel,
+      input_unsigned,
+      output_unsigned);
 }
 
 struct MulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
