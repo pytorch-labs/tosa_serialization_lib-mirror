@@ -117,8 +117,22 @@ class RescaleAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
+    # RescaleAttribute
+    def InputUnsigned(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+    # RescaleAttribute
+    def OutputUnsigned(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        if o != 0:
+            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
 def RescaleAttributeStart(builder):
-    builder.StartObject(7)
+    builder.StartObject(9)
 
 def Start(builder):
     RescaleAttributeStart(builder)
@@ -176,6 +190,18 @@ def RescaleAttributeAddPerChannel(builder, perChannel):
 
 def AddPerChannel(builder, perChannel):
     RescaleAttributeAddPerChannel(builder, perChannel)
+
+def RescaleAttributeAddInputUnsigned(builder, inputUnsigned):
+    builder.PrependBoolSlot(7, inputUnsigned, 0)
+
+def AddInputUnsigned(builder, inputUnsigned):
+    RescaleAttributeAddInputUnsigned(builder, inputUnsigned)
+
+def RescaleAttributeAddOutputUnsigned(builder, outputUnsigned):
+    builder.PrependBoolSlot(8, outputUnsigned, 0)
+
+def AddOutputUnsigned(builder, outputUnsigned):
+    RescaleAttributeAddOutputUnsigned(builder, outputUnsigned)
 
 def RescaleAttributeEnd(builder):
     return builder.EndObject()

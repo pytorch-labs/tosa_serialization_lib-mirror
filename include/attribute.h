@@ -130,6 +130,18 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
         DEF_ARGS_##VER(FALSE, T3, F3, V3) DEF_ARGS_##VER(FALSE, T4, F4, V4) DEF_ARGS_##VER(FALSE, T5, F5, V5)          \
             DEF_ARGS_##VER(FALSE, T6, F6, V6)
 
+#define DEF_ARGS_8(VER, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6, T7, F7,    \
+                   V7)                                                                                                 \
+    DEF_ARGS_##VER(TRUE, T0, F0, V0) DEF_ARGS_##VER(FALSE, T1, F1, V1) DEF_ARGS_##VER(FALSE, T2, F2, V2)               \
+        DEF_ARGS_##VER(FALSE, T3, F3, V3) DEF_ARGS_##VER(FALSE, T4, F4, V4) DEF_ARGS_##VER(FALSE, T5, F5, V5)          \
+            DEF_ARGS_##VER(FALSE, T6, F6, V6) DEF_ARGS_##VER(FALSE, T7, F7, V7)
+
+#define DEF_ARGS_9(VER, T0, F0, V0, T1, F1, V1, T2, F2, V2, T3, F3, V3, T4, F4, V4, T5, F5, V5, T6, F6, V6, T7, F7,    \
+                   V7, T8, F8, V8)                                                                                     \
+    DEF_ARGS_##VER(TRUE, T0, F0, V0) DEF_ARGS_##VER(FALSE, T1, F1, V1) DEF_ARGS_##VER(FALSE, T2, F2, V2)               \
+        DEF_ARGS_##VER(FALSE, T3, F3, V3) DEF_ARGS_##VER(FALSE, T4, F4, V4) DEF_ARGS_##VER(FALSE, T5, F5, V5)          \
+            DEF_ARGS_##VER(FALSE, T6, F6, V6) DEF_ARGS_##VER(FALSE, T7, F7, V7) DEF_ARGS_##VER(FALSE, T8, F8, V8)
+
 #define DEF_VER0_VAR_DECL_PTR(NAME) const NAME* p = static_cast<const NAME*>(options);
 #define DEF_VER0_VAR_0(NAME)
 #define DEF_VER0_VAR_1(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
@@ -139,6 +151,8 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #define DEF_VER0_VAR_5(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
 #define DEF_VER0_VAR_6(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
 #define DEF_VER0_VAR_7(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
+#define DEF_VER0_VAR_8(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
+#define DEF_VER0_VAR_9(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
 
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
     class Tosa##NAME##Attribute : public TosaAttributeBase                                                             \
@@ -174,6 +188,8 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #undef DEF_ARGS_5
 #undef DEF_ARGS_6
 #undef DEF_ARGS_7
+#undef DEF_ARGS_8
+#undef DEF_ARGS_9
 #undef DEF_ARGS_VER0
 #undef DEF_ARGS_VER1
 #undef DEF_ARGS_VER2
