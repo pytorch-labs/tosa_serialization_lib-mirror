@@ -139,4 +139,7 @@ private:
     static NPError writeNpyHeader(FILE* outfile, const std::vector<int32_t>& shape, const char* dtype_str);
 };
 
+template <>
+NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, const uint32_t elems, int32_t* databuf);
+
 #endif    // _TOSA_NUMPY_UTILS_H
