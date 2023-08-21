@@ -282,6 +282,7 @@ table TosaTensor {
   type:DType;                       // data type of the tensor
   data: [ubyte] (force_align: 8);   // raw data array if it's a constant tensor.
   variable: bool;                   // is this a variable tensor
+  is_unranked: bool;                // whether this is an unranked tensor
 }
 
 table TosaOperator {

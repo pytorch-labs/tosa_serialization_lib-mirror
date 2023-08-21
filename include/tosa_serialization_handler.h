@@ -113,12 +113,14 @@ public:
                             const flatbuffers::Vector<int32_t>* shape,
                             DType dtype,
                             const flatbuffers::Vector<uint8_t>* data,
-                            bool variable = false);
+                            const bool variable    = false,
+                            const bool is_unranked = false);
     TosaSerializationTensor(const std::string& name,
                             const std::vector<int32_t>& shape,
                             DType dtype,
                             const std::vector<uint8_t>& data,
-                            bool variable = false);
+                            const bool variable    = false,
+                            const bool is_unranked = false);
     TosaSerializationTensor();
     ~TosaSerializationTensor();
 
@@ -143,6 +145,10 @@ public:
     {
         return _data;
     }
+    const bool GetIsUnranked() const
+    {
+        return _is_unranked;
+    }
 
     // modifier
     void SetDtype(DType dtype)
@@ -161,6 +167,10 @@ public:
     {
         _data = std::move(data);
     }
+    void SetIsUnranked(const bool value)
+    {
+        _is_unranked = value;
+    }
     void SetDimSize(size_t dim, uint32_t new_size)
     {
         if (dim < 0 || dim >= _shape.size())
@@ -177,6 +187,7 @@ private:
     std::string _name;           /* name of the tensor, used for solving dependency */
     bool _variable;              /* is this a variable tensor */
     std::vector<uint8_t> _data;  /* data array */
+    bool _is_unranked;           /* whether this is an unranked tensor */
 };
 
 class TosaSerializationOperator

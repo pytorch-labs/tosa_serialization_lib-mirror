@@ -23,7 +23,8 @@ TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name
                                                  const flatbuffers::Vector<int32_t>* shape,
                                                  DType dtype,
                                                  const flatbuffers::Vector<uint8_t>* data,
-                                                 bool variable)
+                                                 const bool variable,
+                                                 const bool is_unranked)
 {
     _dtype    = dtype;
     _variable = variable;
@@ -39,26 +40,30 @@ TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name
     {
         std::copy(data->begin(), data->end(), std::back_inserter(_data));
     }
+    _is_unranked = is_unranked;
 }
 
 TosaSerializationTensor::TosaSerializationTensor(const std::string& name,
                                                  const std::vector<int32_t>& shape,
                                                  DType dtype,
                                                  const std::vector<uint8_t>& data,
-                                                 bool variable)
+                                                 const bool variable,
+                                                 const bool is_unranked)
 {
-    _dtype    = dtype;
-    _variable = variable;
-    _shape    = shape;
-    _name     = name;
-    _data     = data;
+    _dtype       = dtype;
+    _variable    = variable;
+    _shape       = shape;
+    _name        = name;
+    _data        = data;
+    _is_unranked = is_unranked;
 }
 
 TosaSerializationTensor::TosaSerializationTensor()
 {
-    _dtype    = DType_UNKNOWN;
-    _variable = false;
-    _name     = "UNKNOWN";
+    _dtype       = DType_UNKNOWN;
+    _variable    = false;
+    _name        = "UNKNOWN";
+    _is_unranked = false;
 }
 
 TosaSerializationTensor::~TosaSerializationTensor()
@@ -518,14 +523,15 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
             {
                 auto curr_tensor = fb_tosa_tensors->Get(j);
 
-                auto tensor_name     = curr_tensor->name();
-                auto tensor_shape    = curr_tensor->shape();
-                auto tensor_type     = curr_tensor->type();
-                auto tensor_variable = curr_tensor->variable();
-                auto tensor_data     = curr_tensor->data();
+                auto tensor_name        = curr_tensor->name();
+                auto tensor_shape       = curr_tensor->shape();
+                auto tensor_type        = curr_tensor->type();
+                auto tensor_variable    = curr_tensor->variable();
+                auto tensor_data        = curr_tensor->data();
+                auto tensor_is_unranked = curr_tensor->is_unranked();
 
-                new_tensor =
-                    new TosaSerializationTensor(tensor_name, tensor_shape, tensor_type, tensor_data, tensor_variable);
+                new_tensor = new TosaSerializationTensor(tensor_name, tensor_shape, tensor_type, tensor_data,
+                                                         tensor_variable, tensor_is_unranked);
                 if (new_tensor)
                 {
                     block_tensors_container.push_back(new_tensor);
@@ -679,13 +685,14 @@ tosa_err_t TosaSerializationHandler::Serialize()
             auto fb_block_operators = _builder.CreateVector(fboffset_block_operators);
             for (auto tensor : block->GetTensors())
             {
-                auto tensor_name     = _builder.CreateString(tensor->GetName().c_str());
-                auto tensor_shape    = _builder.CreateVector(tensor->GetShape());
-                auto tensor_dtype    = tensor->GetDtype();
-                bool tensor_variable = tensor->GetVariable();
-                auto tensor_data     = _builder.CreateVector(tensor->GetData());
-                auto fboffset_tensor =
-                    CreateTosaTensor(_builder, tensor_name, tensor_shape, tensor_dtype, tensor_data, tensor_variable);
+                auto tensor_name        = _builder.CreateString(tensor->GetName().c_str());
+                auto tensor_shape       = _builder.CreateVector(tensor->GetShape());
+                auto tensor_dtype       = tensor->GetDtype();
+                bool tensor_variable    = tensor->GetVariable();
+                auto tensor_data        = _builder.CreateVector(tensor->GetData());
+                auto tensor_is_unranked = tensor->GetIsUnranked();
+                auto fboffset_tensor = CreateTosaTensor(_builder, tensor_name, tensor_shape, tensor_dtype, tensor_data,
+                                                        tensor_variable, tensor_is_unranked);
                 fboffset_block_tensors.push_back(fboffset_tensor);
             }
             auto fb_block_tensors = _builder.CreateVector(fboffset_block_tensors);
