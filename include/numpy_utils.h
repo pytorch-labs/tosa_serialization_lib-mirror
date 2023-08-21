@@ -114,7 +114,7 @@ public:
     template <typename D, typename S>
     static void copyBufferByElement(D* dest_buf, S* src_buf, int num)
     {
-        static_assert(sizeof(D) >= sizeof(S));
+        static_assert(sizeof(D) >= sizeof(S), "The size of dest_buf must be equal to or larger than that of src_buf");
         for (int i = 0; i < num; ++i)
         {
             dest_buf[i] = src_buf[i];
