@@ -78,14 +78,16 @@ DEF_ATTRIBUTE(Clamp, 4,
               float, S, min_fp,
               float, S, max_fp)
 
-DEF_ATTRIBUTE(Rescale, 7,
+DEF_ATTRIBUTE(Rescale, 9,
               int32_t, S, input_zp,
               int32_t, S, output_zp,
               int32_t, V, multiplier,
               int32_t, V, shift,
               bool, S, scale32,
               bool, S, double_round,
-              bool, S, per_channel)
+              bool, S, per_channel,
+              bool, S, input_unsigned,
+              bool, S, output_unsigned)
 
 DEF_ATTRIBUTE(Mul, 1,
               int32_t, S, shift)
