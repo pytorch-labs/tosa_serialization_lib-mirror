@@ -460,17 +460,17 @@ class TosaSerializerTensor:
                     u8_data.append(val_u8)
             elif self.dtype == DType.INT8:
                 for val in self.data:
-                    val_u8 = np.uint8(val)
+                    val_u8 = np.array(val).astype(dtype=np.uint8)
                     u8_data.append(val_u8)
             elif self.dtype == DType.INT16:
                 for val in self.data:
-                    val_u16 = np.uint16(val)
+                    val_u16 = np.array(val).astype(dtype=np.uint16)
                     b0 = val_u16 & ByteMask
                     b1 = (val_u16 >> np.uint16(8)) & ByteMask
                     u8_data.extend([b0, b1])
             elif self.dtype == DType.INT32:
                 for val in self.data:
-                    val_u32 = np.uint32(val)
+                    val_u32 = np.array(val).astype(dtype=np.uint32)
                     b0 = val_u32 & ByteMask
                     b1 = (val_u32 >> np.uint32(8)) & ByteMask
                     b2 = (val_u32 >> np.uint32(16)) & ByteMask
