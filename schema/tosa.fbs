@@ -285,6 +285,7 @@ table TosaTensor {
   data: [ubyte] (force_align: 8);   // raw data array if it's a constant tensor.
   variable: bool;                   // is this a variable tensor
   is_unranked: bool;                // whether this is an unranked tensor
+  variable_name:string;             // name for variable attribute
 }
 
 table TosaOperator {
