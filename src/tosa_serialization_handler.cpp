@@ -533,15 +533,16 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
             {
                 auto curr_tensor = fb_tosa_tensors->Get(j);
 
-                auto tensor_name        = curr_tensor->name();
-                auto tensor_shape       = curr_tensor->shape();
-                auto tensor_type        = curr_tensor->type();
-                auto tensor_variable    = curr_tensor->variable();
-                auto tensor_data        = curr_tensor->data();
-                auto tensor_is_unranked = curr_tensor->is_unranked();
+                auto tensor_name          = curr_tensor->name();
+                auto tensor_shape         = curr_tensor->shape();
+                auto tensor_type          = curr_tensor->type();
+                auto tensor_variable      = curr_tensor->variable();
+                auto tensor_data          = curr_tensor->data();
+                auto tensor_is_unranked   = curr_tensor->is_unranked();
+                auto tensor_variable_name = curr_tensor->variable_name();
 
                 new_tensor = new TosaSerializationTensor(tensor_name, tensor_shape, tensor_type, tensor_data,
-                                                         tensor_variable, tensor_is_unranked);
+                                                         tensor_variable, tensor_is_unranked, tensor_variable_name);
                 if (new_tensor)
                 {
                     block_tensors_container.push_back(new_tensor);
