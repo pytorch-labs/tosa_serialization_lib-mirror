@@ -35,8 +35,15 @@ class FFTAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
+    # FFTAttribute
+    def LocalBound(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
 def FFTAttributeStart(builder):
-    builder.StartObject(1)
+    builder.StartObject(2)
 
 def Start(builder):
     FFTAttributeStart(builder)
@@ -46,6 +53,12 @@ def FFTAttributeAddInverse(builder, inverse):
 
 def AddInverse(builder, inverse):
     FFTAttributeAddInverse(builder, inverse)
+
+def FFTAttributeAddLocalBound(builder, localBound):
+    builder.PrependBoolSlot(1, localBound, 0)
+
+def AddLocalBound(builder, localBound):
+    FFTAttributeAddLocalBound(builder, localBound)
 
 def FFTAttributeEnd(builder):
     return builder.EndObject()
