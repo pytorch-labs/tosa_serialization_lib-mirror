@@ -34,19 +34,21 @@ DEF_ATTRIBUTE(Pool, 6,
               int32_t, S, output_zp,
               DType,   S, accum_dtype)
 
-DEF_ATTRIBUTE(Conv, 5,
+DEF_ATTRIBUTE(Conv, 6,
               int32_t, V, pad,
               int32_t, V, stride,
               int32_t, V, dilation,
               int32_t, S, input_zp,
-              int32_t, S, weight_zp)
+              int32_t, S, weight_zp,
+              bool,    S, local_bound)
 
-DEF_ATTRIBUTE(TransposeConv, 5,
+DEF_ATTRIBUTE(TransposeConv, 6,
               int32_t, V, out_pad,
               int32_t, V, stride,
               int32_t, V, output_shape,
               int32_t, S, input_zp,
-              int32_t, S, weight_zp)
+              int32_t, S, weight_zp,
+              bool,    S, local_bound)
 
 DEF_ATTRIBUTE(Pad, 3,
               int32_t, V, padding,
@@ -126,5 +128,10 @@ DEF_ATTRIBUTE(Custom, 3,
               string, S, config,
               uint8_t, V, implementation_attrs)
 
-DEF_ATTRIBUTE(FFT, 1,
-              bool, S, inverse)
+DEF_ATTRIBUTE(FFT, 2,
+              bool, S, inverse,
+              bool, S, local_bound)
+
+DEF_ATTRIBUTE(RFFT, 1,
+              bool, S, local_bound)
+

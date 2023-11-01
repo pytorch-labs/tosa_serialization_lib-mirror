@@ -144,6 +144,7 @@ union Attribute {
   NegateAttribute,
   CustomAttribute,
   FFTAttribute,
+  RFFTAttribute,
 }
 
 table PoolAttribute {
@@ -161,6 +162,7 @@ table ConvAttribute {
   dilation: [int32];
   input_zp: int32;
   weight_zp: int32;
+  local_bound: bool;
 }
 
 table TransposeConvAttribute {
@@ -169,6 +171,7 @@ table TransposeConvAttribute {
   output_shape: [int32];
   input_zp: int32;
   weight_zp: int32;
+  local_bound: bool;
 }
 
 table PadAttribute {
@@ -269,6 +272,11 @@ table CustomAttribute {
 
 table FFTAttribute {
   inverse: bool;
+  local_bound: bool;
+}
+
+table RFFTAttribute {
+  local_bound: bool;
 }
 
 table Version {

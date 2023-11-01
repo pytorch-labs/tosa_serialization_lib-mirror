@@ -81,6 +81,9 @@ struct CustomAttributeBuilder;
 struct FFTAttribute;
 struct FFTAttributeBuilder;
 
+struct RFFTAttribute;
+struct RFFTAttributeBuilder;
+
 struct Version;
 struct VersionBuilder;
 
@@ -462,11 +465,12 @@ enum Attribute : uint8_t {
   Attribute_NegateAttribute = 20,
   Attribute_CustomAttribute = 21,
   Attribute_FFTAttribute = 22,
+  Attribute_RFFTAttribute = 23,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_FFTAttribute
+  Attribute_MAX = Attribute_RFFTAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[23] {
+inline const Attribute (&EnumValuesAttribute())[24] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -490,13 +494,14 @@ inline const Attribute (&EnumValuesAttribute())[23] {
     Attribute_FullyConnectedAttribute,
     Attribute_NegateAttribute,
     Attribute_CustomAttribute,
-    Attribute_FFTAttribute
+    Attribute_FFTAttribute,
+    Attribute_RFFTAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[24] = {
+  static const char * const names[25] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -520,13 +525,14 @@ inline const char * const *EnumNamesAttribute() {
     "NegateAttribute",
     "CustomAttribute",
     "FFTAttribute",
+    "RFFTAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_FFTAttribute)) return "";
+  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_RFFTAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -621,6 +627,10 @@ template<> struct AttributeTraits<tosa::CustomAttribute> {
 
 template<> struct AttributeTraits<tosa::FFTAttribute> {
   static const Attribute enum_value = Attribute_FFTAttribute;
+};
+
+template<> struct AttributeTraits<tosa::RFFTAttribute> {
+  static const Attribute enum_value = Attribute_RFFTAttribute;
 };
 
 bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type);
@@ -748,7 +758,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_STRIDE = 6,
     VT_DILATION = 8,
     VT_INPUT_ZP = 10,
-    VT_WEIGHT_ZP = 12
+    VT_WEIGHT_ZP = 12,
+    VT_LOCAL_BOUND = 14
   };
   const ::flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -765,6 +776,9 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -775,6 +789,7 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyVector(dilation()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
            verifier.EndTable();
   }
 };
@@ -798,6 +813,9 @@ struct ConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(ConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(ConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
   explicit ConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -815,13 +833,15 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation = 0,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    bool local_bound = false) {
   ConvAttributeBuilder builder_(_fbb);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_dilation(dilation);
   builder_.add_stride(stride);
   builder_.add_pad(pad);
+  builder_.add_local_bound(local_bound);
   return builder_.Finish();
 }
 
@@ -831,7 +851,8 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *dilation = nullptr,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    bool local_bound = false) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
@@ -841,7 +862,8 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       stride__,
       dilation__,
       input_zp,
-      weight_zp);
+      weight_zp,
+      local_bound);
 }
 
 struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -851,7 +873,8 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
     VT_STRIDE = 6,
     VT_OUTPUT_SHAPE = 8,
     VT_INPUT_ZP = 10,
-    VT_WEIGHT_ZP = 12
+    VT_WEIGHT_ZP = 12,
+    VT_LOCAL_BOUND = 14
   };
   const ::flatbuffers::Vector<int32_t> *out_pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
@@ -868,6 +891,9 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   int32_t weight_zp() const {
     return GetField<int32_t>(VT_WEIGHT_ZP, 0);
   }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUT_PAD) &&
@@ -878,6 +904,7 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
            verifier.VerifyVector(output_shape()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
            verifier.EndTable();
   }
 };
@@ -901,6 +928,9 @@ struct TransposeConvAttributeBuilder {
   void add_weight_zp(int32_t weight_zp) {
     fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(TransposeConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
   explicit TransposeConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -918,13 +948,15 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape = 0,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    bool local_bound = false) {
   TransposeConvAttributeBuilder builder_(_fbb);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_output_shape(output_shape);
   builder_.add_stride(stride);
   builder_.add_out_pad(out_pad);
+  builder_.add_local_bound(local_bound);
   return builder_.Finish();
 }
 
@@ -934,7 +966,8 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     const std::vector<int32_t> *stride = nullptr,
     const std::vector<int32_t> *output_shape = nullptr,
     int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    int32_t weight_zp = 0,
+    bool local_bound = false) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
@@ -944,7 +977,8 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
       stride__,
       output_shape__,
       input_zp,
-      weight_zp);
+      weight_zp,
+      local_bound);
 }
 
 struct PadAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -2113,14 +2147,19 @@ inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
 struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef FFTAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INVERSE = 4
+    VT_INVERSE = 4,
+    VT_LOCAL_BOUND = 6
   };
   bool inverse() const {
     return GetField<uint8_t>(VT_INVERSE, 0) != 0;
   }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint8_t>(verifier, VT_INVERSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
            verifier.EndTable();
   }
 };
@@ -2131,6 +2170,9 @@ struct FFTAttributeBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_inverse(bool inverse) {
     fbb_.AddElement<uint8_t>(FFTAttribute::VT_INVERSE, static_cast<uint8_t>(inverse), 0);
+  }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(FFTAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
   }
   explicit FFTAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -2145,9 +2187,52 @@ struct FFTAttributeBuilder {
 
 inline ::flatbuffers::Offset<FFTAttribute> CreateFFTAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    bool inverse = false) {
+    bool inverse = false,
+    bool local_bound = false) {
   FFTAttributeBuilder builder_(_fbb);
+  builder_.add_local_bound(local_bound);
   builder_.add_inverse(inverse);
+  return builder_.Finish();
+}
+
+struct RFFTAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RFFTAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LOCAL_BOUND = 4
+  };
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RFFTAttributeBuilder {
+  typedef RFFTAttribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(RFFTAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
+  explicit RFFTAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RFFTAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RFFTAttribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RFFTAttribute> CreateRFFTAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool local_bound = false) {
+  RFFTAttributeBuilder builder_(_fbb);
+  builder_.add_local_bound(local_bound);
   return builder_.Finish();
 }
 
@@ -2437,6 +2522,9 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const tosa::FFTAttribute *attribute_as_FFTAttribute() const {
     return attribute_type() == tosa::Attribute_FFTAttribute ? static_cast<const tosa::FFTAttribute *>(attribute()) : nullptr;
   }
+  const tosa::RFFTAttribute *attribute_as_RFFTAttribute() const {
+    return attribute_type() == tosa::Attribute_RFFTAttribute ? static_cast<const tosa::RFFTAttribute *>(attribute()) : nullptr;
+  }
   const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
   }
@@ -2545,6 +2633,10 @@ template<> inline const tosa::CustomAttribute *TosaOperator::attribute_as<tosa::
 
 template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFTAttribute>() const {
   return attribute_as_FFTAttribute();
+}
+
+template<> inline const tosa::RFFTAttribute *TosaOperator::attribute_as<tosa::RFFTAttribute>() const {
+  return attribute_as_RFFTAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2945,6 +3037,10 @@ inline bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, 
     }
     case Attribute_FFTAttribute: {
       auto ptr = reinterpret_cast<const tosa::FFTAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RFFTAttribute: {
+      auto ptr = reinterpret_cast<const tosa::RFFTAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
