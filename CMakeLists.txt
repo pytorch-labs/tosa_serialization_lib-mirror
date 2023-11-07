@@ -36,35 +36,40 @@ add_library(tosa_serialization_lib
   src/numpy_utils.cpp
 )
 
-# Verify we have a valid flatbuffers include path.
-# We will explicitly exclude the system include directories and only
-# accept either a user supplied value or the local third_party/flatbuffers.
-find_path(FLATBUFFERS_INCLUDE_PATH flatbuffers/flatbuffers.h
-          NO_DEFAULT_PATH
-          HINTS ${FLATBUFFERS_ROOT} ./third_party/flatbuffers
-          PATH_SUFFIXES include)
-message(STATUS "Flatbuffers include located at: ${FLATBUFFERS_INCLUDE_PATH}")
-include_directories(${FLATBUFFERS_INCLUDE_PATH})
-
-# Next is the library.
-# We will explicitly exclude the system lib directories and only accept
-# either a user supplied value or the local third_party/flatbuffers.
-find_library(FLATBUFFERS_LIBRARY
-             NAMES libflatbuffers.a flatbuffers
-             NO_DEFAULT_PATH
-             HINTS ${FLATBUFFERS_ROOT} ./third_party/flatbuffers
-             PATH_SUFFIXES lib)
-
-if(FLATBUFFERS_LIBRARY)
-    message(STATUS "Flatbuffers library located at: ${FLATBUFFERS_LIBRARY}")
-    target_link_libraries(tosa_serialization_lib PRIVATE ${FLATBUFFERS_LIBRARY})
+# If flatbuffers is built externally just link it
+if (TARGET flatbuffers)
+  target_link_libraries(tosa_serialization_lib PRIVATE flatbuffers)
 else()
-    # It's not there we treat third_party/flatbuffers as a sub project.
-    # In this case we'll need to build the downloaded source.
-    # Turn off unnecessary flatbuffers targets
-    set(FLATBUFFERS_BUILD_TESTS OFF)
-    add_subdirectory(third_party/flatbuffers)
-    target_link_libraries(tosa_serialization_lib PRIVATE flatbuffers)
+  # Verify we have a valid flatbuffers include path.
+  # We will explicitly exclude the system include directories and only
+  # accept either a user supplied value or the local third_party/flatbuffers.
+  find_path(FLATBUFFERS_INCLUDE_PATH flatbuffers/flatbuffers.h
+            NO_DEFAULT_PATH
+            HINTS ${FLATBUFFERS_ROOT} ./third_party/flatbuffers
+            PATH_SUFFIXES include)
+  message(STATUS "Flatbuffers include located at: ${FLATBUFFERS_INCLUDE_PATH}")
+  include_directories(${FLATBUFFERS_INCLUDE_PATH})
+
+  # Next is the library.
+  # We will explicitly exclude the system lib directories and only accept
+  # either a user supplied value or the local third_party/flatbuffers.
+  find_library(FLATBUFFERS_LIBRARY
+              NAMES libflatbuffers.a flatbuffers
+              NO_DEFAULT_PATH
+              HINTS ${FLATBUFFERS_ROOT} ./third_party/flatbuffers
+              PATH_SUFFIXES lib)
+
+  if(FLATBUFFERS_LIBRARY)
+      message(STATUS "Flatbuffers library located at: ${FLATBUFFERS_LIBRARY}")
+      target_link_libraries(tosa_serialization_lib PRIVATE ${FLATBUFFERS_LIBRARY})
+  else()
+      # It's not there we treat third_party/flatbuffers as a sub project.
+      # In this case we'll need to build the downloaded source.
+      # Turn off unnecessary flatbuffers targets
+      set(FLATBUFFERS_BUILD_TESTS OFF)
+      add_subdirectory(third_party/flatbuffers)
+      target_link_libraries(tosa_serialization_lib PRIVATE flatbuffers)
+  endif()
 endif()
 
 set(public_headers)
