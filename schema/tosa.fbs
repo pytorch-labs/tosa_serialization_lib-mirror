@@ -265,8 +265,8 @@ table NegateAttribute {
 }
 
 table CustomAttribute {
-  identifier:string;
-  config:string;
+  operator_name:string;
+  domain_name:string;
   implementation_attrs:[ubyte];
 }
 

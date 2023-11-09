@@ -124,8 +124,8 @@ DEF_ATTRIBUTE(Negate, 2,
               int32_t, S, output_zp)
 
 DEF_ATTRIBUTE(Custom, 3,
-              string, S, identifier,
-              string, S, config,
+              string, S, operator_name,
+              string, S, domain_name,
               uint8_t, V, implementation_attrs)
 
 DEF_ATTRIBUTE(FFT, 2,
@@ -134,4 +134,3 @@ DEF_ATTRIBUTE(FFT, 2,
 
 DEF_ATTRIBUTE(RFFT, 1,
               bool, S, local_bound)
-

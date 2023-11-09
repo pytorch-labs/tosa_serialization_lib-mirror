@@ -29,14 +29,14 @@ class CustomAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # CustomAttribute
-    def Identifier(self):
+    def OperatorName(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # CustomAttribute
-    def Config(self):
+    def DomainName(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
@@ -75,17 +75,17 @@ def CustomAttributeStart(builder):
 def Start(builder):
     CustomAttributeStart(builder)
 
-def CustomAttributeAddIdentifier(builder, identifier):
-    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(identifier), 0)
+def CustomAttributeAddOperatorName(builder, operatorName):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(operatorName), 0)
 
-def AddIdentifier(builder, identifier):
-    CustomAttributeAddIdentifier(builder, identifier)
+def AddOperatorName(builder, operatorName):
+    CustomAttributeAddOperatorName(builder, operatorName)
 
-def CustomAttributeAddConfig(builder, config):
-    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(config), 0)
+def CustomAttributeAddDomainName(builder, domainName):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(domainName), 0)
 
-def AddConfig(builder, config):
-    CustomAttributeAddConfig(builder, config)
+def AddDomainName(builder, domainName):
+    CustomAttributeAddDomainName(builder, domainName)
 
 def CustomAttributeAddImplementationAttrs(builder, implementationAttrs):
     builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(implementationAttrs), 0)
