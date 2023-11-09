@@ -2068,25 +2068,25 @@ inline ::flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
 struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CustomAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IDENTIFIER = 4,
-    VT_CONFIG = 6,
+    VT_OPERATOR_NAME = 4,
+    VT_DOMAIN_NAME = 6,
     VT_IMPLEMENTATION_ATTRS = 8
   };
-  const ::flatbuffers::String *identifier() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_IDENTIFIER);
+  const ::flatbuffers::String *operator_name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_OPERATOR_NAME);
   }
-  const ::flatbuffers::String *config() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_CONFIG);
+  const ::flatbuffers::String *domain_name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_DOMAIN_NAME);
   }
   const ::flatbuffers::Vector<uint8_t> *implementation_attrs() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_IMPLEMENTATION_ATTRS);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_IDENTIFIER) &&
-           verifier.VerifyString(identifier()) &&
-           VerifyOffset(verifier, VT_CONFIG) &&
-           verifier.VerifyString(config()) &&
+           VerifyOffset(verifier, VT_OPERATOR_NAME) &&
+           verifier.VerifyString(operator_name()) &&
+           VerifyOffset(verifier, VT_DOMAIN_NAME) &&
+           verifier.VerifyString(domain_name()) &&
            VerifyOffset(verifier, VT_IMPLEMENTATION_ATTRS) &&
            verifier.VerifyVector(implementation_attrs()) &&
            verifier.EndTable();
@@ -2097,11 +2097,11 @@ struct CustomAttributeBuilder {
   typedef CustomAttribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_identifier(::flatbuffers::Offset<::flatbuffers::String> identifier) {
-    fbb_.AddOffset(CustomAttribute::VT_IDENTIFIER, identifier);
+  void add_operator_name(::flatbuffers::Offset<::flatbuffers::String> operator_name) {
+    fbb_.AddOffset(CustomAttribute::VT_OPERATOR_NAME, operator_name);
   }
-  void add_config(::flatbuffers::Offset<::flatbuffers::String> config) {
-    fbb_.AddOffset(CustomAttribute::VT_CONFIG, config);
+  void add_domain_name(::flatbuffers::Offset<::flatbuffers::String> domain_name) {
+    fbb_.AddOffset(CustomAttribute::VT_DOMAIN_NAME, domain_name);
   }
   void add_implementation_attrs(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs) {
     fbb_.AddOffset(CustomAttribute::VT_IMPLEMENTATION_ATTRS, implementation_attrs);
@@ -2119,28 +2119,28 @@ struct CustomAttributeBuilder {
 
 inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> identifier = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> config = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> operator_name = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> domain_name = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs = 0) {
   CustomAttributeBuilder builder_(_fbb);
   builder_.add_implementation_attrs(implementation_attrs);
-  builder_.add_config(config);
-  builder_.add_identifier(identifier);
+  builder_.add_domain_name(domain_name);
+  builder_.add_operator_name(operator_name);
   return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *identifier = nullptr,
-    const char *config = nullptr,
+    const char *operator_name = nullptr,
+    const char *domain_name = nullptr,
     const std::vector<uint8_t> *implementation_attrs = nullptr) {
-  auto identifier__ = identifier ? _fbb.CreateString(identifier) : 0;
-  auto config__ = config ? _fbb.CreateString(config) : 0;
+  auto operator_name__ = operator_name ? _fbb.CreateString(operator_name) : 0;
+  auto domain_name__ = domain_name ? _fbb.CreateString(domain_name) : 0;
   auto implementation_attrs__ = implementation_attrs ? _fbb.CreateVector<uint8_t>(*implementation_attrs) : 0;
   return tosa::CreateCustomAttribute(
       _fbb,
-      identifier__,
-      config__,
+      operator_name__,
+      domain_name__,
       implementation_attrs__);
 }
 
