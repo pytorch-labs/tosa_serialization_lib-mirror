@@ -283,7 +283,16 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.floats.append((a.AddMaxFp, serialized_maxfp_bytes))
 
     def RescaleAttribute(
-        self, input_zp, output_zp, multiplier, shift, scale32, double_round, per_channel
+        self,
+        input_zp,
+        output_zp,
+        multiplier,
+        shift,
+        scale32,
+        double_round,
+        per_channel,
+        input_unsigned,
+        output_unsigned,
     ):
         from tosa import RescaleAttribute as a, Attribute
 
@@ -297,6 +306,8 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.bools.append((a.AddScale32, scale32))
         self.bools.append((a.AddDoubleRound, double_round))
         self.bools.append((a.AddPerChannel, per_channel))
+        self.bools.append((a.AddInputUnsigned, input_unsigned))
+        self.bools.append((a.AddOutputUnsigned, output_unsigned))
 
     def MulAttribute(self, shift):
         from tosa import MulAttribute as a, Attribute
