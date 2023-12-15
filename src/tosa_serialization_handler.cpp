@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2023, ARM Limited.
+// Copyright (c) 2020-2024, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -777,6 +777,25 @@ tosa_err_t TosaSerializationHandler::ConvertF32toU8(const std::vector<float>& in
     return TOSA_OK;
 }
 
+tosa_err_t TosaSerializationHandler::ConvertI64toU8(const std::vector<int64_t>& in, std::vector<uint8_t>& out)
+{
+    out.clear();
+    for (auto val : in)
+    {
+        uint64_t* val_u64 = reinterpret_cast<uint64_t*>(&val);
+        out.push_back(*val_u64 & 0xFF);
+        out.push_back((*val_u64 >> 8) & 0xFF);
+        out.push_back((*val_u64 >> 16) & 0xFF);
+        out.push_back((*val_u64 >> 24) & 0xFF);
+        out.push_back((*val_u64 >> 32) & 0xFF);
+        out.push_back((*val_u64 >> 40) & 0xFF);
+        out.push_back((*val_u64 >> 48) & 0xFF);
+        out.push_back((*val_u64 >> 56) & 0xFF);
+    }
+    ForceAlignTensorData(out);
+    return TOSA_OK;
+}
+
 tosa_err_t TosaSerializationHandler::ConvertI48toU8(const std::vector<int64_t>& in, std::vector<uint8_t>& out)
 {
     out.clear();
@@ -922,6 +941,35 @@ tosa_err_t
         uint32_t val_u32 = byte0 + (byte1 << 8) + (byte2 << 16) + (byte3 << 24);
         float* val_fp32  = reinterpret_cast<float*>(&val_u32);
         out.push_back(*val_fp32);
+    }
+    return TOSA_OK;
+}
+
+tosa_err_t TosaSerializationHandler::ConvertU8toI64(const std::vector<uint8_t>& in,
+                                                    uint32_t out_size,
+                                                    std::vector<int64_t>& out)
+{
+    out.clear();
+    if (in.size() < out_size * sizeof(int64_t))
+    {
+        printf("TosaSerializationHandler::ConvertU8toI64(): uint8 buffer size %ld must >= target size %ld\n", in.size(),
+               out_size * sizeof(int64_t));
+        return TOSA_USER_ERROR;
+    }
+    for (uint32_t i = 0; i < out_size; i++)
+    {
+        uint64_t byte0   = in[i * sizeof(int64_t)];
+        uint64_t byte1   = in[i * sizeof(int64_t) + 1];
+        uint64_t byte2   = in[i * sizeof(int64_t) + 2];
+        uint64_t byte3   = in[i * sizeof(int64_t) + 3];
+        uint64_t byte4   = in[i * sizeof(int64_t) + 4];
+        uint64_t byte5   = in[i * sizeof(int64_t) + 5];
+        uint64_t byte6   = in[i * sizeof(int64_t) + 6];
+        uint64_t byte7   = in[i * sizeof(int64_t) + 7];
+        uint64_t val_u64 = byte0 + (byte1 << 8) + (byte2 << 16) + (byte3 << 24) + (byte4 << 32) + (byte5 << 40) +
+                           (byte6 << 48) + (byte7 << 56);
+        int64_t* val_i64 = reinterpret_cast<int64_t*>(&val_u64);
+        out.push_back(*val_i64);
     }
     return TOSA_OK;
 }

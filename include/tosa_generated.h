@@ -272,11 +272,17 @@ enum Op : uint32_t {
   Op_RFFT2D = 70,
   Op_ERF = 71,
   Op_DIM = 72,
+  Op_CONST_SHAPE = 73,
+  Op_CONCAT_SHAPE = 74,
+  Op_ADD_SHAPE = 75,
+  Op_SUB_SHAPE = 76,
+  Op_MUL_SHAPE = 77,
+  Op_DIV_SHAPE = 78,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_DIM
+  Op_MAX = Op_DIV_SHAPE
 };
 
-inline const Op (&EnumValuesOp())[73] {
+inline const Op (&EnumValuesOp())[79] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -350,13 +356,19 @@ inline const Op (&EnumValuesOp())[73] {
     Op_FFT2D,
     Op_RFFT2D,
     Op_ERF,
-    Op_DIM
+    Op_DIM,
+    Op_CONST_SHAPE,
+    Op_CONCAT_SHAPE,
+    Op_ADD_SHAPE,
+    Op_SUB_SHAPE,
+    Op_MUL_SHAPE,
+    Op_DIV_SHAPE
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[74] = {
+  static const char * const names[80] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -430,13 +442,19 @@ inline const char * const *EnumNamesOp() {
     "RFFT2D",
     "ERF",
     "DIM",
+    "CONST_SHAPE",
+    "CONCAT_SHAPE",
+    "ADD_SHAPE",
+    "SUB_SHAPE",
+    "MUL_SHAPE",
+    "DIV_SHAPE",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_DIM)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_DIV_SHAPE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }

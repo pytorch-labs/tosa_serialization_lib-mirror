@@ -76,3 +76,9 @@ class Op(object):
     RFFT2D = 70
     ERF = 71
     DIM = 72
+    CONST_SHAPE = 73
+    CONCAT_SHAPE = 74
+    ADD_SHAPE = 75
+    SUB_SHAPE = 76
+    MUL_SHAPE = 77
+    DIV_SHAPE = 78
