@@ -116,11 +116,13 @@ enum DType : uint32_t {
   DType_FP16 = 10,
   DType_BF16 = 11,
   DType_SHAPE = 12,
+  DType_FP8E4M3 = 13,
+  DType_FP8E5M2 = 14,
   DType_MIN = DType_UNKNOWN,
-  DType_MAX = DType_SHAPE
+  DType_MAX = DType_FP8E5M2
 };
 
-inline const DType (&EnumValuesDType())[13] {
+inline const DType (&EnumValuesDType())[15] {
   static const DType values[] = {
     DType_UNKNOWN,
     DType_BOOL,
@@ -134,13 +136,15 @@ inline const DType (&EnumValuesDType())[13] {
     DType_UINT16,
     DType_FP16,
     DType_BF16,
-    DType_SHAPE
+    DType_SHAPE,
+    DType_FP8E4M3,
+    DType_FP8E5M2
   };
   return values;
 }
 
 inline const char * const *EnumNamesDType() {
-  static const char * const names[14] = {
+  static const char * const names[16] = {
     "UNKNOWN",
     "BOOL",
     "UINT8",
@@ -154,13 +158,15 @@ inline const char * const *EnumNamesDType() {
     "FP16",
     "BF16",
     "SHAPE",
+    "FP8E4M3",
+    "FP8E5M2",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameDType(DType e) {
-  if (::flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_SHAPE)) return "";
+  if (::flatbuffers::IsOutRange(e, DType_UNKNOWN, DType_FP8E5M2)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDType()[index];
 }
