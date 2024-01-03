@@ -1,4 +1,4 @@
-// Copyright (c) 2021, ARM Limited.
+// Copyright (c) 2021,2024, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ int test_int_type(std::vector<int32_t> shape, std::default_random_engine& gen, s
     }
 
     auto buffer = std::make_unique<T[]>(total_size);
-    for (int i = 0; i < total_size; i++)
+    for (size_t i = 0; i < total_size; i++)
     {
         buffer[i] = gen_data(gen);
     }
@@ -76,7 +76,7 @@ int test_float_type(std::vector<int32_t> shape, std::default_random_engine& gen,
     }
 
     auto buffer = std::make_unique<T[]>(total_size);
-    for (int i = 0; i < total_size; i++)
+    for (size_t i = 0; i < total_size; i++)
     {
         buffer[i] = gen_data(gen);
     }
@@ -115,7 +115,7 @@ int test_double_type(std::vector<int32_t> shape, std::default_random_engine& gen
     }
 
     auto buffer = std::make_unique<T[]>(total_size);
-    for (int i = 0; i < total_size; i++)
+    for (size_t i = 0; i < total_size; i++)
     {
         buffer[i] = gen_data(gen);
     }
@@ -153,7 +153,7 @@ int test_bool_type(std::vector<int32_t> shape, std::default_random_engine& gen, 
     }
 
     auto buffer = std::make_unique<bool[]>(total_size);
-    for (int i = 0; i < total_size; i++)
+    for (size_t i = 0; i < total_size; i++)
     {
         buffer[i] = (gen_data(gen)) ? true : false;
     }
@@ -183,15 +183,13 @@ int test_bool_type(std::vector<int32_t> shape, std::default_random_engine& gen, 
 
 int main(int argc, char** argv)
 {
-    size_t total_size = 1;
-    int32_t seed      = 1;
+    int32_t seed = 1;
     std::string str_type;
     std::string str_shape;
     std::string filename = "npytest.npy";
     std::vector<int32_t> shape;
-    bool verbose = false;
     int opt;
-    while ((opt = getopt(argc, argv, "d:f:s:t:v")) != -1)
+    while ((opt = getopt(argc, argv, "d:f:s:t:")) != -1)
     {
         switch (opt)
         {
@@ -206,9 +204,6 @@ int main(int argc, char** argv)
                 break;
             case 't':
                 str_shape = optarg;
-                break;
-            case 'v':
-                verbose = true;
                 break;
             default:
                 std::cerr << "Invalid argument" << std::endl;
@@ -232,7 +227,6 @@ int main(int argc, char** argv)
             break;
         int val = stoi(substr, &pos, 0);
         assert(val);
-        total_size *= val;
         shape.push_back(val);
     }
 

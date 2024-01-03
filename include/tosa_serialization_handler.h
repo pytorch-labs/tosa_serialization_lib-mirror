@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2023, ARM Limited.
+// Copyright (c) 2020-2024, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -184,7 +184,7 @@ public:
     {
         return _data;
     }
-    const bool GetIsUnranked() const
+    bool GetIsUnranked() const
     {
         return _is_unranked;
     }
@@ -216,7 +216,7 @@ public:
     }
     void SetDimSize(size_t dim, uint32_t new_size)
     {
-        if (dim < 0 || dim >= _shape.size())
+        if (dim >= _shape.size())
         {
             printf("dim is out of bound\n");
             assert(0);

@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2023, ARM Limited.
+// Copyright (c) 2020-2024, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
 #include "numpy_utils.h"
 #include "half.hpp"
 #include <algorithm>
+#include <memory>
 
 // Magic NUMPY header
 static const char NUMPY_HEADER_STR[] = "\x93NUMPY\x1\x0\x76\x0{";
 static const int NUMPY_HEADER_SZ     = 128;
 // Maximum shape dimensions supported
 static const int NUMPY_MAX_DIMS_SUPPORTED = 10;
-// Offset for NUMPY header desc dictionary string
-static const int NUMPY_HEADER_DESC_OFFSET = 8;
 
 // This is an entry function for reading 8-/16-/32-bit npy file.
 template <>
@@ -55,14 +54,14 @@ NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, co
                 int8_t* tmp_buf = new int8_t[elems];
                 rc              = readFromNpyFile<int8_t>(filename, elems, tmp_buf);
                 copyBufferByElement(databuf, tmp_buf, elems);
-                free(tmp_buf);
+                delete[] tmp_buf;
             }
             else
             {
                 uint8_t* tmp_buf = new uint8_t[elems];
                 rc               = readFromNpyFile<uint8_t>(filename, elems, tmp_buf);
                 copyBufferByElement(databuf, tmp_buf, elems);
-                free(tmp_buf);
+                delete[] tmp_buf;
             }
             break;
         case 2:
@@ -71,14 +70,14 @@ NumpyUtilities::NPError NumpyUtilities::readFromNpyFile(const char* filename, co
                 int16_t* tmp_buf = new int16_t[elems];
                 rc               = readFromNpyFile<int16_t>(filename, elems, tmp_buf);
                 copyBufferByElement(databuf, tmp_buf, elems);
-                free(tmp_buf);
+                delete[] tmp_buf;
             }
             else
             {
                 uint16_t* tmp_buf = new uint16_t[elems];
                 rc                = readFromNpyFile<uint16_t>(filename, elems, tmp_buf);
                 copyBufferByElement(databuf, tmp_buf, elems);
-                free(tmp_buf);
+                delete[] tmp_buf;
             }
             break;
         case 4:
@@ -168,7 +167,6 @@ NumpyUtilities::NPError NumpyUtilities::getHeader(FILE* infile, bool& is_signed,
     {
         return HEADER_PARSE_ERROR;
     }
-    char* ptr;
 
     // Validate the numpy magic number
     if (memcmp(buf, NUMPY_HEADER_STR, sizeof(NUMPY_HEADER_STR) - 1))
