@@ -500,7 +500,7 @@ class TosaSerializerTensor:
                     b2 = (val_u32 >> np.uint32(16)) & ByteMask
                     b3 = (val_u32 >> np.uint32(24)) & ByteMask
                     u8_data.extend([b0, b1, b2, b3])
-            elif self.dtype == DType.INT48 or self.dtype == DType.SHAPE:
+            elif self.dtype == DType.INT48:
                 for val in self.data:
                     val_u64 = np.uint64(val)
                     b0 = val_u64 & ByteMask
@@ -510,6 +510,18 @@ class TosaSerializerTensor:
                     b4 = (val_u64 >> np.uint64(32)) & ByteMask
                     b5 = (val_u64 >> np.uint64(40)) & ByteMask
                     u8_data.extend([b0, b1, b2, b3, b4, b5])
+            elif self.dtype == DType.SHAPE:
+                for val in self.data:
+                    val_u64 = np.uint64(val)
+                    b0 = val_u64 & ByteMask
+                    b1 = (val_u64 >> np.uint64(8)) & ByteMask
+                    b2 = (val_u64 >> np.uint64(16)) & ByteMask
+                    b3 = (val_u64 >> np.uint64(24)) & ByteMask
+                    b4 = (val_u64 >> np.uint64(32)) & ByteMask
+                    b5 = (val_u64 >> np.uint64(40)) & ByteMask
+                    b6 = (val_u64 >> np.uint64(48)) & ByteMask
+                    b7 = (val_u64 >> np.uint64(56)) & ByteMask
+                    u8_data.extend([b0, b1, b2, b3, b4, b5, b6, b7])
             elif self.dtype == DType.FP16:
                 np_arr = np.array(self.data, dtype=np.float16)
                 u8_data.extend(np_arr.view(np.uint8))
@@ -711,7 +723,10 @@ class TosaSerializerRegion:
 
         tens = self.currBasicBlock.addTensor(name, shape, dtype, tensor_vals, filename)
         # Add the operator now
-        self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name)
+        if dtype == DType.SHAPE:
+            self.currBasicBlock.addOperator(TosaOp.Op().CONST_SHAPE, [], name)
+        else:
+            self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name)
 
         # Save the const data to file for debug or as input files
         if vals is not None and self.constMode in [
