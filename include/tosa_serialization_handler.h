@@ -127,9 +127,8 @@ struct TosaVersion
         if (major_match && minor_match && patch_match && draft_match)
             return TosaVersion::compat_t::COMPLETELY_COMPATIBLE;
 
-        // We currently support backward compatibility starting from 0.70.0
-        // TODO: need to double-check this logic right before TOSA 1.0.0 release
-        if ((tosa_fb_version._major == 0 && tosa_fb_version._minor >= 70) || (tosa_fb_version._major > 0))
+        // We currently support backward compatibility starting from 0.90.0
+        if ((tosa_fb_version._major == 0 && tosa_fb_version._minor >= 90) || (tosa_fb_version._major > 0))
         {
             if (less_than(tosa_fb_version, serializer_version))
             {
