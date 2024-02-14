@@ -29,14 +29,14 @@ class WhileLoopAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # WhileLoopAttribute
-    def CondBranch(self):
+    def CondGraph(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # WhileLoopAttribute
-    def BodyBranch(self):
+    def BodyGraph(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
@@ -48,17 +48,17 @@ def WhileLoopAttributeStart(builder):
 def Start(builder):
     WhileLoopAttributeStart(builder)
 
-def WhileLoopAttributeAddCondBranch(builder, condBranch):
-    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(condBranch), 0)
+def WhileLoopAttributeAddCondGraph(builder, condGraph):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(condGraph), 0)
 
-def AddCondBranch(builder, condBranch):
-    WhileLoopAttributeAddCondBranch(builder, condBranch)
+def AddCondGraph(builder, condGraph):
+    WhileLoopAttributeAddCondGraph(builder, condGraph)
 
-def WhileLoopAttributeAddBodyBranch(builder, bodyBranch):
-    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(bodyBranch), 0)
+def WhileLoopAttributeAddBodyGraph(builder, bodyGraph):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(bodyGraph), 0)
 
-def AddBodyBranch(builder, bodyBranch):
-    WhileLoopAttributeAddBodyBranch(builder, bodyBranch)
+def AddBodyGraph(builder, bodyGraph):
+    WhileLoopAttributeAddBodyGraph(builder, bodyGraph)
 
 def WhileLoopAttributeEnd(builder):
     return builder.EndObject()

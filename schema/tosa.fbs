@@ -137,9 +137,6 @@ union Attribute {
   TransposeConvAttribute,
   PadAttribute,
   AxisAttribute,
-  ReshapeAttribute,
-  SliceAttribute,
-  TileAttribute,
   ResizeAttribute,
   ClampAttribute,
   RescaleAttribute,
@@ -163,7 +160,7 @@ table PoolAttribute {
   stride: [int32];
   input_zp: int32;
   output_zp: int32;
-  accum_dtype: DType;
+  acc_type: DType;
 }
 
 table ConvAttribute {
@@ -192,19 +189,6 @@ table PadAttribute {
 
 table AxisAttribute {
   axis: int32;
-}
-
-table ReshapeAttribute {
-  new_shape: [int32];
-}
-
-table SliceAttribute {
-  start: [int32];
-  size: [int32];
-}
-
-table TileAttribute {
-  multiples: [int32];
 }
 
 table ResizeAttribute {
@@ -242,13 +226,13 @@ table ArithmeticRightShiftAttribute {
 }
 
 table CondIfAttribute {
-  then_branch: string;
-  else_branch: string;
+  then_graph: string;
+  else_graph: string;
 }
 
 table WhileLoopAttribute {
-  cond_branch: string;
-  body_branch: string;
+  cond_graph: string;
+  body_graph: string;
 }
 
 table TransposeAttribute {

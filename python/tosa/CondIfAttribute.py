@@ -29,14 +29,14 @@ class CondIfAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # CondIfAttribute
-    def ThenBranch(self):
+    def ThenGraph(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # CondIfAttribute
-    def ElseBranch(self):
+    def ElseGraph(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
@@ -48,17 +48,17 @@ def CondIfAttributeStart(builder):
 def Start(builder):
     CondIfAttributeStart(builder)
 
-def CondIfAttributeAddThenBranch(builder, thenBranch):
-    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenBranch), 0)
+def CondIfAttributeAddThenGraph(builder, thenGraph):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(thenGraph), 0)
 
-def AddThenBranch(builder, thenBranch):
-    CondIfAttributeAddThenBranch(builder, thenBranch)
+def AddThenGraph(builder, thenGraph):
+    CondIfAttributeAddThenGraph(builder, thenGraph)
 
-def CondIfAttributeAddElseBranch(builder, elseBranch):
-    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseBranch), 0)
+def CondIfAttributeAddElseGraph(builder, elseGraph):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(elseGraph), 0)
 
-def AddElseBranch(builder, elseBranch):
-    CondIfAttributeAddElseBranch(builder, elseBranch)
+def AddElseGraph(builder, elseGraph):
+    CondIfAttributeAddElseGraph(builder, elseGraph)
 
 def CondIfAttributeEnd(builder):
     return builder.EndObject()
