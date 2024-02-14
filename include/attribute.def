@@ -32,7 +32,7 @@ DEF_ATTRIBUTE(Pool, 6,
               int32_t, V, stride,
               int32_t, S, input_zp,
               int32_t, S, output_zp,
-              DType,   S, accum_dtype)
+              DType,   S, acc_type)
 
 DEF_ATTRIBUTE(Conv, 6,
               int32_t, V, pad,
@@ -57,16 +57,6 @@ DEF_ATTRIBUTE(Pad, 3,
 
 DEF_ATTRIBUTE(Axis, 1,
               int32_t, S, axis)
-
-DEF_ATTRIBUTE(Reshape, 1,
-              int32_t, V, new_shape)
-
-DEF_ATTRIBUTE(Slice, 2,
-              int32_t, V, start,
-              int32_t, V, size)
-
-DEF_ATTRIBUTE(Tile, 1,
-              int32_t, V, multiples)
 
 DEF_ATTRIBUTE(Resize, 4,
               int16_t, V, scale,
@@ -98,12 +88,12 @@ DEF_ATTRIBUTE(ArithmeticRightShift, 1,
               bool, S, round)
 
 DEF_ATTRIBUTE(CondIf, 2,
-              string, S, then_branch,
-              string, S, else_branch)
+              string, S, then_graph,
+              string, S, else_graph)
 
 DEF_ATTRIBUTE(WhileLoop, 2,
-              string, S, cond_branch,
-              string, S, body_branch)
+              string, S, cond_graph,
+              string, S, body_graph)
 
 DEF_ATTRIBUTE(Transpose, 1,
               int32_t, V, perms)

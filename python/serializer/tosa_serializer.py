@@ -159,7 +159,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         pad,
         input_zp,
         output_zp,
-        accum_dtype,
+        acc_type,
     ):
         from tosa import PoolAttribute as a, Attribute
 
@@ -171,7 +171,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.intvecs.append((a.AddStride, stride))
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddOutputZp, output_zp))
-        self.ints.append((a.AddAccumDtype, accum_dtype))
+        self.ints.append((a.AddAccType, acc_type))
 
     def ConvAttribute(self, pad, stride, dilation, input_zp, weight_zp, local_bound):
         from tosa import ConvAttribute as a, Attribute
@@ -225,31 +225,6 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.optFcns = (a.Start, a.End)
 
         self.ints.append((a.AddAxis, axis))
-
-    def ReshapeAttribute(self, new_shape):
-        from tosa import ReshapeAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().ReshapeAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.intvecs.append((a.AddNewShape, new_shape))
-
-    def SliceAttribute(self, start, size):
-        from tosa import SliceAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().SliceAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.intvecs.append((a.AddStart, start))
-        self.intvecs.append((a.AddSize, size))
-
-    def TileAttribute(self, multiples):
-        from tosa import TileAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().TileAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.intvecs.append((a.AddMultiples, multiples))
 
     def ResizeAttribute(self, scale, offset, border, mode):
         from tosa import ResizeAttribute as a, Attribute
@@ -330,23 +305,23 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.bools.append((a.AddRound, round))
 
-    def CondIfAttribute(self, then_branch, else_branch):
+    def CondIfAttribute(self, then_graph, else_graph):
         from tosa import CondIfAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().CondIfAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.strings.append((a.AddThenBranch, then_branch))
-        self.strings.append((a.AddElseBranch, else_branch))
+        self.strings.append((a.AddThenGraph, then_graph))
+        self.strings.append((a.AddElseGraph, else_graph))
 
-    def WhileLoopAttribute(self, cond_branch, body_branch):
+    def WhileLoopAttribute(self, cond_graph, body_graph):
         from tosa import WhileLoopAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().WhileLoopAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.strings.append((a.AddCondBranch, cond_branch))
-        self.strings.append((a.AddBodyBranch, body_branch))
+        self.strings.append((a.AddCondGraph, cond_graph))
+        self.strings.append((a.AddBodyGraph, body_graph))
 
     def TransposeAttribute(self, perms):
         from tosa import TransposeAttribute as a, Attribute
