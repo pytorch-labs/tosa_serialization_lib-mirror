@@ -284,11 +284,13 @@ enum Op : uint32_t {
   Op_SUB_SHAPE = 76,
   Op_MUL_SHAPE = 77,
   Op_DIV_SHAPE = 78,
+  Op_COS = 79,
+  Op_SIN = 80,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_DIV_SHAPE
+  Op_MAX = Op_SIN
 };
 
-inline const Op (&EnumValuesOp())[79] {
+inline const Op (&EnumValuesOp())[81] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -368,13 +370,15 @@ inline const Op (&EnumValuesOp())[79] {
     Op_ADD_SHAPE,
     Op_SUB_SHAPE,
     Op_MUL_SHAPE,
-    Op_DIV_SHAPE
+    Op_DIV_SHAPE,
+    Op_COS,
+    Op_SIN
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[80] = {
+  static const char * const names[82] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -454,13 +458,15 @@ inline const char * const *EnumNamesOp() {
     "SUB_SHAPE",
     "MUL_SHAPE",
     "DIV_SHAPE",
+    "COS",
+    "SIN",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_DIV_SHAPE)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_SIN)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }

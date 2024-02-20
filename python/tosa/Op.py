@@ -82,3 +82,5 @@ class Op(object):
     SUB_SHAPE = 76
     MUL_SHAPE = 77
     DIV_SHAPE = 78
+    COS = 79
+    SIN = 80

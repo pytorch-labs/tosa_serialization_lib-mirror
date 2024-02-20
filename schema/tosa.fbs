@@ -127,6 +127,8 @@ enum Op:uint32 {
   SUB_SHAPE,
   MUL_SHAPE,
   DIV_SHAPE,
+  COS,
+  SIN,
 }
 
 union Attribute {
