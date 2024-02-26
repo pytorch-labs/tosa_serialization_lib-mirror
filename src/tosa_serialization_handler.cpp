@@ -877,8 +877,9 @@ tosa_err_t TosaSerializationHandler::ConvertBooltoU8(const std::vector<bool>& in
     return TOSA_OK;
 }
 
-tosa_err_t
-    TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out)
+tosa_err_t TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& in,
+                                                    uint32_t out_size,
+                                                    std::vector<half_float::half>& out)
 {
     // Note: fp16 values returned in fp32 type
     out.clear();
@@ -897,8 +898,7 @@ tosa_err_t
 
         // Reinterpret u16 byte as fp16 then convert to fp32
         half_float::half val_f16 = *(half_float::half*)&val_u16;
-        float val_fp32           = half_float::half_cast<float, half_float::half>(val_f16);
-        out.push_back(val_fp32);
+        out.push_back(val_f16);
     }
     return TOSA_OK;
 }
