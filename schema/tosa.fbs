@@ -182,9 +182,7 @@ table TransposeConvAttribute {
 }
 
 table PadAttribute {
-  padding: [int32];
-  pad_const_int: int32;
-  pad_const_fp: [ubyte] (force_align: 8);
+  pad_const: [ubyte] (force_align: 8);
 }
 
 table AxisAttribute {
@@ -199,17 +197,13 @@ table ResizeAttribute {
 }
 
 table ClampAttribute {
-  min_int: int32;
-  max_int: int32;
-  min_fp: [ubyte] (force_align: 8);
-  max_fp: [ubyte] (force_align: 8);
+  min_val: [ubyte] (force_align: 8);
+  max_val: [ubyte] (force_align: 8);
 }
 
 table RescaleAttribute {
   input_zp: int32;
   output_zp: int32;
-  multiplier: [int32];
-  shift: [int32];
   scale32: bool;
   double_round: bool;
   per_channel: bool;

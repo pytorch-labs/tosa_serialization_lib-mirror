@@ -13,7 +13,6 @@
 #    limitations under the License.
 
 import os
-import struct
 import serializer.tosa_serializer as ts
 import json
 import flatbuffers
@@ -201,22 +200,18 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddWeightZp, weight_zp))
         self.bools.append((a.AddLocalBound, local_bound))
 
-    def PadAttribute(self, serializer_builder, padding, pad_const_int, pad_const_fp):
+    def PadAttribute(self, serializer_builder, pad_const_val_as_bytes):
         from tosa import PadAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().PadAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddPadding, padding))
-        self.ints.append((a.AddPadConstInt, pad_const_int))
-
-        # pad_const_fp attribute serialized as uint8 vector
-        pad_const_float_as_bytes = struct.pack("<f", pad_const_fp)
-        serialized_pad_const_fp = ts.TosaSerializer.serializeUint8Vec(
-            serializer_builder, pad_const_float_as_bytes
+        # serialize pad_const_val_as_bytes as uint8 vector
+        serialized_pad_const_val = ts.TosaSerializer.serializeUint8Vec(
+            serializer_builder, pad_const_val_as_bytes
         )
 
-        self.floats.append((a.AddPadConstFp, serialized_pad_const_fp))
+        self.floats.append((a.AddPadConst, serialized_pad_const_val))
 
     def AxisAttribute(self, axis):
         from tosa import AxisAttribute as a, Attribute
@@ -237,34 +232,27 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.int16vecs.append((a.AddBorder, border))
         self.ints.append((a.AddMode, mode))
 
-    def ClampAttribute(self, serializer_builder, minint, maxint, minfp, maxfp):
+    def ClampAttribute(self, serializer_builder, min_val_as_bytes, max_val_as_bytes):
         from tosa import ClampAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ClampAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.ints.append((a.AddMinInt, minint))
-        self.ints.append((a.AddMaxInt, maxint))
-
         # min/max float attributes serialized as uint8 vectors
-        minfp_bytes = struct.pack("<f", minfp)
-        maxfp_bytes = struct.pack("<f", maxfp)
-        serialized_minfp_bytes = ts.TosaSerializer.serializeUint8Vec(
-            serializer_builder, minfp_bytes
+        serialized_min_val = ts.TosaSerializer.serializeUint8Vec(
+            serializer_builder, min_val_as_bytes
         )
-        serialized_maxfp_bytes = ts.TosaSerializer.serializeUint8Vec(
-            serializer_builder, maxfp_bytes
+        serialized_max_val = ts.TosaSerializer.serializeUint8Vec(
+            serializer_builder, max_val_as_bytes
         )
 
-        self.floats.append((a.AddMinFp, serialized_minfp_bytes))
-        self.floats.append((a.AddMaxFp, serialized_maxfp_bytes))
+        self.floats.append((a.AddMinVal, serialized_min_val))
+        self.floats.append((a.AddMaxVal, serialized_max_val))
 
     def RescaleAttribute(
         self,
         input_zp,
         output_zp,
-        multiplier,
-        shift,
         scale32,
         double_round,
         per_channel,
@@ -278,8 +266,6 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddOutputZp, output_zp))
-        self.intvecs.append((a.AddMultiplier, multiplier))
-        self.intvecs.append((a.AddShift, shift))
         self.bools.append((a.AddScale32, scale32))
         self.bools.append((a.AddDoubleRound, double_round))
         self.bools.append((a.AddPerChannel, per_channel))

@@ -43,96 +43,42 @@ class RescaleAttribute(object):
         return 0
 
     # RescaleAttribute
-    def Multiplier(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # RescaleAttribute
-    def MultiplierAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
-        return 0
-
-    # RescaleAttribute
-    def MultiplierLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # RescaleAttribute
-    def MultiplierIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        return o == 0
-
-    # RescaleAttribute
-    def Shift(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # RescaleAttribute
-    def ShiftAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
-        return 0
-
-    # RescaleAttribute
-    def ShiftLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # RescaleAttribute
-    def ShiftIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        return o == 0
-
-    # RescaleAttribute
     def Scale32(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # RescaleAttribute
     def DoubleRound(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # RescaleAttribute
     def PerChannel(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # RescaleAttribute
     def InputUnsigned(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # RescaleAttribute
     def OutputUnsigned(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
 def RescaleAttributeStart(builder):
-    builder.StartObject(9)
+    builder.StartObject(7)
 
 def Start(builder):
     RescaleAttributeStart(builder)
@@ -149,56 +95,32 @@ def RescaleAttributeAddOutputZp(builder, outputZp):
 def AddOutputZp(builder, outputZp):
     RescaleAttributeAddOutputZp(builder, outputZp)
 
-def RescaleAttributeAddMultiplier(builder, multiplier):
-    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(multiplier), 0)
-
-def AddMultiplier(builder, multiplier):
-    RescaleAttributeAddMultiplier(builder, multiplier)
-
-def RescaleAttributeStartMultiplierVector(builder, numElems):
-    return builder.StartVector(4, numElems, 4)
-
-def StartMultiplierVector(builder, numElems: int) -> int:
-    return RescaleAttributeStartMultiplierVector(builder, numElems)
-
-def RescaleAttributeAddShift(builder, shift):
-    builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(shift), 0)
-
-def AddShift(builder, shift):
-    RescaleAttributeAddShift(builder, shift)
-
-def RescaleAttributeStartShiftVector(builder, numElems):
-    return builder.StartVector(4, numElems, 4)
-
-def StartShiftVector(builder, numElems: int) -> int:
-    return RescaleAttributeStartShiftVector(builder, numElems)
-
 def RescaleAttributeAddScale32(builder, scale32):
-    builder.PrependBoolSlot(4, scale32, 0)
+    builder.PrependBoolSlot(2, scale32, 0)
 
 def AddScale32(builder, scale32):
     RescaleAttributeAddScale32(builder, scale32)
 
 def RescaleAttributeAddDoubleRound(builder, doubleRound):
-    builder.PrependBoolSlot(5, doubleRound, 0)
+    builder.PrependBoolSlot(3, doubleRound, 0)
 
 def AddDoubleRound(builder, doubleRound):
     RescaleAttributeAddDoubleRound(builder, doubleRound)
 
 def RescaleAttributeAddPerChannel(builder, perChannel):
-    builder.PrependBoolSlot(6, perChannel, 0)
+    builder.PrependBoolSlot(4, perChannel, 0)
 
 def AddPerChannel(builder, perChannel):
     RescaleAttributeAddPerChannel(builder, perChannel)
 
 def RescaleAttributeAddInputUnsigned(builder, inputUnsigned):
-    builder.PrependBoolSlot(7, inputUnsigned, 0)
+    builder.PrependBoolSlot(5, inputUnsigned, 0)
 
 def AddInputUnsigned(builder, inputUnsigned):
     RescaleAttributeAddInputUnsigned(builder, inputUnsigned)
 
 def RescaleAttributeAddOutputUnsigned(builder, outputUnsigned):
-    builder.PrependBoolSlot(8, outputUnsigned, 0)
+    builder.PrependBoolSlot(6, outputUnsigned, 0)
 
 def AddOutputUnsigned(builder, outputUnsigned):
     RescaleAttributeAddOutputUnsigned(builder, outputUnsigned)
