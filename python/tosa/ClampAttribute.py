@@ -29,114 +29,88 @@ class ClampAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # ClampAttribute
-    def MinInt(self):
+    def MinVal(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # ClampAttribute
-    def MaxInt(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # ClampAttribute
-    def MinFp(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(flatbuffers.number_types.Uint8Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
         return 0
 
     # ClampAttribute
-    def MinFpAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+    def MinValAsNumpy(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Uint8Flags, o)
         return 0
 
     # ClampAttribute
-    def MinFpLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+    def MinValLength(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # ClampAttribute
-    def MinFpIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+    def MinValIsNone(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
     # ClampAttribute
-    def MaxFp(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+    def MaxVal(self, j):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(flatbuffers.number_types.Uint8Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
         return 0
 
     # ClampAttribute
-    def MaxFpAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+    def MaxValAsNumpy(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Uint8Flags, o)
         return 0
 
     # ClampAttribute
-    def MaxFpLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+    def MaxValLength(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # ClampAttribute
-    def MaxFpIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+    def MaxValIsNone(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
 def ClampAttributeStart(builder):
-    builder.StartObject(4)
+    builder.StartObject(2)
 
 def Start(builder):
     ClampAttributeStart(builder)
 
-def ClampAttributeAddMinInt(builder, minInt):
-    builder.PrependInt32Slot(0, minInt, 0)
+def ClampAttributeAddMinVal(builder, minVal):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(minVal), 0)
 
-def AddMinInt(builder, minInt):
-    ClampAttributeAddMinInt(builder, minInt)
+def AddMinVal(builder, minVal):
+    ClampAttributeAddMinVal(builder, minVal)
 
-def ClampAttributeAddMaxInt(builder, maxInt):
-    builder.PrependInt32Slot(1, maxInt, 0)
-
-def AddMaxInt(builder, maxInt):
-    ClampAttributeAddMaxInt(builder, maxInt)
-
-def ClampAttributeAddMinFp(builder, minFp):
-    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(minFp), 0)
-
-def AddMinFp(builder, minFp):
-    ClampAttributeAddMinFp(builder, minFp)
-
-def ClampAttributeStartMinFpVector(builder, numElems):
+def ClampAttributeStartMinValVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartMinFpVector(builder, numElems: int) -> int:
-    return ClampAttributeStartMinFpVector(builder, numElems)
+def StartMinValVector(builder, numElems: int) -> int:
+    return ClampAttributeStartMinValVector(builder, numElems)
 
-def ClampAttributeAddMaxFp(builder, maxFp):
-    builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(maxFp), 0)
+def ClampAttributeAddMaxVal(builder, maxVal):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(maxVal), 0)
 
-def AddMaxFp(builder, maxFp):
-    ClampAttributeAddMaxFp(builder, maxFp)
+def AddMaxVal(builder, maxVal):
+    ClampAttributeAddMaxVal(builder, maxVal)
 
-def ClampAttributeStartMaxFpVector(builder, numElems):
+def ClampAttributeStartMaxValVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartMaxFpVector(builder, numElems: int) -> int:
-    return ClampAttributeStartMaxFpVector(builder, numElems)
+def StartMaxValVector(builder, numElems: int) -> int:
+    return ClampAttributeStartMaxValVector(builder, numElems)
 
 def ClampAttributeEnd(builder):
     return builder.EndObject()
