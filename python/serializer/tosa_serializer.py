@@ -172,7 +172,9 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddOutputZp, output_zp))
         self.ints.append((a.AddAccType, acc_type))
 
-    def ConvAttribute(self, pad, stride, dilation, input_zp, weight_zp, local_bound):
+    def ConvAttribute(
+        self, pad, stride, dilation, input_zp, weight_zp, local_bound, acc_type
+    ):
         from tosa import ConvAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ConvAttribute
@@ -184,9 +186,10 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
         self.bools.append((a.AddLocalBound, local_bound))
+        self.ints.append((a.AddAccType, acc_type))
 
     def TransposeConvAttribute(
-        self, outpad, stride, output_shape, input_zp, weight_zp, local_bound
+        self, outpad, stride, output_shape, input_zp, weight_zp, local_bound, acc_type
     ):
         from tosa import TransposeConvAttribute as a, Attribute
 
@@ -199,6 +202,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
         self.bools.append((a.AddLocalBound, local_bound))
+        self.ints.append((a.AddAccType, acc_type))
 
     def PadAttribute(self, serializer_builder, pad_const_val_as_bytes):
         from tosa import PadAttribute as a, Attribute

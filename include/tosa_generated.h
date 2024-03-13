@@ -759,7 +759,8 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_DILATION = 8,
     VT_INPUT_ZP = 10,
     VT_WEIGHT_ZP = 12,
-    VT_LOCAL_BOUND = 14
+    VT_LOCAL_BOUND = 14,
+    VT_ACC_TYPE = 16
   };
   const ::flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -779,6 +780,9 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool local_bound() const {
     return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
   }
+  tosa::DType acc_type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -790,6 +794,7 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -816,6 +821,9 @@ struct ConvAttributeBuilder {
   void add_local_bound(bool local_bound) {
     fbb_.AddElement<uint8_t>(ConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
   }
+  void add_acc_type(tosa::DType acc_type) {
+    fbb_.AddElement<uint32_t>(ConvAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+  }
   explicit ConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -834,8 +842,10 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation = 0,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
-    bool local_bound = false) {
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
   ConvAttributeBuilder builder_(_fbb);
+  builder_.add_acc_type(acc_type);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_dilation(dilation);
@@ -852,7 +862,8 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
     const std::vector<int32_t> *dilation = nullptr,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
-    bool local_bound = false) {
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
@@ -863,7 +874,8 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       dilation__,
       input_zp,
       weight_zp,
-      local_bound);
+      local_bound,
+      acc_type);
 }
 
 struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -874,7 +886,8 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
     VT_OUTPUT_SHAPE = 8,
     VT_INPUT_ZP = 10,
     VT_WEIGHT_ZP = 12,
-    VT_LOCAL_BOUND = 14
+    VT_LOCAL_BOUND = 14,
+    VT_ACC_TYPE = 16
   };
   const ::flatbuffers::Vector<int32_t> *out_pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
@@ -894,6 +907,9 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   bool local_bound() const {
     return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
   }
+  tosa::DType acc_type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_OUT_PAD) &&
@@ -905,6 +921,7 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -931,6 +948,9 @@ struct TransposeConvAttributeBuilder {
   void add_local_bound(bool local_bound) {
     fbb_.AddElement<uint8_t>(TransposeConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
   }
+  void add_acc_type(tosa::DType acc_type) {
+    fbb_.AddElement<uint32_t>(TransposeConvAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+  }
   explicit TransposeConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -949,8 +969,10 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape = 0,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
-    bool local_bound = false) {
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
   TransposeConvAttributeBuilder builder_(_fbb);
+  builder_.add_acc_type(acc_type);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_output_shape(output_shape);
@@ -967,7 +989,8 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     const std::vector<int32_t> *output_shape = nullptr,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
-    bool local_bound = false) {
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
@@ -978,7 +1001,8 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
       output_shape__,
       input_zp,
       weight_zp,
-      local_bound);
+      local_bound,
+      acc_type);
 }
 
 struct PadAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

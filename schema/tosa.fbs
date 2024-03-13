@@ -170,6 +170,7 @@ table ConvAttribute {
   input_zp: int32;
   weight_zp: int32;
   local_bound: bool;
+  acc_type: DType;
 }
 
 table TransposeConvAttribute {
@@ -179,6 +180,7 @@ table TransposeConvAttribute {
   input_zp: int32;
   weight_zp: int32;
   local_bound: bool;
+  acc_type: DType;
 }
 
 table PadAttribute {

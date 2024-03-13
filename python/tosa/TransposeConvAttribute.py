@@ -130,8 +130,15 @@ class TransposeConvAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
+    # TransposeConvAttribute
+    def AccType(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
 def TransposeConvAttributeStart(builder):
-    builder.StartObject(6)
+    builder.StartObject(7)
 
 def Start(builder):
     TransposeConvAttributeStart(builder)
@@ -189,6 +196,12 @@ def TransposeConvAttributeAddLocalBound(builder, localBound):
 
 def AddLocalBound(builder, localBound):
     TransposeConvAttributeAddLocalBound(builder, localBound)
+
+def TransposeConvAttributeAddAccType(builder, accType):
+    builder.PrependUint32Slot(6, accType, 0)
+
+def AddAccType(builder, accType):
+    TransposeConvAttributeAddAccType(builder, accType)
 
 def TransposeConvAttributeEnd(builder):
     return builder.EndObject()

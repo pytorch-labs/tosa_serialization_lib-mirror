@@ -130,8 +130,15 @@ class ConvAttribute(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
+    # ConvAttribute
+    def AccType(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
 def ConvAttributeStart(builder):
-    builder.StartObject(6)
+    builder.StartObject(7)
 
 def Start(builder):
     ConvAttributeStart(builder)
@@ -189,6 +196,12 @@ def ConvAttributeAddLocalBound(builder, localBound):
 
 def AddLocalBound(builder, localBound):
     ConvAttributeAddLocalBound(builder, localBound)
+
+def ConvAttributeAddAccType(builder, accType):
+    builder.PrependUint32Slot(6, accType, 0)
+
+def AddAccType(builder, accType):
+    ConvAttributeAddAccType(builder, accType)
 
 def ConvAttributeEnd(builder):
     return builder.EndObject()
