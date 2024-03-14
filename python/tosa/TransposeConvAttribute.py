@@ -83,62 +83,35 @@ class TransposeConvAttribute(object):
         return o == 0
 
     # TransposeConvAttribute
-    def OutputShape(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # TransposeConvAttribute
-    def OutputShapeAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
-        return 0
-
-    # TransposeConvAttribute
-    def OutputShapeLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # TransposeConvAttribute
-    def OutputShapeIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
-        return o == 0
-
-    # TransposeConvAttribute
     def InputZp(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
     # TransposeConvAttribute
     def WeightZp(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
     # TransposeConvAttribute
     def LocalBound(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # TransposeConvAttribute
     def AccType(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
 def TransposeConvAttributeStart(builder):
-    builder.StartObject(7)
+    builder.StartObject(6)
 
 def Start(builder):
     TransposeConvAttributeStart(builder)
@@ -167,38 +140,26 @@ def TransposeConvAttributeStartStrideVector(builder, numElems):
 def StartStrideVector(builder, numElems: int) -> int:
     return TransposeConvAttributeStartStrideVector(builder, numElems)
 
-def TransposeConvAttributeAddOutputShape(builder, outputShape):
-    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(outputShape), 0)
-
-def AddOutputShape(builder, outputShape):
-    TransposeConvAttributeAddOutputShape(builder, outputShape)
-
-def TransposeConvAttributeStartOutputShapeVector(builder, numElems):
-    return builder.StartVector(4, numElems, 4)
-
-def StartOutputShapeVector(builder, numElems: int) -> int:
-    return TransposeConvAttributeStartOutputShapeVector(builder, numElems)
-
 def TransposeConvAttributeAddInputZp(builder, inputZp):
-    builder.PrependInt32Slot(3, inputZp, 0)
+    builder.PrependInt32Slot(2, inputZp, 0)
 
 def AddInputZp(builder, inputZp):
     TransposeConvAttributeAddInputZp(builder, inputZp)
 
 def TransposeConvAttributeAddWeightZp(builder, weightZp):
-    builder.PrependInt32Slot(4, weightZp, 0)
+    builder.PrependInt32Slot(3, weightZp, 0)
 
 def AddWeightZp(builder, weightZp):
     TransposeConvAttributeAddWeightZp(builder, weightZp)
 
 def TransposeConvAttributeAddLocalBound(builder, localBound):
-    builder.PrependBoolSlot(5, localBound, 0)
+    builder.PrependBoolSlot(4, localBound, 0)
 
 def AddLocalBound(builder, localBound):
     TransposeConvAttributeAddLocalBound(builder, localBound)
 
 def TransposeConvAttributeAddAccType(builder, accType):
-    builder.PrependUint32Slot(6, accType, 0)
+    builder.PrependUint32Slot(5, accType, 0)
 
 def AddAccType(builder, accType):
     TransposeConvAttributeAddAccType(builder, accType)

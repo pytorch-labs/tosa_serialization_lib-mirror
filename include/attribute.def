@@ -43,10 +43,9 @@ DEF_ATTRIBUTE(Conv, 7,
               bool,    S, local_bound,
               DType,   S, acc_type)
 
-DEF_ATTRIBUTE(TransposeConv, 7,
+DEF_ATTRIBUTE(TransposeConv, 6,
               int32_t, V, out_pad,
               int32_t, V, stride,
-              int32_t, V, output_shape,
               int32_t, S, input_zp,
               int32_t, S, weight_zp,
               bool,    S, local_bound,

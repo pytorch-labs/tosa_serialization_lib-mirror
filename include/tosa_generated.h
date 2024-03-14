@@ -883,20 +883,16 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUT_PAD = 4,
     VT_STRIDE = 6,
-    VT_OUTPUT_SHAPE = 8,
-    VT_INPUT_ZP = 10,
-    VT_WEIGHT_ZP = 12,
-    VT_LOCAL_BOUND = 14,
-    VT_ACC_TYPE = 16
+    VT_INPUT_ZP = 8,
+    VT_WEIGHT_ZP = 10,
+    VT_LOCAL_BOUND = 12,
+    VT_ACC_TYPE = 14
   };
   const ::flatbuffers::Vector<int32_t> *out_pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUT_PAD);
   }
   const ::flatbuffers::Vector<int32_t> *stride() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
-  }
-  const ::flatbuffers::Vector<int32_t> *output_shape() const {
-    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_OUTPUT_SHAPE);
   }
   int32_t input_zp() const {
     return GetField<int32_t>(VT_INPUT_ZP, 0);
@@ -916,8 +912,6 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
            verifier.VerifyVector(out_pad()) &&
            VerifyOffset(verifier, VT_STRIDE) &&
            verifier.VerifyVector(stride()) &&
-           VerifyOffset(verifier, VT_OUTPUT_SHAPE) &&
-           verifier.VerifyVector(output_shape()) &&
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
@@ -935,9 +929,6 @@ struct TransposeConvAttributeBuilder {
   }
   void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
     fbb_.AddOffset(TransposeConvAttribute::VT_STRIDE, stride);
-  }
-  void add_output_shape(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape) {
-    fbb_.AddOffset(TransposeConvAttribute::VT_OUTPUT_SHAPE, output_shape);
   }
   void add_input_zp(int32_t input_zp) {
     fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_INPUT_ZP, input_zp, 0);
@@ -966,7 +957,6 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> out_pad = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> output_shape = 0,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
     bool local_bound = false,
@@ -975,7 +965,6 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
   builder_.add_acc_type(acc_type);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
-  builder_.add_output_shape(output_shape);
   builder_.add_stride(stride);
   builder_.add_out_pad(out_pad);
   builder_.add_local_bound(local_bound);
@@ -986,19 +975,16 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *out_pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
-    const std::vector<int32_t> *output_shape = nullptr,
     int32_t input_zp = 0,
     int32_t weight_zp = 0,
     bool local_bound = false,
     tosa::DType acc_type = tosa::DType_UNKNOWN) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  auto output_shape__ = output_shape ? _fbb.CreateVector<int32_t>(*output_shape) : 0;
   return tosa::CreateTransposeConvAttribute(
       _fbb,
       out_pad__,
       stride__,
-      output_shape__,
       input_zp,
       weight_zp,
       local_bound,

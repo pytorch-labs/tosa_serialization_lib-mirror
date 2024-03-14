@@ -176,7 +176,6 @@ table ConvAttribute {
 table TransposeConvAttribute {
   out_pad: [int32];
   stride: [int32];
-  output_shape: [int32];
   input_zp: int32;
   weight_zp: int32;
   local_bound: bool;
