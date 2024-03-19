@@ -29,7 +29,7 @@
 #define TOSA_VERSION_MAJOR 0
 #define TOSA_VERSION_MINOR 90
 #define TOSA_VERSION_PATCH 0
-#define TOSA_VERSION_DRAFT true
+#define TOSA_VERSION_DRAFT false
 #define TENSOR_BUFFER_FORCE_ALIGNMENT 8
 
 namespace tosa
