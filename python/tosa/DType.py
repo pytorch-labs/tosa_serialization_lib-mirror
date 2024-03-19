@@ -16,5 +16,3 @@ class DType(object):
     FP16 = 10
     BF16 = 11
     SHAPE = 12
-    FP8E4M3 = 13
-    FP8E5M2 = 14

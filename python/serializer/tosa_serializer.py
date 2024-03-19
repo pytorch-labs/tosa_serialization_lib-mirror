@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, ARM Limited.
+# Copyright (c) 2020-2023, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -63,8 +63,6 @@ DTypeNames = [
     "FP16",
     "BF16",
     "SHAPE",
-    "FP8E4M3",
-    "FP8E5M2",
 ]
 
 ByteMask = np.uint64(0xFF)
@@ -427,12 +425,7 @@ class TosaSerializerTensor:
         self.shape = shape
         self.dtype = dtype
 
-        if (
-            dtype == DType.FP32
-            or dtype == DType.BF16
-            or dtype == DType.FP8E4M3
-            or dtype == DType.FP8E5M2
-        ):
+        if dtype == DType.FP32 or dtype == DType.BF16:
             fntype = np.float32
         elif dtype == DType.FP16:
             fntype = np.float16
@@ -532,12 +525,7 @@ class TosaSerializerTensor:
             elif self.dtype == DType.FP16:
                 np_arr = np.array(self.data, dtype=np.float16)
                 u8_data.extend(np_arr.view(np.uint8))
-            elif (
-                self.dtype == DType.FP32
-                or self.dtype == DType.BF16
-                or self.dtype == DType.FP8E4M3
-                or self.dtype == DType.FP8E5M2
-            ):
+            elif self.dtype == DType.FP32 or self.dtype == DType.BF16:
                 # for val in self.data:
                 #     b = struct.pack("!f", val)
                 #     u8_data.extend([b[3], b[2], b[1], b[0]])
