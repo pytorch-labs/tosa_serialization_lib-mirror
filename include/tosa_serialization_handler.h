@@ -18,6 +18,7 @@
 #include "attribute.h"
 #include "flatbuffers/idl.h"
 #include "flatbuffers/util.h"
+#include "float_utils.h"
 #include "numpy_utils.h"
 #include "tosa_generated.h"
 #include <cstdint>
@@ -411,6 +412,9 @@ public:
     tosa_err_t LoadFileSchema(const char* schema_filename);
 
     // data format conversion. little-endian.
+    static tosa_err_t ConvertBF16toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
+    static tosa_err_t ConvertFP8E4M3toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
+    static tosa_err_t ConvertFP8E5M2toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertF16toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertF32toU8(const std::vector<float>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertI64toU8(const std::vector<int64_t>& in, std::vector<uint8_t>& out);
@@ -421,6 +425,9 @@ public:
     static tosa_err_t ConvertI4toU8(const std::vector<int8_t>& in, std::vector<uint8_t>& out);
     static tosa_err_t ConvertBooltoU8(const std::vector<bool>& in, std::vector<uint8_t>& out);
 
+    static tosa_err_t ConvertU8toBF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);
+    static tosa_err_t ConvertU8toFP8E4M3(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);
+    static tosa_err_t ConvertU8toFP8E5M2(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);
     static tosa_err_t
         ConvertU8toF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<half_float::half>& out);
     static tosa_err_t ConvertU8toF32(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out);

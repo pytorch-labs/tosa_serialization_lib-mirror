@@ -1008,15 +1008,20 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
 struct PadAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PadAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PAD_CONST = 4
+    VT_PAD_CONST = 4,
+    VT_TYPE = 6
   };
   const ::flatbuffers::Vector<uint8_t> *pad_const() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST);
+  }
+  tosa::DType type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_TYPE, 0));
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD_CONST) &&
            verifier.VerifyVector(pad_const()) &&
+           VerifyField<uint32_t>(verifier, VT_TYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1027,6 +1032,9 @@ struct PadAttributeBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_pad_const(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const) {
     fbb_.AddOffset(PadAttribute::VT_PAD_CONST, pad_const);
+  }
+  void add_type(tosa::DType type) {
+    fbb_.AddElement<uint32_t>(PadAttribute::VT_TYPE, static_cast<uint32_t>(type), 0);
   }
   explicit PadAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1041,20 +1049,24 @@ struct PadAttributeBuilder {
 
 inline ::flatbuffers::Offset<PadAttribute> CreatePadAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const = 0,
+    tosa::DType type = tosa::DType_UNKNOWN) {
   PadAttributeBuilder builder_(_fbb);
+  builder_.add_type(type);
   builder_.add_pad_const(pad_const);
   return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *pad_const = nullptr) {
+    const std::vector<uint8_t> *pad_const = nullptr,
+    tosa::DType type = tosa::DType_UNKNOWN) {
   if (pad_const) { _fbb.ForceVectorAlignment(pad_const->size(), sizeof(uint8_t), 8); }
   auto pad_const__ = pad_const ? _fbb.CreateVector<uint8_t>(*pad_const) : 0;
   return tosa::CreatePadAttribute(
       _fbb,
-      pad_const__);
+      pad_const__,
+      type);
 }
 
 struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -1193,7 +1205,8 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ClampAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MIN_VAL = 4,
-    VT_MAX_VAL = 6
+    VT_MAX_VAL = 6,
+    VT_TYPE = 8
   };
   const ::flatbuffers::Vector<uint8_t> *min_val() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MIN_VAL);
@@ -1201,12 +1214,16 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::Vector<uint8_t> *max_val() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MAX_VAL);
   }
+  tosa::DType type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_TYPE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_MIN_VAL) &&
            verifier.VerifyVector(min_val()) &&
            VerifyOffset(verifier, VT_MAX_VAL) &&
            verifier.VerifyVector(max_val()) &&
+           VerifyField<uint32_t>(verifier, VT_TYPE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1220,6 +1237,9 @@ struct ClampAttributeBuilder {
   }
   void add_max_val(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val) {
     fbb_.AddOffset(ClampAttribute::VT_MAX_VAL, max_val);
+  }
+  void add_type(tosa::DType type) {
+    fbb_.AddElement<uint32_t>(ClampAttribute::VT_TYPE, static_cast<uint32_t>(type), 0);
   }
   explicit ClampAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1235,8 +1255,10 @@ struct ClampAttributeBuilder {
 inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_val = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val = 0,
+    tosa::DType type = tosa::DType_UNKNOWN) {
   ClampAttributeBuilder builder_(_fbb);
+  builder_.add_type(type);
   builder_.add_max_val(max_val);
   builder_.add_min_val(min_val);
   return builder_.Finish();
@@ -1245,7 +1267,8 @@ inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
 inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<uint8_t> *min_val = nullptr,
-    const std::vector<uint8_t> *max_val = nullptr) {
+    const std::vector<uint8_t> *max_val = nullptr,
+    tosa::DType type = tosa::DType_UNKNOWN) {
   if (min_val) { _fbb.ForceVectorAlignment(min_val->size(), sizeof(uint8_t), 8); }
   auto min_val__ = min_val ? _fbb.CreateVector<uint8_t>(*min_val) : 0;
   if (max_val) { _fbb.ForceVectorAlignment(max_val->size(), sizeof(uint8_t), 8); }
@@ -1253,7 +1276,8 @@ inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
   return tosa::CreateClampAttribute(
       _fbb,
       min_val__,
-      max_val__);
+      max_val__,
+      type);
 }
 
 struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

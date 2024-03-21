@@ -19,8 +19,8 @@
 cmake_minimum_required(VERSION 3.13.4)
 project(TosaSerialization)
 
-set(CMAKE_CXX_STANDARD 14 CACHE STRING "C++ standard to conform to")
-set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -76,6 +76,7 @@ set(public_headers)
 list(APPEND public_headers
      include/attribute.h
      include/attribute.def
+     include/float_utils.h
      include/numpy_utils.h
      include/tosa_generated.h
      include/tosa_serialization_handler.h

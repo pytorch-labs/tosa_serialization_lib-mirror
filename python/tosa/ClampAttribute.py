@@ -82,8 +82,15 @@ class ClampAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
+    # ClampAttribute
+    def Type(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
 def ClampAttributeStart(builder):
-    builder.StartObject(2)
+    builder.StartObject(3)
 
 def Start(builder):
     ClampAttributeStart(builder)
@@ -111,6 +118,12 @@ def ClampAttributeStartMaxValVector(builder, numElems):
 
 def StartMaxValVector(builder, numElems: int) -> int:
     return ClampAttributeStartMaxValVector(builder, numElems)
+
+def ClampAttributeAddType(builder, type):
+    builder.PrependUint32Slot(2, type, 0)
+
+def AddType(builder, type):
+    ClampAttributeAddType(builder, type)
 
 def ClampAttributeEnd(builder):
     return builder.EndObject()
