@@ -438,12 +438,11 @@ NumpyUtilities::NPError
 
     // Output the format dictionary
     // Hard-coded for I32 for now
-    headerPos +=
-        snprintf(header + headerPos, NUMPY_HEADER_SZ - headerPos, "'descr': %s, 'fortran_order': False, 'shape': (%d,",
-                 dtype_str, shape.empty() ? 1 : shape[0]);
+    headerPos += snprintf(header + headerPos, NUMPY_HEADER_SZ - headerPos,
+                          "'descr': %s, 'fortran_order': False, 'shape': (", dtype_str);
 
-    // Remainder of shape array
-    for (i = 1; i < shape.size(); i++)
+    // Add shape contents (if any - as this will be empty for rank 0)
+    for (i = 0; i < shape.size(); i++)
     {
         headerPos += snprintf(header + headerPos, NUMPY_HEADER_SZ - headerPos, " %d,", shape[i]);
     }
