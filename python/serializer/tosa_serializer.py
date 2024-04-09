@@ -205,7 +205,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.bools.append((a.AddLocalBound, local_bound))
         self.ints.append((a.AddAccType, acc_type))
 
-    def PadAttribute(self, serializer_builder, pad_const_val_as_bytes, dtype):
+    def PadAttribute(self, serializer_builder, pad_const_val_as_bytes):
         from tosa import PadAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().PadAttribute
@@ -217,7 +217,6 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         )
 
         self.floats.append((a.AddPadConst, serialized_pad_const_val))
-        self.ints.append((a.AddType, dtype))
 
     def AxisAttribute(self, axis):
         from tosa import AxisAttribute as a, Attribute
@@ -238,9 +237,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.int16vecs.append((a.AddBorder, border))
         self.ints.append((a.AddMode, mode))
 
-    def ClampAttribute(
-        self, serializer_builder, min_val_as_bytes, max_val_as_bytes, dtype
-    ):
+    def ClampAttribute(self, serializer_builder, min_val_as_bytes, max_val_as_bytes):
         from tosa import ClampAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ClampAttribute
@@ -256,7 +253,6 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.floats.append((a.AddMinVal, serialized_min_val))
         self.floats.append((a.AddMaxVal, serialized_max_val))
-        self.ints.append((a.AddType, dtype))
 
     def RescaleAttribute(
         self,

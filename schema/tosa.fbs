@@ -185,7 +185,6 @@ table TransposeConvAttribute {
 
 table PadAttribute {
   pad_const: [ubyte] (force_align: 8);
-  type: DType;
 }
 
 table AxisAttribute {
@@ -202,7 +201,6 @@ table ResizeAttribute {
 table ClampAttribute {
   min_val: [ubyte] (force_align: 8);
   max_val: [ubyte] (force_align: 8);
-  type: DType;
 }
 
 table RescaleAttribute {

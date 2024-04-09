@@ -55,15 +55,8 @@ class PadAttribute(object):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-    # PadAttribute
-    def Type(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
-        return 0
-
 def PadAttributeStart(builder):
-    builder.StartObject(2)
+    builder.StartObject(1)
 
 def Start(builder):
     PadAttributeStart(builder)
@@ -79,12 +72,6 @@ def PadAttributeStartPadConstVector(builder, numElems):
 
 def StartPadConstVector(builder, numElems: int) -> int:
     return PadAttributeStartPadConstVector(builder, numElems)
-
-def PadAttributeAddType(builder, type):
-    builder.PrependUint32Slot(1, type, 0)
-
-def AddType(builder, type):
-    PadAttributeAddType(builder, type)
 
 def PadAttributeEnd(builder):
     return builder.EndObject()
