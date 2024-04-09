@@ -17,6 +17,10 @@
 #include "half.hpp"
 #include <algorithm>
 
+#if defined(_WIN32)
+  #define strtok_r strtok_s
+#endif
+
 // Magic NUMPY header
 static const char NUMPY_HEADER_STR[] = "\x93NUMPY\x1\x0\x76\x0{";
 static const int NUMPY_HEADER_SZ     = 128;
