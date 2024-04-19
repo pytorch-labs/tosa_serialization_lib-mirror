@@ -16,9 +16,9 @@
 #ifndef _TOSA_SERIALIZATION_HANDLER_H
 #define _TOSA_SERIALIZATION_HANDLER_H
 #include "attribute.h"
+#include "cfloat.h"
 #include "flatbuffers/idl.h"
 #include "flatbuffers/util.h"
-#include "float_utils.h"
 #include "numpy_utils.h"
 #include "tosa_generated.h"
 #include <cstdint>

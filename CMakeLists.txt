@@ -76,7 +76,7 @@ set(public_headers)
 list(APPEND public_headers
      include/attribute.h
      include/attribute.def
-     include/float_utils.h
+     include/cfloat.h
      include/numpy_utils.h
      include/tosa_generated.h
      include/tosa_serialization_handler.h

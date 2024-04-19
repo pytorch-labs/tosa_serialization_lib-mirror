@@ -19,8 +19,8 @@
 #include <iostream>
 using namespace tosa;
 
-using fp8e4m3 = tosa::float_t<int8_t, 4, true, true, false>;
-using fp8e5m2 = tosa::float_t<int8_t, 5, true, true, true>;
+using fp8e4m3 = ct::cfloat<int8_t, 4, true, true, false>;
+using fp8e5m2 = ct::cfloat<int8_t, 5, true, true, true>;
 
 TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name,
                                                  const flatbuffers::Vector<int32_t>* shape,
