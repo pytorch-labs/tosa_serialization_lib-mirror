@@ -211,10 +211,33 @@ public:
 
         if (in.is_nan() || in.is_infinity())
         {
+            // The mapping of infinity to the destination type depends upon
+            // the overflow mode and the features of the destination type.
+            // OVERFLOW mode is the "expected" behaviour, in which exception
+            // values (NaN and infinity) map to themselves in the
+            // destination type (assuming they exist). In SATURATION mode,
+            // infinity maps to the largest absolute value of the
+            // destination type _even if_ an infinity encoding is available.
+            // See the FP8 specification document.
+            //
+            // By default, exceptional values are encoded with an all-1
+            // exponent field.
             new_exponent_bits = (UINT64_C(1) << out_exp_bits) - 1;
 
             if (in.is_nan())
             {
+                // NaN always maps to NaN if it's available.
+                //
+                // NB: if the type has both NaN AND Infinity support, then
+                // the entirety of the significand can be used to encode
+                // different values of NaN (excepting significand = 0,
+                // which is reserved for infinity). This makes it possible
+                // to encode both quiet and signalling varieties.
+                // Generally, the LSB of the significand represents "not
+                // quiet".  However, when there is only 1 NaN encoding
+                // (which is generally the case when infinity is not
+                // supported), then there cannot be separate quiet and
+                // signalling varieties of NaN.
                 if constexpr (out_type::has_inf)
                 {
                     // Copy across the `not_quiet bit`; set the LSB.
@@ -228,17 +251,18 @@ public:
                     new_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 }
             }
-            else if constexpr (out_type::has_inf && overflow_mode == OverflowMode::Saturate)
+            else if constexpr (overflow_mode == OverflowMode::Saturate)
             {
-                new_exponent_bits -= 1;
-                new_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
-            }
-            else if constexpr (!out_type::has_inf && overflow_mode == OverflowMode::Saturate)
-            {
-                new_significand = (UINT64_C(1) << out_type::n_significand_bits) - (out_type::has_nan ? 2 : 1);
+                // In SATURATE mode, infinity in the input maps to the
+                // largest absolute value in the output type; even if
+                // infinity is available. This is in compliance with Table 3
+                // of the FP8 specification.
+                return out_type::max(sign_bit);
             }
             else if constexpr (!out_type::has_inf && overflow_mode == OverflowMode::Overflow)
             {
+                // In OVERFLOW mode, infinities in the input type map to NaN
+                // in the output type, if infinity is not available.
                 new_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
             }
         }
@@ -492,20 +516,20 @@ public:
         {
             // Where we have NaN and Infinity, exponents all `1` corresponds
             // to some of these values.
-            return from_bits(false, (UINT64_C(1) << n_exponent_bits) - 2, (UINT64_C(1) << n_significand_bits) - 1);
+            return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 2, (UINT64_C(1) << n_significand_bits) - 1);
         }
         else if constexpr (has_nan || has_inf)
         {
             // Where we have either NaN or infinity (but not both),
             // exponents all `1` AND significand all `1` corresponds to the
             // special value.
-            return from_bits(false, (UINT64_C(1) << n_exponent_bits) - 1, (UINT64_C(1) << n_significand_bits) - 2);
+            return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 1, (UINT64_C(1) << n_significand_bits) - 2);
         }
         else
         {
             // With no special values to encode, the maximum value is
             // encoded as all `1`s.
-            return from_bits(false, (UINT64_C(1) << n_exponent_bits) - 1, (UINT64_C(1) << n_significand_bits) - 1);
+            return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 1, (UINT64_C(1) << n_significand_bits) - 1);
         }
     }
 
