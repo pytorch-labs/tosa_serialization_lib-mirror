@@ -96,7 +96,7 @@ def AddImplementationAttrs(builder, implementationAttrs):
 def CustomAttributeStartImplementationAttrsVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartImplementationAttrsVector(builder, numElems: int) -> int:
+def StartImplementationAttrsVector(builder, numElems):
     return CustomAttributeStartImplementationAttrsVector(builder, numElems)
 
 def CustomAttributeEnd(builder):

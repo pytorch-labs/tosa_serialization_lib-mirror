@@ -70,7 +70,7 @@ def AddPerms(builder, perms):
 def TransposeAttributeStartPermsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartPermsVector(builder, numElems: int) -> int:
+def StartPermsVector(builder, numElems):
     return TransposeAttributeStartPermsVector(builder, numElems)
 
 def TransposeAttributeEnd(builder):

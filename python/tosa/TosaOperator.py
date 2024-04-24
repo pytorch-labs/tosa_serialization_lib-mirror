@@ -125,7 +125,7 @@ def AddInputs(builder, inputs):
 def TosaOperatorStartInputsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartInputsVector(builder, numElems: int) -> int:
+def StartInputsVector(builder, numElems):
     return TosaOperatorStartInputsVector(builder, numElems)
 
 def TosaOperatorAddOutputs(builder, outputs):
@@ -137,7 +137,7 @@ def AddOutputs(builder, outputs):
 def TosaOperatorStartOutputsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartOutputsVector(builder, numElems: int) -> int:
+def StartOutputsVector(builder, numElems):
     return TosaOperatorStartOutputsVector(builder, numElems)
 
 def TosaOperatorEnd(builder):

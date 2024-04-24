@@ -138,7 +138,7 @@ def AddShape(builder, shape):
 def TosaTensorStartShapeVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartShapeVector(builder, numElems: int) -> int:
+def StartShapeVector(builder, numElems):
     return TosaTensorStartShapeVector(builder, numElems)
 
 def TosaTensorAddType(builder, type):
@@ -156,7 +156,7 @@ def AddData(builder, data):
 def TosaTensorStartDataVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartDataVector(builder, numElems: int) -> int:
+def StartDataVector(builder, numElems):
     return TosaTensorStartDataVector(builder, numElems)
 
 def TosaTensorAddVariable(builder, variable):

@@ -131,7 +131,7 @@ def AddScale(builder, scale):
 def ResizeAttributeStartScaleVector(builder, numElems):
     return builder.StartVector(2, numElems, 2)
 
-def StartScaleVector(builder, numElems: int) -> int:
+def StartScaleVector(builder, numElems):
     return ResizeAttributeStartScaleVector(builder, numElems)
 
 def ResizeAttributeAddOffset(builder, offset):
@@ -143,7 +143,7 @@ def AddOffset(builder, offset):
 def ResizeAttributeStartOffsetVector(builder, numElems):
     return builder.StartVector(2, numElems, 2)
 
-def StartOffsetVector(builder, numElems: int) -> int:
+def StartOffsetVector(builder, numElems):
     return ResizeAttributeStartOffsetVector(builder, numElems)
 
 def ResizeAttributeAddBorder(builder, border):
@@ -155,7 +155,7 @@ def AddBorder(builder, border):
 def ResizeAttributeStartBorderVector(builder, numElems):
     return builder.StartVector(2, numElems, 2)
 
-def StartBorderVector(builder, numElems: int) -> int:
+def StartBorderVector(builder, numElems):
     return ResizeAttributeStartBorderVector(builder, numElems)
 
 def ResizeAttributeAddMode(builder, mode):
