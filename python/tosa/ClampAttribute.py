@@ -97,7 +97,7 @@ def AddMinVal(builder, minVal):
 def ClampAttributeStartMinValVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartMinValVector(builder, numElems: int) -> int:
+def StartMinValVector(builder, numElems):
     return ClampAttributeStartMinValVector(builder, numElems)
 
 def ClampAttributeAddMaxVal(builder, maxVal):
@@ -109,7 +109,7 @@ def AddMaxVal(builder, maxVal):
 def ClampAttributeStartMaxValVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartMaxValVector(builder, numElems: int) -> int:
+def StartMaxValVector(builder, numElems):
     return ClampAttributeStartMaxValVector(builder, numElems)
 
 def ClampAttributeEnd(builder):

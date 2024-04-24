@@ -146,7 +146,7 @@ def AddOperators(builder, operators):
 def TosaBasicBlockStartOperatorsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartOperatorsVector(builder, numElems: int) -> int:
+def StartOperatorsVector(builder, numElems):
     return TosaBasicBlockStartOperatorsVector(builder, numElems)
 
 def TosaBasicBlockAddTensors(builder, tensors):
@@ -158,7 +158,7 @@ def AddTensors(builder, tensors):
 def TosaBasicBlockStartTensorsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartTensorsVector(builder, numElems: int) -> int:
+def StartTensorsVector(builder, numElems):
     return TosaBasicBlockStartTensorsVector(builder, numElems)
 
 def TosaBasicBlockAddInputs(builder, inputs):
@@ -170,7 +170,7 @@ def AddInputs(builder, inputs):
 def TosaBasicBlockStartInputsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartInputsVector(builder, numElems: int) -> int:
+def StartInputsVector(builder, numElems):
     return TosaBasicBlockStartInputsVector(builder, numElems)
 
 def TosaBasicBlockAddOutputs(builder, outputs):
@@ -182,7 +182,7 @@ def AddOutputs(builder, outputs):
 def TosaBasicBlockStartOutputsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartOutputsVector(builder, numElems: int) -> int:
+def StartOutputsVector(builder, numElems):
     return TosaBasicBlockStartOutputsVector(builder, numElems)
 
 def TosaBasicBlockEnd(builder):

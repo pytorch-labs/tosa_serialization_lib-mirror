@@ -70,7 +70,7 @@ def AddTable(builder, table):
 def TableAttributeStartTableVector(builder, numElems):
     return builder.StartVector(2, numElems, 2)
 
-def StartTableVector(builder, numElems: int) -> int:
+def StartTableVector(builder, numElems):
     return TableAttributeStartTableVector(builder, numElems)
 
 def TableAttributeEnd(builder):

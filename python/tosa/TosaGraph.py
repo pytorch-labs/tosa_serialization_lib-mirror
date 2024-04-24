@@ -85,7 +85,7 @@ def AddRegions(builder, regions):
 def TosaGraphStartRegionsVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartRegionsVector(builder, numElems: int) -> int:
+def StartRegionsVector(builder, numElems):
     return TosaGraphStartRegionsVector(builder, numElems)
 
 def TosaGraphEnd(builder):

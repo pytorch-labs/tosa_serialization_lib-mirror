@@ -81,7 +81,7 @@ def AddBlocks(builder, blocks):
 def TosaRegionStartBlocksVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartBlocksVector(builder, numElems: int) -> int:
+def StartBlocksVector(builder, numElems):
     return TosaRegionStartBlocksVector(builder, numElems)
 
 def TosaRegionEnd(builder):
