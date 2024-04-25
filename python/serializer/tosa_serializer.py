@@ -32,7 +32,7 @@ import tosa.Op as TosaOp
 
 # Keep version number in sync with the version default value with schema/tosa.fbs
 TOSA_VERSION_MAJOR = 1
-TOSA_VERSION_MINOR = 0
+TOSA_VERSION_MINOR = 1
 TOSA_VERSION_PATCH = 0
 TOSA_VERSION_DRAFT = True
 TOSA_VERSION = [
