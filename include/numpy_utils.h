@@ -24,7 +24,12 @@
 #include <cstring>
 #include <vector>
 
+#include "cfloat.h"
 #include "half.hpp"
+
+using bf16    = ct::cfloat<int16_t, 8, true, true, true>;
+using fp8e4m3 = ct::cfloat<int8_t, 4, true, true, false>;
+using fp8e5m2 = ct::cfloat<int8_t, 5, true, true, true>;
 
 class NumpyUtilities
 {
@@ -84,6 +89,18 @@ public:
         if (std::is_same<T, half_float::half>::value)
         {
             return "'<f2'";
+        }
+        if (std::is_same<T, bf16>::value)
+        {
+            return "'<V2'";
+        }
+        if (std::is_same<T, fp8e4m3>::value)
+        {
+            return "'<V1'";
+        }
+        if (std::is_same<T, fp8e5m2>::value)
+        {
+            return "'<f1'";
         }
         assert(false && "unsupported Dtype");
     };
