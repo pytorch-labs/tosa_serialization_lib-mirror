@@ -947,9 +947,8 @@ class TosaSerializer:
             np_arr = np.array(data, dtype=np.float32)
             u8_data.extend(np_arr.view(np.uint8))
         elif dtype == DType.BF16:
-            for val in data:
-                np_arr = np.array(data, dtype=bfloat16)
-                u8_data.extend(np_arr.view(np.uint8))
+            np_arr = np.array(data, dtype=bfloat16)
+            u8_data.extend(np_arr.view(np.uint8))
         elif dtype == DType.FP8E4M3:
             for val in data:
                 val_f8 = np.array(val).astype(float8_e4m3fn).view(np.uint8)
