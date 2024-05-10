@@ -955,7 +955,7 @@ tosa_err_t
         uint16_t val_u16   = (bf16_byte0) + (bf16_byte1 << 8);
 
         // Reinterpret u16 bytes as bf16
-        bf16 val_bf16 = static_cast<bf16>(val_u16);
+        bf16 val_bf16 = *(bf16*)&val_u16;
         out.push_back(val_bf16);
     }
     return TOSA_OK;
