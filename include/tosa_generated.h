@@ -1087,31 +1087,13 @@ inline ::flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
 struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ResizeAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SCALE = 4,
-    VT_OFFSET = 6,
-    VT_BORDER = 8,
     VT_MODE = 10
   };
-  const ::flatbuffers::Vector<int16_t> *scale() const {
-    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_SCALE);
-  }
-  const ::flatbuffers::Vector<int16_t> *offset() const {
-    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_OFFSET);
-  }
-  const ::flatbuffers::Vector<int16_t> *border() const {
-    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_BORDER);
-  }
   tosa::ResizeMode mode() const {
     return static_cast<tosa::ResizeMode>(GetField<uint32_t>(VT_MODE, 0));
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_SCALE) &&
-           verifier.VerifyVector(scale()) &&
-           VerifyOffset(verifier, VT_OFFSET) &&
-           verifier.VerifyVector(offset()) &&
-           VerifyOffset(verifier, VT_BORDER) &&
-           verifier.VerifyVector(border()) &&
            VerifyField<uint32_t>(verifier, VT_MODE, 4) &&
            verifier.EndTable();
   }
@@ -1121,15 +1103,6 @@ struct ResizeAttributeBuilder {
   typedef ResizeAttribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_scale(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> scale) {
-    fbb_.AddOffset(ResizeAttribute::VT_SCALE, scale);
-  }
-  void add_offset(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> offset) {
-    fbb_.AddOffset(ResizeAttribute::VT_OFFSET, offset);
-  }
-  void add_border(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> border) {
-    fbb_.AddOffset(ResizeAttribute::VT_BORDER, border);
-  }
   void add_mode(tosa::ResizeMode mode) {
     fbb_.AddElement<uint32_t>(ResizeAttribute::VT_MODE, static_cast<uint32_t>(mode), 0);
   }
@@ -1146,33 +1119,10 @@ struct ResizeAttributeBuilder {
 
 inline ::flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> scale = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> offset = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> border = 0,
     tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
   ResizeAttributeBuilder builder_(_fbb);
   builder_.add_mode(mode);
-  builder_.add_border(border);
-  builder_.add_offset(offset);
-  builder_.add_scale(scale);
   return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<ResizeAttribute> CreateResizeAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int16_t> *scale = nullptr,
-    const std::vector<int16_t> *offset = nullptr,
-    const std::vector<int16_t> *border = nullptr,
-    tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
-  auto scale__ = scale ? _fbb.CreateVector<int16_t>(*scale) : 0;
-  auto offset__ = offset ? _fbb.CreateVector<int16_t>(*offset) : 0;
-  auto border__ = border ? _fbb.CreateVector<int16_t>(*border) : 0;
-  return tosa::CreateResizeAttribute(
-      _fbb,
-      scale__,
-      offset__,
-      border__,
-      mode);
 }
 
 struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
