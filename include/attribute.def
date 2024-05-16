@@ -57,10 +57,7 @@ DEF_ATTRIBUTE(Pad, 1,
 DEF_ATTRIBUTE(Axis, 1,
               int32_t, S, axis)
 
-DEF_ATTRIBUTE(Resize, 4,
-              int16_t, V, scale,
-              int16_t, V, offset,
-              int16_t, V, border,
+DEF_ATTRIBUTE(Resize, 1,
               ResizeMode, S, mode)
 
 DEF_ATTRIBUTE(Clamp, 2,

@@ -225,15 +225,12 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddAxis, axis))
 
-    def ResizeAttribute(self, scale, offset, border, mode):
+    def ResizeAttribute(self, mode):
         from tosa import ResizeAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ResizeAttribute
         self.optFcns = (a.Start, a.End)
 
-        self.int16vecs.append((a.AddScale, scale))
-        self.int16vecs.append((a.AddOffset, offset))
-        self.int16vecs.append((a.AddBorder, border))
         self.ints.append((a.AddMode, mode))
 
     def ClampAttribute(self, serializer_builder, min_val_as_bytes, max_val_as_bytes):
