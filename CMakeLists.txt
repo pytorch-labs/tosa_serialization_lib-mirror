@@ -1,6 +1,6 @@
 #TOSA serialization library
 
-# Copyright (c) 2020-2023, ARM Limited.
+# Copyright (c) 2020-2024, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -93,6 +93,9 @@ if (BUILD_TESTS)
     target_link_libraries(serialization_npy_test
       tosa_serialization_lib
     )
+
+    enable_testing()
+    add_subdirectory(test/gtests)
 endif()
 
 set(TOSA_SERIALIZATION_LIB_CMAKE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/tosa_serialization_lib")
