@@ -1189,7 +1189,7 @@ tosa_err_t
                out_size, in.size());
         return TOSA_USER_ERROR;
     }
-    for (size_t i = 0; i < in.size(); i++)
+    for (size_t i = 0; 2 * i < out_size; i++)
     {
         uint8_t val_u8        = in[i];
         uint8_t val_0_u4      = val_u8 & 0xF;
