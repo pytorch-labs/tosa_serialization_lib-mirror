@@ -1,0 +1,6 @@
+Code-Review+2: Suraj Sudhir <suraj.sudhir@arm.com>
+Submitted-by: Kaushik Varadharajan <kaushik.varadharajan@arm.com>
+Submitted-at: Tue, 04 Jun 2024 15:09:15 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/11648
+Project: tosa/serialization_lib
+Branch: refs/heads/main
