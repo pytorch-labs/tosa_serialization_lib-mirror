@@ -117,6 +117,7 @@ TEST(SerializationCpp, SingleOp)
     // Serializing a region with one operator and empty input/output tensors. The operators don't have their attributes.
 
     tosa_err_t err;
+
     for (int op = Op_MIN; op <= Op_MAX; ++op)
     {
         TosaSerializationHandler handler1, handler2, handler3;

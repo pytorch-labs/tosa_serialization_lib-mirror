@@ -60,6 +60,7 @@ TEST_P(SingleAttr, )
         std::make_unique<TosaSerializationTensor>("t2", shape, DType_UNKNOWN, empty_data, false, false));
     block->GetInputs().push_back("t1");
     block->GetOutputs().push_back("t2");
+
     WRITE_READ_TOSA_TEST(handler1, handler2, err, (source_dir + "/test/tmp/Serialization.SingleAttr.tosa").c_str(),
                          EnumNameAttribute(GetParam()));
 

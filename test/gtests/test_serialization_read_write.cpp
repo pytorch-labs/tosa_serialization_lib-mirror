@@ -20,7 +20,7 @@
 
 using namespace tosa;
 
-TEST(Serialization, ReadWrite)
+TEST(SerializationCpp, ReadWrite)
 {
     std::string source_dir           = CMAKE_SOURCE_DIR;
     std::filesystem::path read_path  = source_dir + "/test/examples/test_add_1x4x4x4_f32.tosa";

@@ -27,6 +27,10 @@ include(GoogleTest)
 add_executable(serialization_tests)
 
 target_sources(serialization_tests PRIVATE test_serialization_read_write.cpp)
+target_sources(serialization_tests PRIVATE test_serialization_npy.cpp)
+target_sources(serialization_tests PRIVATE test_u8_conversion.cpp)
+target_sources(serialization_tests PRIVATE test_single_attr.cpp)
+target_sources(serialization_tests PRIVATE test_serialization_unit.cpp)
 
 target_link_libraries(serialization_tests PRIVATE GTest::gtest_main tosa_serialization_lib)
 target_compile_definitions(serialization_tests PRIVATE CMAKE_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
