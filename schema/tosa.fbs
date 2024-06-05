@@ -129,6 +129,7 @@ enum Op:uint32 {
   DIV_SHAPE,
   COS,
   SIN,
+  CAST_STOCHASTIC,
 }
 
 union Attribute {
