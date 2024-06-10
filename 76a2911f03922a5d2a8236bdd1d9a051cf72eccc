@@ -1,0 +1,6 @@
+Code-Review+2: Tai Ly <tai.ly@arm.com>
+Submitted-by: Kaushik Varadharajan <kaushik.varadharajan@arm.com>
+Submitted-at: Mon, 10 Jun 2024 20:46:02 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/11678
+Project: tosa/serialization_lib
+Branch: refs/heads/main
