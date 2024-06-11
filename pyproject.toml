@@ -41,3 +41,8 @@ serializer = "python/serializer"
 
 [tool.setuptools_scm]
 version_scheme = "no-guess-dev"
+
+[tool.pytest.ini_options]
+testpaths = ["python/pytests"]
+addopts = ["-vv"]
+filterwarnings = ["ignore::DeprecationWarning"]
