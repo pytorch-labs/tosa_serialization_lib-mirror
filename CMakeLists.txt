@@ -109,3 +109,10 @@ install(EXPORT TosaSerializationLibTargets
   NAMESPACE tosa::
   DESTINATION ${TOSA_SERIALIZATION_LIB_CMAKE_DIR}
 )
+
+# Run the following script to generate tosa schema as a C/C++ header file
+find_package(Python COMPONENTS Interpreter REQUIRED)
+execute_process(
+    COMMAND ${Python_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/schema/convert_schema_to_header.py"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/schema"
+)

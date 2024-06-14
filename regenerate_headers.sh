@@ -34,4 +34,3 @@ popd > /dev/null
 pushd python/ > /dev/null
     ../third_party/flatbuffers/flatc --python ../schema/tosa.fbs
 popd > /dev/null
-

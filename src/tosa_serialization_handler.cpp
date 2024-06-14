@@ -15,6 +15,7 @@
 
 #include "tosa_serialization_handler.h"
 #include "half.hpp"
+#include "tosa_schema.h"
 
 #include <iostream>
 using namespace tosa;
@@ -232,6 +233,21 @@ tosa_err_t TosaSerializationHandler::LoadFileSchema(const char* schema_filename)
     }
     _schemaLoaded = true;
 
+    return TOSA_OK;
+}
+
+tosa_err_t TosaSerializationHandler::LoadTosaSchema()
+{
+    bool ok;
+    ok = _parser.Parse(TOSA_SCHEMA);
+
+    if (!ok)
+    {
+        printf("Error parsing ISA schema contents \n");
+        return TOSA_FILE_ERROR;
+    }
+
+    _schemaLoaded = true;
     return TOSA_OK;
 }
 
