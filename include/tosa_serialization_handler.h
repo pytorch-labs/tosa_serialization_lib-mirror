@@ -410,6 +410,7 @@ public:
     tosa_err_t SaveFileJson(const char* filename);
     tosa_err_t SaveFileTosaFlatbuffer(const char* filename);
     tosa_err_t LoadFileSchema(const char* schema_filename);
+    tosa_err_t LoadTosaSchema();
 
     // data format conversion. little-endian.
     static tosa_err_t ConvertBF16toU8(const std::vector<bf16>& in, std::vector<uint8_t>& out);
