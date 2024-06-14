@@ -1,0 +1,233 @@
+{
+    "version": {
+        "_major": 1,
+        "_minor": 1,
+        "_patch": 0,
+        "_draft": true
+    },
+    "regions": [
+        {
+            "name": "main",
+            "blocks": [
+                {
+                    "name": "main",
+                    "operators": [
+                        {
+                            "op": "CONST",
+                            "attribute_type": "NONE",
+                            "inputs": [],
+                            "outputs": [
+                                "const-1"
+                            ]
+                        },
+                        {
+                            "op": "CONST",
+                            "attribute_type": "NONE",
+                            "inputs": [],
+                            "outputs": [
+                                "const-2"
+                            ]
+                        },
+                        {
+                            "op": "CONV2D",
+                            "attribute_type": "ConvAttribute",
+                            "attribute": {
+                                "pad": [
+                                    2,
+                                    2,
+                                    2,
+                                    2
+                                ],
+                                "stride": [
+                                    1,
+                                    1
+                                ],
+                                "dilation": [
+                                    1,
+                                    1
+                                ],
+                                "input_zp": 0,
+                                "weight_zp": 0,
+                                "local_bound": false,
+                                "acc_type": "FP32"
+                            },
+                            "inputs": [
+                                "input-0",
+                                "const-1",
+                                "const-2"
+                            ],
+                            "outputs": [
+                                "result-0"
+                            ]
+                        }
+                    ],
+                    "tensors": [
+                        {
+                            "name": "const-1",
+                            "shape": [
+                                5,
+                                5
+                            ],
+                            "type": "FP32",
+                            "data": [
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                128,
+                                63
+                            ],
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "const-2",
+                            "shape": [
+                                3
+                            ],
+                            "type": "FP32",
+                            "data": [
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                128,
+                                63,
+                                0,
+                                0,
+                                128,
+                                63
+                            ],
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "input-0",
+                            "shape": [
+                                256,
+                                256,
+                                3
+                            ],
+                            "type": "FP32",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "result-0",
+                            "shape": [
+                                256,
+                                256,
+                                3
+                            ],
+                            "type": "FP32",
+                            "variable": false,
+                            "is_unranked": false
+                        }
+                    ],
+                    "inputs": [
+                        "input-0"
+                    ],
+                    "outputs": [
+                        "result-0"
+                    ]
+                }
+            ]
+        }
+    ]
+}
