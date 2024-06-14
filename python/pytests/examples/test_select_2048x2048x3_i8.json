@@ -1,0 +1,86 @@
+{
+    "version": {
+        "_major": 1,
+        "_minor": 1,
+        "_patch": 0,
+        "_draft": true
+    },
+    "regions": [
+        {
+            "name": "main",
+            "blocks": [
+                {
+                    "name": "main",
+                    "operators": [
+                        {
+                            "op": "SELECT",
+                            "attribute_type": "NONE",
+                            "inputs": [
+                                "input-0",
+                                "input-1",
+                                "input-2"
+                            ],
+                            "outputs": [
+                                "result-0"
+                            ]
+                        }
+                    ],
+                    "tensors": [
+                        {
+                            "name": "input-0",
+                            "shape": [
+                                2048,
+                                2048,
+                                1
+                            ],
+                            "type": "BOOL",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "input-1",
+                            "shape": [
+                                2048,
+                                2048,
+                                3
+                            ],
+                            "type": "INT8",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "input-2",
+                            "shape": [
+                                2048,
+                                2048,
+                                3
+                            ],
+                            "type": "INT8",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "result-0",
+                            "shape": [
+                                2048,
+                                2048,
+                                3
+                            ],
+                            "type": "INT8",
+                            "variable": false,
+                            "is_unranked": false
+                        }
+                    ],
+                    "inputs": [
+                        "input-0",
+                        "input-1",
+                        "input-2"
+                    ],
+                    "outputs": [
+                        "result-0"
+                    ]
+                }
+            ]
+        }
+    ]
+}
