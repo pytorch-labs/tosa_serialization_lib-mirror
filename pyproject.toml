@@ -44,5 +44,6 @@ version_scheme = "no-guess-dev"
 
 [tool.pytest.ini_options]
 testpaths = ["python/pytests"]
-addopts = ["-vv"]
+addopts = ["-q"]
+verbosity_assertions = 2
 filterwarnings = ["ignore::DeprecationWarning"]

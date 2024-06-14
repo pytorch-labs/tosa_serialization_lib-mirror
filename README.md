@@ -155,6 +155,13 @@ numpy file, (4) format and (5) usage.
         Return the numpy file pointer of this tensor if this is a constant
         tensor. Return `nullptr` if the tensor is not constant.
 
+# Tests
+
+The *Tosa Serialization Library*'s C++ and Python versions can be tested with GoogleTest and PyTest, respectively. After building, unit tests can be run with the following commands.
+- `ctest` from the project's build directory
+- `pytest` from the project's root directory
+    - `pytest --leave-tmp` preserves temporary files at `python/pytests/tmp/` for debugging.
+
 # License
 
 The *TOSA Serialization Library* is licensed under Apache-2.0.
