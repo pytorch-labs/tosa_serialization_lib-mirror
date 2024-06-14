@@ -222,6 +222,13 @@ The tensor class contains (1) data type, (2) shape, (3) properties and (4) data 
         `SetData()` sets the constant value for a constant tensor, or the initialization
         value for a variable tensor.
 
+# Tests
+
+The *Tosa Serialization Library*'s C++ and Python versions can be tested with GoogleTest and PyTest, respectively. After building, unit tests can be run with the following commands.
+- `ctest` from the project's build directory
+- `pytest` from the project's root directory
+    - `pytest --leave-tmp` preserves temporary files at `python/pytests/tmp/` for debugging.
+
 # License
 
 The *TOSA Serialization Library* is licensed under Apache-2.0.
