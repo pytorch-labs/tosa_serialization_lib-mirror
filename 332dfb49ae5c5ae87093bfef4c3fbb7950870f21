@@ -16,6 +16,24 @@
       "message": "I think this is getting sophisticated enough that you should start adding more comments on the py functions, for others to later maintain it.\nfrom the perspective of: if/when we add or remove (deprecate) fields in attributes, how should we make changes to these tests.",
       "revId": "332dfb49ae5c5ae87093bfef4c3fbb7950870f21",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c144b6_32d456d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000787
+      },
+      "writtenOn": "2024-06-18T17:32:47Z",
+      "side": 1,
+      "message": "maybe the answer is: no need to update when new operators are added or when attribute fields changed because it is auto-extracted from the tosa.schema",
+      "parentUuid": "f80b477c_5a08dbb4",
+      "revId": "332dfb49ae5c5ae87093bfef4c3fbb7950870f21",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
   ]
 }
