@@ -34,6 +34,24 @@
       "parentUuid": "f80b477c_5a08dbb4",
       "revId": "332dfb49ae5c5ae87093bfef4c3fbb7950870f21",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28fc36f1_2ebe735b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001036
+      },
+      "writtenOn": "2024-06-18T17:42:52Z",
+      "side": 1,
+      "message": "Currently the tests take their info from the flatbuffer schema itself, or from the code that is generated from the schema. The only things you would need to change in the tests are:\n- The way I\u0027m reading the schema converts enums to their base type (UInt), so if you added an attribute with an enum value, you would have to rewrite it into test_single_attr.py. If you haven\u0027t done this yet, the test case runs and errors with a message describing what to do.\n- If you added a new datatype, test_single_tensor.py would create the new test cases, but wouldn\u0027t know how to generate data, and again there is an error message.\n\nAlso, the attribute tests already check the schema for deprecation and ignore those arguments.",
+      "parentUuid": "d6c144b6_32d456d1",
+      "revId": "332dfb49ae5c5ae87093bfef4c3fbb7950870f21",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
   ]
 }
