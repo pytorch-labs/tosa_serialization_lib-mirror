@@ -370,6 +370,14 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.bools.append((a.AddLocalBound, local_bound))
 
+    def RandUniformAttribute(self, use_seed):
+        from tosa import RandUniformAttribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RandUniformAttribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddUseSeed, use_seed))
+
 
 class TosaSerializerTensor:
     def __init__(

@@ -130,6 +130,7 @@ enum Op:uint32 {
   COS,
   SIN,
   CAST_STOCHASTIC,
+  RAND_UNIFORM,
 }
 
 union Attribute {
@@ -153,6 +154,7 @@ union Attribute {
   CustomAttribute,
   FFTAttribute,
   RFFTAttribute,
+  RandUniformAttribute,
 }
 
 table PoolAttribute {
@@ -267,6 +269,10 @@ table FFTAttribute {
 
 table RFFTAttribute {
   local_bound: bool;
+}
+
+table RandUniformAttribute {
+  use_seed: bool;
 }
 
 table Version {

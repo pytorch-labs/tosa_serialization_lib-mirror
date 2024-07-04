@@ -75,6 +75,9 @@ struct FFTAttributeBuilder;
 struct RFFTAttribute;
 struct RFFTAttributeBuilder;
 
+struct RandUniformAttribute;
+struct RandUniformAttributeBuilder;
+
 struct Version;
 struct VersionBuilder;
 
@@ -278,11 +281,12 @@ enum Op : uint32_t {
   Op_COS = 79,
   Op_SIN = 80,
   Op_CAST_STOCHASTIC = 81,
+  Op_RAND_UNIFORM = 82,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_CAST_STOCHASTIC
+  Op_MAX = Op_RAND_UNIFORM
 };
 
-inline const Op (&EnumValuesOp())[82] {
+inline const Op (&EnumValuesOp())[83] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -365,13 +369,14 @@ inline const Op (&EnumValuesOp())[82] {
     Op_DIV_SHAPE,
     Op_COS,
     Op_SIN,
-    Op_CAST_STOCHASTIC
+    Op_CAST_STOCHASTIC,
+    Op_RAND_UNIFORM
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[83] = {
+  static const char * const names[84] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -454,13 +459,14 @@ inline const char * const *EnumNamesOp() {
     "COS",
     "SIN",
     "CAST_STOCHASTIC",
+    "RAND_UNIFORM",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_CAST_STOCHASTIC)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RAND_UNIFORM)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
@@ -487,11 +493,12 @@ enum Attribute : uint8_t {
   Attribute_CustomAttribute = 18,
   Attribute_FFTAttribute = 19,
   Attribute_RFFTAttribute = 20,
+  Attribute_RandUniformAttribute = 21,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_RFFTAttribute
+  Attribute_MAX = Attribute_RandUniformAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[21] {
+inline const Attribute (&EnumValuesAttribute())[22] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -513,13 +520,14 @@ inline const Attribute (&EnumValuesAttribute())[21] {
     Attribute_NegateAttribute,
     Attribute_CustomAttribute,
     Attribute_FFTAttribute,
-    Attribute_RFFTAttribute
+    Attribute_RFFTAttribute,
+    Attribute_RandUniformAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[22] = {
+  static const char * const names[23] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -541,13 +549,14 @@ inline const char * const *EnumNamesAttribute() {
     "CustomAttribute",
     "FFTAttribute",
     "RFFTAttribute",
+    "RandUniformAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_RFFTAttribute)) return "";
+  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_RandUniformAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -634,6 +643,10 @@ template<> struct AttributeTraits<tosa::FFTAttribute> {
 
 template<> struct AttributeTraits<tosa::RFFTAttribute> {
   static const Attribute enum_value = Attribute_RFFTAttribute;
+};
+
+template<> struct AttributeTraits<tosa::RandUniformAttribute> {
+  static const Attribute enum_value = Attribute_RandUniformAttribute;
 };
 
 bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type);
@@ -1934,6 +1947,47 @@ inline ::flatbuffers::Offset<RFFTAttribute> CreateRFFTAttribute(
   return builder_.Finish();
 }
 
+struct RandUniformAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RandUniformAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_USE_SEED = 4
+  };
+  bool use_seed() const {
+    return GetField<uint8_t>(VT_USE_SEED, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_USE_SEED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RandUniformAttributeBuilder {
+  typedef RandUniformAttribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_use_seed(bool use_seed) {
+    fbb_.AddElement<uint8_t>(RandUniformAttribute::VT_USE_SEED, static_cast<uint8_t>(use_seed), 0);
+  }
+  explicit RandUniformAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RandUniformAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RandUniformAttribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RandUniformAttribute> CreateRandUniformAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool use_seed = false) {
+  RandUniformAttributeBuilder builder_(_fbb);
+  builder_.add_use_seed(use_seed);
+  return builder_.Finish();
+}
+
 struct Version FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef VersionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2214,6 +2268,9 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const tosa::RFFTAttribute *attribute_as_RFFTAttribute() const {
     return attribute_type() == tosa::Attribute_RFFTAttribute ? static_cast<const tosa::RFFTAttribute *>(attribute()) : nullptr;
   }
+  const tosa::RandUniformAttribute *attribute_as_RandUniformAttribute() const {
+    return attribute_type() == tosa::Attribute_RandUniformAttribute ? static_cast<const tosa::RandUniformAttribute *>(attribute()) : nullptr;
+  }
   const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
   }
@@ -2314,6 +2371,10 @@ template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFT
 
 template<> inline const tosa::RFFTAttribute *TosaOperator::attribute_as<tosa::RFFTAttribute>() const {
   return attribute_as_RFFTAttribute();
+}
+
+template<> inline const tosa::RandUniformAttribute *TosaOperator::attribute_as<tosa::RandUniformAttribute>() const {
+  return attribute_as_RandUniformAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2706,6 +2767,10 @@ inline bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, 
     }
     case Attribute_RFFTAttribute: {
       auto ptr = reinterpret_cast<const tosa::RFFTAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RandUniformAttribute: {
+      auto ptr = reinterpret_cast<const tosa::RandUniformAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

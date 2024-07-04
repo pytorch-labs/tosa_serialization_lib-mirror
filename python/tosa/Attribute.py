@@ -24,3 +24,4 @@ class Attribute(object):
     CustomAttribute = 18
     FFTAttribute = 19
     RFFTAttribute = 20
+    RandUniformAttribute = 21

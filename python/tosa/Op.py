@@ -85,3 +85,4 @@ class Op(object):
     COS = 79
     SIN = 80
     CAST_STOCHASTIC = 81
+    RAND_UNIFORM = 82

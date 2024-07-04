@@ -116,3 +116,6 @@ DEF_ATTRIBUTE(FFT, 2,
 
 DEF_ATTRIBUTE(RFFT, 1,
               bool, S, local_bound)
+
+DEF_ATTRIBUTE(RandUniform, 1,
+              bool, S, use_seed)
