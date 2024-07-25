@@ -36,6 +36,38 @@ add_library(tosa_serialization_lib
   src/numpy_utils.cpp
 )
 
+set(
+  PUBLIC_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/third_party/half/include
+)
+
+target_include_directories(
+  tosa_serialization_lib
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+  PUBLIC
+    "$<BUILD_INTERFACE:${PUBLIC_INCLUDE_DIRS}>"
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+set(
+  PUBLIC_HEADERS
+    include/attribute.h
+    include/attribute.def
+    include/cfloat.h
+    include/numpy_utils.h
+    include/tosa_generated.h
+    include/tosa_serialization_handler.h
+)
+
+set_target_properties(
+  tosa_serialization_lib
+  PROPERTIES
+    PUBLIC_HEADER "${PUBLIC_HEADERS}"
+    INSTALL_RPATH "\$ORIGIN/../lib"
+)
+
 # If flatbuffers is built externally just link it
 if (TARGET flatbuffers)
   target_link_libraries(tosa_serialization_lib PRIVATE flatbuffers)
@@ -72,18 +104,6 @@ else()
   endif()
 endif()
 
-set(public_headers)
-list(APPEND public_headers
-     include/attribute.h
-     include/attribute.def
-     include/cfloat.h
-     include/numpy_utils.h
-     include/tosa_generated.h
-     include/tosa_serialization_handler.h
-)
-
-set_target_properties(tosa_serialization_lib PROPERTIES PUBLIC_HEADER "${public_headers}")
-
 # Optionally build test executables.
 if (BUILD_TESTS)
     add_executable(serialization_npy_test
@@ -102,12 +122,16 @@ set(TOSA_SERIALIZATION_LIB_CMAKE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/tosa_seriali
 # Follow GNU packaging norms for installation directory structure.
 include(GNUInstallDirs)
 install(
-  TARGETS tosa_serialization_lib EXPORT TosaSerializationLibTargets
-  PUBLIC_HEADER
-  ARCHIVE
+  TARGETS tosa_serialization_lib
+  EXPORT TosaSerializationLibTargets
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tosa_serialization_lib
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-install(EXPORT TosaSerializationLibTargets
+install(
+  EXPORT TosaSerializationLibTargets
   FILE TosaSerializationLibTargets.cmake
   NAMESPACE tosa::
   DESTINATION ${TOSA_SERIALIZATION_LIB_CMAKE_DIR}
