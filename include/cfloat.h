@@ -14,6 +14,7 @@
 
 #ifndef CT_CFLOAT_H
 #define CT_CFLOAT_H
+#include "cfloat_forward.h"
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
@@ -25,16 +26,6 @@
 
 namespace ct
 {
-/// \brief Bitfield specification of the features provided of a specified
-/// floating point type.
-enum class FloatFeatures
-{
-    None       = 0x0,
-    HasNaN     = 0x1,    ///< The type can represent NaN values
-    HasInf     = 0x2,    ///< The type can represent Infinity
-    HasDenorms = 0x4,    ///< The type can represent denormal/subnormal values
-};
-
 constexpr FloatFeatures operator&(const FloatFeatures& a, const FloatFeatures& b)
 {
     using T = std::underlying_type_t<FloatFeatures>;
@@ -159,6 +150,16 @@ enum class OverflowMode
     Overflow     ///< Map to infinity (if available) or NaN
 };
 
+/// \brief Subnormal/denormal handing
+///
+/// Determine the behaviour for values which are subnormals/denormals in the
+/// destination type.
+enum class SubnormalMode
+{
+    Retain,
+    FlushToZero
+};
+
 /// Functor for casting cfloat_advanced
 ///
 /// Specific casting behavior can be specified when constructing the
@@ -171,7 +172,8 @@ enum class OverflowMode
 template <class in_type,
           class out_type,
           OverflowMode overflow_mode =
-              (out_type::has_nan || out_type::has_inf) ? OverflowMode::Overflow : OverflowMode::Saturate>
+              (out_type::has_nan || out_type::has_inf) ? OverflowMode::Overflow : OverflowMode::Saturate,
+          SubnormalMode subnormal_mode = SubnormalMode::Retain>
 class cfloat_cast
 {
     constexpr static FloatFeatures in_feats  = in_type::features;
@@ -296,8 +298,10 @@ public:
                 constexpr bool inf_and_nan     = out_type::has_nan && out_type::has_inf;
                 constexpr int64_t max_exp_bits = (INT64_C(1) << out_exp_bits) - (inf_and_nan ? 2 : 1);
                 constexpr uint64_t max_significand =
-                    ((UINT64_C(1) << out_type::n_significand_bits) - (inf_and_nan ? 1 : 2))
-                    << (64 - out_type::n_significand_bits);
+                    (out_type::n_significand_bits > 0)
+                        ? ((UINT64_C(1) << out_type::n_significand_bits) - (inf_and_nan ? 1 : 2))
+                              << (64 - out_type::n_significand_bits)
+                        : 0;
 
                 // If the exponent is strictly larger than the largest
                 // possible, or the exponent is equal to the largest
@@ -314,31 +318,47 @@ public:
                 }
             }
 
-            // Align the significand for the output type
-            uint32_t shift                = 64 - out_type::n_significand_bits;
-            const bool other_is_subnormal = new_exponent_bits <= 0;
-            if (other_is_subnormal)
+            // Handle output subnormals; either reinsert the leading `1` and
+            // align the significand correctly; or flush-to-zero.
+            if (new_exponent_bits <= 0)
             {
-                shift += 1 - new_exponent_bits;
+                if constexpr (subnormal_mode == SubnormalMode::FlushToZero)
+                {
+                    // Flush to zero
+                    new_significand = 0;
+                }
+                else
+                {
+                    // Shift to handle the non-positive exponent, and insert
+                    // a leading one in the appropriate bit.
+                    new_significand =
+                        (UINT64_C(1) << (63 + new_exponent_bits)) | (new_significand >> (1 - new_exponent_bits));
+                }
+
+                // Set the new exponent bits to zero to represent a
+                // subnormal.
                 new_exponent_bits = 0;
             }
 
-            const uint64_t shift_out = shift == 64 ? new_significand : new_significand & ((UINT64_C(1) << shift) - 1);
-            new_significand          = shift == 64 ? 0 : new_significand >> shift;
+            // Align the significand for the output type
+            uint32_t shift = 64 - out_type::n_significand_bits;
 
-            // Reinsert the most-significant-one if this is a subnormal
-            // in the output type.
-            new_significand |= (other_is_subnormal ? UINT64_C(1) : 0) << (64 - shift);
+            // Switch to a new representation of the significand, made
+            // up of: (new_significand [aligned to LSB]), n_zeros,
+            // rest_of_significand [aligned to MSB]).
+            const uint64_t n_zeros             = shift <= 64 ? 0 : shift - 64;
+            const uint64_t rest_of_significand = shift >= 64 ? new_significand : new_significand << (64 - shift);
+            new_significand                    = shift >= 64 ? 0 : new_significand >> shift;
 
-            // Apply rounding based on the bits shifted out of the
-            // significand
-            const uint64_t shift_half = UINT64_C(1) << (shift - 1);
-            if (shift_out > shift_half || (shift_out == shift_half && (new_significand & 1)))
+            // Apply rounding based on values shifted out of the significand
+            constexpr uint64_t msb64 = UINT64_C(1) << 63;
+            if (n_zeros == 0 &&
+                (rest_of_significand > msb64 || (rest_of_significand == msb64 && (new_significand & 1))))
             {
                 new_significand += 1;
 
-                // Handle the case that the significand overflowed due
-                // to rounding
+                // Handle the case that the significand overflowed due to
+                // rounding
                 constexpr uint64_t max_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 if (new_significand > max_significand)
                 {
@@ -348,9 +368,9 @@ public:
             }
 
             // Saturate or overflow if the value is larger than can be
-            // represented in the output type. This can only occur if the
-            // size of the exponent of the new type is not greater than the
-            // exponent of the old type.
+            // represented in the output type. This can only occur if
+            // the size of the exponent of the new type is not greater
+            // than the exponent of the old type.
             if constexpr (out_exp_bits <= in_exp_bits)
             {
                 constexpr int64_t inf_exp_bits = (INT64_C(1) << out_exp_bits) - 1;
