@@ -140,6 +140,30 @@ inline float from_bits(const int32_t& i)
 
 }    // namespace float_support
 
+/// \brief Rounding mode for floating-point casts
+enum class RoundMode
+{
+    // Roundings to nearest
+
+    /// \brief Round to the nearest value, with ties going to the nearest
+    /// value with an even least significant digit.
+    TiesToEven,
+
+    /// \brief Round to the nearest value, with ties going to the nearest
+    /// value with an odd least significant digit.
+    TiesToOdd,
+
+    ///\brief Round to the nearest value, with ties to the nearest value
+    /// with larger absolute magnitude.
+    TiesToAway,
+
+    // Directed roundings
+
+    TowardZero,                ///< Truncate
+    TowardPositiveInfinity,    ///< Round up/ceiling
+    TowardNegativeInfinity,    ///< Round down/floor
+};
+
 /// \brief Overflow mode for narrowing floating-point casts.
 ///
 /// Determine the behaviour for values which cannot be represented by the
@@ -160,6 +184,15 @@ enum class SubnormalMode
     FlushToZero
 };
 
+namespace float_support
+{
+constexpr inline bool is_round_to_nearest(const RoundMode& rm)
+{
+    return (rm == RoundMode::TiesToEven || rm == RoundMode::TiesToOdd || rm == RoundMode::TiesToAway);
+}
+
+}    // namespace float_support
+
 /// Functor for casting cfloat_advanced
 ///
 /// Specific casting behavior can be specified when constructing the
@@ -171,6 +204,7 @@ enum class SubnormalMode
 /// or NaN representations - this will result in a compilation error.
 template <class in_type,
           class out_type,
+          RoundMode round_mode = RoundMode::TiesToEven,
           OverflowMode overflow_mode =
               (out_type::has_nan || out_type::has_inf) ? OverflowMode::Overflow : OverflowMode::Saturate,
           SubnormalMode subnormal_mode = SubnormalMode::Retain>
@@ -327,6 +361,10 @@ public:
                     // Flush to zero
                     new_significand = 0;
                 }
+                else if (new_exponent_bits < -63)
+                {
+                    new_significand = 0;
+                }
                 else
                 {
                     // Shift to handle the non-positive exponent, and insert
@@ -341,24 +379,55 @@ public:
             }
 
             // Align the significand for the output type
-            uint32_t shift = 64 - out_type::n_significand_bits;
-
-            // Switch to a new representation of the significand, made
-            // up of: (new_significand [aligned to LSB]), n_zeros,
-            // rest_of_significand [aligned to MSB]).
-            const uint64_t n_zeros             = shift <= 64 ? 0 : shift - 64;
-            const uint64_t rest_of_significand = shift >= 64 ? new_significand : new_significand << (64 - shift);
-            new_significand                    = shift >= 64 ? 0 : new_significand >> shift;
+            // Switch to a new representation of the significand:
+            //  * new_significand [aligned to LSB])
+            //  * rest_of_significand [aligned to MSB]
+            constexpr uint32_t realign_shift   = 64 - out_type::n_significand_bits;
+            const uint64_t rest_of_significand = new_significand << (64 - realign_shift);
+            new_significand                    = new_significand >> realign_shift;
 
             // Apply rounding based on values shifted out of the significand
-            constexpr uint64_t msb64 = UINT64_C(1) << 63;
-            if (n_zeros == 0 &&
-                (rest_of_significand > msb64 || (rest_of_significand == msb64 && (new_significand & 1))))
+            if (rest_of_significand && (round_mode != RoundMode::TowardZero))
             {
-                new_significand += 1;
+                if constexpr (float_support::is_round_to_nearest(round_mode))
+                {
+                    // Increment the significand if:
+                    //  * the shifted out bits are greater than half-way
+                    //    between two representable numbers
+                    //  * the shifted out bits are exactly half-way AND
+                    //    either:
+                    //    * the rounding mode is ties away from zero
+                    //    * the rounding mode is ties to even AND the
+                    //      significand is odd
+                    //    * the rounding mode is ties to odd AND the
+                    //      significand is even
+                    constexpr uint64_t tie = UINT64_C(1) << 63;
+                    if (rest_of_significand > tie || (rest_of_significand == tie &&
+                                                      (round_mode == RoundMode::TiesToAway ||
+                                                       ((new_significand & 1) && round_mode == RoundMode::TiesToEven) ||
+                                                       (!(new_significand & 1) && round_mode == RoundMode::TiesToOdd))))
+                    {
+                        new_significand += 1;
+                    }
+                }
+                else if constexpr (round_mode == RoundMode::TowardPositiveInfinity)
+                {
+                    // Truncate negative values, round up positive values
+                    if (!sign_bit)
+                    {
+                        new_significand += 1;
+                    }
+                }
+                else if constexpr (round_mode == RoundMode::TowardNegativeInfinity)
+                {
+                    // Truncate positive values, round up negative values
+                    if (sign_bit)
+                    {
+                        new_significand += 1;
+                    }
+                }
 
-                // Handle the case that the significand overflowed due to
-                // rounding
+                // Check if rounding caused the significand to overflow
                 constexpr uint64_t max_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 if (new_significand > max_significand)
                 {
