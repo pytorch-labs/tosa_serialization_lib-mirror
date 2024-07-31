@@ -774,6 +774,15 @@ inline constexpr int max_exponent10_v = max_exponent10<e>::value;
 
 }    // namespace float_support
 
+// Typedef some commonly used floating point types
+using binary32 = ct::cfloat_advanced<32, 8, ct::float_support::AllFeats>;
+using float32  = binary32;
+using bfloat16 = ct::cfloat_advanced<16, 8, ct::float_support::AllFeats>;
+using binary16 = ct::cfloat_advanced<16, 5, ct::float_support::AllFeats>;
+using float16  = binary16;
+using fp8_e4m3 = ct::cfloat_advanced<8, 4, ct::FloatFeatures::HasNaN | ct::FloatFeatures::HasDenorms>;
+using fp8_e5m2 = ct::cfloat_advanced<8, 5, ct::float_support::AllFeats>;
+
 }    // namespace ct
 
 namespace std
