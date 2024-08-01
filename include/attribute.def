@@ -97,10 +97,6 @@ DEF_ATTRIBUTE(MatMul, 2,
               int32_t, S, a_zp,
               int32_t, S, b_zp)
 
-DEF_ATTRIBUTE(FullyConnected, 2,
-              int32_t, S, input_zp,
-              int32_t, S, weight_zp)
-
 DEF_ATTRIBUTE(Negate, 2,
               int32_t, S, input1_zp,
               int32_t, S, output_zp)

@@ -37,6 +37,11 @@ public:
 
 TEST_P(SingleAttr, )
 {
+    if (!attrs.count(GetParam()))
+    {
+        // skip attributes that are not in attribute.def
+        GTEST_SKIP();
+    }
     tosa_err_t err;
     auto region = new TosaSerializationRegion(
         "main_region",

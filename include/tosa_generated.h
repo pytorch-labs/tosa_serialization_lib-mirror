@@ -1677,19 +1677,10 @@ inline ::flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
 struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef FullyConnectedAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INPUT_ZP = 4,
-    VT_WEIGHT_ZP = 6
+
   };
-  int32_t input_zp() const {
-    return GetField<int32_t>(VT_INPUT_ZP, 0);
-  }
-  int32_t weight_zp() const {
-    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
-  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
-           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1698,12 +1689,6 @@ struct FullyConnectedAttributeBuilder {
   typedef FullyConnectedAttribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_INPUT_ZP, input_zp, 0);
-  }
-  void add_weight_zp(int32_t weight_zp) {
-    fbb_.AddElement<int32_t>(FullyConnectedAttribute::VT_WEIGHT_ZP, weight_zp, 0);
-  }
   explicit FullyConnectedAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1716,12 +1701,8 @@ struct FullyConnectedAttributeBuilder {
 };
 
 inline ::flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t input_zp = 0,
-    int32_t weight_zp = 0) {
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
   FullyConnectedAttributeBuilder builder_(_fbb);
-  builder_.add_weight_zp(weight_zp);
-  builder_.add_input_zp(input_zp);
   return builder_.Finish();
 }
 
