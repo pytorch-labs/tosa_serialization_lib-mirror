@@ -54,7 +54,7 @@ enum Op:uint32 {
   CONV2D,
   CONV3D,
   DEPTHWISE_CONV2D,
-  FULLY_CONNECTED,
+  FULLY_CONNECTED (deprecated),
   MATMUL,
   MAX_POOL2D,
   TRANSPOSE_CONV2D,
@@ -147,7 +147,7 @@ union Attribute {
   TransposeAttribute,
   TableAttribute,
   MatMulAttribute,
-  FullyConnectedAttribute,
+  FullyConnectedAttribute (deprecated),
   NegateAttribute,
   CustomAttribute,
   FFTAttribute,
@@ -244,8 +244,8 @@ table MatMulAttribute {
 }
 
 table FullyConnectedAttribute {
-  input_zp: int32;
-  weight_zp: int32;
+  input_zp: int32 (deprecated);
+  weight_zp: int32 (deprecated);
 }
 
 table NegateAttribute {

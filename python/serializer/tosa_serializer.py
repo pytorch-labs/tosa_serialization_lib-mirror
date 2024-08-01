@@ -335,14 +335,11 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddAZp, A_zp))
         self.ints.append((a.AddBZp, B_zp))
 
-    def FullyConnectedAttribute(self, input_zp, weight_zp):
+    def FullyConnectedAttribute(self):
         from tosa import FullyConnectedAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().FullyConnectedAttribute
         self.optFcns = (a.Start, a.End)
-
-        self.ints.append((a.AddInputZp, input_zp))
-        self.ints.append((a.AddWeightZp, weight_zp))
 
     def NegateAttribute(self, input1_zp, output_zp):
         from tosa import NegateAttribute as a, Attribute
