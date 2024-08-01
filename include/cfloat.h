@@ -269,21 +269,33 @@ public:
                 // different values of NaN (excepting significand = 0,
                 // which is reserved for infinity). This makes it possible
                 // to encode both quiet and signalling varieties.
-                // Generally, the LSB of the significand represents "not
+                // Generally, the MSB of the significand represents "not
                 // quiet".  However, when there is only 1 NaN encoding
                 // (which is generally the case when infinity is not
                 // supported), then there cannot be separate quiet and
                 // signalling varieties of NaN.
                 if constexpr (out_type::has_inf)
                 {
-                    // Copy across the `not_quiet bit`; set the LSB.
-                    // Don't attempt to copy across any of the rest of
-                    // the payload.
-                    new_significand = 0x1 | (((in.significand() >> (in_type::n_significand_bits - 1)) & 1)
-                                             << out_type::n_significand_bits);
+                    // Set the `not_quiet` bit.
+                    new_significand = UINT64_C(1) << (out_type::n_significand_bits - 1);
+                    if constexpr (in_type::n_significand_bits > 0)
+                    {
+                        // Copy across the `not_quiet` bit from the other
+                        // type; but not the payload.
+                        new_significand &=
+                            (static_cast<uint64_t>(in.significand()) >> (in_type::n_significand_bits - 1))
+                            << (out_type::n_significand_bits - 1);
+                    }
+                    // Also set the LSB to ensure that we've encoded a NaN
+                    // of some variety (and not infinity). This could be
+                    // conditional on the `not_quiet` bit, but
+                    // unconditionally setting the LSB is fine.
+                    new_significand |= 0x1;
                 }
                 else
                 {
+                    // If there is no representation of infinity then we
+                    // assume a single encoding of NaN, with all bits set.
                     new_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 }
             }
@@ -309,8 +321,8 @@ public:
                 constexpr int64_t exponent_rebias = out_type::exponent_bias - in_type::exponent_bias;
                 new_exponent_bits                 = std::max(this_exponent_bits + exponent_rebias, exponent_rebias + 1);
             }
-            new_significand = in.significand() << (64 - in_type::n_significand_bits);
-
+            if constexpr (in_type::n_significand_bits > 0)
+                new_significand = in.significand() << (64 - in_type::n_significand_bits);
             // Normalise subnormals
             if (this_exponent_bits == 0)
             {
@@ -384,7 +396,15 @@ public:
             //  * rest_of_significand [aligned to MSB]
             constexpr uint32_t realign_shift   = 64 - out_type::n_significand_bits;
             const uint64_t rest_of_significand = new_significand << (64 - realign_shift);
-            new_significand                    = new_significand >> realign_shift;
+            if constexpr (realign_shift >= 64)
+            {
+                // This can occur for FP8_E8M0 types
+                new_significand = 0;
+            }
+            else
+            {
+                new_significand = new_significand >> realign_shift;
+            }
 
             // Apply rounding based on values shifted out of the significand
             if (rest_of_significand && (round_mode != RoundMode::TowardZero))

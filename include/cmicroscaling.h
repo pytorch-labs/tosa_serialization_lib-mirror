@@ -66,7 +66,36 @@ public:
 
     inline operator float() const
     {
-        return binary32::from_bits(false, m_data, (m_data != 0 && m_data != 0xff) ? 0 : 1 << 22);
+        return cfloat_cast<fp8_e8m0, binary32>()(*this);
+    }
+
+    constexpr inline bool is_nan() const
+    {
+        return m_data == 0xff;
+    }
+    constexpr inline bool is_infinity() const
+    {
+        return false;
+    }
+    constexpr inline bool is_zero() const
+    {
+        return false;
+    }
+    constexpr inline bool sign() const
+    {
+        return false;
+    }
+    constexpr inline uint8_t exponent_bits() const
+    {
+        return m_data;
+    }
+    constexpr inline int16_t exponent() const
+    {
+        return static_cast<int16_t>(m_data) - 127;
+    }
+    constexpr inline uint8_t significand() const
+    {
+        return 0;
     }
 
     constexpr inline fp8_e8m0& operator=(const fp8_e8m0& other)
@@ -89,6 +118,11 @@ public:
     constexpr inline bool operator!=(const fp8_e8m0& o) const
     {
         return m_data != o.m_data;
+    }
+
+    constexpr inline uint8_t bits() const
+    {
+        return m_data;
     }
 
 private:
@@ -231,6 +265,11 @@ public:
     constexpr inline bool operator!=(const mxint8& o) const
     {
         return m_data != o.m_data;
+    }
+
+    constexpr inline uint8_t bits() const
+    {
+        return static_cast<uint8_t>(m_data);
     }
 
 private:
