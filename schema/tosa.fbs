@@ -147,7 +147,7 @@ union Attribute {
   CondIfAttribute,
   WhileLoopAttribute,
   TransposeAttribute,
-  TableAttribute,
+  TableAttribute (deprecated),
   MatMulAttribute,
   FullyConnectedAttribute (deprecated),
   NegateAttribute,
@@ -238,7 +238,7 @@ table TransposeAttribute {
 }
 
 table TableAttribute {
-  table: [int16];
+  table: [int16] (deprecated);
 }
 
 table MatMulAttribute {

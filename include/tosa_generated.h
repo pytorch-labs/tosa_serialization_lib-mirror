@@ -1575,15 +1575,10 @@ inline ::flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
 struct TableAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef TableAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_TABLE = 4
+
   };
-  const ::flatbuffers::Vector<int16_t> *table() const {
-    return GetPointer<const ::flatbuffers::Vector<int16_t> *>(VT_TABLE);
-  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_TABLE) &&
-           verifier.VerifyVector(table()) &&
            verifier.EndTable();
   }
 };
@@ -1592,9 +1587,6 @@ struct TableAttributeBuilder {
   typedef TableAttribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_table(::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> table) {
-    fbb_.AddOffset(TableAttribute::VT_TABLE, table);
-  }
   explicit TableAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1607,20 +1599,9 @@ struct TableAttributeBuilder {
 };
 
 inline ::flatbuffers::Offset<TableAttribute> CreateTableAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int16_t>> table = 0) {
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
   TableAttributeBuilder builder_(_fbb);
-  builder_.add_table(table);
   return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<TableAttribute> CreateTableAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int16_t> *table = nullptr) {
-  auto table__ = table ? _fbb.CreateVector<int16_t>(*table) : 0;
-  return tosa::CreateTableAttribute(
-      _fbb,
-      table__);
 }
 
 struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -90,9 +90,6 @@ DEF_ATTRIBUTE(WhileLoop, 2,
 DEF_ATTRIBUTE(Transpose, 1,
               int32_t, V, perms)
 
-DEF_ATTRIBUTE(Table, 1,
-              int16_t, V, table)
-
 DEF_ATTRIBUTE(MatMul, 2,
               int32_t, S, a_zp,
               int32_t, S, b_zp)
