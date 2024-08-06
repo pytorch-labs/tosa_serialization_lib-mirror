@@ -55,9 +55,11 @@ set(
   PUBLIC_HEADERS
     include/attribute.h
     include/attribute.def
+    include/cfloat_forward.h
     include/cfloat.h
     include/numpy_utils.h
     include/tosa_generated.h
+    include/tosa_schema.h
     include/tosa_serialization_handler.h
 )
 

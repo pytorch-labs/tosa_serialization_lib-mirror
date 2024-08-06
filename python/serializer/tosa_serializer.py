@@ -318,13 +318,11 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.intvecs.append((a.AddPerms, perms))
 
-    def TableAttribute(self, table):
+    def TableAttribute(self):
         from tosa import TableAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().TableAttribute
         self.optFcns = (a.Start, a.End)
-
-        self.int16vecs.append((a.AddTable, table))
 
     def MatMulAttribute(self, A_zp, B_zp):
         from tosa import MatMulAttribute as a, Attribute
