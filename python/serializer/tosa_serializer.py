@@ -17,7 +17,7 @@ import serializer.tosa_serializer as ts
 import json
 import flatbuffers
 import numpy as np
-from ml_dtypes import bfloat16, float8_e4m3fn, float8_e5m2
+from ml_dtypes import bfloat16, float8_e4m3fn
 from enum import IntEnum, unique
 from tosa import (
     TosaGraph,
@@ -393,7 +393,9 @@ class TosaSerializerTensor:
         elif dtype == DType.FP8E4M3:
             fntype = float8_e4m3fn
         elif dtype == DType.FP8E5M2:
-            fntype = float8_e5m2
+            # We should receive FP8E5M2 arrays as uint8 to mitigate a bug
+            # in ml_dtypes serialisation.
+            fntype = np.uint8
         elif dtype == DType.FP16:
             fntype = np.float16
         else:
@@ -949,7 +951,9 @@ class TosaSerializer:
                 u8_data.append(val_f8)
         elif dtype == DType.FP8E5M2:
             for val in data:
-                val_f8 = np.array(val).astype(float8_e5m2).view(np.uint8)
+                # Numpy does not support serialising fp8e5m2 values, so usually
+                # the array we get for serialisation is a uint8 array
+                val_f8 = np.array(val).astype(np.uint8).view(np.uint8)
                 u8_data.append(val_f8)
         elif dtype == TosaDType.DType:
             # Serialize DType enum data as uint8 bytes
