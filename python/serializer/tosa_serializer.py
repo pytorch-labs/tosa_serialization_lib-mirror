@@ -922,7 +922,7 @@ class TosaSerializer:
                 u8_data.extend([b0, b1, b2, b3])
         elif dtype == DType.INT48:
             for val in data:
-                val_u64 = np.uint64(val)
+                val_u64 = np.array(val).astype(np.uint64)
                 b0 = val_u64 & ByteMask
                 b1 = (val_u64 >> np.uint64(8)) & ByteMask
                 b2 = (val_u64 >> np.uint64(16)) & ByteMask
@@ -932,7 +932,7 @@ class TosaSerializer:
                 u8_data.extend([b0, b1, b2, b3, b4, b5])
         elif dtype == DType.SHAPE:
             for val in data:
-                val_u64 = np.uint64(val)
+                val_u64 = np.array(val).astype(np.uint64)
                 b0 = val_u64 & ByteMask
                 b1 = (val_u64 >> np.uint64(8)) & ByteMask
                 b2 = (val_u64 >> np.uint64(16)) & ByteMask
