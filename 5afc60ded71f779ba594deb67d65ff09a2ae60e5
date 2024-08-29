@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a24de596_34693598",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000293
+      },
+      "writtenOn": "2024-08-29T16:47:06Z",
+      "side": 1,
+      "message": "Is there a way we can expand the python serialization tests to test the functionality?",
+      "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    }
+  ]
+}
