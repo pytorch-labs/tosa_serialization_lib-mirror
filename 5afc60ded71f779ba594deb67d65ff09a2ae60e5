@@ -16,6 +16,41 @@
       "message": "Is there a way we can expand the python serialization tests to test the functionality?",
       "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a1b217_0fb553e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000688
+      },
+      "writtenOn": "2024-08-29T16:57:13Z",
+      "side": 1,
+      "message": "I think so. But the current gtests (https://review.mlplatform.org/plugins/gitiles/tosa/serialization_lib/+/refs/heads/main/test/gtests/) are testing the C++ serializations while I haven\u0027t seen unit tests for Python serialization tests? \n\nThe tosa_serializer.py is primarily used in CTS tests and Executorch now. So CTS is indirectly testing this now. So that\u0027s how we found the issue.",
+      "parentUuid": "a24de596_34693598",
+      "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe03069_f59dce8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000688
+      },
+      "writtenOn": "2024-08-29T16:57:13Z",
+      "side": 1,
+      "message": "tks Eric! ",
+      "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
   ]
 }
