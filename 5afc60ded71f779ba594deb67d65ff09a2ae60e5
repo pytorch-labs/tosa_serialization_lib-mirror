@@ -87,6 +87,24 @@
       "parentUuid": "5e2c698a_91dbac26",
       "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e176e3_89104133",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000688
+      },
+      "writtenOn": "2024-08-30T20:51:05Z",
+      "side": 1,
+      "message": "Sorry, I forgot Kaushik already added those tests in \n`python/pytests/test_single_tensor.py`\n\nIf we upgrade numpy version to 2.0 and run \n`pytest -s test_single_tensor.py::test_single_const`\nthe tests will fail. \n\nSo the conclusion is: we don\u0027t need to add more tests here.",
+      "parentUuid": "a8aa9c95_f7913093",
+      "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
   ]
 }
