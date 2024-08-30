@@ -51,6 +51,24 @@
       "message": "tks Eric! ",
       "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e2c698a_91dbac26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000293
+      },
+      "writtenOn": "2024-08-30T14:27:39Z",
+      "side": 1,
+      "message": "We have the tests in https://review.mlplatform.org/plugins/gitiles/tosa/serialization_lib/+/refs/heads/main/python/pytests/\ncan they be extended to catch this case and start building our test suite?",
+      "parentUuid": "06a1b217_0fb553e2",
+      "revId": "5afc60ded71f779ba594deb67d65ff09a2ae60e5",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
   ]
 }
