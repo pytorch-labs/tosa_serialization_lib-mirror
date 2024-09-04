@@ -71,7 +71,6 @@ ByteMask = np.uint64(0xFF)
 
 
 def dtype_str_to_val(name):
-
     for i in range(len(DTypeNames)):
         if name.casefold() == DTypeNames[i].casefold():
             return i
@@ -82,7 +81,6 @@ class TosaSerializerUnion:
     """This class handles encapsulating and serializing union types into flatbuffers"""
 
     def __init__(self):
-
         # A tuple of the start and end functions.
         # Set by the options constructors below
         self.optFcns = None
@@ -102,7 +100,6 @@ class TosaSerializerUnion:
         self.fpvecs = []
 
     def serialize(self, builder):
-
         # We have to build strings and vectors first
         strList = []
         intVecList = []
@@ -744,13 +741,11 @@ class TosaSerializer:
         self.currRegion.addBasicBlock(name)
 
     def setExpectedReturnCode(self, val, fail, desc=""):
-
         self.expectedReturnCode = val
         self.expectedFailureDesc = desc
         self.expectedFailure = fail
 
     def serialize(self):
-
         builder = self.builder
 
         Version.Start(builder)
