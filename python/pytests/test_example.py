@@ -54,7 +54,6 @@ def serialize_and_load_json(ser: ts.TosaSerializer, tosa_filename) -> dict:
 
 
 def test_example_select(request):
-
     base_dir = (pathlib.Path(__file__).parent / "../..").resolve()
     tmp_dir = base_dir / "python/pytests/tmp"
     testname = request.node.name
