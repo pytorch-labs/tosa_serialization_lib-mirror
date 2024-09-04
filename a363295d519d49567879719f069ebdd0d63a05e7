@@ -1,0 +1,7 @@
+Code-Review+1: Jeremy Johnson <jeremy.johnson@arm.com>
+Code-Review+2: Won Jong Jeon <won.jeon@arm.com>
+Submitted-by: Jerry-Ge <jerry.ge@arm.com>
+Submitted-at: Wed, 04 Sep 2024 16:00:10 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/12326
+Project: tosa/serialization_lib
+Branch: refs/heads/v1.0
