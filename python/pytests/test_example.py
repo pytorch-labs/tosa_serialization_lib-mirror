@@ -98,15 +98,20 @@ def test_example_conv2d(request):
     (tmp_dir / testname).mkdir(exist_ok=True)
 
     # Creating an example TOSA region
-    ser.addConst([5, 5], ts.DType.FP32, np.eye(5, 5), "const-1")
-    ser.addConst([3], ts.DType.FP32, np.ones(3), "const-2")
+    ser.addConst([5, 5], ts.DType.FP32, np.eye(5, 5), "const-weight")
+    ser.addConst([3], ts.DType.FP32, np.ones(3), "const-bias")
     ser.addInputTensor(ts.TosaSerializerTensor("input-0", [256, 256, 3], ts.DType.FP32))
+    ser.addInputTensor(ts.TosaSerializerTensor("input-zp", [1], ts.DType.FP32))
+    ser.addInputTensor(ts.TosaSerializerTensor("weight-zp", [1], ts.DType.FP32))
     ser.addOutput([256, 256, 3], ts.DType.FP32)
 
     attr = ts.TosaSerializerAttribute()
-    attr.ConvAttribute([2, 2, 2, 2], [1, 1], [1, 1], 0, 0, False, ts.DType.FP32)
+    attr.ConvAttribute([2, 2, 2, 2], [1, 1], [1, 1], False, ts.DType.FP32)
     ser.addOperator(
-        ts.TosaOp.Op().CONV2D, ["input-0", "const-1", "const-2"], ["result-0"], attr
+        ts.TosaOp.Op().CONV2D,
+        ["input-0", "const-weight", "const-bias", "input-zp", "weight-zp"],
+        ["result-0"],
+        attr,
     )
 
     serialized = serialize_and_load_json(ser, tmp_dir / testname / f"{testname}.tosa")

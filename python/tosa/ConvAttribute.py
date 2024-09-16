@@ -110,35 +110,21 @@ class ConvAttribute(object):
         return o == 0
 
     # ConvAttribute
-    def InputZp(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # ConvAttribute
-    def WeightZp(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # ConvAttribute
     def LocalBound(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
     # ConvAttribute
     def AccType(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
 def ConvAttributeStart(builder):
-    builder.StartObject(7)
+    builder.StartObject(5)
 
 def Start(builder):
     ConvAttributeStart(builder)
@@ -179,26 +165,14 @@ def ConvAttributeStartDilationVector(builder, numElems):
 def StartDilationVector(builder, numElems: int) -> int:
     return ConvAttributeStartDilationVector(builder, numElems)
 
-def ConvAttributeAddInputZp(builder, inputZp):
-    builder.PrependInt32Slot(3, inputZp, 0)
-
-def AddInputZp(builder, inputZp):
-    ConvAttributeAddInputZp(builder, inputZp)
-
-def ConvAttributeAddWeightZp(builder, weightZp):
-    builder.PrependInt32Slot(4, weightZp, 0)
-
-def AddWeightZp(builder, weightZp):
-    ConvAttributeAddWeightZp(builder, weightZp)
-
 def ConvAttributeAddLocalBound(builder, localBound):
-    builder.PrependBoolSlot(5, localBound, 0)
+    builder.PrependBoolSlot(3, localBound, 0)
 
 def AddLocalBound(builder, localBound):
     ConvAttributeAddLocalBound(builder, localBound)
 
 def ConvAttributeAddAccType(builder, accType):
-    builder.PrependUint32Slot(6, accType, 0)
+    builder.PrependUint32Slot(4, accType, 0)
 
 def AddAccType(builder, accType):
     ConvAttributeAddAccType(builder, accType)
