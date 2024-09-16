@@ -35,20 +35,16 @@ DEF_ATTRIBUTE(Pool, 7,
               DType,   S, acc_type,
               NanPropagationMode, S, nan_mode)
 
-DEF_ATTRIBUTE(Conv, 7,
+DEF_ATTRIBUTE(Conv, 5,
               int32_t, V, pad,
               int32_t, V, stride,
               int32_t, V, dilation,
-              int32_t, S, input_zp,
-              int32_t, S, weight_zp,
               bool,    S, local_bound,
               DType,   S, acc_type)
 
-DEF_ATTRIBUTE(TransposeConv, 6,
+DEF_ATTRIBUTE(TransposeConv, 4,
               int32_t, V, out_pad,
               int32_t, V, stride,
-              int32_t, S, input_zp,
-              int32_t, S, weight_zp,
               bool,    S, local_bound,
               DType,   S, acc_type)
 

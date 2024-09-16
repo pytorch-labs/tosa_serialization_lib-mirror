@@ -175,8 +175,6 @@ table ConvAttribute {
   pad: [int32];
   stride: [int32];
   dilation: [int32];
-  input_zp: int32;
-  weight_zp: int32;
   local_bound: bool;
   acc_type: DType;
 }
@@ -184,8 +182,6 @@ table ConvAttribute {
 table TransposeConvAttribute {
   out_pad: [int32];
   stride: [int32];
-  input_zp: int32;
-  weight_zp: int32;
   local_bound: bool;
   acc_type: DType;
 }

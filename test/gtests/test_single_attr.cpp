@@ -156,6 +156,64 @@ TEST(SingleAttr, NanPropagation)
     }
 }
 
+TEST(SingleAttr, ZeroPoint)
+{
+    std::list<Op> op_list = { Op_CONV2D, Op_CONV3D, Op_DEPTHWISE_CONV2D, Op_TRANSPOSE_CONV2D };
+
+    std::map<Attribute, std::unique_ptr<TosaAttributeBase>> attrs;
+    // ConvAttribute: pad, stride, dilation, local_bound, acc_type
+    attrs[Attribute_ConvAttribute] = std::make_unique<TosaConvAttribute>(
+        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_bool_S(),
+        generate_value_DType_S());
+    // TransposeConvAttribute: out_pad, stride, local_bound, acc_type
+    attrs[Attribute_TransposeConvAttribute] = std::make_unique<TosaTransposeConvAttribute>(
+        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_S(), generate_value_DType_S());
+
+    for (Op op : op_list)
+    {
+        Attribute attr_enum;
+        switch (op)
+        {
+            case Op_CONV2D:
+            case Op_CONV3D:
+            case Op_DEPTHWISE_CONV2D: {
+                attr_enum = Attribute_ConvAttribute;
+                break;
+            }
+            case Op_TRANSPOSE_CONV2D:
+                attr_enum = Attribute_TransposeConvAttribute;
+                break;
+            default:
+                FAIL() << "Operator " << EnumNamesOp()[op] << " is not included in the test";
+        }
+
+        TosaSerializationHandler handler1, handler2, handler3;
+        pushBackEmptyRegion(handler1, "main_region");
+
+        auto region = handler1.GetRegions().back().get();
+        pushBackEmptyBasicBlock(region, "main_block", "main_region");
+
+        auto block = region->GetBlocks().back().get();
+
+        std::vector<std::string> input_names  = SetupDummyInput(block, 5);
+        std::vector<std::string> output_names = SetupDummyOutput(block, 1);
+
+        auto ser_op = std::make_unique<TosaSerializationOperator>(static_cast<Op>(op), attr_enum,
+                                                                  attrs[attr_enum].get(), input_names, output_names);
+        pushBackOperator(block, std::move(ser_op));
+
+        const auto schema_path = source_dir + "/schema/tosa.fbs";
+        const auto tosa_path   = source_dir + "/test/tmp/Serialization.SingleAttr.InputZeroPoint.tosa";
+        const auto json_path   = source_dir + "/test/tmp/Serialization.SingleAttr.InputZeroPoint.json";
+
+        tosa_err_t err;
+        WRITE_READ_TOSA_TEST(handler1, handler2, err, tosa_path.c_str(), EnumNameAttribute(attr_enum));
+
+        WRITE_READ_JSON_TEST(handler2, handler3, err, schema_path.c_str(), json_path.c_str(),
+                             EnumNameAttribute(attr_enum));
+    }
+}
+
 INSTANTIATE_TEST_SUITE_P(SerializationCpp, SingleAttr, testing::ValuesIn(EnumValuesAttribute()), [](auto info) {
     return EnumNameAttribute(info.param);
 });
