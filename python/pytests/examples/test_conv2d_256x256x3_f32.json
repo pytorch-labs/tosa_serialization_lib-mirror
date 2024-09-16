@@ -17,7 +17,7 @@
                             "attribute_type": "NONE",
                             "inputs": [],
                             "outputs": [
-                                "const-1"
+                                "const-weight"
                             ]
                         },
                         {
@@ -25,7 +25,7 @@
                             "attribute_type": "NONE",
                             "inputs": [],
                             "outputs": [
-                                "const-2"
+                                "const-bias"
                             ]
                         },
                         {
@@ -46,15 +46,15 @@
                                     1,
                                     1
                                 ],
-                                "input_zp": 0,
-                                "weight_zp": 0,
                                 "local_bound": false,
                                 "acc_type": "FP32"
                             },
                             "inputs": [
                                 "input-0",
-                                "const-1",
-                                "const-2"
+                                "const-weight",
+                                "const-bias",
+                                "input-zp",
+                                "weight-zp"
                             ],
                             "outputs": [
                                 "result-0"
@@ -63,7 +63,7 @@
                     ],
                     "tensors": [
                         {
-                            "name": "const-1",
+                            "name": "const-weight",
                             "shape": [
                                 5,
                                 5
@@ -175,7 +175,7 @@
                             "is_unranked": false
                         },
                         {
-                            "name": "const-2",
+                            "name": "const-bias",
                             "shape": [
                                 3
                             ],
@@ -209,6 +209,24 @@
                             "is_unranked": false
                         },
                         {
+                            "name": "input-zp",
+                            "shape": [
+                                1
+                            ],
+                            "type": "FP32",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
+                            "name": "weight-zp",
+                            "shape": [
+                                1
+                            ],
+                            "type": "FP32",
+                            "variable": false,
+                            "is_unranked": false
+                        },
+                        {
                             "name": "result-0",
                             "shape": [
                                 256,
@@ -221,7 +239,9 @@
                         }
                     ],
                     "inputs": [
-                        "input-0"
+                        "input-0",
+                        "input-zp",
+                        "weight-zp"
                     ],
                     "outputs": [
                         "result-0"
