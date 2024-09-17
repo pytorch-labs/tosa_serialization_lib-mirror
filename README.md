@@ -7,6 +7,50 @@ The *TOSA Serialization library* provides methods to read and write serialized
 TOSA graphs (<https://developer.mlplatform.org/w/tosa/>).  The library includes
 a FlatBuffers schema and a C++ API for reading and writing TOSA graphs.
 
+# Prerequisites
+##### The *TOSA Seralization Library* Requires the following
+
+* Python 3.9 or later (tested with 3.10.15)
+* CMake version 3.16 or later
+* GNU Make 4.1 or later
+* GCC (tested with 9.4.0) or Clang C++ compiler (tested with clang-10)
+  with C++17 support
+
+##### Checkout the Required Git Submodules with the following
+
+``` bash
+git submodule update --init --recursive
+```
+
+##### Compile flatbuffers
+
+```bash
+cd third_party/flatbuffers
+cmake -G "Unix Makefiles"
+make -j
+```
+
+##### Install Additional pip Packages (for unit tests)
+* flatbuffers (tested with 24.3.25)
+* numpy (tested with 2.1.1)
+* ml_dtypes (tested with 0.5.0)
+* pytest (tested with 8.3.3)
+
+```bash
+pip install flatbuffers==24.3.25 numpy==2.1.1 ml_dtypes==0.5.0 pytest==8.3.3
+```
+
+# Compilation
+
+##### The *TOSA Seralization Library* Build can be prepared by the following
+
+``` bash
+mkdir -p build
+cd build
+cmake ..
+make
+```
+
 # Usage
 
 The section below describes serialization_lib API usage. For more
