@@ -15,12 +15,12 @@ details, please refer to `include/tosa_serialization_handler.h`.
 ## TosaSerializationHandler
 
 This is the top-level class that contains the entire TOSA graph.  In
-particular, it contains a vector of `TosaSerializationBasicBlock` objects,
-and provides API for file IO, block access, and version checking.
+particular, it contains a vector of `TosaSerializationRegion` objects,
+and provides API for file IO, region access, and version checking.
 
     a. `LoadFileJson(filename)`:
 
-        Load json-formatted file "filename" from disk, and initialize the
+        Loads json-formatted file "filename" from disk, and initialize the
         internal graph structure.
 
         Requires the schema file to be loaded via `LoadFileSchema()`.
@@ -33,35 +33,57 @@ and provides API for file IO, block access, and version checking.
 
     c. `LoadFileTosaFlatbuffer(filename)`:
 
-        Load serialized flatbuffer file "filename" from disk, and initialize the
+        Loads serialized flatbuffer file "filename" from disk, and initialize the
         internal graph structure.
 
     d. `SaveFileTosaFlatbuffer(filename)`:
 
-        Snapshot the internal graph structure and saves out serialized
+        Snapshots the internal graph structure and saves out serialized
         flatbuffer file `filename` to disk.
 
-    e. `GetTosaVersion()`:
+    e. `GetVersion()`:
 
-        Return TOSA version implemented by the serialization library.
+        Returns TOSA version implemented by the serialization library.
 
-    f. `GetBlockByName()`:
+    f. `GetRegions()`:
 
-        Return vector of `TosaSerializationBasicBlock`. Returns `nullptr` if
-        nothing matches. A valid graph must have one `main` block as the first
-        block being traversed.
+        Returns vector of `TosaSerializationRegion`. A valid graph must have
+        one `main` region as the first region being traversed.
 
-    g. `GetMainBlock()`:
+    g. `GetMainRegion()`:
 
-        Shortcut for accessing the `main` block. Equivalent to
-        `GetBlockByName("main")`.
+        Shortcut for accessing the first region.
 
-    h. `GetInputs()` / `GetOutputs()`:
+    h.  `GetRegionByName(name)`
 
-        Shortcut for `main` block's input/output tensor name. Input tensors of
+        Returns region whose name is 'name'. A valid graph must have one `main`
+        region as the first region being traversed.
+
+    i. `GetInputs()` / `GetOutputs()`:
+
+        Shortcut for `main` region's input/output tensor name. Input tensors of
         the main block are usually treated as `tosa.PLACEHOLDER`. Output tensors
         are the output of the entire graph and should be evaluated when graph
         traversal has finished.
+
+## TosaSerializationRegion
+
+This is the region class. It contains vectors of `TosaSerializationBasicBlock` objects,
+and provides API for block access.
+
+    a. `GetName()`:
+
+        Returns name of the region.
+
+    b. `GetBlocks()`:
+
+        Returns vector of TosaSerializationBasicBlock. A valid region must have
+        at least one block.
+
+    c. `GetBlockByName(name)`:
+
+        Returns the `TosaSerializationBasicBlock` with name `name`. Returns `nullptr`
+        if nothing matches.
 
 ## TosaSerializationBasicBlock
 
@@ -72,42 +94,44 @@ in order.
 
 Upon reaching a TOSA control flow operator (`tosa.WHILE` and
 `tosa.COND_IF`), the status of current unfinished block will be saved, and
-the blocks specified in control flow operator will be evaluated first. Once
-the control flow blocks finishes its evaluation, the original unfinished
+the regions specified in control flow operator will be evaluated first. Once
+the control flow regions finish its evaluation, the original unfinished
 block status will be restored and evaluation continues.  This is more
 analogous to a function call than a compiler basic block.
 
     a. `GetName()`:
 
-        Return string of the basic block.
+        Returns name of the basic block.
 
-    b. `GetOperators()`:
+    b. `GetRegionName()`:
 
-        Return vector of `TosaSerializationOperator`
+        Returns name of the region containing the basic block.
 
-    c. `GetTensors()`:
+    c. `GetOperators()`:
 
-        Return vector of `TosaSerializationTensor`
+        Returns vector of `TosaSerializationOperator`
 
-    d. `GetTensorByName(name)`:
+    d. `GetTensors()`:
 
-        Return the `TosaSerializationTensor` with name `name`. Returns `nullptr`
+        Returns vector of `TosaSerializationTensor`
+
+    e. `GetTensorByName(name)`:
+
+        Returns the `TosaSerializationTensor` with name `name`. Returns `nullptr`
         if nothing matches.
 
-    e. `GetInputs()` / `GetOutputs()`:
+    f. `GetInputs()` / `GetOutputs()`:
 
-        Return input/output tensor name of the basic block.
+        Returns input/output tensor name of the basic block.
 
 ## TosaSerializationOperator
 
 The operator class contains (1) what TOSA Op, (2) attribute (compile-time-
-known input), (3) quantization information and (4) input/output tensor
-names. The combination of (Op, attribute, quantization information) is
-defined in include/operator.def.
+known input) and (3) input/output tensor names.
 
     a. `GetOp()`:
 
-        Return TOSA Op. Defined in schema `tosa.fbs`.
+        Returns TOSA Op. Defined in schema `tosa.fbs`.
 
     b. `GetAttribute()` / `GetAttributeType()`:
 
@@ -116,25 +140,13 @@ defined in include/operator.def.
         needs to be casted to.  Type of attribute is defined in `tosa.fbs` and
         `include/attribute.def`.
 
-    c. `GetQuantInfo()` + `GetQuantInfoType()`:
+    c. `GetInputTensorNames()` / `GetOutputTensorNames()`:
 
-        `GetQuantInfo()` returns the base object's quantization information.
-        `GetQuantInfoType()` returns which type of quantization information the
-        base object needs to be casted to. Type of quantization information is
-        defined in `tosa.fbs` and `include/quant_info.def`.
-
-    d. `GetInputTensorNames()` / `GetOutputTensorNames()`:
-
-        Returns the input/output tensor name of the basic block.
-
-    e. `GetInputTensors()` / `GetOutputTensors()`:
-
-        Returns the input/output tensor of the basic block.
+        Returns the input/output tensor names of the basic block.
 
 ## TosaSerializationTensor
 
-The tensor class contains (1) data type, (2) shape, (3) symbolic link to
-numpy file, (4) format and (5) usage.
+The tensor class contains (1) data type, (2) shape, (3) properties and (4) data value.
 
     a. `GetName()` / `SetName(name)`:
 
@@ -150,10 +162,21 @@ numpy file, (4) format and (5) usage.
         `GetDtype()` returns the data type of the tensor. `SetDtype()` sets the
         data type of the tensor. DType is defined in `tosa.fbs`.
 
-    d. `GetNpyFilePtr()`:
+    d. `GetVariable()`:
 
-        Return the numpy file pointer of this tensor if this is a constant
-        tensor. Return `nullptr` if the tensor is not constant.
+        Returns whether tensor is a Tosa Variable.
+
+    e. `GetIsUnranked()` / `SetIsUnranked(value)`:
+
+        `GetIsUnranked()` returns whether tensor is an unranked tensor.
+        `SetIsUnranked()` sets whether tensor is an unranked tensor.
+
+    f. `GetData()` / `SetData(data)`:
+
+        `GetData()` returns a vector of `uint8_t` values which stores the constant
+        value for a constant tensor, or the initialization value for a variable tensor.
+        `SetData()` sets the constant value for a constant tensor, or the initialization
+        value for a variable tensor.
 
 # License
 
@@ -164,4 +187,3 @@ The *TOSA Serialization Library* is licensed under Apache-2.0.
 - The [half](https://half.sourceforge.net/) library is licensed under MIT license.
 
 Other third party projects are referenced as sub-modules and as such, are licensed under the licenses stated in their projects.
-
