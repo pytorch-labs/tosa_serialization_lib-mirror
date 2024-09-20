@@ -282,11 +282,12 @@ enum Op : uint32_t {
   Op_SIN = 80,
   Op_CAST_STOCHASTIC = 81,
   Op_RAND_UNIFORM = 82,
+  Op_RAND_SEED = 83,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_RAND_UNIFORM
+  Op_MAX = Op_RAND_SEED
 };
 
-inline const Op (&EnumValuesOp())[83] {
+inline const Op (&EnumValuesOp())[84] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -370,13 +371,14 @@ inline const Op (&EnumValuesOp())[83] {
     Op_COS,
     Op_SIN,
     Op_CAST_STOCHASTIC,
-    Op_RAND_UNIFORM
+    Op_RAND_UNIFORM,
+    Op_RAND_SEED
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[84] = {
+  static const char * const names[85] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
@@ -460,13 +462,14 @@ inline const char * const *EnumNamesOp() {
     "SIN",
     "CAST_STOCHASTIC",
     "RAND_UNIFORM",
+    "RAND_SEED",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RAND_UNIFORM)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RAND_SEED)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }

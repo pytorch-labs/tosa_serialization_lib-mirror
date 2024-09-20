@@ -131,6 +131,7 @@ enum Op:uint32 {
   SIN,
   CAST_STOCHASTIC,
   RAND_UNIFORM,
+  RAND_SEED
 }
 
 union Attribute {

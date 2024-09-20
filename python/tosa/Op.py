@@ -86,3 +86,4 @@ class Op(object):
     SIN = 80
     CAST_STOCHASTIC = 81
     RAND_UNIFORM = 82
+    RAND_SEED = 83
