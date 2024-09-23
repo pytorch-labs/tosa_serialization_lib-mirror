@@ -133,72 +133,39 @@ TosaSerializationOperator::~TosaSerializationOperator()
     delete _attribute;
 }
 
-TosaSerializationBasicBlock::TosaSerializationBasicBlock(const std::string& name,
-                                                         const std::string& region_name,
-                                                         const std::vector<TosaSerializationOperator*>& operators,
-                                                         const std::vector<TosaSerializationTensor*>& tensors,
-                                                         const std::vector<std::string>& inputs,
-                                                         const std::vector<std::string>& outputs)
+TosaSerializationBasicBlock::TosaSerializationBasicBlock(const std::string& name, const std::string& region_name)
 {
     _name        = name;
     _region_name = region_name;
-    _operators   = operators;
-    _tensors     = tensors;
+}
+
+TosaSerializationBasicBlock::TosaSerializationBasicBlock(
+    const std::string& name,
+    const std::string& region_name,
+    std::vector<std::unique_ptr<TosaSerializationOperator>>&& operators,
+    std::vector<std::unique_ptr<TosaSerializationTensor>>&& tensors,
+    const std::vector<std::string>& inputs,
+    const std::vector<std::string>& outputs)
+{
+    _name        = name;
+    _region_name = region_name;
+    _operators   = std::move(operators);
+    _tensors     = std::move(tensors);
     _inputs      = inputs;
     _outputs     = outputs;
 }
 
-TosaSerializationBasicBlock::TosaSerializationBasicBlock(std::string&& name,
-                                                         std::string&& region_name,
-                                                         std::vector<TosaSerializationOperator*>&& operators,
-                                                         std::vector<TosaSerializationTensor*>&& tensors,
-                                                         std::vector<std::string>&& inputs,
-                                                         std::vector<std::string>&& outputs)
-{
-    _name        = std::move(name);
-    _region_name = std::move(region_name);
-    _operators   = std::move(operators);
-    _tensors     = std::move(tensors);
-    _inputs      = std::move(inputs);
-    _outputs     = std::move(outputs);
-}
-
 TosaSerializationBasicBlock::~TosaSerializationBasicBlock()
 {
-    // deallocate all operators
-    for (auto op : GetOperators())
-    {
-        delete op;    // ~TosaSerializationOperator()
-    }
-
-    // deallocate all tensors
-    for (auto ts : GetTensors())
-    {
-        delete ts;    // ~TosaSerializationTensor()
-    }
-}
-
-TosaSerializationRegion::TosaSerializationRegion(const std::string& name,
-                                                 const std::vector<TosaSerializationBasicBlock*>& blocks)
-{
-    _name   = name;
-    _blocks = blocks;
-}
-
-TosaSerializationRegion::TosaSerializationRegion(const std::string&& name,
-                                                 const std::vector<TosaSerializationBasicBlock*>&& blocks)
-{
-    _name   = std::move(name);
-    _blocks = std::move(blocks);
+    _operators.clear();
+    _tensors.clear();
+    _inputs.clear();
+    _outputs.clear();
 }
 
 TosaSerializationRegion::~TosaSerializationRegion()
 {
-    // deallocate all blocks
-    for (auto block : GetBlocks())
-    {
-        delete block;    // ~TosaSerializationBasicBlock()
-    }
+    _blocks.clear();
 }
 
 TosaSerializationHandler::TosaSerializationHandler()
@@ -395,11 +362,6 @@ tosa_err_t TosaSerializationHandler::SaveFileTosaFlatbuffer(const char* filename
 
 tosa_err_t TosaSerializationHandler::Clear()
 {
-    // deallocate all basic blocks
-    for (auto region : GetRegions())
-    {
-        delete region;
-    }
     _regions.clear();
 
     return TOSA_OK;
@@ -450,13 +412,13 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
         auto region_name    = curr_region->name()->str();
         auto fb_tosa_blocks = curr_region->blocks();
 
-        new_region = new TosaSerializationRegion(curr_region->name()->str(), {});
-        this->GetRegions().push_back(new_region);
+        new_region = new TosaSerializationRegion(curr_region->name()->str());
+        this->GetRegions().emplace_back(std::move(new_region));
 
         for (size_t i = 0; i < fb_tosa_blocks->size(); i++)
         {
-            std::vector<TosaSerializationOperator*> block_operators_container;
-            std::vector<TosaSerializationTensor*> block_tensors_container;
+            std::vector<std::unique_ptr<TosaSerializationOperator>> block_operators_container;
+            std::vector<std::unique_ptr<TosaSerializationTensor>> block_tensors_container;
             std::vector<std::string> block_inputs_container;
             std::vector<std::string> block_outputs_container;
 
@@ -519,7 +481,7 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
                                                              operator_inputs_container, operator_outputs_container);
                 if (new_operator)
                 {
-                    block_operators_container.push_back(new_operator);
+                    block_operators_container.emplace_back(std::move(new_operator));
                 }
                 else
                 {
@@ -561,19 +523,19 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
                                                          tensor_variable, tensor_is_unranked, tensor_variable_name);
                 if (new_tensor)
                 {
-                    block_tensors_container.push_back(new_tensor);
+                    block_tensors_container.emplace_back(std::move(new_tensor));
                 }
                 else
                 {
                     return TOSA_MEMORY_ERROR;
                 }
             }
-            new_block = new TosaSerializationBasicBlock(block_name, region_name, block_operators_container,
-                                                        block_tensors_container, block_inputs_container,
+            new_block = new TosaSerializationBasicBlock(block_name, region_name, std::move(block_operators_container),
+                                                        std::move(block_tensors_container), block_inputs_container,
                                                         block_outputs_container);
             if (new_block)
             {
-                new_region->GetBlocks().push_back(new_block);
+                new_region->GetBlocks().emplace_back(std::move(new_block));
             }
             else
             {
@@ -604,10 +566,10 @@ tosa_err_t TosaSerializationHandler::Serialize()
     std::vector<flatbuffers::Offset<TosaRegion>> fboffset_regions;
 
     // translate TosaFlatbufferOperator to flatbuffers::Offset<TosaOperator>
-    for (auto region : GetRegions())
+    for (const auto& region : GetRegions())
     {
         std::vector<flatbuffers::Offset<TosaBasicBlock>> fboffset_blocks;
-        for (auto block : region->GetBlocks())
+        for (const auto& block : region->GetBlocks())
         {
             std::vector<flatbuffers::Offset<TosaOperator>> fboffset_block_operators;
             std::vector<flatbuffers::Offset<TosaTensor>> fboffset_block_tensors;
@@ -626,7 +588,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
             }
             auto fb_block_inputs  = _builder.CreateVector(fboffset_block_inputs);
             auto fb_block_outputs = _builder.CreateVector(fboffset_block_outputs);
-            for (auto op : block->GetOperators())
+            for (const auto& op : block->GetOperators())
             {
                 std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_operator_inputs;
                 std::vector<flatbuffers::Offset<flatbuffers::String>> fboffset_operator_outputs;
@@ -720,7 +682,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
                 fboffset_block_operators.push_back(fboffset_operator);
             }
             auto fb_block_operators = _builder.CreateVector(fboffset_block_operators);
-            for (auto tensor : block->GetTensors())
+            for (const auto& tensor : block->GetTensors())
             {
                 auto tensor_name          = _builder.CreateString(tensor->GetName().c_str());
                 auto tensor_shape         = _builder.CreateVector(tensor->GetShape());

@@ -43,17 +43,23 @@ TEST_P(SingleAttr, )
         GTEST_SKIP();
     }
     tosa_err_t err;
-    auto region = new TosaSerializationRegion(
-        "main_region",
-        { new TosaSerializationBasicBlock(
-            "main_block", "main_region",
-            { new TosaSerializationOperator(Op_UNKNOWN, GetParam(), attrs[GetParam()], { "t1" }, { "t2" }) },
-            { new TosaSerializationTensor("t1", {}, DType_UNKNOWN, {}, false, false),
-              new TosaSerializationTensor("t2", {}, DType_UNKNOWN, {}, false, false) },
-            { "t1" }, { "t2" }) });
-
     TosaSerializationHandler handler1, handler2, handler3;
-    handler1.GetRegions().push_back(region);
+    handler1.GetRegions().emplace_back(std::make_unique<TosaSerializationRegion>("main_region"));
+    auto region = handler1.GetRegions().back().get();
+    region->GetBlocks().emplace_back(std::make_unique<TosaSerializationBasicBlock>("main_block", "main_region"));
+    auto block = region->GetBlocks().back().get();
+    std::vector<std::string> input_names{ "t1" };
+    std::vector<std::string> output_names{ "t2" };
+    block->GetOperators().emplace_back(std::make_unique<TosaSerializationOperator>(
+        Op_UNKNOWN, GetParam(), attrs[GetParam()], input_names, output_names));
+    std::vector<int32_t> shape;
+    std::vector<uint8_t> empty_data;
+    block->GetTensors().emplace_back(
+        std::make_unique<TosaSerializationTensor>("t1", shape, DType_UNKNOWN, empty_data, false, false));
+    block->GetTensors().emplace_back(
+        std::make_unique<TosaSerializationTensor>("t2", shape, DType_UNKNOWN, empty_data, false, false));
+    block->GetInputs().push_back("t1");
+    block->GetOutputs().push_back("t2");
     WRITE_READ_TOSA_TEST(handler1, handler2, err, (source_dir + "/test/tmp/Serialization.SingleAttr.tosa").c_str(),
                          EnumNameAttribute(GetParam()));
 

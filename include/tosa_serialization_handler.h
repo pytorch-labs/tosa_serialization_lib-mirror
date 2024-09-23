@@ -286,18 +286,13 @@ class TosaSerializationBasicBlock
 {
 public:
     // constructor and destructor
+    TosaSerializationBasicBlock(const std::string& name, const std::string& region_name);
     TosaSerializationBasicBlock(const std::string& name,
                                 const std::string& region_name,
-                                const std::vector<TosaSerializationOperator*>& operators,
-                                const std::vector<TosaSerializationTensor*>& tensors,
+                                std::vector<std::unique_ptr<TosaSerializationOperator>>&& operators,
+                                std::vector<std::unique_ptr<TosaSerializationTensor>>&& tensors,
                                 const std::vector<std::string>& inputs,
                                 const std::vector<std::string>& outputs);
-    TosaSerializationBasicBlock(std::string&& name,
-                                std::string&& region_name,
-                                std::vector<TosaSerializationOperator*>&& operators,
-                                std::vector<TosaSerializationTensor*>&& tensors,
-                                std::vector<std::string>&& inputs,
-                                std::vector<std::string>&& outputs);
     ~TosaSerializationBasicBlock();
 
     // accessor
@@ -309,28 +304,26 @@ public:
     {
         return _region_name;
     }
-    std::vector<TosaSerializationOperator*>& GetOperators()
+    std::vector<std::unique_ptr<TosaSerializationOperator>>& GetOperators()
     {
         return _operators;
     }
 
-    std::vector<TosaSerializationTensor*>& GetTensors()
+    std::vector<std::unique_ptr<TosaSerializationTensor>>& GetTensors()
     {
         return _tensors;
     }
 
     TosaSerializationTensor* GetTensorByName(std::string name)
     {
-        TosaSerializationTensor* result = nullptr;
-        for (auto tensor : GetTensors())
+        for (const auto& tensor : GetTensors())
         {
             if (tensor->GetName() == name)
             {
-                result = tensor;
-                break;
+                return tensor.get();
             }
         }
-        return result;
+        return nullptr;
     }
 
     std::vector<std::string>& GetInputs()
@@ -346,18 +339,19 @@ public:
 private:
     std::string _name; /* name of basic block */
     std::string _region_name;
-    std::vector<TosaSerializationOperator*> _operators; /* TosaSerializationOperator list */
-    std::vector<TosaSerializationTensor*> _tensors;     /* TosaSerializationTensor list */
-    std::vector<std::string> _inputs;                   /* array of string to specify block inputs */
-    std::vector<std::string> _outputs;                  /* array of string to specify block outputs */
+    std::vector<std::unique_ptr<TosaSerializationOperator>> _operators; /* TosaSerializationOperator list */
+    std::vector<std::unique_ptr<TosaSerializationTensor>> _tensors;     /* TosaSerializationTensor list */
+    std::vector<std::string> _inputs;                                   /* array of string to specify block inputs */
+    std::vector<std::string> _outputs;                                  /* array of string to specify block outputs */
 };
 
 class TosaSerializationRegion
 {
 public:
     // constructor and desctructor
-    TosaSerializationRegion(const std::string& name, const std::vector<TosaSerializationBasicBlock*>& blocks);
-    TosaSerializationRegion(const std::string&& name, const std::vector<TosaSerializationBasicBlock*>&& blocks);
+    TosaSerializationRegion(const std::string& name)
+        : _name(name){};
+
     ~TosaSerializationRegion();
 
     // accessors
@@ -366,28 +360,26 @@ public:
         return this->_name;
     }
 
-    std::vector<TosaSerializationBasicBlock*>& GetBlocks()
+    std::vector<std::unique_ptr<TosaSerializationBasicBlock>>& GetBlocks()
     {
         return this->_blocks;
     }
 
     TosaSerializationBasicBlock* GetBlockByName(std::string name)
     {
-        TosaSerializationBasicBlock* result = nullptr;
-        for (auto block : GetBlocks())
+        for (const auto& block : GetBlocks())
         {
             if (block->GetName() == name)
             {
-                result = block;
-                break;
+                return block.get();
             }
         }
-        return result;
+        return nullptr;
     }
 
 private:
-    std::string _name;                                 /* name of basic block */
-    std::vector<TosaSerializationBasicBlock*> _blocks; /* TosaSerializationBasicBlock list */
+    std::string _name;                                                 /* name of basic block */
+    std::vector<std::unique_ptr<TosaSerializationBasicBlock>> _blocks; /* TosaSerializationBasicBlock list */
 };
 
 /*
@@ -449,28 +441,30 @@ public:
     }
 
     // accessor
-    std::vector<TosaSerializationRegion*>& GetRegions()
+    std::vector<std::unique_ptr<TosaSerializationRegion>>& GetRegions()
     {
         return _regions;
     }
 
     TosaSerializationRegion* GetMainRegion()
     {
-        return _regions[0];
+        if (_regions.empty())
+        {
+            return nullptr;
+        }
+        return _regions[0].get();
     }
 
     TosaSerializationRegion* GetRegionByName(std::string name)
     {
-        TosaSerializationRegion* result = nullptr;
-        for (auto region : GetRegions())
+        for (const auto& region : GetRegions())
         {
             if (region->GetName() == name)
             {
-                result = region;
-                break;
+                return region.get();
             }
         }
-        return result;
+        return nullptr;
     }
 
     bool GetSchemaLoaded() const
@@ -484,11 +478,12 @@ protected:
     tosa_err_t Serialize();
 
 private:
-    TosaVersion _version;                           /* version struct */
-    flatbuffers::FlatBufferBuilder _builder;        /* flatbuffer builder */
-    flatbuffers::Parser _parser;                    /* flatbuffer parser, used for json parsing */
-    std::vector<TosaSerializationRegion*> _regions; /* array structure to store all TosaSerializationRegion */
-    bool _schemaLoaded;                             /* is the schema properly loaded? */
+    TosaVersion _version;                    /* version struct */
+    flatbuffers::FlatBufferBuilder _builder; /* flatbuffer builder */
+    flatbuffers::Parser _parser;             /* flatbuffer parser, used for json parsing */
+    std::vector<std::unique_ptr<TosaSerializationRegion>>
+        _regions;       /* array structure to store all TosaSerializationRegion */
+    bool _schemaLoaded; /* is the schema properly loaded? */
 };
 
 }    // namespace tosa

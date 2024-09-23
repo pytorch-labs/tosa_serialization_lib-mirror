@@ -80,8 +80,8 @@ inline bool attribute_match(Attribute attribute_type, TosaAttributeBase* lhs, To
 #undef EQ_ARGS_7
 
 // Check deep equality of vectors of pointers. Assumes that the vectors' elements have their own operator== defined.
-#define DEEP_EQUALS(A, B) std::equal(A.begin(), A.end(), B.begin(), B.end(), [](auto a, auto b) { return *a == *b; })
-
+#define DEEP_EQUALS(A, B)                                                                                              \
+    std::equal(A.begin(), A.end(), B.begin(), B.end(), [](const auto& a, const auto& b) { return *a == *b; })
 // Equality operators for serialization objects.
 inline bool operator==(TosaSerializationTensor& lhs, TosaSerializationTensor& rhs)
 {
