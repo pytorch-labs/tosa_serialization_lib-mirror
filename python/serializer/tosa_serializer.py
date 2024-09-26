@@ -893,8 +893,8 @@ class TosaSerializer:
                     val_1 = data[2 * i + 1]
                 else:
                     val_1 = 0
-                val_i8 = (val_0 & 0xF) | ((val_1 & 0xF) << 4)
-                val_u8 = np.uint8(val_i8)
+                mask = np.uint8(0xF)
+                val_u8 = (np.uint8(val_0) & mask) | ((np.uint8(val_1) & mask) << 4)
                 u8_data.append(val_u8)
         elif dtype == DType.INT8:
             for val in data:
