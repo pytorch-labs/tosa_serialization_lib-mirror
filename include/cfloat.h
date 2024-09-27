@@ -329,9 +329,15 @@ public:
                 // Shift the most-significant 1 out of the magnitude to
                 // convert it to a significand. Modify the exponent
                 // accordingly.
-                uint8_t shift = __builtin_clzl(new_significand) + 1;
-                new_exponent_bits -= shift;
-                new_significand <<= shift;
+                // NOTE: We know that there's a 1 somewhere in the
+                // significand, because `in.is_zero()` was not true.
+                while (~new_significand & (UINT64_C(1) << 63))
+                {
+                    new_exponent_bits--;
+                    new_significand <<= 1;
+                }
+                new_exponent_bits--;
+                new_significand <<= 1;
             }
 
             // Apply overflow to out-of-range values; this must occur before
