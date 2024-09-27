@@ -306,7 +306,7 @@ tosa_err_t TosaSerializationHandler::LoadFileTosaFlatbuffer(const char* filename
     const uint8_t* buf;
     bool ok;
 
-    ok = flatbuffers::LoadFile(filename, false, &read_buffer);
+    ok = flatbuffers::LoadFile(filename, true, &read_buffer);
     if (!ok)
     {
         printf("Error loading flatbuffer file: %s\n", filename);
@@ -350,7 +350,7 @@ tosa_err_t TosaSerializationHandler::SaveFileTosaFlatbuffer(const char* filename
 
     uint8_t* buf = _builder.GetBufferPointer();
 
-    bool ok = flatbuffers::SaveFile(filename, (const char*)buf, _builder.GetSize(), false);
+    bool ok = flatbuffers::SaveFile(filename, (const char*)buf, _builder.GetSize(), true);
     if (!ok)
     {
         printf("Error saving floatbuffer file: %s\n", filename);
