@@ -47,6 +47,12 @@ enum ResizeMode:uint32 {
   BILINEAR,
 }
 
+enum NanPropagationMode:uint32 {
+  UNKNOWN = 0,
+  PROPAGATE,
+  IGNORE,
+}
+
 enum Op:uint32 {
   UNKNOWN = 0,
   ARGMAX,
@@ -155,6 +161,7 @@ union Attribute {
   FFTAttribute,
   RFFTAttribute,
   RandUniformAttribute,
+  NanPropagationAttribute,
 }
 
 table PoolAttribute {
@@ -164,6 +171,7 @@ table PoolAttribute {
   input_zp: int32;
   output_zp: int32;
   acc_type: DType;
+  nan_mode: NanPropagationMode;
 }
 
 table ConvAttribute {
@@ -191,6 +199,7 @@ table PadAttribute {
 
 table AxisAttribute {
   axis: int32;
+  nan_mode: NanPropagationMode;
 }
 
 table ResizeAttribute {
@@ -203,6 +212,7 @@ table ResizeAttribute {
 table ClampAttribute {
   min_val: [ubyte] (force_align: 8);
   max_val: [ubyte] (force_align: 8);
+  nan_mode: NanPropagationMode;
 }
 
 table RescaleAttribute {
@@ -273,6 +283,10 @@ table RFFTAttribute {
 
 table RandUniformAttribute {
   use_seed: bool;
+}
+
+table NanPropagationAttribute {
+  nan_mode: NanPropagationMode;
 }
 
 table Version {

@@ -134,6 +134,8 @@ inline std::uniform_int_distribution<char>
     rand_char('a', '~');    // Generating ASCII character that isn't a control character or DELETE
 inline std::uniform_int_distribution<uint32_t> rand_dtype(DType_MIN, DType_MAX);
 inline std::uniform_int_distribution<uint32_t> rand_resize_mode(ResizeMode_MIN, ResizeMode_MAX);
+inline std::uniform_int_distribution<uint32_t> rand_nan_propagation_mode(NanPropagationMode_MIN,
+                                                                         NanPropagationMode_MAX);
 inline std::uniform_int_distribution<int8_t> rand_bit(0, 1);
 
 inline int32_t generate_value_int32_t_S()
@@ -184,6 +186,10 @@ inline ResizeMode generate_value_ResizeMode_S()
 {
     return (ResizeMode)rand_resize_mode(gen);
 }
+inline NanPropagationMode generate_value_NanPropagationMode_S()
+{
+    return (NanPropagationMode)rand_nan_propagation_mode(gen);
+}
 inline bool generate_value_bool_S()
 {
     return rand_bit(gen) == 0;
@@ -199,6 +205,64 @@ bool nan_tolerant_equals(std::vector<T> a, std::vector<T> b)
         if ((a[i] != b[i]) && !(std::isnan(a[i])) && !(std::isnan(b[i])))
             return false;
     return true;
+}
+
+///
+/// Testing graph construction utility.
+///
+
+inline void pushBackEmptyRegion(TosaSerializationHandler& handler, const std::string& region_name)
+{
+    handler.GetRegions().emplace_back(std::make_unique<TosaSerializationRegion>(region_name));
+}
+
+inline void pushBackEmptyBasicBlock(TosaSerializationRegion* region,
+                                    const std::string& block_name,
+                                    const std::string& region_name)
+{
+    region->GetBlocks().emplace_back(std::make_unique<TosaSerializationBasicBlock>(block_name, region_name));
+}
+
+inline void pushBackOperator(TosaSerializationBasicBlock* block, std::unique_ptr<TosaSerializationOperator> op)
+{
+    block->GetOperators().emplace_back(std::move(op));
+}
+
+inline std::unique_ptr<TosaSerializationTensor> createTensor(const std::string& name,
+                                                             const std::vector<int32_t>& shape = {},
+                                                             DType dtype                       = DType_UNKNOWN,
+                                                             const std::vector<uint8_t>& data  = {},
+                                                             const bool variable               = false,
+                                                             const bool is_unranked            = false,
+                                                             const std::string& variable_name  = "")
+{
+    return std::make_unique<TosaSerializationTensor>(name, shape, dtype, data, variable, is_unranked, variable_name);
+}
+
+inline std::vector<std::string> SetupDummyInput(TosaSerializationBasicBlock* block, int input_nums)
+{
+    std::vector<std::string> input_names;
+    const std::string input_prefix = "in_";
+    for (int i = 0; i < input_nums; i++)
+    {
+        auto input_str = input_prefix + std::to_string(i + 1);
+        input_names.push_back(input_str);
+        // Create and insert a dummy tensor for testing.
+        block->GetTensors().emplace_back(createTensor(input_str));
+        block->GetInputs().push_back(input_str);
+    }
+    return input_names;
+}
+
+inline std::vector<std::string> SetupDummyOutput(TosaSerializationBasicBlock* block, int output_nums)
+{
+    std::vector<std::string> output_names;
+    const std::string output_prefix = "out_";
+    for (int i = 0; i < output_nums; i++)
+    {
+        auto output_str = output_prefix + std::to_string(i + 1);
+    }
+    return output_names;
 }
 
 #endif    // _TEST_SERIALIZATION_UTILS_H

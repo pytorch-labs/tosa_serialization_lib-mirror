@@ -25,3 +25,4 @@ class Attribute(object):
     FFTAttribute = 19
     RFFTAttribute = 20
     RandUniformAttribute = 21
+    NanPropagationAttribute = 22

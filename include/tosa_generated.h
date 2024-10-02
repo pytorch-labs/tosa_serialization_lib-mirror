@@ -78,6 +78,9 @@ struct RFFTAttributeBuilder;
 struct RandUniformAttribute;
 struct RandUniformAttributeBuilder;
 
+struct NanPropagationAttribute;
+struct NanPropagationAttributeBuilder;
+
 struct Version;
 struct VersionBuilder;
 
@@ -196,6 +199,39 @@ inline const char *EnumNameResizeMode(ResizeMode e) {
   if (::flatbuffers::IsOutRange(e, ResizeMode_UNKNOWN, ResizeMode_BILINEAR)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesResizeMode()[index];
+}
+
+enum NanPropagationMode : uint32_t {
+  NanPropagationMode_UNKNOWN = 0,
+  NanPropagationMode_PROPAGATE = 1,
+  NanPropagationMode_IGNORE = 2,
+  NanPropagationMode_MIN = NanPropagationMode_UNKNOWN,
+  NanPropagationMode_MAX = NanPropagationMode_IGNORE
+};
+
+inline const NanPropagationMode (&EnumValuesNanPropagationMode())[3] {
+  static const NanPropagationMode values[] = {
+    NanPropagationMode_UNKNOWN,
+    NanPropagationMode_PROPAGATE,
+    NanPropagationMode_IGNORE
+  };
+  return values;
+}
+
+inline const char * const *EnumNamesNanPropagationMode() {
+  static const char * const names[4] = {
+    "UNKNOWN",
+    "PROPAGATE",
+    "IGNORE",
+    nullptr
+  };
+  return names;
+}
+
+inline const char *EnumNameNanPropagationMode(NanPropagationMode e) {
+  if (::flatbuffers::IsOutRange(e, NanPropagationMode_UNKNOWN, NanPropagationMode_IGNORE)) return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesNanPropagationMode()[index];
 }
 
 enum Op : uint32_t {
@@ -494,11 +530,12 @@ enum Attribute : uint8_t {
   Attribute_FFTAttribute = 19,
   Attribute_RFFTAttribute = 20,
   Attribute_RandUniformAttribute = 21,
+  Attribute_NanPropagationAttribute = 22,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_RandUniformAttribute
+  Attribute_MAX = Attribute_NanPropagationAttribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[22] {
+inline const Attribute (&EnumValuesAttribute())[23] {
   static const Attribute values[] = {
     Attribute_NONE,
     Attribute_PoolAttribute,
@@ -521,13 +558,14 @@ inline const Attribute (&EnumValuesAttribute())[22] {
     Attribute_CustomAttribute,
     Attribute_FFTAttribute,
     Attribute_RFFTAttribute,
-    Attribute_RandUniformAttribute
+    Attribute_RandUniformAttribute,
+    Attribute_NanPropagationAttribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[23] = {
+  static const char * const names[24] = {
     "NONE",
     "PoolAttribute",
     "ConvAttribute",
@@ -550,13 +588,14 @@ inline const char * const *EnumNamesAttribute() {
     "FFTAttribute",
     "RFFTAttribute",
     "RandUniformAttribute",
+    "NanPropagationAttribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_RandUniformAttribute)) return "";
+  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_NanPropagationAttribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -649,6 +688,10 @@ template<> struct AttributeTraits<tosa::RandUniformAttribute> {
   static const Attribute enum_value = Attribute_RandUniformAttribute;
 };
 
+template<> struct AttributeTraits<tosa::NanPropagationAttribute> {
+  static const Attribute enum_value = Attribute_NanPropagationAttribute;
+};
+
 bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type);
 bool VerifyAttributeVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types);
 
@@ -660,7 +703,8 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_STRIDE = 8,
     VT_INPUT_ZP = 10,
     VT_OUTPUT_ZP = 12,
-    VT_ACC_TYPE = 14
+    VT_ACC_TYPE = 14,
+    VT_NAN_MODE = 16
   };
   const ::flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -680,6 +724,9 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   tosa::DType acc_type() const {
     return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
   }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -691,6 +738,7 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
            VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
            verifier.EndTable();
   }
 };
@@ -717,6 +765,9 @@ struct PoolAttributeBuilder {
   void add_acc_type(tosa::DType acc_type) {
     fbb_.AddElement<uint32_t>(PoolAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
   }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(PoolAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
   explicit PoolAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -735,8 +786,10 @@ inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
-    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+    tosa::DType acc_type = tosa::DType_UNKNOWN,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
   PoolAttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
   builder_.add_acc_type(acc_type);
   builder_.add_output_zp(output_zp);
   builder_.add_input_zp(input_zp);
@@ -753,7 +806,8 @@ inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
     const std::vector<int32_t> *stride = nullptr,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
-    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+    tosa::DType acc_type = tosa::DType_UNKNOWN,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
@@ -764,7 +818,8 @@ inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
       stride__,
       input_zp,
       output_zp,
-      acc_type);
+      acc_type,
+      nan_mode);
 }
 
 struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -1062,14 +1117,19 @@ inline ::flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
 struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef AxisAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AXIS = 4
+    VT_AXIS = 4,
+    VT_NAN_MODE = 6
   };
   int32_t axis() const {
     return GetField<int32_t>(VT_AXIS, 0);
   }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1080,6 +1140,9 @@ struct AxisAttributeBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_axis(int32_t axis) {
     fbb_.AddElement<int32_t>(AxisAttribute::VT_AXIS, axis, 0);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(AxisAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
   }
   explicit AxisAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1094,8 +1157,10 @@ struct AxisAttributeBuilder {
 
 inline ::flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t axis = 0) {
+    int32_t axis = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
   AxisAttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
   builder_.add_axis(axis);
   return builder_.Finish();
 }
@@ -1145,7 +1210,8 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ClampAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MIN_VAL = 4,
-    VT_MAX_VAL = 6
+    VT_MAX_VAL = 6,
+    VT_NAN_MODE = 8
   };
   const ::flatbuffers::Vector<uint8_t> *min_val() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MIN_VAL);
@@ -1153,12 +1219,16 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::Vector<uint8_t> *max_val() const {
     return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_MAX_VAL);
   }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_MIN_VAL) &&
            verifier.VerifyVector(min_val()) &&
            VerifyOffset(verifier, VT_MAX_VAL) &&
            verifier.VerifyVector(max_val()) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
            verifier.EndTable();
   }
 };
@@ -1172,6 +1242,9 @@ struct ClampAttributeBuilder {
   }
   void add_max_val(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val) {
     fbb_.AddOffset(ClampAttribute::VT_MAX_VAL, max_val);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(ClampAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
   }
   explicit ClampAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1187,8 +1260,10 @@ struct ClampAttributeBuilder {
 inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_val = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
   ClampAttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
   builder_.add_max_val(max_val);
   builder_.add_min_val(min_val);
   return builder_.Finish();
@@ -1197,7 +1272,8 @@ inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
 inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<uint8_t> *min_val = nullptr,
-    const std::vector<uint8_t> *max_val = nullptr) {
+    const std::vector<uint8_t> *max_val = nullptr,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
   if (min_val) { _fbb.ForceVectorAlignment(min_val->size(), sizeof(uint8_t), 8); }
   auto min_val__ = min_val ? _fbb.CreateVector<uint8_t>(*min_val) : 0;
   if (max_val) { _fbb.ForceVectorAlignment(max_val->size(), sizeof(uint8_t), 8); }
@@ -1205,7 +1281,8 @@ inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
   return tosa::CreateClampAttribute(
       _fbb,
       min_val__,
-      max_val__);
+      max_val__,
+      nan_mode);
 }
 
 struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -1950,6 +2027,47 @@ inline ::flatbuffers::Offset<RandUniformAttribute> CreateRandUniformAttribute(
   return builder_.Finish();
 }
 
+struct NanPropagationAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef NanPropagationAttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAN_MODE = 4
+  };
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct NanPropagationAttributeBuilder {
+  typedef NanPropagationAttribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(NanPropagationAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit NanPropagationAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<NanPropagationAttribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<NanPropagationAttribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<NanPropagationAttribute> CreateNanPropagationAttribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  NanPropagationAttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  return builder_.Finish();
+}
+
 struct Version FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef VersionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -2233,6 +2351,9 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const tosa::RandUniformAttribute *attribute_as_RandUniformAttribute() const {
     return attribute_type() == tosa::Attribute_RandUniformAttribute ? static_cast<const tosa::RandUniformAttribute *>(attribute()) : nullptr;
   }
+  const tosa::NanPropagationAttribute *attribute_as_NanPropagationAttribute() const {
+    return attribute_type() == tosa::Attribute_NanPropagationAttribute ? static_cast<const tosa::NanPropagationAttribute *>(attribute()) : nullptr;
+  }
   const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
   }
@@ -2337,6 +2458,10 @@ template<> inline const tosa::RFFTAttribute *TosaOperator::attribute_as<tosa::RF
 
 template<> inline const tosa::RandUniformAttribute *TosaOperator::attribute_as<tosa::RandUniformAttribute>() const {
   return attribute_as_RandUniformAttribute();
+}
+
+template<> inline const tosa::NanPropagationAttribute *TosaOperator::attribute_as<tosa::NanPropagationAttribute>() const {
+  return attribute_as_NanPropagationAttribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2733,6 +2858,10 @@ inline bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, 
     }
     case Attribute_RandUniformAttribute: {
       auto ptr = reinterpret_cast<const tosa::RandUniformAttribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_NanPropagationAttribute: {
+      auto ptr = reinterpret_cast<const tosa::NanPropagationAttribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;
