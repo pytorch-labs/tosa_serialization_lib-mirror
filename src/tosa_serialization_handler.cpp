@@ -620,6 +620,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #define DEF_ARGS_S_float(NAME, V) DEF_ARGS_S_FP_as_U8(NAME, V)
 #define DEF_ARGS_S_bool(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_ResizeMode(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
+#define DEF_ARGS_S_NanPropagationMode(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_DType(NAME, V) DEF_ARGS_S_DEFAULT(NAME, V)
 #define DEF_ARGS_S_string(NAME, V) DEF_ARGS_S_STR(NAME, V)
 #define DEF_ARGS_S(NAME, T, V) DEF_ARGS_S_##T(NAME, V)
@@ -668,6 +669,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #undef DEF_ARGS_S_float
 #undef DEF_ARGS_S_bool
 #undef DEF_ARGS_S_ResizeMode
+#undef DEF_ARGS_S_NanPropagationMode
 #undef DEF_ARGS_S_DType
 #undef DEF_ARGS_S_string
 #undef DEF_ARGS_S_STR

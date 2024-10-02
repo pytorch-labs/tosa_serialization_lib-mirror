@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2021, ARM Limited.
+// Copyright (c) 2020-2024, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #define DEF_ARGS_VER0_S_float(V) DEF_ARGS_VER0_S_float_as_bytes(V)
 #define DEF_ARGS_VER0_S_bool(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_ResizeMode(V) DEF_ARGS_VER0_S_DEFAULT(V)
+#define DEF_ARGS_VER0_S_NanPropagationMode(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_DType(V) DEF_ARGS_VER0_S_DEFAULT(V)
 #define DEF_ARGS_VER0_S_string(V) DEF_ARGS_VER0_S_STR(V)
 
@@ -154,6 +155,7 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #define DEF_VER0_VAR_8(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
 #define DEF_VER0_VAR_9(NAME) DEF_VER0_VAR_DECL_PTR(NAME)
 
+// clang-format off
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
     class Tosa##NAME##Attribute : public TosaAttributeBase                                                             \
     {                                                                                                                  \
@@ -167,16 +169,19 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
         {                                                                                                              \
             *this = *p;                                                                                                \
         }                                                                                                              \
-        Tosa##NAME##Attribute(const void* options){ DEF_VER0_VAR_##NUM_ARGS(NAME##Attribute)                           \
-                                                        DEF_ARGS_##NUM_ARGS(VER0, __VA_ARGS__) } Tosa##NAME            \
-            ##Attribute(DEF_ARGS_##NUM_ARGS(VER1, __VA_ARGS__))                                                        \
+        Tosa##NAME##Attribute(const void* options)                                                                     \
+        {                                                                                                              \
+            DEF_VER0_VAR_##NUM_ARGS(NAME##Attribute)                                                                   \
+            DEF_ARGS_##NUM_ARGS(VER0, __VA_ARGS__)                                                                     \
+        }                                                                                                              \
+        Tosa##NAME##Attribute(DEF_ARGS_##NUM_ARGS(VER1, __VA_ARGS__))                                                  \
         {                                                                                                              \
             DEF_ARGS_##NUM_ARGS(VER2, __VA_ARGS__)                                                                     \
         }                                                                                                              \
-        virtual ~Tosa##NAME##Attribute()                                                                               \
-        {}                                                                                                             \
+        virtual ~Tosa##NAME##Attribute(){}                                                                             \
         DEF_ARGS_##NUM_ARGS(VER3, __VA_ARGS__) private : DEF_ARGS_##NUM_ARGS(VER4, __VA_ARGS__)                        \
     };
+// clang-format on
 
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
@@ -199,6 +204,7 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
 #undef DEF_ARGS_VER0_S_float
 #undef DEF_ARGS_VER0_S_bool
 #undef DEF_ARGS_VER0_S_ResizeMode
+#undef DEF_ARGS_VER0_S_NanPropagationMode
 #undef DEF_ARGS_VER0_S_DType
 #undef DEF_ARGS_VER0_S_string
 #undef DEF_ARGS_VER0_S_STR

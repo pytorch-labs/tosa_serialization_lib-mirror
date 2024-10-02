@@ -153,13 +153,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         super().__init__()
 
     def PoolAttribute(
-        self,
-        kernel,
-        stride,
-        pad,
-        input_zp,
-        output_zp,
-        acc_type,
+        self, kernel, stride, pad, input_zp, output_zp, acc_type, nan_mode
     ):
         from tosa import PoolAttribute as a, Attribute
 
@@ -172,6 +166,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddOutputZp, output_zp))
         self.ints.append((a.AddAccType, acc_type))
+        self.ints.append((a.AddNanMode, nan_mode))
 
     def ConvAttribute(
         self, pad, stride, dilation, input_zp, weight_zp, local_bound, acc_type
@@ -217,13 +212,14 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.floats.append((a.AddPadConst, serialized_pad_const_val))
 
-    def AxisAttribute(self, axis):
+    def AxisAttribute(self, axis, nan_mode):
         from tosa import AxisAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().AxisAttribute
         self.optFcns = (a.Start, a.End)
 
         self.ints.append((a.AddAxis, axis))
+        self.ints.append((a.AddNanMode, nan_mode))
 
     def ResizeAttribute(self, mode):
         from tosa import ResizeAttribute as a, Attribute
@@ -233,7 +229,9 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.ints.append((a.AddMode, mode))
 
-    def ClampAttribute(self, serializer_builder, min_val_as_bytes, max_val_as_bytes):
+    def ClampAttribute(
+        self, serializer_builder, min_val_as_bytes, max_val_as_bytes, nan_mode
+    ):
         from tosa import ClampAttribute as a, Attribute
 
         self.utype = Attribute.Attribute().ClampAttribute
@@ -249,6 +247,7 @@ class TosaSerializerAttribute(TosaSerializerUnion):
 
         self.floats.append((a.AddMinVal, serialized_min_val))
         self.floats.append((a.AddMaxVal, serialized_max_val))
+        self.ints.append((a.AddNanMode, nan_mode))
 
     def RescaleAttribute(
         self,
@@ -364,6 +363,14 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.optFcns = (a.Start, a.End)
 
         self.bools.append((a.AddLocalBound, local_bound))
+
+    def NanPropagationAttribute(self, nan_mode):
+        from tosa import NanPropagationAttribute as a, Attribute
+
+        self.utype = Attribute.Attribute().NanPropagationAttribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddNanMode, nan_mode))
 
 
 class TosaSerializerTensor:

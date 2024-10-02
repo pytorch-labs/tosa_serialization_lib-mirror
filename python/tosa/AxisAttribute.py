@@ -35,8 +35,15 @@ class AxisAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
         return 0
 
+    # AxisAttribute
+    def NanMode(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
 def AxisAttributeStart(builder):
-    builder.StartObject(1)
+    builder.StartObject(2)
 
 def Start(builder):
     AxisAttributeStart(builder)
@@ -46,6 +53,12 @@ def AxisAttributeAddAxis(builder, axis):
 
 def AddAxis(builder, axis):
     AxisAttributeAddAxis(builder, axis)
+
+def AxisAttributeAddNanMode(builder, nanMode):
+    builder.PrependUint32Slot(1, nanMode, 0)
+
+def AddNanMode(builder, nanMode):
+    AxisAttributeAddNanMode(builder, nanMode)
 
 def AxisAttributeEnd(builder):
     return builder.EndObject()

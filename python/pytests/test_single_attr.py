@@ -43,8 +43,12 @@ FIELD_NAME_REPLACEMENTS = {
 ENUM_FIELDS = {
     ("ConvAttribute", "acc_type"): "DType",
     ("PoolAttribute", "acc_type"): "DType",
+    ("PoolAttribute", "nan_mode"): "NanPropagationMode",
     ("TransposeConvAttribute", "acc_type"): "DType",
     ("ResizeAttribute", "mode"): "ResizeMode",
+    ("ClampAttribute", "nan_mode"): "NanPropagationMode",
+    ("NanPropagationAttribute", "nan_mode"): "NanPropagationMode",
+    ("AxisAttribute", "nan_mode"): "NanPropagationMode",
 }
 
 
@@ -113,7 +117,11 @@ def test_single_attr(request, attribute_name):
     expected = {}
     py_kwargs = {}
 
-    if attribute_name in ["PadAttribute", "ClampAttribute"]:
+    if attribute_name in [
+        "PadAttribute",
+        "ClampAttribute",
+        "ClampAndNanPropagationAttribute",
+    ]:
         py_kwargs["serializer_builder"] = ser.builder
 
     # Getting the fields of the attribute from the schema
