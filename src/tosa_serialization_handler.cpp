@@ -102,6 +102,61 @@ void TosaSerializationOperator::InitializeAttribute(Attribute attribute_type, co
     assert(_attribute);
 }
 
+namespace
+{
+
+// verify attribute_type and number of input names for operator op
+// according to op.def
+void VerifyOperatorAttributeAndInputs(Op op,
+                                      Attribute attribute_type,
+                                      const std::vector<std::string>& input_tensor_names)
+{
+    const int input_count = input_tensor_names.size();
+
+    switch (op)
+    {
+        case Op_UNKNOWN:
+            // not a valid operator
+            break;
+#define DEF_OP(OP_NAME, ATTR_NAME, ...)                                                                                \
+    case Op_##OP_NAME: {                                                                                               \
+        Attribute expected                             = Attribute_##ATTR_NAME##Attribute;                             \
+        const std::vector<OP_INPUT_TYPE> operand_types = { __VA_ARGS__ };                                              \
+        const int operand_count                        = operand_types.size();                                         \
+        if (expected != attribute_type)                                                                                \
+        {                                                                                                              \
+            printf("TosaSerializationOperator::Verify(): Expect attribute %s for operator %s, got %s instead\n",       \
+                   EnumNamesAttribute()[expected], EnumNamesOp()[op], EnumNamesAttribute()[attribute_type]);           \
+            assert(0);                                                                                                 \
+        }                                                                                                              \
+        if (operand_count != input_count && !(operand_count == 1 && operand_types[0] == OP_INPUT_TYPE::TENSOR_LIST))   \
+        {                                                                                                              \
+            printf("TosaSerializationOperator::Verify(): Expected %d operands for operator %s, got %d instead\n",      \
+                   operand_count, EnumNamesOp()[op], input_count);                                                     \
+            assert(0);                                                                                                 \
+        }                                                                                                              \
+        break;                                                                                                         \
+    }
+#include "op.def"
+#undef DEF_OP
+        case Op_FULLY_CONNECTED:
+        case Op_RESERVED:
+        case Op_DIM:
+        case Op_CONCAT_SHAPE:
+        case Op_ADD_SHAPE:
+        case Op_SUB_SHAPE:
+        case Op_MUL_SHAPE:
+        case Op_DIV_SHAPE:
+            // these are deprecated operators: do not check
+            break;
+        default:
+            printf("TosaSerializationOperator::Verify(): Operator %s not found in op.def\n", EnumNamesOp()[op]);
+            assert(0);
+    }
+}
+
+}    // namespace
+
 TosaSerializationOperator::TosaSerializationOperator(Op op,
                                                      Attribute attribute_type,
                                                      const TosaAttributeBase* attribute,
@@ -111,6 +166,8 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _op                  = op;
     _input_tensor_names  = input_tensor_names;
     _output_tensor_names = output_tensor_names;
+
+    VerifyOperatorAttributeAndInputs(op, attribute_type, input_tensor_names);
 
     InitializeAttribute(attribute_type, attribute);
 }
@@ -124,6 +181,8 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _op                  = op;
     _input_tensor_names  = std::move(input_tensor_names);
     _output_tensor_names = std::move(output_tensor_names);
+
+    VerifyOperatorAttributeAndInputs(op, attribute_type, _input_tensor_names);
 
     InitializeAttribute(attribute_type, attribute);
 }

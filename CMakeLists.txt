@@ -53,6 +53,8 @@ target_include_directories(
 
 set(
   PUBLIC_HEADERS
+    include/op.h
+    include/op.def
     include/attribute.h
     include/attribute.def
     include/cfloat.h

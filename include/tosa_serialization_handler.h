@@ -20,6 +20,7 @@
 #include "flatbuffers/idl.h"
 #include "flatbuffers/util.h"
 #include "numpy_utils.h"
+#include "op.h"
 #include "tosa_generated.h"
 #include <cstdint>
 #include <memory>

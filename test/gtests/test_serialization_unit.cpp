@@ -15,6 +15,7 @@
 #include "test_serialization_utils.h"
 #include <gtest/gtest.h>
 #include <tosa_serialization_handler.h>
+#include <unordered_map>
 
 using namespace tosa;
 
@@ -114,20 +115,58 @@ TEST(SerializationCpp, FullTensor)
 
 TEST(SerializationCpp, SingleOp)
 {
-    // Serializing a region with one operator and empty input/output tensors. The operators don't have their attributes.
+    // Serializing a region with one operator and empty input/output tensors.
+
+    std::unordered_map<Attribute, std::unique_ptr<TosaAttributeBase>> attrs;
+    // populate attrs with attribute of each type
+    {
+        // Randomly generating an attribute of each type. The LIST_GENERATED_ARGS_... macros use attribute.def to
+        // call the correct generate_value_... functions in test_serialization_utils.h. For example,
+        // attrs[Attribute_ConvAttribute] = new TosaConvAttribute(generate_value_int32_t_V(), ...);
+#define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
+    attrs[Attribute_##NAME##Attribute] =                                                                               \
+        std::make_unique<Tosa##NAME##Attribute>(LIST_GENERATED_ARGS_##NUM_ARGS(__VA_ARGS__));
+#include "attribute.def"
+#undef DEF_ATTRIBUTE
+        attrs[Attribute_NONE] = std::make_unique<TosaNoneAttribute>();
+    }
 
     tosa_err_t err;
     for (int op = Op_MIN; op <= Op_MAX; ++op)
     {
+        if (op == Op_UNKNOWN)
+        {
+            continue;
+        }
+        Attribute attr;
+        int operand_count = 0;
+        switch (op)
+        {
+#define DEF_OP(OP_NAME, ATTR_NAME, ...)                                                                                \
+    case Op_##OP_NAME: {                                                                                               \
+        attr                                           = Attribute_##ATTR_NAME##Attribute;                             \
+        const std::vector<OP_INPUT_TYPE> operand_types = { __VA_ARGS__ };                                              \
+        operand_count                                  = operand_types.size();                                         \
+        break;                                                                                                         \
+    }
+#include "op.def"
+#undef DEF_OP
+            default:
+                printf("TEST(SerializationCpp, SingleOp): Operator %s not found in op.def\n", EnumNamesOp()[op]);
+        }
         TosaSerializationHandler handler1, handler2, handler3;
         handler1.GetRegions().emplace_back(std::make_unique<TosaSerializationRegion>("main_region"));
         auto region = handler1.GetRegions().back().get();
         region->GetBlocks().emplace_back(std::make_unique<TosaSerializationBasicBlock>("main_block", "main_region"));
         auto block = region->GetBlocks().back().get();
-        std::vector<std::string> input_names{ "t1" };
+        std::vector<std::string> input_names;
+        for (int i = 0; i < operand_count; i++)
+        {
+            input_names.push_back("t1");
+        }
         std::vector<std::string> output_names{ "t2" };
         block->GetOperators().emplace_back(std::make_unique<TosaSerializationOperator>(
-            static_cast<Op>(op), Attribute_NONE, new TosaNoneAttribute(), input_names, output_names));
+            static_cast<Op>(op), attr, attrs[attr].get(), input_names, output_names));
         std::vector<int32_t> shape;
         std::vector<uint8_t> empty_data;
         block->GetTensors().emplace_back(
