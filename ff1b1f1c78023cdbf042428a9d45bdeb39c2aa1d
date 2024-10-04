@@ -1,0 +1,6 @@
+Code-Review+2: Jerry-Ge <jerry.ge@arm.com>
+Submitted-by: Jerry-Ge <jerry.ge@arm.com>
+Submitted-at: Fri, 04 Oct 2024 17:22:00 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/12605
+Project: tosa/serialization_lib
+Branch: refs/heads/v1.0
