@@ -183,10 +183,8 @@ public:
     /// numbers stored in two's complement.
     static constexpr inline mxint8 from_bits(bool pm, const int8_t exp_bits, const uint8_t mantissa_bits)
     {
-        assert(exp_bits == 0);
-        assert(mantissa_bits >> 7 == 0);
-        return mxint8(ct::float_support::hidden(),
-                      pm ? -static_cast<int8_t>(mantissa_bits) : static_cast<int8_t>(mantissa_bits));
+        return mxint8(ct::float_support::hidden(), pm ? (-static_cast<int8_t>(mantissa_bits)) | (exp_bits << 7)
+                                                      : static_cast<int8_t>(mantissa_bits));
     }
 
     /// \brief Return a NaN representation for mxint8
@@ -210,12 +208,16 @@ public:
 
     inline constexpr int64_t exponent() const
     {
-        return exponent_bias;
+        return exponent_bits() - exponent_bias;
     }
+
     inline constexpr uint64_t exponent_bits() const
     {
-        return 0;
+        // NOTE We have to convert back from two's complement to be
+        // compatible with `cfloat_cast`.
+        return ((uint64_t)((sign() ? -m_data : m_data) & 0x80)) >> 7;
     }
+
     inline constexpr bool sign() const
     {
         return m_data < 0;
@@ -237,7 +239,7 @@ public:
     {
         // NOTE We have to convert back from two's complement to be
         // compatible with `cfloat_cast`.
-        return sign() ? -m_data : m_data;
+        return (sign() ? -m_data : m_data) & 0x7f;
     }
 
     inline operator float() const
