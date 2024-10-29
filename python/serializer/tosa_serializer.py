@@ -889,13 +889,13 @@ class TosaSerializer:
             in_size = len(data)
             out_size = (in_size + 1) // 2
             for i in range(out_size):
-                val_0 = data[2 * i]
+                val_0 = np.array(data[2 * i]).astype(np.uint8)
                 if (2 * i + 1) < in_size:
-                    val_1 = data[2 * i + 1]
+                    val_1 = np.array(data[2 * i + 1]).astype(np.uint8)
                 else:
                     val_1 = 0
                 mask = np.uint8(0xF)
-                val_u8 = (np.uint8(val_0) & mask) | ((np.uint8(val_1) & mask) << 4)
+                val_u8 = (val_0 & mask) | ((val_1 & mask) << 4)
                 u8_data.append(val_u8)
         elif dtype == DType.INT8:
             for val in data:
