@@ -6,29 +6,29 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class TransposeConvAttribute(object):
+class TransposeConv2dAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
     def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = TransposeConvAttribute()
+        x = TransposeConv2dAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def GetRootAsTransposeConvAttribute(cls, buf, offset=0):
+    def GetRootAsTransposeConv2dAttribute(cls, buf, offset=0):
         """This method is deprecated. Please switch to GetRootAs."""
         return cls.GetRootAs(buf, offset)
     @classmethod
-    def TransposeConvAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def TransposeConv2dAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def OutPad(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
@@ -36,26 +36,26 @@ class TransposeConvAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def OutPadAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def OutPadLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def OutPadIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         return o == 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def Stride(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
@@ -63,83 +63,83 @@ class TransposeConvAttribute(object):
             return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def StrideAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def StrideLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def StrideIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def LocalBound(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-    # TransposeConvAttribute
+    # TransposeConv2dAttribute
     def AccType(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
-def TransposeConvAttributeStart(builder):
+def TransposeConv2dAttributeStart(builder):
     builder.StartObject(4)
 
 def Start(builder):
-    TransposeConvAttributeStart(builder)
+    TransposeConv2dAttributeStart(builder)
 
-def TransposeConvAttributeAddOutPad(builder, outPad):
+def TransposeConv2dAttributeAddOutPad(builder, outPad):
     builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(outPad), 0)
 
 def AddOutPad(builder, outPad):
-    TransposeConvAttributeAddOutPad(builder, outPad)
+    TransposeConv2dAttributeAddOutPad(builder, outPad)
 
-def TransposeConvAttributeStartOutPadVector(builder, numElems):
+def TransposeConv2dAttributeStartOutPadVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
 def StartOutPadVector(builder, numElems):
-    return TransposeConvAttributeStartOutPadVector(builder, numElems)
+    return TransposeConv2dAttributeStartOutPadVector(builder, numElems)
 
-def TransposeConvAttributeAddStride(builder, stride):
+def TransposeConv2dAttributeAddStride(builder, stride):
     builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
 
 def AddStride(builder, stride):
-    TransposeConvAttributeAddStride(builder, stride)
+    TransposeConv2dAttributeAddStride(builder, stride)
 
-def TransposeConvAttributeStartStrideVector(builder, numElems):
+def TransposeConv2dAttributeStartStrideVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
 def StartStrideVector(builder, numElems):
-    return TransposeConvAttributeStartStrideVector(builder, numElems)
+    return TransposeConv2dAttributeStartStrideVector(builder, numElems)
 
-def TransposeConvAttributeAddLocalBound(builder, localBound):
+def TransposeConv2dAttributeAddLocalBound(builder, localBound):
     builder.PrependBoolSlot(2, localBound, 0)
 
 def AddLocalBound(builder, localBound):
-    TransposeConvAttributeAddLocalBound(builder, localBound)
+    TransposeConv2dAttributeAddLocalBound(builder, localBound)
 
-def TransposeConvAttributeAddAccType(builder, accType):
+def TransposeConv2dAttributeAddAccType(builder, accType):
     builder.PrependUint32Slot(3, accType, 0)
 
 def AddAccType(builder, accType):
-    TransposeConvAttributeAddAccType(builder, accType)
+    TransposeConv2dAttributeAddAccType(builder, accType)
 
-def TransposeConvAttributeEnd(builder):
+def TransposeConv2dAttributeEnd(builder):
     return builder.EndObject()
 
 def End(builder):
-    return TransposeConvAttributeEnd(builder)
+    return TransposeConv2dAttributeEnd(builder)

@@ -29,7 +29,7 @@ class MatMulAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
 def MatMulAttributeStart(builder):
-    builder.StartObject(2)
+    builder.StartObject(0)
 
 def Start(builder):
     MatMulAttributeStart(builder)

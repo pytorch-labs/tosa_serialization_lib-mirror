@@ -30,19 +30,19 @@ class ResizeAttribute(object):
 
     # ResizeAttribute
     def Mode(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
 def ResizeAttributeStart(builder):
-    builder.StartObject(4)
+    builder.StartObject(1)
 
 def Start(builder):
     ResizeAttributeStart(builder)
 
 def ResizeAttributeAddMode(builder, mode):
-    builder.PrependUint32Slot(3, mode, 0)
+    builder.PrependUint32Slot(0, mode, 0)
 
 def AddMode(builder, mode):
     ResizeAttributeAddMode(builder, mode)

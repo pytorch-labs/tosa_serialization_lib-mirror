@@ -6,205 +6,166 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class PoolAttribute(object):
+class MaxPool2dAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
     def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = PoolAttribute()
+        x = MaxPool2dAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def GetRootAsPoolAttribute(cls, buf, offset=0):
+    def GetRootAsMaxPool2dAttribute(cls, buf, offset=0):
         """This method is deprecated. Please switch to GetRootAs."""
         return cls.GetRootAs(buf, offset)
     @classmethod
-    def PoolAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def MaxPool2dAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # PoolAttribute
+    # MaxPool2dAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # PoolAttribute
-    def Pad(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
-        return 0
-
-    # PoolAttribute
-    def PadAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
-        return 0
-
-    # PoolAttribute
-    def PadLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-    # PoolAttribute
-    def PadIsNone(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        return o == 0
-
-    # PoolAttribute
+    # MaxPool2dAttribute
     def Kernel(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # PoolAttribute
+    # MaxPool2dAttribute
     def KernelAsNumpy(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # MaxPool2dAttribute
+    def KernelLength(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # MaxPool2dAttribute
+    def KernelIsNone(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        return o == 0
+
+    # MaxPool2dAttribute
+    def Stride(self, j):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # MaxPool2dAttribute
+    def StrideAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
-    # PoolAttribute
-    def KernelLength(self):
+    # MaxPool2dAttribute
+    def StrideLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # PoolAttribute
-    def KernelIsNone(self):
+    # MaxPool2dAttribute
+    def StrideIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         return o == 0
 
-    # PoolAttribute
-    def Stride(self, j):
+    # MaxPool2dAttribute
+    def Pad(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(flatbuffers.number_types.Int32Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # PoolAttribute
-    def StrideAsNumpy(self):
+    # MaxPool2dAttribute
+    def PadAsNumpy(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Int32Flags, o)
         return 0
 
-    # PoolAttribute
-    def StrideLength(self):
+    # MaxPool2dAttribute
+    def PadLength(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # PoolAttribute
-    def StrideIsNone(self):
+    # MaxPool2dAttribute
+    def PadIsNone(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         return o == 0
 
-    # PoolAttribute
-    def InputZp(self):
+    # MaxPool2dAttribute
+    def NanMode(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # PoolAttribute
-    def OutputZp(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # PoolAttribute
-    def AccType(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
-        if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
-    # PoolAttribute
-    def NanMode(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
-        return 0
-
-def PoolAttributeStart(builder):
-    builder.StartObject(7)
+def MaxPool2dAttributeStart(builder):
+    builder.StartObject(4)
 
 def Start(builder):
-    PoolAttributeStart(builder)
+    MaxPool2dAttributeStart(builder)
 
-def PoolAttributeAddPad(builder, pad):
-    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
-
-def AddPad(builder, pad):
-    PoolAttributeAddPad(builder, pad)
-
-def PoolAttributeStartPadVector(builder, numElems):
-    return builder.StartVector(4, numElems, 4)
-
-def StartPadVector(builder, numElems):
-    return PoolAttributeStartPadVector(builder, numElems)
-
-def PoolAttributeAddKernel(builder, kernel):
-    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
+def MaxPool2dAttributeAddKernel(builder, kernel):
+    builder.PrependUOffsetTRelativeSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(kernel), 0)
 
 def AddKernel(builder, kernel):
-    PoolAttributeAddKernel(builder, kernel)
+    MaxPool2dAttributeAddKernel(builder, kernel)
 
-def PoolAttributeStartKernelVector(builder, numElems):
+def MaxPool2dAttributeStartKernelVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
 def StartKernelVector(builder, numElems):
-    return PoolAttributeStartKernelVector(builder, numElems)
+    return MaxPool2dAttributeStartKernelVector(builder, numElems)
 
-def PoolAttributeAddStride(builder, stride):
-    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
+def MaxPool2dAttributeAddStride(builder, stride):
+    builder.PrependUOffsetTRelativeSlot(1, flatbuffers.number_types.UOffsetTFlags.py_type(stride), 0)
 
 def AddStride(builder, stride):
-    PoolAttributeAddStride(builder, stride)
+    MaxPool2dAttributeAddStride(builder, stride)
 
-def PoolAttributeStartStrideVector(builder, numElems):
+def MaxPool2dAttributeStartStrideVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
 def StartStrideVector(builder, numElems):
-    return PoolAttributeStartStrideVector(builder, numElems)
+    return MaxPool2dAttributeStartStrideVector(builder, numElems)
 
-def PoolAttributeAddInputZp(builder, inputZp):
-    builder.PrependInt32Slot(3, inputZp, 0)
+def MaxPool2dAttributeAddPad(builder, pad):
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(pad), 0)
 
-def AddInputZp(builder, inputZp):
-    PoolAttributeAddInputZp(builder, inputZp)
+def AddPad(builder, pad):
+    MaxPool2dAttributeAddPad(builder, pad)
 
-def PoolAttributeAddOutputZp(builder, outputZp):
-    builder.PrependInt32Slot(4, outputZp, 0)
+def MaxPool2dAttributeStartPadVector(builder, numElems):
+    return builder.StartVector(4, numElems, 4)
 
-def AddOutputZp(builder, outputZp):
-    PoolAttributeAddOutputZp(builder, outputZp)
+def StartPadVector(builder, numElems):
+    return MaxPool2dAttributeStartPadVector(builder, numElems)
 
-def PoolAttributeAddAccType(builder, accType):
-    builder.PrependUint32Slot(5, accType, 0)
-
-def AddAccType(builder, accType):
-    PoolAttributeAddAccType(builder, accType)
-
-def PoolAttributeAddNanMode(builder, nanMode):
-    builder.PrependUint32Slot(6, nanMode, 0)
+def MaxPool2dAttributeAddNanMode(builder, nanMode):
+    builder.PrependUint32Slot(3, nanMode, 0)
 
 def AddNanMode(builder, nanMode):
-    PoolAttributeAddNanMode(builder, nanMode)
+    MaxPool2dAttributeAddNanMode(builder, nanMode)
 
-def PoolAttributeEnd(builder):
+def MaxPool2dAttributeEnd(builder):
     return builder.EndObject()
 
 def End(builder):
-    return PoolAttributeEnd(builder)
+    return MaxPool2dAttributeEnd(builder)

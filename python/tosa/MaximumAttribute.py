@@ -6,49 +6,49 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class RFFTAttribute(object):
+class MaximumAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
     def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = RFFTAttribute()
+        x = MaximumAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def GetRootAsRFFTAttribute(cls, buf, offset=0):
+    def GetRootAsMaximumAttribute(cls, buf, offset=0):
         """This method is deprecated. Please switch to GetRootAs."""
         return cls.GetRootAs(buf, offset)
     @classmethod
-    def RFFTAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def MaximumAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # RFFTAttribute
+    # MaximumAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # RFFTAttribute
-    def LocalBound(self):
+    # MaximumAttribute
+    def NanMode(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
-        return False
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
 
-def RFFTAttributeStart(builder):
+def MaximumAttributeStart(builder):
     builder.StartObject(1)
 
 def Start(builder):
-    RFFTAttributeStart(builder)
+    MaximumAttributeStart(builder)
 
-def RFFTAttributeAddLocalBound(builder, localBound):
-    builder.PrependBoolSlot(0, localBound, 0)
+def MaximumAttributeAddNanMode(builder, nanMode):
+    builder.PrependUint32Slot(0, nanMode, 0)
 
-def AddLocalBound(builder, localBound):
-    RFFTAttributeAddLocalBound(builder, localBound)
+def AddNanMode(builder, nanMode):
+    MaximumAttributeAddNanMode(builder, nanMode)
 
-def RFFTAttributeEnd(builder):
+def MaximumAttributeEnd(builder):
     return builder.EndObject()
 
 def End(builder):
-    return RFFTAttributeEnd(builder)
+    return MaximumAttributeEnd(builder)

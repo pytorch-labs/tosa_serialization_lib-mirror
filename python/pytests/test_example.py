@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ def test_example_conv2d(request):
     ser.addOutput([256, 256, 3], ts.DType.FP32)
 
     attr = ts.TosaSerializerAttribute()
-    attr.ConvAttribute([2, 2, 2, 2], [1, 1], [1, 1], False, ts.DType.FP32)
+    attr.Conv2dAttribute([2, 2, 2, 2], [1, 1], [1, 1], False, ts.DType.FP32)
     ser.addOperator(
         ts.TosaOp.Op().CONV2D,
         ["input-0", "const-weight", "const-bias", "input-zp", "weight-zp"],

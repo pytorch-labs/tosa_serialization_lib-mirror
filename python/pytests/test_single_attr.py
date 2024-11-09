@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -28,25 +28,30 @@ import pytest
 # ('schema': 'python')
 FIELD_NAME_REPLACEMENTS = {
     # spelling differences
-    ("TransposeConvAttribute", "out_pad"): "outpad",
-    # these are for a reason; PadAttribute and ClampAttribute have
+    # these are for a reason; PadAttribute, ClampAttribute, CustomAttribute have
     # inputs that are byte arrays, and the param names reflect this
     ("PadAttribute", "pad_const"): "pad_const_val_as_bytes",
     ("ClampAttribute", "min_val"): "min_val_as_bytes",
     ("ClampAttribute", "max_val"): "max_val_as_bytes",
+    ("CustomAttribute", "implementation_attrs"): "implementation_attrs_as_bytes",
 }
 
 # When converting the tosa schema to json, the enums are lost and
 # replaced with UInt, so the enum names are hard-coded here.
 ENUM_FIELDS = {
-    ("ConvAttribute", "acc_type"): "DType",
-    ("PoolAttribute", "acc_type"): "DType",
-    ("PoolAttribute", "nan_mode"): "NanPropagationMode",
-    ("TransposeConvAttribute", "acc_type"): "DType",
-    ("ResizeAttribute", "mode"): "ResizeMode",
+    ("ArgMaxAttribute", "nan_mode"): "NanPropagationMode",
+    ("Conv2dAttribute", "acc_type"): "DType",
+    ("Conv3dAttribute", "acc_type"): "DType",
+    ("DepthwiseConv2dAttribute", "acc_type"): "DType",
+    ("TransposeConv2dAttribute", "acc_type"): "DType",
+    ("AvgPool2dAttribute", "acc_type"): "DType",
+    ("MaxPool2dAttribute", "nan_mode"): "NanPropagationMode",
     ("ClampAttribute", "nan_mode"): "NanPropagationMode",
-    ("NanPropagationAttribute", "nan_mode"): "NanPropagationMode",
-    ("AxisAttribute", "nan_mode"): "NanPropagationMode",
+    ("MaximumAttribute", "nan_mode"): "NanPropagationMode",
+    ("MinimumAttribute", "nan_mode"): "NanPropagationMode",
+    ("ReduceMaxAttribute", "nan_mode"): "NanPropagationMode",
+    ("ReduceMinAttribute", "nan_mode"): "NanPropagationMode",
+    ("ResizeAttribute", "mode"): "ResizeMode",
 }
 
 
@@ -68,9 +73,8 @@ def get_attributes():
     )["values"]
 
     for i in attribute_info:
-        # The library doesn't support custom or none attributes.
-        # CustomAttribute and MatMulAttribute are deprecated
-        if i["name"] not in ["NONE", "CustomAttribute", "MatMulAttribute"]:
+        # The library doesn't support none attributes.
+        if i["name"] not in ["NONE"]:
             yield i["name"]
 
 
@@ -116,11 +120,7 @@ def test_single_attr(request, attribute_name):
     expected = {}
     py_kwargs = {}
 
-    if attribute_name in [
-        "PadAttribute",
-        "ClampAttribute",
-        "ClampAndNanPropagationAttribute",
-    ]:
+    if attribute_name in ["PadAttribute", "ClampAttribute", "CustomAttribute"]:
         py_kwargs["serializer_builder"] = ser.builder
 
     # Getting the fields of the attribute from the schema

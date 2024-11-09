@@ -6,49 +6,49 @@ import flatbuffers
 from flatbuffers.compat import import_numpy
 np = import_numpy()
 
-class RandUniformAttribute(object):
+class ReduceProductAttribute(object):
     __slots__ = ['_tab']
 
     @classmethod
     def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
-        x = RandUniformAttribute()
+        x = ReduceProductAttribute()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
-    def GetRootAsRandUniformAttribute(cls, buf, offset=0):
+    def GetRootAsReduceProductAttribute(cls, buf, offset=0):
         """This method is deprecated. Please switch to GetRootAs."""
         return cls.GetRootAs(buf, offset)
     @classmethod
-    def RandUniformAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
+    def ReduceProductAttributeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(buf, offset, b"\x54\x4F\x53\x41", size_prefixed=size_prefixed)
 
-    # RandUniformAttribute
+    # ReduceProductAttribute
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # RandUniformAttribute
-    def UseSeed(self):
+    # ReduceProductAttribute
+    def Axis(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
-        return False
+            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
 
-def RandUniformAttributeStart(builder):
+def ReduceProductAttributeStart(builder):
     builder.StartObject(1)
 
 def Start(builder):
-    RandUniformAttributeStart(builder)
+    ReduceProductAttributeStart(builder)
 
-def RandUniformAttributeAddUseSeed(builder, useSeed):
-    builder.PrependBoolSlot(0, useSeed, 0)
+def ReduceProductAttributeAddAxis(builder, axis):
+    builder.PrependInt32Slot(0, axis, 0)
 
-def AddUseSeed(builder, useSeed):
-    RandUniformAttributeAddUseSeed(builder, useSeed)
+def AddAxis(builder, axis):
+    ReduceProductAttributeAddAxis(builder, axis)
 
-def RandUniformAttributeEnd(builder):
+def ReduceProductAttributeEnd(builder):
     return builder.EndObject()
 
 def End(builder):
-    return RandUniformAttributeEnd(builder)
+    return ReduceProductAttributeEnd(builder)

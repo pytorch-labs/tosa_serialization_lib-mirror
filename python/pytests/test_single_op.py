@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -65,9 +65,13 @@ def test_single_op(request, op_name):
     ser.currRegion.currBasicBlock.addInput("t1")
     ser.currRegion.currBasicBlock.addOutput("t2")
 
+    # for now, use AddAttribute for all ops
+    attr = ts.TosaSerializerAttribute()
+    attr.AddAttribute()
+
     # Adding an operator of the given op_name.
     ser.currRegion.currBasicBlock.addOperator(
-        getattr(ts.TosaOp.Op(), op_name), ["t1"], ["t2"], None
+        getattr(ts.TosaOp.Op(), op_name), ["t1"], ["t2"], attr
     )
 
     # Serializing to flatbuffer and writing to a temporary file
@@ -97,7 +101,8 @@ def test_single_op(request, op_name):
     new_op = serialized["regions"][0]["blocks"][0]["operators"][0]
 
     assert new_op == {
-        "attribute_type": "NONE",
+        "attribute_type": "AddAttribute",
+        "attribute": {},
         "inputs": ["t1"],
         "outputs": ["t2"],
         "op": op_name,

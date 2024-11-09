@@ -71,7 +71,9 @@ TEST_P(SingleAttr, )
 
 TEST(SingleAttr, NanPropagation)
 {
-    std::list<Op> op_list = { Op_MAX_POOL2D, Op_CLAMP, Op_MAXIMUM, Op_MINIMUM, Op_REDUCE_MAX, Op_REDUCE_MIN };
+    std::list<Op> op_list = {
+        Op_ARGMAX, Op_MAX_POOL2D, Op_CLAMP, Op_MAXIMUM, Op_MINIMUM, Op_REDUCE_MAX, Op_REDUCE_MIN
+    };
 
     auto generate_NanPropagationMode = [&] {
         std::uniform_int_distribution<uint32_t> valid_nan_propagation_mode(NanPropagationMode_PROPAGATE,
@@ -80,15 +82,19 @@ TEST(SingleAttr, NanPropagation)
     };
 
     std::map<Attribute, std::unique_ptr<TosaAttributeBase>> attrs;
-    attrs[Attribute_AxisAttribute] =
-        std::make_unique<TosaAxisAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
+    attrs[Attribute_ArgMaxAttribute] =
+        std::make_unique<TosaArgMaxAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
+    attrs[Attribute_MaxPool2dAttribute] =
+        std::make_unique<TosaMaxPool2dAttribute>(generate_value_int32_t_V(), generate_value_int32_t_V(),
+                                                 generate_value_int32_t_V(), generate_NanPropagationMode());
     attrs[Attribute_ClampAttribute] = std::make_unique<TosaClampAttribute>(
         generate_value_uint8_t_V(), generate_value_uint8_t_V(), generate_NanPropagationMode());
-    attrs[Attribute_PoolAttribute] = std::make_unique<TosaPoolAttribute>(
-        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_S(),
-        generate_value_int32_t_S(), generate_value_DType_S(), generate_NanPropagationMode());
-    attrs[Attribute_NanPropagationAttribute] =
-        std::make_unique<TosaNanPropagationAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_MaximumAttribute] = std::make_unique<TosaMaximumAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_MinimumAttribute] = std::make_unique<TosaMinimumAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_ReduceMaxAttribute] =
+        std::make_unique<TosaReduceMaxAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
+    attrs[Attribute_ReduceMinAttribute] =
+        std::make_unique<TosaReduceMinAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
 
     for (Op op : op_list)
     {
@@ -97,12 +103,12 @@ TEST(SingleAttr, NanPropagation)
         switch (op)
         {
             case Op_ARGMAX: {
-                attr_enum     = Attribute_AxisAttribute;
+                attr_enum     = Attribute_ArgMaxAttribute;
                 operand_types = { TENSOR };
                 break;
             }
             case Op_MAX_POOL2D: {
-                attr_enum     = Attribute_PoolAttribute;
+                attr_enum     = Attribute_MaxPool2dAttribute;
                 operand_types = { TENSOR };
                 break;
             }
@@ -111,15 +117,23 @@ TEST(SingleAttr, NanPropagation)
                 operand_types = { TENSOR };
                 break;
             }
-            case Op_MAXIMUM:
-            case Op_MINIMUM: {
-                attr_enum     = Attribute_NanPropagationAttribute;
+            case Op_MAXIMUM: {
+                attr_enum     = Attribute_MaximumAttribute;
                 operand_types = { TENSOR, TENSOR };
                 break;
             }
-            case Op_REDUCE_MAX:
+            case Op_MINIMUM: {
+                attr_enum     = Attribute_MinimumAttribute;
+                operand_types = { TENSOR, TENSOR };
+                break;
+            }
+            case Op_REDUCE_MAX: {
+                attr_enum     = Attribute_ReduceMaxAttribute;
+                operand_types = { TENSOR };
+                break;
+            }
             case Op_REDUCE_MIN: {
-                attr_enum     = Attribute_AxisAttribute;
+                attr_enum     = Attribute_ReduceMinAttribute;
                 operand_types = { TENSOR };
                 break;
             }
@@ -147,11 +161,9 @@ TEST(SingleAttr, NanPropagation)
         const auto json_path   = source_dir + "/test/tmp/Serialization.SingleAttr.NanPropagation.json";
 
         tosa_err_t err;
-        WRITE_READ_TOSA_TEST(handler1, handler2, err, tosa_path.c_str(),
-                             EnumNameAttribute(Attribute_NanPropagationAttribute));
+        WRITE_READ_TOSA_TEST(handler1, handler2, err, tosa_path.c_str(), "NanPropagation");
 
-        WRITE_READ_JSON_TEST(handler2, handler3, err, schema_path.c_str(), json_path.c_str(),
-                             EnumNameAttribute(Attribute_NanPropagationAttribute));
+        WRITE_READ_JSON_TEST(handler2, handler3, err, schema_path.c_str(), json_path.c_str(), "NanPropagation");
     }
 }
 
@@ -159,34 +171,45 @@ TEST(SingleAttr, ZeroPoint)
 {
     std::list<Op> op_list = { Op_CONV2D, Op_CONV3D, Op_DEPTHWISE_CONV2D, Op_TRANSPOSE_CONV2D };
 
-    std::map<Attribute, std::unique_ptr<TosaAttributeBase>> attrs;
-    // ConvAttribute: pad, stride, dilation, local_bound, acc_type
-    attrs[Attribute_ConvAttribute] = std::make_unique<TosaConvAttribute>(
-        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_bool_S(),
-        generate_value_DType_S());
-    // TransposeConvAttribute: out_pad, stride, local_bound, acc_type
-    attrs[Attribute_TransposeConvAttribute] = std::make_unique<TosaTransposeConvAttribute>(
-        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_S(), generate_value_DType_S());
-
     for (Op op : op_list)
     {
         Attribute attr_enum;
-        std::vector<OP_INPUT_TYPE> operand_types;
+        std::unique_ptr<TosaAttributeBase> attr;
+        std::vector<OP_INPUT_TYPE> operand_types = { TENSOR, TENSOR, TENSOR, TENSOR, TENSOR };
         switch (op)
         {
-            case Op_CONV2D:
-            case Op_CONV3D:
-            case Op_DEPTHWISE_CONV2D: {
-                attr_enum = Attribute_ConvAttribute;
-                // input, weight, bias, input_zp, weight_zp
-                operand_types = { TENSOR, TENSOR, TENSOR, TENSOR, TENSOR };
+            case Op_CONV2D: {
+                attr_enum = Attribute_Conv2dAttribute;
+                attr      = std::make_unique<TosaConv2dAttribute>(
+                    // pad, stride, dilation, local_bound, acc_type
+                    generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(),
+                    generate_value_bool_S(), generate_value_DType_S());
                 break;
             }
-            case Op_TRANSPOSE_CONV2D:
-                attr_enum = Attribute_TransposeConvAttribute;
-                // input, weight, bias, input_zp, weight_zp
-                operand_types = { TENSOR, TENSOR, TENSOR, TENSOR, TENSOR };
+            case Op_CONV3D: {
+                attr_enum = Attribute_Conv3dAttribute;
+                attr      = std::make_unique<TosaConv3dAttribute>(
+                    // pad, stride, dilation, local_bound, acc_type
+                    generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(),
+                    generate_value_bool_S(), generate_value_DType_S());
                 break;
+            }
+            case Op_DEPTHWISE_CONV2D: {
+                attr_enum = Attribute_DepthwiseConv2dAttribute;
+                attr      = std::make_unique<TosaDepthwiseConv2dAttribute>(
+                    // pad, stride, dilation, local_bound, acc_type
+                    generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(),
+                    generate_value_bool_S(), generate_value_DType_S());
+                break;
+            }
+            case Op_TRANSPOSE_CONV2D: {
+                attr_enum = Attribute_TransposeConv2dAttribute;
+                attr      = std::make_unique<TosaTransposeConv2dAttribute>(
+                    // pad, stride, local_bound, acc_type
+                    generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_bool_S(),
+                    generate_value_DType_S());
+                break;
+            }
             default:
                 FAIL() << "Operator " << EnumNamesOp()[op] << " is not included in the test";
         }
@@ -202,8 +225,8 @@ TEST(SingleAttr, ZeroPoint)
         std::vector<std::string> input_names  = SetupDummyInput(block, operand_types.size());
         std::vector<std::string> output_names = SetupDummyOutput(block, 1);
 
-        auto ser_op = std::make_unique<TosaSerializationOperator>(static_cast<Op>(op), attr_enum,
-                                                                  attrs[attr_enum].get(), input_names, output_names);
+        auto ser_op = std::make_unique<TosaSerializationOperator>(static_cast<Op>(op), attr_enum, attr.get(),
+                                                                  input_names, output_names);
         pushBackOperator(block, std::move(ser_op));
 
         const auto schema_path = source_dir + "/schema/tosa.fbs";

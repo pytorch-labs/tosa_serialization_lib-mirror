@@ -1,4 +1,4 @@
-// Copyright (c) 2024, ARM Limited.
+// Copyright (c) 2024-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ TEST(SerializationCpp, FullTensor)
         std::vector<int32_t> shape = { 1, data_bytes };
 
         block->GetOperators().emplace_back(std::make_unique<TosaSerializationOperator>(
-            Op_IDENTITY, Attribute_NONE, new TosaNoneAttribute(), input_names, output_names));
+            Op_IDENTITY, Attribute_IdentityAttribute, new TosaIdentityAttribute(), input_names, output_names));
 
         block->GetTensors().emplace_back(std::make_unique<TosaSerializationTensor>(
             input_name, shape, DType_UINT8, empty_data, variable, is_unranked, variable_name));

@@ -29,7 +29,7 @@ class TableAttribute(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
 def TableAttributeStart(builder):
-    builder.StartObject(1)
+    builder.StartObject(0)
 
 def Start(builder):
     TableAttributeStart(builder)

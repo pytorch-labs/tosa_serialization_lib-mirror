@@ -1,4 +1,4 @@
-// Copyright (c) 2024, ARM Limited.
+// Copyright (c) 2024-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ int test_numpy_type(std::vector<int32_t> shape, std::default_random_engine& gen,
     NumpyUtilities::NPError err = NumpyUtilities::writeToNpyFile(filename.c_str(), shape, buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error writing file, code " << err << std::endl;
+        std::cout << "Error writing file " << filename << " , code " << err << std::endl;
         return 1;
     }
 
@@ -65,7 +65,7 @@ int test_numpy_type(std::vector<int32_t> shape, std::default_random_engine& gen,
     err              = NumpyUtilities::readFromNpyFile(filename.c_str(), total_size, read_buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error reading file, code " << err << std::endl;
+        std::cout << "Error reading file " << filename << " , code " << err << std::endl;
         return 1;
     }
     if (memcmp(buffer.get(), read_buffer.get(), total_size * sizeof(T)))

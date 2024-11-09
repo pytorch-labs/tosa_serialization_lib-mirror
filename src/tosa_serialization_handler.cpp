@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2024, ARM Limited.
+// Copyright (c) 2020-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -139,16 +139,6 @@ void VerifyOperatorAttributeAndInputs(Op op,
     }
 #include "op.def"
 #undef DEF_OP
-        case Op_FULLY_CONNECTED:
-        case Op_RESERVED:
-        case Op_DIM:
-        case Op_CONCAT_SHAPE:
-        case Op_ADD_SHAPE:
-        case Op_SUB_SHAPE:
-        case Op_MUL_SHAPE:
-        case Op_DIV_SHAPE:
-            // these are deprecated operators: do not check
-            break;
         default:
             printf("TosaSerializationOperator::Verify(): Operator %s not found in op.def\n", EnumNamesOp()[op]);
             assert(0);
@@ -677,6 +667,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #define DEF_ARGS_S_string(NAME, V) DEF_ARGS_S_STR(NAME, V)
 #define DEF_ARGS_S(NAME, T, V) DEF_ARGS_S_##T(NAME, V)
 #define DEF_ARGS_V(NAME, T, V) , _builder.CreateVector<T>(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V())
+#define DEF_ARGS_0(NAME, ...)
 #define DEF_ARGS_1(NAME, T0, F0, V0) DEF_ARGS_##F0(NAME, T0, V0)
 #define DEF_ARGS_2(NAME, T0, F0, V0, T1, F1, V1) DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1)
 #define DEF_ARGS_3(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2)                                                           \
@@ -708,6 +699,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
         break;
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
+#undef DEF_ARGS_0
 #undef DEF_ARGS_1
 #undef DEF_ARGS_2
 #undef DEF_ARGS_3

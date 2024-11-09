@@ -28,24 +28,11 @@ class MulAttribute(object):
     def Init(self, buf, pos):
         self._tab = flatbuffers.table.Table(buf, pos)
 
-    # MulAttribute
-    def Shift(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
 def MulAttributeStart(builder):
-    builder.StartObject(1)
+    builder.StartObject(0)
 
 def Start(builder):
     MulAttributeStart(builder)
-
-def MulAttributeAddShift(builder, shift):
-    builder.PrependInt32Slot(0, shift, 0)
-
-def AddShift(builder, shift):
-    MulAttributeAddShift(builder, shift)
 
 def MulAttributeEnd(builder):
     return builder.EndObject()
