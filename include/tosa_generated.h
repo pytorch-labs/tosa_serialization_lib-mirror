@@ -15,71 +15,242 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 
 namespace tosa {
 
-struct PoolAttribute;
-struct PoolAttributeBuilder;
+struct ARGMAX_Attribute;
+struct ARGMAX_AttributeBuilder;
 
-struct ConvAttribute;
-struct ConvAttributeBuilder;
+struct AVG_POOL2D_Attribute;
+struct AVG_POOL2D_AttributeBuilder;
 
-struct TransposeConvAttribute;
-struct TransposeConvAttributeBuilder;
+struct CONV2D_Attribute;
+struct CONV2D_AttributeBuilder;
 
-struct PadAttribute;
-struct PadAttributeBuilder;
+struct CONV3D_Attribute;
+struct CONV3D_AttributeBuilder;
 
-struct AxisAttribute;
-struct AxisAttributeBuilder;
+struct DEPTHWISE_CONV2D_Attribute;
+struct DEPTHWISE_CONV2D_AttributeBuilder;
 
-struct ResizeAttribute;
-struct ResizeAttributeBuilder;
+struct FFT2D_Attribute;
+struct FFT2D_AttributeBuilder;
 
-struct ClampAttribute;
-struct ClampAttributeBuilder;
+struct MATMUL_Attribute;
+struct MATMUL_AttributeBuilder;
 
-struct RescaleAttribute;
-struct RescaleAttributeBuilder;
+struct MAX_POOL2D_Attribute;
+struct MAX_POOL2D_AttributeBuilder;
 
-struct MulAttribute;
-struct MulAttributeBuilder;
+struct RFFT2D_Attribute;
+struct RFFT2D_AttributeBuilder;
 
-struct ArithmeticRightShiftAttribute;
-struct ArithmeticRightShiftAttributeBuilder;
+struct TRANSPOSE_CONV2D_Attribute;
+struct TRANSPOSE_CONV2D_AttributeBuilder;
 
-struct CondIfAttribute;
-struct CondIfAttributeBuilder;
+struct CLAMP_Attribute;
+struct CLAMP_AttributeBuilder;
 
-struct WhileLoopAttribute;
-struct WhileLoopAttributeBuilder;
+struct ERF_Attribute;
+struct ERF_AttributeBuilder;
 
-struct TransposeAttribute;
-struct TransposeAttributeBuilder;
+struct SIGMOID_Attribute;
+struct SIGMOID_AttributeBuilder;
 
-struct TableAttribute;
-struct TableAttributeBuilder;
+struct TANH_Attribute;
+struct TANH_AttributeBuilder;
 
-struct MatMulAttribute;
-struct MatMulAttributeBuilder;
+struct ADD_Attribute;
+struct ADD_AttributeBuilder;
 
-struct FullyConnectedAttribute;
-struct FullyConnectedAttributeBuilder;
+struct ARITHMETIC_RIGHT_SHIFT_Attribute;
+struct ARITHMETIC_RIGHT_SHIFT_AttributeBuilder;
 
-struct NegateAttribute;
-struct NegateAttributeBuilder;
+struct BITWISE_AND_Attribute;
+struct BITWISE_AND_AttributeBuilder;
 
-struct CustomAttribute;
-struct CustomAttributeBuilder;
+struct BITWISE_OR_Attribute;
+struct BITWISE_OR_AttributeBuilder;
 
-struct FFTAttribute;
-struct FFTAttributeBuilder;
+struct BITWISE_XOR_Attribute;
+struct BITWISE_XOR_AttributeBuilder;
 
-struct RFFTAttribute;
-struct RFFTAttributeBuilder;
+struct INTDIV_Attribute;
+struct INTDIV_AttributeBuilder;
 
-struct RandUniformAttribute;
-struct RandUniformAttributeBuilder;
+struct LOGICAL_AND_Attribute;
+struct LOGICAL_AND_AttributeBuilder;
 
-struct NanPropagationAttribute;
-struct NanPropagationAttributeBuilder;
+struct LOGICAL_LEFT_SHIFT_Attribute;
+struct LOGICAL_LEFT_SHIFT_AttributeBuilder;
+
+struct LOGICAL_RIGHT_SHIFT_Attribute;
+struct LOGICAL_RIGHT_SHIFT_AttributeBuilder;
+
+struct LOGICAL_OR_Attribute;
+struct LOGICAL_OR_AttributeBuilder;
+
+struct LOGICAL_XOR_Attribute;
+struct LOGICAL_XOR_AttributeBuilder;
+
+struct MAXIMUM_Attribute;
+struct MAXIMUM_AttributeBuilder;
+
+struct MINIMUM_Attribute;
+struct MINIMUM_AttributeBuilder;
+
+struct MUL_Attribute;
+struct MUL_AttributeBuilder;
+
+struct POW_Attribute;
+struct POW_AttributeBuilder;
+
+struct SUB_Attribute;
+struct SUB_AttributeBuilder;
+
+struct TABLE_Attribute;
+struct TABLE_AttributeBuilder;
+
+struct ABS_Attribute;
+struct ABS_AttributeBuilder;
+
+struct BITWISE_NOT_Attribute;
+struct BITWISE_NOT_AttributeBuilder;
+
+struct CEIL_Attribute;
+struct CEIL_AttributeBuilder;
+
+struct CLZ_Attribute;
+struct CLZ_AttributeBuilder;
+
+struct COS_Attribute;
+struct COS_AttributeBuilder;
+
+struct EXP_Attribute;
+struct EXP_AttributeBuilder;
+
+struct FLOOR_Attribute;
+struct FLOOR_AttributeBuilder;
+
+struct LOG_Attribute;
+struct LOG_AttributeBuilder;
+
+struct LOGICAL_NOT_Attribute;
+struct LOGICAL_NOT_AttributeBuilder;
+
+struct NEGATE_Attribute;
+struct NEGATE_AttributeBuilder;
+
+struct RECIPROCAL_Attribute;
+struct RECIPROCAL_AttributeBuilder;
+
+struct RSQRT_Attribute;
+struct RSQRT_AttributeBuilder;
+
+struct SIN_Attribute;
+struct SIN_AttributeBuilder;
+
+struct SELECT_Attribute;
+struct SELECT_AttributeBuilder;
+
+struct EQUAL_Attribute;
+struct EQUAL_AttributeBuilder;
+
+struct GREATER_Attribute;
+struct GREATER_AttributeBuilder;
+
+struct GREATER_EQUAL_Attribute;
+struct GREATER_EQUAL_AttributeBuilder;
+
+struct REDUCE_ALL_Attribute;
+struct REDUCE_ALL_AttributeBuilder;
+
+struct REDUCE_ANY_Attribute;
+struct REDUCE_ANY_AttributeBuilder;
+
+struct REDUCE_MAX_Attribute;
+struct REDUCE_MAX_AttributeBuilder;
+
+struct REDUCE_MIN_Attribute;
+struct REDUCE_MIN_AttributeBuilder;
+
+struct REDUCE_PRODUCT_Attribute;
+struct REDUCE_PRODUCT_AttributeBuilder;
+
+struct REDUCE_SUM_Attribute;
+struct REDUCE_SUM_AttributeBuilder;
+
+struct CONCAT_Attribute;
+struct CONCAT_AttributeBuilder;
+
+struct PAD_Attribute;
+struct PAD_AttributeBuilder;
+
+struct RESHAPE_Attribute;
+struct RESHAPE_AttributeBuilder;
+
+struct REVERSE_Attribute;
+struct REVERSE_AttributeBuilder;
+
+struct SLICE_Attribute;
+struct SLICE_AttributeBuilder;
+
+struct TILE_Attribute;
+struct TILE_AttributeBuilder;
+
+struct TRANSPOSE_Attribute;
+struct TRANSPOSE_AttributeBuilder;
+
+struct GATHER_Attribute;
+struct GATHER_AttributeBuilder;
+
+struct SCATTER_Attribute;
+struct SCATTER_AttributeBuilder;
+
+struct RESIZE_Attribute;
+struct RESIZE_AttributeBuilder;
+
+struct CAST_Attribute;
+struct CAST_AttributeBuilder;
+
+struct CAST_STOCHASTIC_Attribute;
+struct CAST_STOCHASTIC_AttributeBuilder;
+
+struct RESCALE_Attribute;
+struct RESCALE_AttributeBuilder;
+
+struct CONST_Attribute;
+struct CONST_AttributeBuilder;
+
+struct RAND_SEED_Attribute;
+struct RAND_SEED_AttributeBuilder;
+
+struct RAND_UNIFORM_Attribute;
+struct RAND_UNIFORM_AttributeBuilder;
+
+struct IDENTITY_Attribute;
+struct IDENTITY_AttributeBuilder;
+
+struct CUSTOM_Attribute;
+struct CUSTOM_AttributeBuilder;
+
+struct COND_IF_Attribute;
+struct COND_IF_AttributeBuilder;
+
+struct WHILE_LOOP_Attribute;
+struct WHILE_LOOP_AttributeBuilder;
+
+struct YIELD_Attribute;
+struct YIELD_AttributeBuilder;
+
+struct VARIABLE_Attribute;
+struct VARIABLE_AttributeBuilder;
+
+struct VARIABLE_WRITE_Attribute;
+struct VARIABLE_WRITE_AttributeBuilder;
+
+struct VARIABLE_READ_Attribute;
+struct VARIABLE_READ_AttributeBuilder;
+
+struct CONST_SHAPE_Attribute;
+struct CONST_SHAPE_AttributeBuilder;
 
 struct Version;
 struct VersionBuilder;
@@ -241,88 +412,85 @@ enum Op : uint32_t {
   Op_CONV2D = 3,
   Op_CONV3D = 4,
   Op_DEPTHWISE_CONV2D = 5,
-  Op_FULLY_CONNECTED = 6,
+  Op_FFT2D = 6,
   Op_MATMUL = 7,
   Op_MAX_POOL2D = 8,
-  Op_TRANSPOSE_CONV2D = 9,
-  Op_CLAMP = 10,
-  Op_RESERVED = 11,
-  Op_SIGMOID = 12,
-  Op_TANH = 13,
-  Op_ADD = 14,
-  Op_ARITHMETIC_RIGHT_SHIFT = 15,
-  Op_BITWISE_AND = 16,
-  Op_BITWISE_OR = 17,
-  Op_BITWISE_XOR = 18,
-  Op_INTDIV = 19,
-  Op_LOGICAL_AND = 20,
-  Op_LOGICAL_LEFT_SHIFT = 21,
-  Op_LOGICAL_RIGHT_SHIFT = 22,
-  Op_LOGICAL_OR = 23,
-  Op_LOGICAL_XOR = 24,
-  Op_MAXIMUM = 25,
-  Op_MINIMUM = 26,
-  Op_MUL = 27,
-  Op_POW = 28,
-  Op_SUB = 29,
-  Op_TABLE = 30,
-  Op_ABS = 31,
-  Op_BITWISE_NOT = 32,
-  Op_CEIL = 33,
-  Op_CLZ = 34,
-  Op_EXP = 35,
-  Op_FLOOR = 36,
-  Op_LOG = 37,
-  Op_LOGICAL_NOT = 38,
-  Op_NEGATE = 39,
-  Op_RECIPROCAL = 40,
-  Op_RSQRT = 41,
-  Op_SELECT = 42,
-  Op_EQUAL = 43,
-  Op_GREATER = 44,
-  Op_GREATER_EQUAL = 45,
-  Op_REDUCE_ANY = 46,
-  Op_REDUCE_ALL = 47,
-  Op_REDUCE_MAX = 48,
-  Op_REDUCE_MIN = 49,
-  Op_REDUCE_PRODUCT = 50,
-  Op_REDUCE_SUM = 51,
-  Op_CONCAT = 52,
-  Op_PAD = 53,
-  Op_RESHAPE = 54,
-  Op_REVERSE = 55,
-  Op_SLICE = 56,
-  Op_TILE = 57,
-  Op_TRANSPOSE = 58,
-  Op_GATHER = 59,
-  Op_SCATTER = 60,
-  Op_RESIZE = 61,
-  Op_CAST = 62,
-  Op_RESCALE = 63,
-  Op_CONST = 64,
-  Op_IDENTITY = 65,
-  Op_CUSTOM = 66,
-  Op_COND_IF = 67,
-  Op_WHILE_LOOP = 68,
-  Op_FFT2D = 69,
-  Op_RFFT2D = 70,
-  Op_ERF = 71,
-  Op_DIM = 72,
-  Op_CONST_SHAPE = 73,
-  Op_CONCAT_SHAPE = 74,
-  Op_ADD_SHAPE = 75,
-  Op_SUB_SHAPE = 76,
-  Op_MUL_SHAPE = 77,
-  Op_DIV_SHAPE = 78,
-  Op_COS = 79,
-  Op_SIN = 80,
-  Op_CAST_STOCHASTIC = 81,
-  Op_RAND_UNIFORM = 82,
+  Op_RFFT2D = 9,
+  Op_TRANSPOSE_CONV2D = 10,
+  Op_CLAMP = 11,
+  Op_ERF = 12,
+  Op_SIGMOID = 13,
+  Op_TANH = 14,
+  Op_ADD = 15,
+  Op_ARITHMETIC_RIGHT_SHIFT = 16,
+  Op_BITWISE_AND = 17,
+  Op_BITWISE_OR = 18,
+  Op_BITWISE_XOR = 19,
+  Op_INTDIV = 20,
+  Op_LOGICAL_AND = 21,
+  Op_LOGICAL_LEFT_SHIFT = 22,
+  Op_LOGICAL_RIGHT_SHIFT = 23,
+  Op_LOGICAL_OR = 24,
+  Op_LOGICAL_XOR = 25,
+  Op_MAXIMUM = 26,
+  Op_MINIMUM = 27,
+  Op_MUL = 28,
+  Op_POW = 29,
+  Op_SUB = 30,
+  Op_TABLE = 31,
+  Op_ABS = 32,
+  Op_BITWISE_NOT = 33,
+  Op_CEIL = 34,
+  Op_CLZ = 35,
+  Op_COS = 36,
+  Op_EXP = 37,
+  Op_FLOOR = 38,
+  Op_LOG = 39,
+  Op_LOGICAL_NOT = 40,
+  Op_NEGATE = 41,
+  Op_RECIPROCAL = 42,
+  Op_RSQRT = 43,
+  Op_SIN = 44,
+  Op_SELECT = 45,
+  Op_EQUAL = 46,
+  Op_GREATER = 47,
+  Op_GREATER_EQUAL = 48,
+  Op_REDUCE_ALL = 49,
+  Op_REDUCE_ANY = 50,
+  Op_REDUCE_MAX = 51,
+  Op_REDUCE_MIN = 52,
+  Op_REDUCE_PRODUCT = 53,
+  Op_REDUCE_SUM = 54,
+  Op_CONCAT = 55,
+  Op_PAD = 56,
+  Op_RESHAPE = 57,
+  Op_REVERSE = 58,
+  Op_SLICE = 59,
+  Op_TILE = 60,
+  Op_TRANSPOSE = 61,
+  Op_GATHER = 62,
+  Op_SCATTER = 63,
+  Op_RESIZE = 64,
+  Op_CAST = 65,
+  Op_CAST_STOCHASTIC = 66,
+  Op_RESCALE = 67,
+  Op_CONST = 68,
+  Op_RAND_SEED = 69,
+  Op_RAND_UNIFORM = 70,
+  Op_IDENTITY = 71,
+  Op_CUSTOM = 72,
+  Op_COND_IF = 73,
+  Op_WHILE_LOOP = 74,
+  Op_YIELD = 75,
+  Op_VARIABLE = 76,
+  Op_VARIABLE_WRITE = 77,
+  Op_VARIABLE_READ = 78,
+  Op_CONST_SHAPE = 79,
   Op_MIN = Op_UNKNOWN,
-  Op_MAX = Op_RAND_UNIFORM
+  Op_MAX = Op_CONST_SHAPE
 };
 
-inline const Op (&EnumValuesOp())[83] {
+inline const Op (&EnumValuesOp())[80] {
   static const Op values[] = {
     Op_UNKNOWN,
     Op_ARGMAX,
@@ -330,12 +498,13 @@ inline const Op (&EnumValuesOp())[83] {
     Op_CONV2D,
     Op_CONV3D,
     Op_DEPTHWISE_CONV2D,
-    Op_FULLY_CONNECTED,
+    Op_FFT2D,
     Op_MATMUL,
     Op_MAX_POOL2D,
+    Op_RFFT2D,
     Op_TRANSPOSE_CONV2D,
     Op_CLAMP,
-    Op_RESERVED,
+    Op_ERF,
     Op_SIGMOID,
     Op_TANH,
     Op_ADD,
@@ -359,6 +528,7 @@ inline const Op (&EnumValuesOp())[83] {
     Op_BITWISE_NOT,
     Op_CEIL,
     Op_CLZ,
+    Op_COS,
     Op_EXP,
     Op_FLOOR,
     Op_LOG,
@@ -366,12 +536,13 @@ inline const Op (&EnumValuesOp())[83] {
     Op_NEGATE,
     Op_RECIPROCAL,
     Op_RSQRT,
+    Op_SIN,
     Op_SELECT,
     Op_EQUAL,
     Op_GREATER,
     Op_GREATER_EQUAL,
-    Op_REDUCE_ANY,
     Op_REDUCE_ALL,
+    Op_REDUCE_ANY,
     Op_REDUCE_MAX,
     Op_REDUCE_MIN,
     Op_REDUCE_PRODUCT,
@@ -387,44 +558,39 @@ inline const Op (&EnumValuesOp())[83] {
     Op_SCATTER,
     Op_RESIZE,
     Op_CAST,
+    Op_CAST_STOCHASTIC,
     Op_RESCALE,
     Op_CONST,
+    Op_RAND_SEED,
+    Op_RAND_UNIFORM,
     Op_IDENTITY,
     Op_CUSTOM,
     Op_COND_IF,
     Op_WHILE_LOOP,
-    Op_FFT2D,
-    Op_RFFT2D,
-    Op_ERF,
-    Op_DIM,
-    Op_CONST_SHAPE,
-    Op_CONCAT_SHAPE,
-    Op_ADD_SHAPE,
-    Op_SUB_SHAPE,
-    Op_MUL_SHAPE,
-    Op_DIV_SHAPE,
-    Op_COS,
-    Op_SIN,
-    Op_CAST_STOCHASTIC,
-    Op_RAND_UNIFORM
+    Op_YIELD,
+    Op_VARIABLE,
+    Op_VARIABLE_WRITE,
+    Op_VARIABLE_READ,
+    Op_CONST_SHAPE
   };
   return values;
 }
 
 inline const char * const *EnumNamesOp() {
-  static const char * const names[84] = {
+  static const char * const names[81] = {
     "UNKNOWN",
     "ARGMAX",
     "AVG_POOL2D",
     "CONV2D",
     "CONV3D",
     "DEPTHWISE_CONV2D",
-    "FULLY_CONNECTED",
+    "FFT2D",
     "MATMUL",
     "MAX_POOL2D",
+    "RFFT2D",
     "TRANSPOSE_CONV2D",
     "CLAMP",
-    "RESERVED",
+    "ERF",
     "SIGMOID",
     "TANH",
     "ADD",
@@ -448,6 +614,7 @@ inline const char * const *EnumNamesOp() {
     "BITWISE_NOT",
     "CEIL",
     "CLZ",
+    "COS",
     "EXP",
     "FLOOR",
     "LOG",
@@ -455,12 +622,13 @@ inline const char * const *EnumNamesOp() {
     "NEGATE",
     "RECIPROCAL",
     "RSQRT",
+    "SIN",
     "SELECT",
     "EQUAL",
     "GREATER",
     "GREATER_EQUAL",
-    "REDUCE_ANY",
     "REDUCE_ALL",
+    "REDUCE_ANY",
     "REDUCE_MAX",
     "REDUCE_MIN",
     "REDUCE_PRODUCT",
@@ -476,126 +644,291 @@ inline const char * const *EnumNamesOp() {
     "SCATTER",
     "RESIZE",
     "CAST",
+    "CAST_STOCHASTIC",
     "RESCALE",
     "CONST",
+    "RAND_SEED",
+    "RAND_UNIFORM",
     "IDENTITY",
     "CUSTOM",
     "COND_IF",
     "WHILE_LOOP",
-    "FFT2D",
-    "RFFT2D",
-    "ERF",
-    "DIM",
+    "YIELD",
+    "VARIABLE",
+    "VARIABLE_WRITE",
+    "VARIABLE_READ",
     "CONST_SHAPE",
-    "CONCAT_SHAPE",
-    "ADD_SHAPE",
-    "SUB_SHAPE",
-    "MUL_SHAPE",
-    "DIV_SHAPE",
-    "COS",
-    "SIN",
-    "CAST_STOCHASTIC",
-    "RAND_UNIFORM",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameOp(Op e) {
-  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_RAND_UNIFORM)) return "";
+  if (::flatbuffers::IsOutRange(e, Op_UNKNOWN, Op_CONST_SHAPE)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOp()[index];
 }
 
 enum Attribute : uint8_t {
   Attribute_NONE = 0,
-  Attribute_PoolAttribute = 1,
-  Attribute_ConvAttribute = 2,
-  Attribute_TransposeConvAttribute = 3,
-  Attribute_PadAttribute = 4,
-  Attribute_AxisAttribute = 5,
-  Attribute_ResizeAttribute = 6,
-  Attribute_ClampAttribute = 7,
-  Attribute_RescaleAttribute = 8,
-  Attribute_MulAttribute = 9,
-  Attribute_ArithmeticRightShiftAttribute = 10,
-  Attribute_CondIfAttribute = 11,
-  Attribute_WhileLoopAttribute = 12,
-  Attribute_TransposeAttribute = 13,
-  Attribute_TableAttribute = 14,
-  Attribute_MatMulAttribute = 15,
-  Attribute_FullyConnectedAttribute = 16,
-  Attribute_NegateAttribute = 17,
-  Attribute_CustomAttribute = 18,
-  Attribute_FFTAttribute = 19,
-  Attribute_RFFTAttribute = 20,
-  Attribute_RandUniformAttribute = 21,
-  Attribute_NanPropagationAttribute = 22,
+  Attribute_ARGMAX_Attribute = 1,
+  Attribute_AVG_POOL2D_Attribute = 2,
+  Attribute_CONV2D_Attribute = 3,
+  Attribute_CONV3D_Attribute = 4,
+  Attribute_DEPTHWISE_CONV2D_Attribute = 5,
+  Attribute_FFT2D_Attribute = 6,
+  Attribute_MATMUL_Attribute = 7,
+  Attribute_MAX_POOL2D_Attribute = 8,
+  Attribute_RFFT2D_Attribute = 9,
+  Attribute_TRANSPOSE_CONV2D_Attribute = 10,
+  Attribute_CLAMP_Attribute = 11,
+  Attribute_ERF_Attribute = 12,
+  Attribute_SIGMOID_Attribute = 13,
+  Attribute_TANH_Attribute = 14,
+  Attribute_ADD_Attribute = 15,
+  Attribute_ARITHMETIC_RIGHT_SHIFT_Attribute = 16,
+  Attribute_BITWISE_AND_Attribute = 17,
+  Attribute_BITWISE_OR_Attribute = 18,
+  Attribute_BITWISE_XOR_Attribute = 19,
+  Attribute_INTDIV_Attribute = 20,
+  Attribute_LOGICAL_AND_Attribute = 21,
+  Attribute_LOGICAL_LEFT_SHIFT_Attribute = 22,
+  Attribute_LOGICAL_RIGHT_SHIFT_Attribute = 23,
+  Attribute_LOGICAL_OR_Attribute = 24,
+  Attribute_LOGICAL_XOR_Attribute = 25,
+  Attribute_MAXIMUM_Attribute = 26,
+  Attribute_MINIMUM_Attribute = 27,
+  Attribute_MUL_Attribute = 28,
+  Attribute_POW_Attribute = 29,
+  Attribute_SUB_Attribute = 30,
+  Attribute_TABLE_Attribute = 31,
+  Attribute_ABS_Attribute = 32,
+  Attribute_BITWISE_NOT_Attribute = 33,
+  Attribute_CEIL_Attribute = 34,
+  Attribute_CLZ_Attribute = 35,
+  Attribute_COS_Attribute = 36,
+  Attribute_EXP_Attribute = 37,
+  Attribute_FLOOR_Attribute = 38,
+  Attribute_LOG_Attribute = 39,
+  Attribute_LOGICAL_NOT_Attribute = 40,
+  Attribute_NEGATE_Attribute = 41,
+  Attribute_RECIPROCAL_Attribute = 42,
+  Attribute_RSQRT_Attribute = 43,
+  Attribute_SIN_Attribute = 44,
+  Attribute_SELECT_Attribute = 45,
+  Attribute_EQUAL_Attribute = 46,
+  Attribute_GREATER_Attribute = 47,
+  Attribute_GREATER_EQUAL_Attribute = 48,
+  Attribute_REDUCE_ALL_Attribute = 49,
+  Attribute_REDUCE_ANY_Attribute = 50,
+  Attribute_REDUCE_MAX_Attribute = 51,
+  Attribute_REDUCE_MIN_Attribute = 52,
+  Attribute_REDUCE_PRODUCT_Attribute = 53,
+  Attribute_REDUCE_SUM_Attribute = 54,
+  Attribute_CONCAT_Attribute = 55,
+  Attribute_PAD_Attribute = 56,
+  Attribute_RESHAPE_Attribute = 57,
+  Attribute_REVERSE_Attribute = 58,
+  Attribute_SLICE_Attribute = 59,
+  Attribute_TILE_Attribute = 60,
+  Attribute_TRANSPOSE_Attribute = 61,
+  Attribute_GATHER_Attribute = 62,
+  Attribute_SCATTER_Attribute = 63,
+  Attribute_RESIZE_Attribute = 64,
+  Attribute_CAST_Attribute = 65,
+  Attribute_CAST_STOCHASTIC_Attribute = 66,
+  Attribute_RESCALE_Attribute = 67,
+  Attribute_CONST_Attribute = 68,
+  Attribute_RAND_SEED_Attribute = 69,
+  Attribute_RAND_UNIFORM_Attribute = 70,
+  Attribute_IDENTITY_Attribute = 71,
+  Attribute_CUSTOM_Attribute = 72,
+  Attribute_COND_IF_Attribute = 73,
+  Attribute_WHILE_LOOP_Attribute = 74,
+  Attribute_YIELD_Attribute = 75,
+  Attribute_VARIABLE_Attribute = 76,
+  Attribute_VARIABLE_WRITE_Attribute = 77,
+  Attribute_VARIABLE_READ_Attribute = 78,
+  Attribute_CONST_SHAPE_Attribute = 79,
   Attribute_MIN = Attribute_NONE,
-  Attribute_MAX = Attribute_NanPropagationAttribute
+  Attribute_MAX = Attribute_CONST_SHAPE_Attribute
 };
 
-inline const Attribute (&EnumValuesAttribute())[23] {
+inline const Attribute (&EnumValuesAttribute())[80] {
   static const Attribute values[] = {
     Attribute_NONE,
-    Attribute_PoolAttribute,
-    Attribute_ConvAttribute,
-    Attribute_TransposeConvAttribute,
-    Attribute_PadAttribute,
-    Attribute_AxisAttribute,
-    Attribute_ResizeAttribute,
-    Attribute_ClampAttribute,
-    Attribute_RescaleAttribute,
-    Attribute_MulAttribute,
-    Attribute_ArithmeticRightShiftAttribute,
-    Attribute_CondIfAttribute,
-    Attribute_WhileLoopAttribute,
-    Attribute_TransposeAttribute,
-    Attribute_TableAttribute,
-    Attribute_MatMulAttribute,
-    Attribute_FullyConnectedAttribute,
-    Attribute_NegateAttribute,
-    Attribute_CustomAttribute,
-    Attribute_FFTAttribute,
-    Attribute_RFFTAttribute,
-    Attribute_RandUniformAttribute,
-    Attribute_NanPropagationAttribute
+    Attribute_ARGMAX_Attribute,
+    Attribute_AVG_POOL2D_Attribute,
+    Attribute_CONV2D_Attribute,
+    Attribute_CONV3D_Attribute,
+    Attribute_DEPTHWISE_CONV2D_Attribute,
+    Attribute_FFT2D_Attribute,
+    Attribute_MATMUL_Attribute,
+    Attribute_MAX_POOL2D_Attribute,
+    Attribute_RFFT2D_Attribute,
+    Attribute_TRANSPOSE_CONV2D_Attribute,
+    Attribute_CLAMP_Attribute,
+    Attribute_ERF_Attribute,
+    Attribute_SIGMOID_Attribute,
+    Attribute_TANH_Attribute,
+    Attribute_ADD_Attribute,
+    Attribute_ARITHMETIC_RIGHT_SHIFT_Attribute,
+    Attribute_BITWISE_AND_Attribute,
+    Attribute_BITWISE_OR_Attribute,
+    Attribute_BITWISE_XOR_Attribute,
+    Attribute_INTDIV_Attribute,
+    Attribute_LOGICAL_AND_Attribute,
+    Attribute_LOGICAL_LEFT_SHIFT_Attribute,
+    Attribute_LOGICAL_RIGHT_SHIFT_Attribute,
+    Attribute_LOGICAL_OR_Attribute,
+    Attribute_LOGICAL_XOR_Attribute,
+    Attribute_MAXIMUM_Attribute,
+    Attribute_MINIMUM_Attribute,
+    Attribute_MUL_Attribute,
+    Attribute_POW_Attribute,
+    Attribute_SUB_Attribute,
+    Attribute_TABLE_Attribute,
+    Attribute_ABS_Attribute,
+    Attribute_BITWISE_NOT_Attribute,
+    Attribute_CEIL_Attribute,
+    Attribute_CLZ_Attribute,
+    Attribute_COS_Attribute,
+    Attribute_EXP_Attribute,
+    Attribute_FLOOR_Attribute,
+    Attribute_LOG_Attribute,
+    Attribute_LOGICAL_NOT_Attribute,
+    Attribute_NEGATE_Attribute,
+    Attribute_RECIPROCAL_Attribute,
+    Attribute_RSQRT_Attribute,
+    Attribute_SIN_Attribute,
+    Attribute_SELECT_Attribute,
+    Attribute_EQUAL_Attribute,
+    Attribute_GREATER_Attribute,
+    Attribute_GREATER_EQUAL_Attribute,
+    Attribute_REDUCE_ALL_Attribute,
+    Attribute_REDUCE_ANY_Attribute,
+    Attribute_REDUCE_MAX_Attribute,
+    Attribute_REDUCE_MIN_Attribute,
+    Attribute_REDUCE_PRODUCT_Attribute,
+    Attribute_REDUCE_SUM_Attribute,
+    Attribute_CONCAT_Attribute,
+    Attribute_PAD_Attribute,
+    Attribute_RESHAPE_Attribute,
+    Attribute_REVERSE_Attribute,
+    Attribute_SLICE_Attribute,
+    Attribute_TILE_Attribute,
+    Attribute_TRANSPOSE_Attribute,
+    Attribute_GATHER_Attribute,
+    Attribute_SCATTER_Attribute,
+    Attribute_RESIZE_Attribute,
+    Attribute_CAST_Attribute,
+    Attribute_CAST_STOCHASTIC_Attribute,
+    Attribute_RESCALE_Attribute,
+    Attribute_CONST_Attribute,
+    Attribute_RAND_SEED_Attribute,
+    Attribute_RAND_UNIFORM_Attribute,
+    Attribute_IDENTITY_Attribute,
+    Attribute_CUSTOM_Attribute,
+    Attribute_COND_IF_Attribute,
+    Attribute_WHILE_LOOP_Attribute,
+    Attribute_YIELD_Attribute,
+    Attribute_VARIABLE_Attribute,
+    Attribute_VARIABLE_WRITE_Attribute,
+    Attribute_VARIABLE_READ_Attribute,
+    Attribute_CONST_SHAPE_Attribute
   };
   return values;
 }
 
 inline const char * const *EnumNamesAttribute() {
-  static const char * const names[24] = {
+  static const char * const names[81] = {
     "NONE",
-    "PoolAttribute",
-    "ConvAttribute",
-    "TransposeConvAttribute",
-    "PadAttribute",
-    "AxisAttribute",
-    "ResizeAttribute",
-    "ClampAttribute",
-    "RescaleAttribute",
-    "MulAttribute",
-    "ArithmeticRightShiftAttribute",
-    "CondIfAttribute",
-    "WhileLoopAttribute",
-    "TransposeAttribute",
-    "TableAttribute",
-    "MatMulAttribute",
-    "FullyConnectedAttribute",
-    "NegateAttribute",
-    "CustomAttribute",
-    "FFTAttribute",
-    "RFFTAttribute",
-    "RandUniformAttribute",
-    "NanPropagationAttribute",
+    "ARGMAX_Attribute",
+    "AVG_POOL2D_Attribute",
+    "CONV2D_Attribute",
+    "CONV3D_Attribute",
+    "DEPTHWISE_CONV2D_Attribute",
+    "FFT2D_Attribute",
+    "MATMUL_Attribute",
+    "MAX_POOL2D_Attribute",
+    "RFFT2D_Attribute",
+    "TRANSPOSE_CONV2D_Attribute",
+    "CLAMP_Attribute",
+    "ERF_Attribute",
+    "SIGMOID_Attribute",
+    "TANH_Attribute",
+    "ADD_Attribute",
+    "ARITHMETIC_RIGHT_SHIFT_Attribute",
+    "BITWISE_AND_Attribute",
+    "BITWISE_OR_Attribute",
+    "BITWISE_XOR_Attribute",
+    "INTDIV_Attribute",
+    "LOGICAL_AND_Attribute",
+    "LOGICAL_LEFT_SHIFT_Attribute",
+    "LOGICAL_RIGHT_SHIFT_Attribute",
+    "LOGICAL_OR_Attribute",
+    "LOGICAL_XOR_Attribute",
+    "MAXIMUM_Attribute",
+    "MINIMUM_Attribute",
+    "MUL_Attribute",
+    "POW_Attribute",
+    "SUB_Attribute",
+    "TABLE_Attribute",
+    "ABS_Attribute",
+    "BITWISE_NOT_Attribute",
+    "CEIL_Attribute",
+    "CLZ_Attribute",
+    "COS_Attribute",
+    "EXP_Attribute",
+    "FLOOR_Attribute",
+    "LOG_Attribute",
+    "LOGICAL_NOT_Attribute",
+    "NEGATE_Attribute",
+    "RECIPROCAL_Attribute",
+    "RSQRT_Attribute",
+    "SIN_Attribute",
+    "SELECT_Attribute",
+    "EQUAL_Attribute",
+    "GREATER_Attribute",
+    "GREATER_EQUAL_Attribute",
+    "REDUCE_ALL_Attribute",
+    "REDUCE_ANY_Attribute",
+    "REDUCE_MAX_Attribute",
+    "REDUCE_MIN_Attribute",
+    "REDUCE_PRODUCT_Attribute",
+    "REDUCE_SUM_Attribute",
+    "CONCAT_Attribute",
+    "PAD_Attribute",
+    "RESHAPE_Attribute",
+    "REVERSE_Attribute",
+    "SLICE_Attribute",
+    "TILE_Attribute",
+    "TRANSPOSE_Attribute",
+    "GATHER_Attribute",
+    "SCATTER_Attribute",
+    "RESIZE_Attribute",
+    "CAST_Attribute",
+    "CAST_STOCHASTIC_Attribute",
+    "RESCALE_Attribute",
+    "CONST_Attribute",
+    "RAND_SEED_Attribute",
+    "RAND_UNIFORM_Attribute",
+    "IDENTITY_Attribute",
+    "CUSTOM_Attribute",
+    "COND_IF_Attribute",
+    "WHILE_LOOP_Attribute",
+    "YIELD_Attribute",
+    "VARIABLE_Attribute",
+    "VARIABLE_WRITE_Attribute",
+    "VARIABLE_READ_Attribute",
+    "CONST_SHAPE_Attribute",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameAttribute(Attribute e) {
-  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_NanPropagationAttribute)) return "";
+  if (::flatbuffers::IsOutRange(e, Attribute_NONE, Attribute_CONST_SHAPE_Attribute)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesAttribute()[index];
 }
@@ -604,107 +937,385 @@ template<typename T> struct AttributeTraits {
   static const Attribute enum_value = Attribute_NONE;
 };
 
-template<> struct AttributeTraits<tosa::PoolAttribute> {
-  static const Attribute enum_value = Attribute_PoolAttribute;
+template<> struct AttributeTraits<tosa::ARGMAX_Attribute> {
+  static const Attribute enum_value = Attribute_ARGMAX_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::ConvAttribute> {
-  static const Attribute enum_value = Attribute_ConvAttribute;
+template<> struct AttributeTraits<tosa::AVG_POOL2D_Attribute> {
+  static const Attribute enum_value = Attribute_AVG_POOL2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::TransposeConvAttribute> {
-  static const Attribute enum_value = Attribute_TransposeConvAttribute;
+template<> struct AttributeTraits<tosa::CONV2D_Attribute> {
+  static const Attribute enum_value = Attribute_CONV2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::PadAttribute> {
-  static const Attribute enum_value = Attribute_PadAttribute;
+template<> struct AttributeTraits<tosa::CONV3D_Attribute> {
+  static const Attribute enum_value = Attribute_CONV3D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::AxisAttribute> {
-  static const Attribute enum_value = Attribute_AxisAttribute;
+template<> struct AttributeTraits<tosa::DEPTHWISE_CONV2D_Attribute> {
+  static const Attribute enum_value = Attribute_DEPTHWISE_CONV2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::ResizeAttribute> {
-  static const Attribute enum_value = Attribute_ResizeAttribute;
+template<> struct AttributeTraits<tosa::FFT2D_Attribute> {
+  static const Attribute enum_value = Attribute_FFT2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::ClampAttribute> {
-  static const Attribute enum_value = Attribute_ClampAttribute;
+template<> struct AttributeTraits<tosa::MATMUL_Attribute> {
+  static const Attribute enum_value = Attribute_MATMUL_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::RescaleAttribute> {
-  static const Attribute enum_value = Attribute_RescaleAttribute;
+template<> struct AttributeTraits<tosa::MAX_POOL2D_Attribute> {
+  static const Attribute enum_value = Attribute_MAX_POOL2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::MulAttribute> {
-  static const Attribute enum_value = Attribute_MulAttribute;
+template<> struct AttributeTraits<tosa::RFFT2D_Attribute> {
+  static const Attribute enum_value = Attribute_RFFT2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::ArithmeticRightShiftAttribute> {
-  static const Attribute enum_value = Attribute_ArithmeticRightShiftAttribute;
+template<> struct AttributeTraits<tosa::TRANSPOSE_CONV2D_Attribute> {
+  static const Attribute enum_value = Attribute_TRANSPOSE_CONV2D_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::CondIfAttribute> {
-  static const Attribute enum_value = Attribute_CondIfAttribute;
+template<> struct AttributeTraits<tosa::CLAMP_Attribute> {
+  static const Attribute enum_value = Attribute_CLAMP_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::WhileLoopAttribute> {
-  static const Attribute enum_value = Attribute_WhileLoopAttribute;
+template<> struct AttributeTraits<tosa::ERF_Attribute> {
+  static const Attribute enum_value = Attribute_ERF_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::TransposeAttribute> {
-  static const Attribute enum_value = Attribute_TransposeAttribute;
+template<> struct AttributeTraits<tosa::SIGMOID_Attribute> {
+  static const Attribute enum_value = Attribute_SIGMOID_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::TableAttribute> {
-  static const Attribute enum_value = Attribute_TableAttribute;
+template<> struct AttributeTraits<tosa::TANH_Attribute> {
+  static const Attribute enum_value = Attribute_TANH_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::MatMulAttribute> {
-  static const Attribute enum_value = Attribute_MatMulAttribute;
+template<> struct AttributeTraits<tosa::ADD_Attribute> {
+  static const Attribute enum_value = Attribute_ADD_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::FullyConnectedAttribute> {
-  static const Attribute enum_value = Attribute_FullyConnectedAttribute;
+template<> struct AttributeTraits<tosa::ARITHMETIC_RIGHT_SHIFT_Attribute> {
+  static const Attribute enum_value = Attribute_ARITHMETIC_RIGHT_SHIFT_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::NegateAttribute> {
-  static const Attribute enum_value = Attribute_NegateAttribute;
+template<> struct AttributeTraits<tosa::BITWISE_AND_Attribute> {
+  static const Attribute enum_value = Attribute_BITWISE_AND_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::CustomAttribute> {
-  static const Attribute enum_value = Attribute_CustomAttribute;
+template<> struct AttributeTraits<tosa::BITWISE_OR_Attribute> {
+  static const Attribute enum_value = Attribute_BITWISE_OR_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::FFTAttribute> {
-  static const Attribute enum_value = Attribute_FFTAttribute;
+template<> struct AttributeTraits<tosa::BITWISE_XOR_Attribute> {
+  static const Attribute enum_value = Attribute_BITWISE_XOR_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::RFFTAttribute> {
-  static const Attribute enum_value = Attribute_RFFTAttribute;
+template<> struct AttributeTraits<tosa::INTDIV_Attribute> {
+  static const Attribute enum_value = Attribute_INTDIV_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::RandUniformAttribute> {
-  static const Attribute enum_value = Attribute_RandUniformAttribute;
+template<> struct AttributeTraits<tosa::LOGICAL_AND_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_AND_Attribute;
 };
 
-template<> struct AttributeTraits<tosa::NanPropagationAttribute> {
-  static const Attribute enum_value = Attribute_NanPropagationAttribute;
+template<> struct AttributeTraits<tosa::LOGICAL_LEFT_SHIFT_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_LEFT_SHIFT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::LOGICAL_RIGHT_SHIFT_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_RIGHT_SHIFT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::LOGICAL_OR_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_OR_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::LOGICAL_XOR_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_XOR_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::MAXIMUM_Attribute> {
+  static const Attribute enum_value = Attribute_MAXIMUM_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::MINIMUM_Attribute> {
+  static const Attribute enum_value = Attribute_MINIMUM_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::MUL_Attribute> {
+  static const Attribute enum_value = Attribute_MUL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::POW_Attribute> {
+  static const Attribute enum_value = Attribute_POW_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::SUB_Attribute> {
+  static const Attribute enum_value = Attribute_SUB_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::TABLE_Attribute> {
+  static const Attribute enum_value = Attribute_TABLE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::ABS_Attribute> {
+  static const Attribute enum_value = Attribute_ABS_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::BITWISE_NOT_Attribute> {
+  static const Attribute enum_value = Attribute_BITWISE_NOT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CEIL_Attribute> {
+  static const Attribute enum_value = Attribute_CEIL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CLZ_Attribute> {
+  static const Attribute enum_value = Attribute_CLZ_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::COS_Attribute> {
+  static const Attribute enum_value = Attribute_COS_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::EXP_Attribute> {
+  static const Attribute enum_value = Attribute_EXP_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::FLOOR_Attribute> {
+  static const Attribute enum_value = Attribute_FLOOR_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::LOG_Attribute> {
+  static const Attribute enum_value = Attribute_LOG_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::LOGICAL_NOT_Attribute> {
+  static const Attribute enum_value = Attribute_LOGICAL_NOT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::NEGATE_Attribute> {
+  static const Attribute enum_value = Attribute_NEGATE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RECIPROCAL_Attribute> {
+  static const Attribute enum_value = Attribute_RECIPROCAL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RSQRT_Attribute> {
+  static const Attribute enum_value = Attribute_RSQRT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::SIN_Attribute> {
+  static const Attribute enum_value = Attribute_SIN_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::SELECT_Attribute> {
+  static const Attribute enum_value = Attribute_SELECT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::EQUAL_Attribute> {
+  static const Attribute enum_value = Attribute_EQUAL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::GREATER_Attribute> {
+  static const Attribute enum_value = Attribute_GREATER_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::GREATER_EQUAL_Attribute> {
+  static const Attribute enum_value = Attribute_GREATER_EQUAL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_ALL_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_ALL_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_ANY_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_ANY_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_MAX_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_MAX_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_MIN_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_MIN_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_PRODUCT_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_PRODUCT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REDUCE_SUM_Attribute> {
+  static const Attribute enum_value = Attribute_REDUCE_SUM_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CONCAT_Attribute> {
+  static const Attribute enum_value = Attribute_CONCAT_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::PAD_Attribute> {
+  static const Attribute enum_value = Attribute_PAD_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RESHAPE_Attribute> {
+  static const Attribute enum_value = Attribute_RESHAPE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::REVERSE_Attribute> {
+  static const Attribute enum_value = Attribute_REVERSE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::SLICE_Attribute> {
+  static const Attribute enum_value = Attribute_SLICE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::TILE_Attribute> {
+  static const Attribute enum_value = Attribute_TILE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::TRANSPOSE_Attribute> {
+  static const Attribute enum_value = Attribute_TRANSPOSE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::GATHER_Attribute> {
+  static const Attribute enum_value = Attribute_GATHER_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::SCATTER_Attribute> {
+  static const Attribute enum_value = Attribute_SCATTER_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RESIZE_Attribute> {
+  static const Attribute enum_value = Attribute_RESIZE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CAST_Attribute> {
+  static const Attribute enum_value = Attribute_CAST_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CAST_STOCHASTIC_Attribute> {
+  static const Attribute enum_value = Attribute_CAST_STOCHASTIC_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RESCALE_Attribute> {
+  static const Attribute enum_value = Attribute_RESCALE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CONST_Attribute> {
+  static const Attribute enum_value = Attribute_CONST_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RAND_SEED_Attribute> {
+  static const Attribute enum_value = Attribute_RAND_SEED_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::RAND_UNIFORM_Attribute> {
+  static const Attribute enum_value = Attribute_RAND_UNIFORM_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::IDENTITY_Attribute> {
+  static const Attribute enum_value = Attribute_IDENTITY_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CUSTOM_Attribute> {
+  static const Attribute enum_value = Attribute_CUSTOM_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::COND_IF_Attribute> {
+  static const Attribute enum_value = Attribute_COND_IF_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::WHILE_LOOP_Attribute> {
+  static const Attribute enum_value = Attribute_WHILE_LOOP_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::YIELD_Attribute> {
+  static const Attribute enum_value = Attribute_YIELD_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::VARIABLE_Attribute> {
+  static const Attribute enum_value = Attribute_VARIABLE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::VARIABLE_WRITE_Attribute> {
+  static const Attribute enum_value = Attribute_VARIABLE_WRITE_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::VARIABLE_READ_Attribute> {
+  static const Attribute enum_value = Attribute_VARIABLE_READ_Attribute;
+};
+
+template<> struct AttributeTraits<tosa::CONST_SHAPE_Attribute> {
+  static const Attribute enum_value = Attribute_CONST_SHAPE_Attribute;
 };
 
 bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, Attribute type);
 bool VerifyAttributeVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types);
 
-struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef PoolAttributeBuilder Builder;
+struct ARGMAX_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ARGMAX_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4,
+    VT_NAN_MODE = 6
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ARGMAX_AttributeBuilder {
+  typedef ARGMAX_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(ARGMAX_Attribute::VT_AXIS, axis, 0);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(ARGMAX_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit ARGMAX_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ARGMAX_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ARGMAX_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ARGMAX_Attribute> CreateARGMAX_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  ARGMAX_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct AVG_POOL2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AVG_POOL2D_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
     VT_KERNEL = 6,
     VT_STRIDE = 8,
     VT_INPUT_ZP = 10,
     VT_OUTPUT_ZP = 12,
-    VT_ACC_TYPE = 14,
-    VT_NAN_MODE = 16
+    VT_ACC_TYPE = 14
   };
   const ::flatbuffers::Vector<int32_t> *pad() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
@@ -724,9 +1335,6 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   tosa::DType acc_type() const {
     return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
   }
-  tosa::NanPropagationMode nan_mode() const {
-    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
-  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_PAD) &&
@@ -738,58 +1346,52 @@ struct PoolAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
            VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
            VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
-           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
            verifier.EndTable();
   }
 };
 
-struct PoolAttributeBuilder {
-  typedef PoolAttribute Table;
+struct AVG_POOL2D_AttributeBuilder {
+  typedef AVG_POOL2D_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
-    fbb_.AddOffset(PoolAttribute::VT_PAD, pad);
+    fbb_.AddOffset(AVG_POOL2D_Attribute::VT_PAD, pad);
   }
   void add_kernel(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel) {
-    fbb_.AddOffset(PoolAttribute::VT_KERNEL, kernel);
+    fbb_.AddOffset(AVG_POOL2D_Attribute::VT_KERNEL, kernel);
   }
   void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(PoolAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(AVG_POOL2D_Attribute::VT_STRIDE, stride);
   }
   void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(PoolAttribute::VT_INPUT_ZP, input_zp, 0);
+    fbb_.AddElement<int32_t>(AVG_POOL2D_Attribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_output_zp(int32_t output_zp) {
-    fbb_.AddElement<int32_t>(PoolAttribute::VT_OUTPUT_ZP, output_zp, 0);
+    fbb_.AddElement<int32_t>(AVG_POOL2D_Attribute::VT_OUTPUT_ZP, output_zp, 0);
   }
   void add_acc_type(tosa::DType acc_type) {
-    fbb_.AddElement<uint32_t>(PoolAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+    fbb_.AddElement<uint32_t>(AVG_POOL2D_Attribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
   }
-  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
-    fbb_.AddElement<uint32_t>(PoolAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
-  }
-  explicit PoolAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit AVG_POOL2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<PoolAttribute> Finish() {
+  ::flatbuffers::Offset<AVG_POOL2D_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<PoolAttribute>(end);
+    auto o = ::flatbuffers::Offset<AVG_POOL2D_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
+inline ::flatbuffers::Offset<AVG_POOL2D_Attribute> CreateAVG_POOL2D_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
-    tosa::DType acc_type = tosa::DType_UNKNOWN,
-    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
-  PoolAttributeBuilder builder_(_fbb);
-  builder_.add_nan_mode(nan_mode);
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+  AVG_POOL2D_AttributeBuilder builder_(_fbb);
   builder_.add_acc_type(acc_type);
   builder_.add_output_zp(output_zp);
   builder_.add_input_zp(input_zp);
@@ -799,31 +1401,29 @@ inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttribute(
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<PoolAttribute> CreatePoolAttributeDirect(
+inline ::flatbuffers::Offset<AVG_POOL2D_Attribute> CreateAVG_POOL2D_AttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *kernel = nullptr,
     const std::vector<int32_t> *stride = nullptr,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
-    tosa::DType acc_type = tosa::DType_UNKNOWN,
-    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  return tosa::CreatePoolAttribute(
+  return tosa::CreateAVG_POOL2D_Attribute(
       _fbb,
       pad__,
       kernel__,
       stride__,
       input_zp,
       output_zp,
-      acc_type,
-      nan_mode);
+      acc_type);
 }
 
-struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ConvAttributeBuilder Builder;
+struct CONV2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CONV2D_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PAD = 4,
     VT_STRIDE = 6,
@@ -870,43 +1470,43 @@ struct ConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct ConvAttributeBuilder {
-  typedef ConvAttribute Table;
+struct CONV2D_AttributeBuilder {
+  typedef CONV2D_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
-    fbb_.AddOffset(ConvAttribute::VT_PAD, pad);
+    fbb_.AddOffset(CONV2D_Attribute::VT_PAD, pad);
   }
   void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(ConvAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(CONV2D_Attribute::VT_STRIDE, stride);
   }
   void add_dilation(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation) {
-    fbb_.AddOffset(ConvAttribute::VT_DILATION, dilation);
+    fbb_.AddOffset(CONV2D_Attribute::VT_DILATION, dilation);
   }
   void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(ConvAttribute::VT_INPUT_ZP, input_zp, 0);
+    fbb_.AddElement<int32_t>(CONV2D_Attribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_weight_zp(int32_t weight_zp) {
-    fbb_.AddElement<int32_t>(ConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+    fbb_.AddElement<int32_t>(CONV2D_Attribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
   void add_local_bound(bool local_bound) {
-    fbb_.AddElement<uint8_t>(ConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+    fbb_.AddElement<uint8_t>(CONV2D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
   }
   void add_acc_type(tosa::DType acc_type) {
-    fbb_.AddElement<uint32_t>(ConvAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+    fbb_.AddElement<uint32_t>(CONV2D_Attribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
   }
-  explicit ConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CONV2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<ConvAttribute> Finish() {
+  ::flatbuffers::Offset<CONV2D_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<ConvAttribute>(end);
+    auto o = ::flatbuffers::Offset<CONV2D_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
+inline ::flatbuffers::Offset<CONV2D_Attribute> CreateCONV2D_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
@@ -915,7 +1515,7 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
     int32_t weight_zp = 0,
     bool local_bound = false,
     tosa::DType acc_type = tosa::DType_UNKNOWN) {
-  ConvAttributeBuilder builder_(_fbb);
+  CONV2D_AttributeBuilder builder_(_fbb);
   builder_.add_acc_type(acc_type);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
@@ -926,7 +1526,7 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttribute(
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
+inline ::flatbuffers::Offset<CONV2D_Attribute> CreateCONV2D_AttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
@@ -938,7 +1538,7 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
   auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
   auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
-  return tosa::CreateConvAttribute(
+  return tosa::CreateCONV2D_Attribute(
       _fbb,
       pad__,
       stride__,
@@ -949,8 +1549,496 @@ inline ::flatbuffers::Offset<ConvAttribute> CreateConvAttributeDirect(
       acc_type);
 }
 
-struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef TransposeConvAttributeBuilder Builder;
+struct CONV3D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CONV3D_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PAD = 4,
+    VT_STRIDE = 6,
+    VT_DILATION = 8,
+    VT_INPUT_ZP = 10,
+    VT_WEIGHT_ZP = 12,
+    VT_LOCAL_BOUND = 14,
+    VT_ACC_TYPE = 16
+  };
+  const ::flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
+  }
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  }
+  const ::flatbuffers::Vector<int32_t> *dilation() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_DILATION);
+  }
+  int32_t input_zp() const {
+    return GetField<int32_t>(VT_INPUT_ZP, 0);
+  }
+  int32_t weight_zp() const {
+    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
+  }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
+  tosa::DType acc_type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PAD) &&
+           verifier.VerifyVector(pad()) &&
+           VerifyOffset(verifier, VT_STRIDE) &&
+           verifier.VerifyVector(stride()) &&
+           VerifyOffset(verifier, VT_DILATION) &&
+           verifier.VerifyVector(dilation()) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CONV3D_AttributeBuilder {
+  typedef CONV3D_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
+    fbb_.AddOffset(CONV3D_Attribute::VT_PAD, pad);
+  }
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
+    fbb_.AddOffset(CONV3D_Attribute::VT_STRIDE, stride);
+  }
+  void add_dilation(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation) {
+    fbb_.AddOffset(CONV3D_Attribute::VT_DILATION, dilation);
+  }
+  void add_input_zp(int32_t input_zp) {
+    fbb_.AddElement<int32_t>(CONV3D_Attribute::VT_INPUT_ZP, input_zp, 0);
+  }
+  void add_weight_zp(int32_t weight_zp) {
+    fbb_.AddElement<int32_t>(CONV3D_Attribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(CONV3D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
+  void add_acc_type(tosa::DType acc_type) {
+    fbb_.AddElement<uint32_t>(CONV3D_Attribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+  }
+  explicit CONV3D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CONV3D_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CONV3D_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CONV3D_Attribute> CreateCONV3D_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation = 0,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0,
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+  CONV3D_AttributeBuilder builder_(_fbb);
+  builder_.add_acc_type(acc_type);
+  builder_.add_weight_zp(weight_zp);
+  builder_.add_input_zp(input_zp);
+  builder_.add_dilation(dilation);
+  builder_.add_stride(stride);
+  builder_.add_pad(pad);
+  builder_.add_local_bound(local_bound);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CONV3D_Attribute> CreateCONV3D_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *pad = nullptr,
+    const std::vector<int32_t> *stride = nullptr,
+    const std::vector<int32_t> *dilation = nullptr,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0,
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+  auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
+  auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
+  auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
+  return tosa::CreateCONV3D_Attribute(
+      _fbb,
+      pad__,
+      stride__,
+      dilation__,
+      input_zp,
+      weight_zp,
+      local_bound,
+      acc_type);
+}
+
+struct DEPTHWISE_CONV2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DEPTHWISE_CONV2D_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PAD = 4,
+    VT_STRIDE = 6,
+    VT_DILATION = 8,
+    VT_INPUT_ZP = 10,
+    VT_WEIGHT_ZP = 12,
+    VT_LOCAL_BOUND = 14,
+    VT_ACC_TYPE = 16
+  };
+  const ::flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
+  }
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  }
+  const ::flatbuffers::Vector<int32_t> *dilation() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_DILATION);
+  }
+  int32_t input_zp() const {
+    return GetField<int32_t>(VT_INPUT_ZP, 0);
+  }
+  int32_t weight_zp() const {
+    return GetField<int32_t>(VT_WEIGHT_ZP, 0);
+  }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
+  tosa::DType acc_type() const {
+    return static_cast<tosa::DType>(GetField<uint32_t>(VT_ACC_TYPE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PAD) &&
+           verifier.VerifyVector(pad()) &&
+           VerifyOffset(verifier, VT_STRIDE) &&
+           verifier.VerifyVector(stride()) &&
+           VerifyOffset(verifier, VT_DILATION) &&
+           verifier.VerifyVector(dilation()) &&
+           VerifyField<int32_t>(verifier, VT_INPUT_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEIGHT_ZP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyField<uint32_t>(verifier, VT_ACC_TYPE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct DEPTHWISE_CONV2D_AttributeBuilder {
+  typedef DEPTHWISE_CONV2D_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
+    fbb_.AddOffset(DEPTHWISE_CONV2D_Attribute::VT_PAD, pad);
+  }
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
+    fbb_.AddOffset(DEPTHWISE_CONV2D_Attribute::VT_STRIDE, stride);
+  }
+  void add_dilation(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation) {
+    fbb_.AddOffset(DEPTHWISE_CONV2D_Attribute::VT_DILATION, dilation);
+  }
+  void add_input_zp(int32_t input_zp) {
+    fbb_.AddElement<int32_t>(DEPTHWISE_CONV2D_Attribute::VT_INPUT_ZP, input_zp, 0);
+  }
+  void add_weight_zp(int32_t weight_zp) {
+    fbb_.AddElement<int32_t>(DEPTHWISE_CONV2D_Attribute::VT_WEIGHT_ZP, weight_zp, 0);
+  }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(DEPTHWISE_CONV2D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
+  void add_acc_type(tosa::DType acc_type) {
+    fbb_.AddElement<uint32_t>(DEPTHWISE_CONV2D_Attribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+  }
+  explicit DEPTHWISE_CONV2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<DEPTHWISE_CONV2D_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<DEPTHWISE_CONV2D_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<DEPTHWISE_CONV2D_Attribute> CreateDEPTHWISE_CONV2D_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> dilation = 0,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0,
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+  DEPTHWISE_CONV2D_AttributeBuilder builder_(_fbb);
+  builder_.add_acc_type(acc_type);
+  builder_.add_weight_zp(weight_zp);
+  builder_.add_input_zp(input_zp);
+  builder_.add_dilation(dilation);
+  builder_.add_stride(stride);
+  builder_.add_pad(pad);
+  builder_.add_local_bound(local_bound);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<DEPTHWISE_CONV2D_Attribute> CreateDEPTHWISE_CONV2D_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *pad = nullptr,
+    const std::vector<int32_t> *stride = nullptr,
+    const std::vector<int32_t> *dilation = nullptr,
+    int32_t input_zp = 0,
+    int32_t weight_zp = 0,
+    bool local_bound = false,
+    tosa::DType acc_type = tosa::DType_UNKNOWN) {
+  auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
+  auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
+  auto dilation__ = dilation ? _fbb.CreateVector<int32_t>(*dilation) : 0;
+  return tosa::CreateDEPTHWISE_CONV2D_Attribute(
+      _fbb,
+      pad__,
+      stride__,
+      dilation__,
+      input_zp,
+      weight_zp,
+      local_bound,
+      acc_type);
+}
+
+struct FFT2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef FFT2D_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INVERSE = 4,
+    VT_LOCAL_BOUND = 6
+  };
+  bool inverse() const {
+    return GetField<uint8_t>(VT_INVERSE, 0) != 0;
+  }
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_INVERSE, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct FFT2D_AttributeBuilder {
+  typedef FFT2D_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_inverse(bool inverse) {
+    fbb_.AddElement<uint8_t>(FFT2D_Attribute::VT_INVERSE, static_cast<uint8_t>(inverse), 0);
+  }
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(FFT2D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
+  explicit FFT2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<FFT2D_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<FFT2D_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<FFT2D_Attribute> CreateFFT2D_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool inverse = false,
+    bool local_bound = false) {
+  FFT2D_AttributeBuilder builder_(_fbb);
+  builder_.add_local_bound(local_bound);
+  builder_.add_inverse(inverse);
+  return builder_.Finish();
+}
+
+struct MATMUL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MATMUL_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_A_ZP = 4,
+    VT_B_ZP = 6
+  };
+  int32_t a_zp() const {
+    return GetField<int32_t>(VT_A_ZP, 0);
+  }
+  int32_t b_zp() const {
+    return GetField<int32_t>(VT_B_ZP, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MATMUL_AttributeBuilder {
+  typedef MATMUL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_a_zp(int32_t a_zp) {
+    fbb_.AddElement<int32_t>(MATMUL_Attribute::VT_A_ZP, a_zp, 0);
+  }
+  void add_b_zp(int32_t b_zp) {
+    fbb_.AddElement<int32_t>(MATMUL_Attribute::VT_B_ZP, b_zp, 0);
+  }
+  explicit MATMUL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MATMUL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MATMUL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MATMUL_Attribute> CreateMATMUL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t a_zp = 0,
+    int32_t b_zp = 0) {
+  MATMUL_AttributeBuilder builder_(_fbb);
+  builder_.add_b_zp(b_zp);
+  builder_.add_a_zp(a_zp);
+  return builder_.Finish();
+}
+
+struct MAX_POOL2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MAX_POOL2D_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_KERNEL = 4,
+    VT_STRIDE = 6,
+    VT_PAD = 8,
+    VT_NAN_MODE = 10
+  };
+  const ::flatbuffers::Vector<int32_t> *kernel() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_KERNEL);
+  }
+  const ::flatbuffers::Vector<int32_t> *stride() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_STRIDE);
+  }
+  const ::flatbuffers::Vector<int32_t> *pad() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PAD);
+  }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_KERNEL) &&
+           verifier.VerifyVector(kernel()) &&
+           VerifyOffset(verifier, VT_STRIDE) &&
+           verifier.VerifyVector(stride()) &&
+           VerifyOffset(verifier, VT_PAD) &&
+           verifier.VerifyVector(pad()) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MAX_POOL2D_AttributeBuilder {
+  typedef MAX_POOL2D_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_kernel(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel) {
+    fbb_.AddOffset(MAX_POOL2D_Attribute::VT_KERNEL, kernel);
+  }
+  void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
+    fbb_.AddOffset(MAX_POOL2D_Attribute::VT_STRIDE, stride);
+  }
+  void add_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad) {
+    fbb_.AddOffset(MAX_POOL2D_Attribute::VT_PAD, pad);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(MAX_POOL2D_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit MAX_POOL2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MAX_POOL2D_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MAX_POOL2D_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MAX_POOL2D_Attribute> CreateMAX_POOL2D_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> kernel = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> pad = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  MAX_POOL2D_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  builder_.add_pad(pad);
+  builder_.add_stride(stride);
+  builder_.add_kernel(kernel);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<MAX_POOL2D_Attribute> CreateMAX_POOL2D_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *kernel = nullptr,
+    const std::vector<int32_t> *stride = nullptr,
+    const std::vector<int32_t> *pad = nullptr,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  auto kernel__ = kernel ? _fbb.CreateVector<int32_t>(*kernel) : 0;
+  auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
+  auto pad__ = pad ? _fbb.CreateVector<int32_t>(*pad) : 0;
+  return tosa::CreateMAX_POOL2D_Attribute(
+      _fbb,
+      kernel__,
+      stride__,
+      pad__,
+      nan_mode);
+}
+
+struct RFFT2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RFFT2D_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_LOCAL_BOUND = 4
+  };
+  bool local_bound() const {
+    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct RFFT2D_AttributeBuilder {
+  typedef RFFT2D_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_local_bound(bool local_bound) {
+    fbb_.AddElement<uint8_t>(RFFT2D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  }
+  explicit RFFT2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RFFT2D_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RFFT2D_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RFFT2D_Attribute> CreateRFFT2D_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool local_bound = false) {
+  RFFT2D_AttributeBuilder builder_(_fbb);
+  builder_.add_local_bound(local_bound);
+  return builder_.Finish();
+}
+
+struct TRANSPOSE_CONV2D_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef TRANSPOSE_CONV2D_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OUT_PAD = 4,
     VT_STRIDE = 6,
@@ -991,40 +2079,40 @@ struct TransposeConvAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   }
 };
 
-struct TransposeConvAttributeBuilder {
-  typedef TransposeConvAttribute Table;
+struct TRANSPOSE_CONV2D_AttributeBuilder {
+  typedef TRANSPOSE_CONV2D_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_out_pad(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> out_pad) {
-    fbb_.AddOffset(TransposeConvAttribute::VT_OUT_PAD, out_pad);
+    fbb_.AddOffset(TRANSPOSE_CONV2D_Attribute::VT_OUT_PAD, out_pad);
   }
   void add_stride(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride) {
-    fbb_.AddOffset(TransposeConvAttribute::VT_STRIDE, stride);
+    fbb_.AddOffset(TRANSPOSE_CONV2D_Attribute::VT_STRIDE, stride);
   }
   void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_INPUT_ZP, input_zp, 0);
+    fbb_.AddElement<int32_t>(TRANSPOSE_CONV2D_Attribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_weight_zp(int32_t weight_zp) {
-    fbb_.AddElement<int32_t>(TransposeConvAttribute::VT_WEIGHT_ZP, weight_zp, 0);
+    fbb_.AddElement<int32_t>(TRANSPOSE_CONV2D_Attribute::VT_WEIGHT_ZP, weight_zp, 0);
   }
   void add_local_bound(bool local_bound) {
-    fbb_.AddElement<uint8_t>(TransposeConvAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+    fbb_.AddElement<uint8_t>(TRANSPOSE_CONV2D_Attribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
   }
   void add_acc_type(tosa::DType acc_type) {
-    fbb_.AddElement<uint32_t>(TransposeConvAttribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
+    fbb_.AddElement<uint32_t>(TRANSPOSE_CONV2D_Attribute::VT_ACC_TYPE, static_cast<uint32_t>(acc_type), 0);
   }
-  explicit TransposeConvAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit TRANSPOSE_CONV2D_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<TransposeConvAttribute> Finish() {
+  ::flatbuffers::Offset<TRANSPOSE_CONV2D_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<TransposeConvAttribute>(end);
+    auto o = ::flatbuffers::Offset<TRANSPOSE_CONV2D_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribute(
+inline ::flatbuffers::Offset<TRANSPOSE_CONV2D_Attribute> CreateTRANSPOSE_CONV2D_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> out_pad = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> stride = 0,
@@ -1032,7 +2120,7 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     int32_t weight_zp = 0,
     bool local_bound = false,
     tosa::DType acc_type = tosa::DType_UNKNOWN) {
-  TransposeConvAttributeBuilder builder_(_fbb);
+  TRANSPOSE_CONV2D_AttributeBuilder builder_(_fbb);
   builder_.add_acc_type(acc_type);
   builder_.add_weight_zp(weight_zp);
   builder_.add_input_zp(input_zp);
@@ -1042,7 +2130,7 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttributeDirect(
+inline ::flatbuffers::Offset<TRANSPOSE_CONV2D_Attribute> CreateTRANSPOSE_CONV2D_AttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<int32_t> *out_pad = nullptr,
     const std::vector<int32_t> *stride = nullptr,
@@ -1052,7 +2140,7 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
     tosa::DType acc_type = tosa::DType_UNKNOWN) {
   auto out_pad__ = out_pad ? _fbb.CreateVector<int32_t>(*out_pad) : 0;
   auto stride__ = stride ? _fbb.CreateVector<int32_t>(*stride) : 0;
-  return tosa::CreateTransposeConvAttribute(
+  return tosa::CreateTRANSPOSE_CONV2D_Attribute(
       _fbb,
       out_pad__,
       stride__,
@@ -1062,152 +2150,8 @@ inline ::flatbuffers::Offset<TransposeConvAttribute> CreateTransposeConvAttribut
       acc_type);
 }
 
-struct PadAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef PadAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PAD_CONST = 4
-  };
-  const ::flatbuffers::Vector<uint8_t> *pad_const() const {
-    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_PAD_CONST) &&
-           verifier.VerifyVector(pad_const()) &&
-           verifier.EndTable();
-  }
-};
-
-struct PadAttributeBuilder {
-  typedef PadAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_pad_const(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const) {
-    fbb_.AddOffset(PadAttribute::VT_PAD_CONST, pad_const);
-  }
-  explicit PadAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<PadAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<PadAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<PadAttribute> CreatePadAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const = 0) {
-  PadAttributeBuilder builder_(_fbb);
-  builder_.add_pad_const(pad_const);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<PadAttribute> CreatePadAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *pad_const = nullptr) {
-  if (pad_const) { _fbb.ForceVectorAlignment(pad_const->size(), sizeof(uint8_t), 8); }
-  auto pad_const__ = pad_const ? _fbb.CreateVector<uint8_t>(*pad_const) : 0;
-  return tosa::CreatePadAttribute(
-      _fbb,
-      pad_const__);
-}
-
-struct AxisAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef AxisAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_AXIS = 4,
-    VT_NAN_MODE = 6
-  };
-  int32_t axis() const {
-    return GetField<int32_t>(VT_AXIS, 0);
-  }
-  tosa::NanPropagationMode nan_mode() const {
-    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
-           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct AxisAttributeBuilder {
-  typedef AxisAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_axis(int32_t axis) {
-    fbb_.AddElement<int32_t>(AxisAttribute::VT_AXIS, axis, 0);
-  }
-  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
-    fbb_.AddElement<uint32_t>(AxisAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
-  }
-  explicit AxisAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<AxisAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<AxisAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<AxisAttribute> CreateAxisAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t axis = 0,
-    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
-  AxisAttributeBuilder builder_(_fbb);
-  builder_.add_nan_mode(nan_mode);
-  builder_.add_axis(axis);
-  return builder_.Finish();
-}
-
-struct ResizeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ResizeAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_MODE = 10
-  };
-  tosa::ResizeMode mode() const {
-    return static_cast<tosa::ResizeMode>(GetField<uint32_t>(VT_MODE, 0));
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_MODE, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct ResizeAttributeBuilder {
-  typedef ResizeAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_mode(tosa::ResizeMode mode) {
-    fbb_.AddElement<uint32_t>(ResizeAttribute::VT_MODE, static_cast<uint32_t>(mode), 0);
-  }
-  explicit ResizeAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<ResizeAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<ResizeAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<ResizeAttribute> CreateResizeAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
-  ResizeAttributeBuilder builder_(_fbb);
-  builder_.add_mode(mode);
-  return builder_.Finish();
-}
-
-struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ClampAttributeBuilder Builder;
+struct CLAMP_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CLAMP_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MIN_VAL = 4,
     VT_MAX_VAL = 6,
@@ -1233,43 +2177,43 @@ struct ClampAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct ClampAttributeBuilder {
-  typedef ClampAttribute Table;
+struct CLAMP_AttributeBuilder {
+  typedef CLAMP_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_min_val(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_val) {
-    fbb_.AddOffset(ClampAttribute::VT_MIN_VAL, min_val);
+    fbb_.AddOffset(CLAMP_Attribute::VT_MIN_VAL, min_val);
   }
   void add_max_val(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val) {
-    fbb_.AddOffset(ClampAttribute::VT_MAX_VAL, max_val);
+    fbb_.AddOffset(CLAMP_Attribute::VT_MAX_VAL, max_val);
   }
   void add_nan_mode(tosa::NanPropagationMode nan_mode) {
-    fbb_.AddElement<uint32_t>(ClampAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+    fbb_.AddElement<uint32_t>(CLAMP_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
   }
-  explicit ClampAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CLAMP_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<ClampAttribute> Finish() {
+  ::flatbuffers::Offset<CLAMP_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<ClampAttribute>(end);
+    auto o = ::flatbuffers::Offset<CLAMP_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttribute(
+inline ::flatbuffers::Offset<CLAMP_Attribute> CreateCLAMP_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> min_val = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> max_val = 0,
     tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
-  ClampAttributeBuilder builder_(_fbb);
+  CLAMP_AttributeBuilder builder_(_fbb);
   builder_.add_nan_mode(nan_mode);
   builder_.add_max_val(max_val);
   builder_.add_min_val(min_val);
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
+inline ::flatbuffers::Offset<CLAMP_Attribute> CreateCLAMP_AttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const std::vector<uint8_t> *min_val = nullptr,
     const std::vector<uint8_t> *max_val = nullptr,
@@ -1278,15 +2222,1853 @@ inline ::flatbuffers::Offset<ClampAttribute> CreateClampAttributeDirect(
   auto min_val__ = min_val ? _fbb.CreateVector<uint8_t>(*min_val) : 0;
   if (max_val) { _fbb.ForceVectorAlignment(max_val->size(), sizeof(uint8_t), 8); }
   auto max_val__ = max_val ? _fbb.CreateVector<uint8_t>(*max_val) : 0;
-  return tosa::CreateClampAttribute(
+  return tosa::CreateCLAMP_Attribute(
       _fbb,
       min_val__,
       max_val__,
       nan_mode);
 }
 
-struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef RescaleAttributeBuilder Builder;
+struct ERF_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ERF_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ERF_AttributeBuilder {
+  typedef ERF_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit ERF_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ERF_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ERF_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ERF_Attribute> CreateERF_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  ERF_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SIGMOID_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SIGMOID_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SIGMOID_AttributeBuilder {
+  typedef SIGMOID_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SIGMOID_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SIGMOID_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SIGMOID_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SIGMOID_Attribute> CreateSIGMOID_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SIGMOID_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TANH_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef TANH_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TANH_AttributeBuilder {
+  typedef TANH_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit TANH_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<TANH_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<TANH_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<TANH_Attribute> CreateTANH_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  TANH_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ADD_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ADD_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ADD_AttributeBuilder {
+  typedef ADD_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit ADD_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ADD_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ADD_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ADD_Attribute> CreateADD_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  ADD_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ARITHMETIC_RIGHT_SHIFT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ARITHMETIC_RIGHT_SHIFT_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ROUND = 4
+  };
+  bool round() const {
+    return GetField<uint8_t>(VT_ROUND, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint8_t>(verifier, VT_ROUND, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct ARITHMETIC_RIGHT_SHIFT_AttributeBuilder {
+  typedef ARITHMETIC_RIGHT_SHIFT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_round(bool round) {
+    fbb_.AddElement<uint8_t>(ARITHMETIC_RIGHT_SHIFT_Attribute::VT_ROUND, static_cast<uint8_t>(round), 0);
+  }
+  explicit ARITHMETIC_RIGHT_SHIFT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ARITHMETIC_RIGHT_SHIFT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ARITHMETIC_RIGHT_SHIFT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ARITHMETIC_RIGHT_SHIFT_Attribute> CreateARITHMETIC_RIGHT_SHIFT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    bool round = false) {
+  ARITHMETIC_RIGHT_SHIFT_AttributeBuilder builder_(_fbb);
+  builder_.add_round(round);
+  return builder_.Finish();
+}
+
+struct BITWISE_AND_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BITWISE_AND_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BITWISE_AND_AttributeBuilder {
+  typedef BITWISE_AND_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit BITWISE_AND_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BITWISE_AND_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BITWISE_AND_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BITWISE_AND_Attribute> CreateBITWISE_AND_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  BITWISE_AND_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BITWISE_OR_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BITWISE_OR_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BITWISE_OR_AttributeBuilder {
+  typedef BITWISE_OR_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit BITWISE_OR_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BITWISE_OR_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BITWISE_OR_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BITWISE_OR_Attribute> CreateBITWISE_OR_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  BITWISE_OR_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BITWISE_XOR_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BITWISE_XOR_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BITWISE_XOR_AttributeBuilder {
+  typedef BITWISE_XOR_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit BITWISE_XOR_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BITWISE_XOR_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BITWISE_XOR_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BITWISE_XOR_Attribute> CreateBITWISE_XOR_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  BITWISE_XOR_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct INTDIV_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef INTDIV_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct INTDIV_AttributeBuilder {
+  typedef INTDIV_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit INTDIV_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<INTDIV_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<INTDIV_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<INTDIV_Attribute> CreateINTDIV_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  INTDIV_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_AND_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_AND_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_AND_AttributeBuilder {
+  typedef LOGICAL_AND_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_AND_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_AND_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_AND_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_AND_Attribute> CreateLOGICAL_AND_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_AND_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_LEFT_SHIFT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_LEFT_SHIFT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_LEFT_SHIFT_AttributeBuilder {
+  typedef LOGICAL_LEFT_SHIFT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_LEFT_SHIFT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_LEFT_SHIFT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_LEFT_SHIFT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_LEFT_SHIFT_Attribute> CreateLOGICAL_LEFT_SHIFT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_LEFT_SHIFT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_RIGHT_SHIFT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_RIGHT_SHIFT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_RIGHT_SHIFT_AttributeBuilder {
+  typedef LOGICAL_RIGHT_SHIFT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_RIGHT_SHIFT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_RIGHT_SHIFT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_RIGHT_SHIFT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_RIGHT_SHIFT_Attribute> CreateLOGICAL_RIGHT_SHIFT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_RIGHT_SHIFT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_OR_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_OR_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_OR_AttributeBuilder {
+  typedef LOGICAL_OR_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_OR_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_OR_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_OR_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_OR_Attribute> CreateLOGICAL_OR_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_OR_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_XOR_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_XOR_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_XOR_AttributeBuilder {
+  typedef LOGICAL_XOR_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_XOR_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_XOR_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_XOR_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_XOR_Attribute> CreateLOGICAL_XOR_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_XOR_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct MAXIMUM_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MAXIMUM_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAN_MODE = 4
+  };
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MAXIMUM_AttributeBuilder {
+  typedef MAXIMUM_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(MAXIMUM_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit MAXIMUM_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MAXIMUM_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MAXIMUM_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MAXIMUM_Attribute> CreateMAXIMUM_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  MAXIMUM_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  return builder_.Finish();
+}
+
+struct MINIMUM_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MINIMUM_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAN_MODE = 4
+  };
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MINIMUM_AttributeBuilder {
+  typedef MINIMUM_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(MINIMUM_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit MINIMUM_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MINIMUM_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MINIMUM_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MINIMUM_Attribute> CreateMINIMUM_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  MINIMUM_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  return builder_.Finish();
+}
+
+struct MUL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MUL_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SHIFT = 4
+  };
+  int32_t shift() const {
+    return GetField<int32_t>(VT_SHIFT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_SHIFT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MUL_AttributeBuilder {
+  typedef MUL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_shift(int32_t shift) {
+    fbb_.AddElement<int32_t>(MUL_Attribute::VT_SHIFT, shift, 0);
+  }
+  explicit MUL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MUL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MUL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MUL_Attribute> CreateMUL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t shift = 0) {
+  MUL_AttributeBuilder builder_(_fbb);
+  builder_.add_shift(shift);
+  return builder_.Finish();
+}
+
+struct POW_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef POW_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct POW_AttributeBuilder {
+  typedef POW_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit POW_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<POW_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<POW_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<POW_Attribute> CreatePOW_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  POW_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SUB_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SUB_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SUB_AttributeBuilder {
+  typedef SUB_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SUB_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SUB_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SUB_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SUB_Attribute> CreateSUB_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SUB_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TABLE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef TABLE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TABLE_AttributeBuilder {
+  typedef TABLE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit TABLE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<TABLE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<TABLE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<TABLE_Attribute> CreateTABLE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  TABLE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ABS_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ABS_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct ABS_AttributeBuilder {
+  typedef ABS_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit ABS_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ABS_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ABS_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ABS_Attribute> CreateABS_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  ABS_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct BITWISE_NOT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BITWISE_NOT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct BITWISE_NOT_AttributeBuilder {
+  typedef BITWISE_NOT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit BITWISE_NOT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BITWISE_NOT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BITWISE_NOT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BITWISE_NOT_Attribute> CreateBITWISE_NOT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  BITWISE_NOT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CEIL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CEIL_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CEIL_AttributeBuilder {
+  typedef CEIL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CEIL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CEIL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CEIL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CEIL_Attribute> CreateCEIL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CEIL_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CLZ_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CLZ_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CLZ_AttributeBuilder {
+  typedef CLZ_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CLZ_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CLZ_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CLZ_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CLZ_Attribute> CreateCLZ_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CLZ_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct COS_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef COS_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct COS_AttributeBuilder {
+  typedef COS_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit COS_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<COS_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<COS_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<COS_Attribute> CreateCOS_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  COS_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct EXP_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef EXP_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct EXP_AttributeBuilder {
+  typedef EXP_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit EXP_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<EXP_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<EXP_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<EXP_Attribute> CreateEXP_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  EXP_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct FLOOR_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef FLOOR_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct FLOOR_AttributeBuilder {
+  typedef FLOOR_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit FLOOR_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<FLOOR_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<FLOOR_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<FLOOR_Attribute> CreateFLOOR_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  FLOOR_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOG_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOG_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOG_AttributeBuilder {
+  typedef LOG_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOG_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOG_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOG_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOG_Attribute> CreateLOG_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOG_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct LOGICAL_NOT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef LOGICAL_NOT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct LOGICAL_NOT_AttributeBuilder {
+  typedef LOGICAL_NOT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit LOGICAL_NOT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<LOGICAL_NOT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<LOGICAL_NOT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<LOGICAL_NOT_Attribute> CreateLOGICAL_NOT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  LOGICAL_NOT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct NEGATE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef NEGATE_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INPUT1_ZP = 4,
+    VT_OUTPUT_ZP = 6
+  };
+  int32_t input1_zp() const {
+    return GetField<int32_t>(VT_INPUT1_ZP, 0);
+  }
+  int32_t output_zp() const {
+    return GetField<int32_t>(VT_OUTPUT_ZP, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_INPUT1_ZP, 4) &&
+           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct NEGATE_AttributeBuilder {
+  typedef NEGATE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_input1_zp(int32_t input1_zp) {
+    fbb_.AddElement<int32_t>(NEGATE_Attribute::VT_INPUT1_ZP, input1_zp, 0);
+  }
+  void add_output_zp(int32_t output_zp) {
+    fbb_.AddElement<int32_t>(NEGATE_Attribute::VT_OUTPUT_ZP, output_zp, 0);
+  }
+  explicit NEGATE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<NEGATE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<NEGATE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<NEGATE_Attribute> CreateNEGATE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t input1_zp = 0,
+    int32_t output_zp = 0) {
+  NEGATE_AttributeBuilder builder_(_fbb);
+  builder_.add_output_zp(output_zp);
+  builder_.add_input1_zp(input1_zp);
+  return builder_.Finish();
+}
+
+struct RECIPROCAL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RECIPROCAL_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RECIPROCAL_AttributeBuilder {
+  typedef RECIPROCAL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit RECIPROCAL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RECIPROCAL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RECIPROCAL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RECIPROCAL_Attribute> CreateRECIPROCAL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  RECIPROCAL_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct RSQRT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RSQRT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RSQRT_AttributeBuilder {
+  typedef RSQRT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit RSQRT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RSQRT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RSQRT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RSQRT_Attribute> CreateRSQRT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  RSQRT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SIN_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SIN_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SIN_AttributeBuilder {
+  typedef SIN_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SIN_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SIN_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SIN_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SIN_Attribute> CreateSIN_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SIN_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SELECT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SELECT_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SELECT_AttributeBuilder {
+  typedef SELECT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SELECT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SELECT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SELECT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SELECT_Attribute> CreateSELECT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SELECT_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct EQUAL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef EQUAL_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct EQUAL_AttributeBuilder {
+  typedef EQUAL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit EQUAL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<EQUAL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<EQUAL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<EQUAL_Attribute> CreateEQUAL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  EQUAL_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct GREATER_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GREATER_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct GREATER_AttributeBuilder {
+  typedef GREATER_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit GREATER_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GREATER_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GREATER_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GREATER_Attribute> CreateGREATER_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  GREATER_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct GREATER_EQUAL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GREATER_EQUAL_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct GREATER_EQUAL_AttributeBuilder {
+  typedef GREATER_EQUAL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit GREATER_EQUAL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GREATER_EQUAL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GREATER_EQUAL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GREATER_EQUAL_Attribute> CreateGREATER_EQUAL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  GREATER_EQUAL_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct REDUCE_ALL_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_ALL_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_ALL_AttributeBuilder {
+  typedef REDUCE_ALL_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_ALL_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit REDUCE_ALL_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_ALL_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_ALL_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_ALL_Attribute> CreateREDUCE_ALL_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  REDUCE_ALL_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct REDUCE_ANY_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_ANY_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_ANY_AttributeBuilder {
+  typedef REDUCE_ANY_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_ANY_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit REDUCE_ANY_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_ANY_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_ANY_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_ANY_Attribute> CreateREDUCE_ANY_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  REDUCE_ANY_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct REDUCE_MAX_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_MAX_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4,
+    VT_NAN_MODE = 6
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_MAX_AttributeBuilder {
+  typedef REDUCE_MAX_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_MAX_Attribute::VT_AXIS, axis, 0);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(REDUCE_MAX_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit REDUCE_MAX_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_MAX_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_MAX_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_MAX_Attribute> CreateREDUCE_MAX_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  REDUCE_MAX_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct REDUCE_MIN_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_MIN_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4,
+    VT_NAN_MODE = 6
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  tosa::NanPropagationMode nan_mode() const {
+    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_MIN_AttributeBuilder {
+  typedef REDUCE_MIN_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_MIN_Attribute::VT_AXIS, axis, 0);
+  }
+  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
+    fbb_.AddElement<uint32_t>(REDUCE_MIN_Attribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
+  }
+  explicit REDUCE_MIN_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_MIN_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_MIN_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_MIN_Attribute> CreateREDUCE_MIN_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0,
+    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
+  REDUCE_MIN_AttributeBuilder builder_(_fbb);
+  builder_.add_nan_mode(nan_mode);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct REDUCE_PRODUCT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_PRODUCT_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_PRODUCT_AttributeBuilder {
+  typedef REDUCE_PRODUCT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_PRODUCT_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit REDUCE_PRODUCT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_PRODUCT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_PRODUCT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_PRODUCT_Attribute> CreateREDUCE_PRODUCT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  REDUCE_PRODUCT_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct REDUCE_SUM_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REDUCE_SUM_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REDUCE_SUM_AttributeBuilder {
+  typedef REDUCE_SUM_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REDUCE_SUM_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit REDUCE_SUM_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REDUCE_SUM_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REDUCE_SUM_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REDUCE_SUM_Attribute> CreateREDUCE_SUM_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  REDUCE_SUM_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct CONCAT_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CONCAT_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CONCAT_AttributeBuilder {
+  typedef CONCAT_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(CONCAT_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit CONCAT_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CONCAT_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CONCAT_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CONCAT_Attribute> CreateCONCAT_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  CONCAT_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct PAD_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PAD_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PAD_CONST = 4
+  };
+  const ::flatbuffers::Vector<uint8_t> *pad_const() const {
+    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_PAD_CONST);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PAD_CONST) &&
+           verifier.VerifyVector(pad_const()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PAD_AttributeBuilder {
+  typedef PAD_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pad_const(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const) {
+    fbb_.AddOffset(PAD_Attribute::VT_PAD_CONST, pad_const);
+  }
+  explicit PAD_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PAD_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PAD_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PAD_Attribute> CreatePAD_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> pad_const = 0) {
+  PAD_AttributeBuilder builder_(_fbb);
+  builder_.add_pad_const(pad_const);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<PAD_Attribute> CreatePAD_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<uint8_t> *pad_const = nullptr) {
+  if (pad_const) { _fbb.ForceVectorAlignment(pad_const->size(), sizeof(uint8_t), 8); }
+  auto pad_const__ = pad_const ? _fbb.CreateVector<uint8_t>(*pad_const) : 0;
+  return tosa::CreatePAD_Attribute(
+      _fbb,
+      pad_const__);
+}
+
+struct RESHAPE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RESHAPE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct RESHAPE_AttributeBuilder {
+  typedef RESHAPE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit RESHAPE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RESHAPE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RESHAPE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RESHAPE_Attribute> CreateRESHAPE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  RESHAPE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct REVERSE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef REVERSE_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_AXIS = 4
+  };
+  int32_t axis() const {
+    return GetField<int32_t>(VT_AXIS, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct REVERSE_AttributeBuilder {
+  typedef REVERSE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) {
+    fbb_.AddElement<int32_t>(REVERSE_Attribute::VT_AXIS, axis, 0);
+  }
+  explicit REVERSE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<REVERSE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<REVERSE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<REVERSE_Attribute> CreateREVERSE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t axis = 0) {
+  REVERSE_AttributeBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+struct SLICE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SLICE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SLICE_AttributeBuilder {
+  typedef SLICE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SLICE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SLICE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SLICE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SLICE_Attribute> CreateSLICE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SLICE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TILE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef TILE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct TILE_AttributeBuilder {
+  typedef TILE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit TILE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<TILE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<TILE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<TILE_Attribute> CreateTILE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  TILE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct TRANSPOSE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef TRANSPOSE_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PERMS = 4
+  };
+  const ::flatbuffers::Vector<int32_t> *perms() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PERMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PERMS) &&
+           verifier.VerifyVector(perms()) &&
+           verifier.EndTable();
+  }
+};
+
+struct TRANSPOSE_AttributeBuilder {
+  typedef TRANSPOSE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_perms(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms) {
+    fbb_.AddOffset(TRANSPOSE_Attribute::VT_PERMS, perms);
+  }
+  explicit TRANSPOSE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<TRANSPOSE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<TRANSPOSE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<TRANSPOSE_Attribute> CreateTRANSPOSE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms = 0) {
+  TRANSPOSE_AttributeBuilder builder_(_fbb);
+  builder_.add_perms(perms);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<TRANSPOSE_Attribute> CreateTRANSPOSE_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<int32_t> *perms = nullptr) {
+  auto perms__ = perms ? _fbb.CreateVector<int32_t>(*perms) : 0;
+  return tosa::CreateTRANSPOSE_Attribute(
+      _fbb,
+      perms__);
+}
+
+struct GATHER_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GATHER_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct GATHER_AttributeBuilder {
+  typedef GATHER_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit GATHER_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GATHER_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GATHER_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GATHER_Attribute> CreateGATHER_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  GATHER_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct SCATTER_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef SCATTER_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct SCATTER_AttributeBuilder {
+  typedef SCATTER_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit SCATTER_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<SCATTER_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<SCATTER_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<SCATTER_Attribute> CreateSCATTER_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  SCATTER_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct RESIZE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RESIZE_AttributeBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MODE = 4
+  };
+  tosa::ResizeMode mode() const {
+    return static_cast<tosa::ResizeMode>(GetField<uint32_t>(VT_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint32_t>(verifier, VT_MODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct RESIZE_AttributeBuilder {
+  typedef RESIZE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_mode(tosa::ResizeMode mode) {
+    fbb_.AddElement<uint32_t>(RESIZE_Attribute::VT_MODE, static_cast<uint32_t>(mode), 0);
+  }
+  explicit RESIZE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RESIZE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RESIZE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RESIZE_Attribute> CreateRESIZE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    tosa::ResizeMode mode = tosa::ResizeMode_UNKNOWN) {
+  RESIZE_AttributeBuilder builder_(_fbb);
+  builder_.add_mode(mode);
+  return builder_.Finish();
+}
+
+struct CAST_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CAST_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CAST_AttributeBuilder {
+  typedef CAST_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CAST_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CAST_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CAST_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CAST_Attribute> CreateCAST_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CAST_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CAST_STOCHASTIC_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CAST_STOCHASTIC_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CAST_STOCHASTIC_AttributeBuilder {
+  typedef CAST_STOCHASTIC_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CAST_STOCHASTIC_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CAST_STOCHASTIC_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CAST_STOCHASTIC_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CAST_STOCHASTIC_Attribute> CreateCAST_STOCHASTIC_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CAST_STOCHASTIC_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct RESCALE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RESCALE_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INPUT_ZP = 4,
     VT_OUTPUT_ZP = 6,
@@ -1330,43 +4112,43 @@ struct RescaleAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct RescaleAttributeBuilder {
-  typedef RescaleAttribute Table;
+struct RESCALE_AttributeBuilder {
+  typedef RESCALE_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_input_zp(int32_t input_zp) {
-    fbb_.AddElement<int32_t>(RescaleAttribute::VT_INPUT_ZP, input_zp, 0);
+    fbb_.AddElement<int32_t>(RESCALE_Attribute::VT_INPUT_ZP, input_zp, 0);
   }
   void add_output_zp(int32_t output_zp) {
-    fbb_.AddElement<int32_t>(RescaleAttribute::VT_OUTPUT_ZP, output_zp, 0);
+    fbb_.AddElement<int32_t>(RESCALE_Attribute::VT_OUTPUT_ZP, output_zp, 0);
   }
   void add_scale32(bool scale32) {
-    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_SCALE32, static_cast<uint8_t>(scale32), 0);
+    fbb_.AddElement<uint8_t>(RESCALE_Attribute::VT_SCALE32, static_cast<uint8_t>(scale32), 0);
   }
   void add_double_round(bool double_round) {
-    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_DOUBLE_ROUND, static_cast<uint8_t>(double_round), 0);
+    fbb_.AddElement<uint8_t>(RESCALE_Attribute::VT_DOUBLE_ROUND, static_cast<uint8_t>(double_round), 0);
   }
   void add_per_channel(bool per_channel) {
-    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_PER_CHANNEL, static_cast<uint8_t>(per_channel), 0);
+    fbb_.AddElement<uint8_t>(RESCALE_Attribute::VT_PER_CHANNEL, static_cast<uint8_t>(per_channel), 0);
   }
   void add_input_unsigned(bool input_unsigned) {
-    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_INPUT_UNSIGNED, static_cast<uint8_t>(input_unsigned), 0);
+    fbb_.AddElement<uint8_t>(RESCALE_Attribute::VT_INPUT_UNSIGNED, static_cast<uint8_t>(input_unsigned), 0);
   }
   void add_output_unsigned(bool output_unsigned) {
-    fbb_.AddElement<uint8_t>(RescaleAttribute::VT_OUTPUT_UNSIGNED, static_cast<uint8_t>(output_unsigned), 0);
+    fbb_.AddElement<uint8_t>(RESCALE_Attribute::VT_OUTPUT_UNSIGNED, static_cast<uint8_t>(output_unsigned), 0);
   }
-  explicit RescaleAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RESCALE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<RescaleAttribute> Finish() {
+  ::flatbuffers::Offset<RESCALE_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<RescaleAttribute>(end);
+    auto o = ::flatbuffers::Offset<RESCALE_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
+inline ::flatbuffers::Offset<RESCALE_Attribute> CreateRESCALE_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t input_zp = 0,
     int32_t output_zp = 0,
@@ -1375,7 +4157,7 @@ inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
     bool per_channel = false,
     bool input_unsigned = false,
     bool output_unsigned = false) {
-  RescaleAttributeBuilder builder_(_fbb);
+  RESCALE_AttributeBuilder builder_(_fbb);
   builder_.add_output_zp(output_zp);
   builder_.add_input_zp(input_zp);
   builder_.add_output_unsigned(output_unsigned);
@@ -1386,437 +4168,136 @@ inline ::flatbuffers::Offset<RescaleAttribute> CreateRescaleAttribute(
   return builder_.Finish();
 }
 
-struct MulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef MulAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SHIFT = 4
-  };
-  int32_t shift() const {
-    return GetField<int32_t>(VT_SHIFT, 0);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_SHIFT, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct MulAttributeBuilder {
-  typedef MulAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_shift(int32_t shift) {
-    fbb_.AddElement<int32_t>(MulAttribute::VT_SHIFT, shift, 0);
-  }
-  explicit MulAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<MulAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<MulAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<MulAttribute> CreateMulAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t shift = 0) {
-  MulAttributeBuilder builder_(_fbb);
-  builder_.add_shift(shift);
-  return builder_.Finish();
-}
-
-struct ArithmeticRightShiftAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ArithmeticRightShiftAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ROUND = 4
-  };
-  bool round() const {
-    return GetField<uint8_t>(VT_ROUND, 0) != 0;
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_ROUND, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct ArithmeticRightShiftAttributeBuilder {
-  typedef ArithmeticRightShiftAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_round(bool round) {
-    fbb_.AddElement<uint8_t>(ArithmeticRightShiftAttribute::VT_ROUND, static_cast<uint8_t>(round), 0);
-  }
-  explicit ArithmeticRightShiftAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<ArithmeticRightShiftAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<ArithmeticRightShiftAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<ArithmeticRightShiftAttribute> CreateArithmeticRightShiftAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    bool round = false) {
-  ArithmeticRightShiftAttributeBuilder builder_(_fbb);
-  builder_.add_round(round);
-  return builder_.Finish();
-}
-
-struct CondIfAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CondIfAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_THEN_GRAPH = 4,
-    VT_ELSE_GRAPH = 6
-  };
-  const ::flatbuffers::String *then_graph() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_THEN_GRAPH);
-  }
-  const ::flatbuffers::String *else_graph() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_ELSE_GRAPH);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_THEN_GRAPH) &&
-           verifier.VerifyString(then_graph()) &&
-           VerifyOffset(verifier, VT_ELSE_GRAPH) &&
-           verifier.VerifyString(else_graph()) &&
-           verifier.EndTable();
-  }
-};
-
-struct CondIfAttributeBuilder {
-  typedef CondIfAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_then_graph(::flatbuffers::Offset<::flatbuffers::String> then_graph) {
-    fbb_.AddOffset(CondIfAttribute::VT_THEN_GRAPH, then_graph);
-  }
-  void add_else_graph(::flatbuffers::Offset<::flatbuffers::String> else_graph) {
-    fbb_.AddOffset(CondIfAttribute::VT_ELSE_GRAPH, else_graph);
-  }
-  explicit CondIfAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<CondIfAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<CondIfAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<CondIfAttribute> CreateCondIfAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> then_graph = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> else_graph = 0) {
-  CondIfAttributeBuilder builder_(_fbb);
-  builder_.add_else_graph(else_graph);
-  builder_.add_then_graph(then_graph);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<CondIfAttribute> CreateCondIfAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *then_graph = nullptr,
-    const char *else_graph = nullptr) {
-  auto then_graph__ = then_graph ? _fbb.CreateString(then_graph) : 0;
-  auto else_graph__ = else_graph ? _fbb.CreateString(else_graph) : 0;
-  return tosa::CreateCondIfAttribute(
-      _fbb,
-      then_graph__,
-      else_graph__);
-}
-
-struct WhileLoopAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef WhileLoopAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_COND_GRAPH = 4,
-    VT_BODY_GRAPH = 6
-  };
-  const ::flatbuffers::String *cond_graph() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_COND_GRAPH);
-  }
-  const ::flatbuffers::String *body_graph() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_BODY_GRAPH);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_COND_GRAPH) &&
-           verifier.VerifyString(cond_graph()) &&
-           VerifyOffset(verifier, VT_BODY_GRAPH) &&
-           verifier.VerifyString(body_graph()) &&
-           verifier.EndTable();
-  }
-};
-
-struct WhileLoopAttributeBuilder {
-  typedef WhileLoopAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_cond_graph(::flatbuffers::Offset<::flatbuffers::String> cond_graph) {
-    fbb_.AddOffset(WhileLoopAttribute::VT_COND_GRAPH, cond_graph);
-  }
-  void add_body_graph(::flatbuffers::Offset<::flatbuffers::String> body_graph) {
-    fbb_.AddOffset(WhileLoopAttribute::VT_BODY_GRAPH, body_graph);
-  }
-  explicit WhileLoopAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<WhileLoopAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<WhileLoopAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::String> cond_graph = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> body_graph = 0) {
-  WhileLoopAttributeBuilder builder_(_fbb);
-  builder_.add_body_graph(body_graph);
-  builder_.add_cond_graph(cond_graph);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<WhileLoopAttribute> CreateWhileLoopAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const char *cond_graph = nullptr,
-    const char *body_graph = nullptr) {
-  auto cond_graph__ = cond_graph ? _fbb.CreateString(cond_graph) : 0;
-  auto body_graph__ = body_graph ? _fbb.CreateString(body_graph) : 0;
-  return tosa::CreateWhileLoopAttribute(
-      _fbb,
-      cond_graph__,
-      body_graph__);
-}
-
-struct TransposeAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef TransposeAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_PERMS = 4
-  };
-  const ::flatbuffers::Vector<int32_t> *perms() const {
-    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_PERMS);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_PERMS) &&
-           verifier.VerifyVector(perms()) &&
-           verifier.EndTable();
-  }
-};
-
-struct TransposeAttributeBuilder {
-  typedef TransposeAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_perms(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms) {
-    fbb_.AddOffset(TransposeAttribute::VT_PERMS, perms);
-  }
-  explicit TransposeAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<TransposeAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<TransposeAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<TransposeAttribute> CreateTransposeAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> perms = 0) {
-  TransposeAttributeBuilder builder_(_fbb);
-  builder_.add_perms(perms);
-  return builder_.Finish();
-}
-
-inline ::flatbuffers::Offset<TransposeAttribute> CreateTransposeAttributeDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<int32_t> *perms = nullptr) {
-  auto perms__ = perms ? _fbb.CreateVector<int32_t>(*perms) : 0;
-  return tosa::CreateTransposeAttribute(
-      _fbb,
-      perms__);
-}
-
-struct TableAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef TableAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-
-  };
+struct CONST_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CONST_AttributeBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct TableAttributeBuilder {
-  typedef TableAttribute Table;
+struct CONST_AttributeBuilder {
+  typedef CONST_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  explicit TableAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CONST_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<TableAttribute> Finish() {
+  ::flatbuffers::Offset<CONST_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<TableAttribute>(end);
+    auto o = ::flatbuffers::Offset<CONST_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<TableAttribute> CreateTableAttribute(
+inline ::flatbuffers::Offset<CONST_Attribute> CreateCONST_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
-  TableAttributeBuilder builder_(_fbb);
+  CONST_AttributeBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef MatMulAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_A_ZP = 4,
-    VT_B_ZP = 6
-  };
-  int32_t a_zp() const {
-    return GetField<int32_t>(VT_A_ZP, 0);
-  }
-  int32_t b_zp() const {
-    return GetField<int32_t>(VT_B_ZP, 0);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
-           VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct MatMulAttributeBuilder {
-  typedef MatMulAttribute Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_a_zp(int32_t a_zp) {
-    fbb_.AddElement<int32_t>(MatMulAttribute::VT_A_ZP, a_zp, 0);
-  }
-  void add_b_zp(int32_t b_zp) {
-    fbb_.AddElement<int32_t>(MatMulAttribute::VT_B_ZP, b_zp, 0);
-  }
-  explicit MatMulAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<MatMulAttribute> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<MatMulAttribute>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t a_zp = 0,
-    int32_t b_zp = 0) {
-  MatMulAttributeBuilder builder_(_fbb);
-  builder_.add_b_zp(b_zp);
-  builder_.add_a_zp(a_zp);
-  return builder_.Finish();
-}
-
-struct FullyConnectedAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef FullyConnectedAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-
-  };
+struct RAND_SEED_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RAND_SEED_AttributeBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct FullyConnectedAttributeBuilder {
-  typedef FullyConnectedAttribute Table;
+struct RAND_SEED_AttributeBuilder {
+  typedef RAND_SEED_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  explicit FullyConnectedAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RAND_SEED_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<FullyConnectedAttribute> Finish() {
+  ::flatbuffers::Offset<RAND_SEED_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<FullyConnectedAttribute>(end);
+    auto o = ::flatbuffers::Offset<RAND_SEED_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<FullyConnectedAttribute> CreateFullyConnectedAttribute(
+inline ::flatbuffers::Offset<RAND_SEED_Attribute> CreateRAND_SEED_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
-  FullyConnectedAttributeBuilder builder_(_fbb);
+  RAND_SEED_AttributeBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct NegateAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef NegateAttributeBuilder Builder;
+struct RAND_UNIFORM_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RAND_UNIFORM_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INPUT1_ZP = 4,
-    VT_OUTPUT_ZP = 6
+    VT_USE_SEED = 4
   };
-  int32_t input1_zp() const {
-    return GetField<int32_t>(VT_INPUT1_ZP, 0);
-  }
-  int32_t output_zp() const {
-    return GetField<int32_t>(VT_OUTPUT_ZP, 0);
+  bool use_seed() const {
+    return GetField<uint8_t>(VT_USE_SEED, 0) != 0;
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INPUT1_ZP, 4) &&
-           VerifyField<int32_t>(verifier, VT_OUTPUT_ZP, 4) &&
+           VerifyField<uint8_t>(verifier, VT_USE_SEED, 1) &&
            verifier.EndTable();
   }
 };
 
-struct NegateAttributeBuilder {
-  typedef NegateAttribute Table;
+struct RAND_UNIFORM_AttributeBuilder {
+  typedef RAND_UNIFORM_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_input1_zp(int32_t input1_zp) {
-    fbb_.AddElement<int32_t>(NegateAttribute::VT_INPUT1_ZP, input1_zp, 0);
+  void add_use_seed(bool use_seed) {
+    fbb_.AddElement<uint8_t>(RAND_UNIFORM_Attribute::VT_USE_SEED, static_cast<uint8_t>(use_seed), 0);
   }
-  void add_output_zp(int32_t output_zp) {
-    fbb_.AddElement<int32_t>(NegateAttribute::VT_OUTPUT_ZP, output_zp, 0);
-  }
-  explicit NegateAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RAND_UNIFORM_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<NegateAttribute> Finish() {
+  ::flatbuffers::Offset<RAND_UNIFORM_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<NegateAttribute>(end);
+    auto o = ::flatbuffers::Offset<RAND_UNIFORM_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<NegateAttribute> CreateNegateAttribute(
+inline ::flatbuffers::Offset<RAND_UNIFORM_Attribute> CreateRAND_UNIFORM_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t input1_zp = 0,
-    int32_t output_zp = 0) {
-  NegateAttributeBuilder builder_(_fbb);
-  builder_.add_output_zp(output_zp);
-  builder_.add_input1_zp(input1_zp);
+    bool use_seed = false) {
+  RAND_UNIFORM_AttributeBuilder builder_(_fbb);
+  builder_.add_use_seed(use_seed);
   return builder_.Finish();
 }
 
-struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CustomAttributeBuilder Builder;
+struct IDENTITY_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef IDENTITY_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct IDENTITY_AttributeBuilder {
+  typedef IDENTITY_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit IDENTITY_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<IDENTITY_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<IDENTITY_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<IDENTITY_Attribute> CreateIDENTITY_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  IDENTITY_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CUSTOM_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CUSTOM_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OPERATOR_NAME = 4,
     VT_DOMAIN_NAME = 6,
@@ -1843,43 +4324,43 @@ struct CustomAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct CustomAttributeBuilder {
-  typedef CustomAttribute Table;
+struct CUSTOM_AttributeBuilder {
+  typedef CUSTOM_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_operator_name(::flatbuffers::Offset<::flatbuffers::String> operator_name) {
-    fbb_.AddOffset(CustomAttribute::VT_OPERATOR_NAME, operator_name);
+    fbb_.AddOffset(CUSTOM_Attribute::VT_OPERATOR_NAME, operator_name);
   }
   void add_domain_name(::flatbuffers::Offset<::flatbuffers::String> domain_name) {
-    fbb_.AddOffset(CustomAttribute::VT_DOMAIN_NAME, domain_name);
+    fbb_.AddOffset(CUSTOM_Attribute::VT_DOMAIN_NAME, domain_name);
   }
   void add_implementation_attrs(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs) {
-    fbb_.AddOffset(CustomAttribute::VT_IMPLEMENTATION_ATTRS, implementation_attrs);
+    fbb_.AddOffset(CUSTOM_Attribute::VT_IMPLEMENTATION_ATTRS, implementation_attrs);
   }
-  explicit CustomAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CUSTOM_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<CustomAttribute> Finish() {
+  ::flatbuffers::Offset<CUSTOM_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<CustomAttribute>(end);
+    auto o = ::flatbuffers::Offset<CUSTOM_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttribute(
+inline ::flatbuffers::Offset<CUSTOM_Attribute> CreateCUSTOM_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::String> operator_name = 0,
     ::flatbuffers::Offset<::flatbuffers::String> domain_name = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> implementation_attrs = 0) {
-  CustomAttributeBuilder builder_(_fbb);
+  CUSTOM_AttributeBuilder builder_(_fbb);
   builder_.add_implementation_attrs(implementation_attrs);
   builder_.add_domain_name(domain_name);
   builder_.add_operator_name(operator_name);
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
+inline ::flatbuffers::Offset<CUSTOM_Attribute> CreateCUSTOM_AttributeDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *operator_name = nullptr,
     const char *domain_name = nullptr,
@@ -1887,184 +4368,285 @@ inline ::flatbuffers::Offset<CustomAttribute> CreateCustomAttributeDirect(
   auto operator_name__ = operator_name ? _fbb.CreateString(operator_name) : 0;
   auto domain_name__ = domain_name ? _fbb.CreateString(domain_name) : 0;
   auto implementation_attrs__ = implementation_attrs ? _fbb.CreateVector<uint8_t>(*implementation_attrs) : 0;
-  return tosa::CreateCustomAttribute(
+  return tosa::CreateCUSTOM_Attribute(
       _fbb,
       operator_name__,
       domain_name__,
       implementation_attrs__);
 }
 
-struct FFTAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef FFTAttributeBuilder Builder;
+struct COND_IF_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef COND_IF_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INVERSE = 4,
-    VT_LOCAL_BOUND = 6
+    VT_THEN_GRAPH = 4,
+    VT_ELSE_GRAPH = 6
   };
-  bool inverse() const {
-    return GetField<uint8_t>(VT_INVERSE, 0) != 0;
+  const ::flatbuffers::String *then_graph() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_THEN_GRAPH);
   }
-  bool local_bound() const {
-    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  const ::flatbuffers::String *else_graph() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ELSE_GRAPH);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_INVERSE, 1) &&
-           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyOffset(verifier, VT_THEN_GRAPH) &&
+           verifier.VerifyString(then_graph()) &&
+           VerifyOffset(verifier, VT_ELSE_GRAPH) &&
+           verifier.VerifyString(else_graph()) &&
            verifier.EndTable();
   }
 };
 
-struct FFTAttributeBuilder {
-  typedef FFTAttribute Table;
+struct COND_IF_AttributeBuilder {
+  typedef COND_IF_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_inverse(bool inverse) {
-    fbb_.AddElement<uint8_t>(FFTAttribute::VT_INVERSE, static_cast<uint8_t>(inverse), 0);
+  void add_then_graph(::flatbuffers::Offset<::flatbuffers::String> then_graph) {
+    fbb_.AddOffset(COND_IF_Attribute::VT_THEN_GRAPH, then_graph);
   }
-  void add_local_bound(bool local_bound) {
-    fbb_.AddElement<uint8_t>(FFTAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  void add_else_graph(::flatbuffers::Offset<::flatbuffers::String> else_graph) {
+    fbb_.AddOffset(COND_IF_Attribute::VT_ELSE_GRAPH, else_graph);
   }
-  explicit FFTAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit COND_IF_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<FFTAttribute> Finish() {
+  ::flatbuffers::Offset<COND_IF_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<FFTAttribute>(end);
+    auto o = ::flatbuffers::Offset<COND_IF_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<FFTAttribute> CreateFFTAttribute(
+inline ::flatbuffers::Offset<COND_IF_Attribute> CreateCOND_IF_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    bool inverse = false,
-    bool local_bound = false) {
-  FFTAttributeBuilder builder_(_fbb);
-  builder_.add_local_bound(local_bound);
-  builder_.add_inverse(inverse);
+    ::flatbuffers::Offset<::flatbuffers::String> then_graph = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> else_graph = 0) {
+  COND_IF_AttributeBuilder builder_(_fbb);
+  builder_.add_else_graph(else_graph);
+  builder_.add_then_graph(then_graph);
   return builder_.Finish();
 }
 
-struct RFFTAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef RFFTAttributeBuilder Builder;
+inline ::flatbuffers::Offset<COND_IF_Attribute> CreateCOND_IF_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *then_graph = nullptr,
+    const char *else_graph = nullptr) {
+  auto then_graph__ = then_graph ? _fbb.CreateString(then_graph) : 0;
+  auto else_graph__ = else_graph ? _fbb.CreateString(else_graph) : 0;
+  return tosa::CreateCOND_IF_Attribute(
+      _fbb,
+      then_graph__,
+      else_graph__);
+}
+
+struct WHILE_LOOP_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef WHILE_LOOP_AttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_LOCAL_BOUND = 4
+    VT_COND_GRAPH = 4,
+    VT_BODY_GRAPH = 6
   };
-  bool local_bound() const {
-    return GetField<uint8_t>(VT_LOCAL_BOUND, 0) != 0;
+  const ::flatbuffers::String *cond_graph() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_COND_GRAPH);
+  }
+  const ::flatbuffers::String *body_graph() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_BODY_GRAPH);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_LOCAL_BOUND, 1) &&
+           VerifyOffset(verifier, VT_COND_GRAPH) &&
+           verifier.VerifyString(cond_graph()) &&
+           VerifyOffset(verifier, VT_BODY_GRAPH) &&
+           verifier.VerifyString(body_graph()) &&
            verifier.EndTable();
   }
 };
 
-struct RFFTAttributeBuilder {
-  typedef RFFTAttribute Table;
+struct WHILE_LOOP_AttributeBuilder {
+  typedef WHILE_LOOP_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_local_bound(bool local_bound) {
-    fbb_.AddElement<uint8_t>(RFFTAttribute::VT_LOCAL_BOUND, static_cast<uint8_t>(local_bound), 0);
+  void add_cond_graph(::flatbuffers::Offset<::flatbuffers::String> cond_graph) {
+    fbb_.AddOffset(WHILE_LOOP_Attribute::VT_COND_GRAPH, cond_graph);
   }
-  explicit RFFTAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  void add_body_graph(::flatbuffers::Offset<::flatbuffers::String> body_graph) {
+    fbb_.AddOffset(WHILE_LOOP_Attribute::VT_BODY_GRAPH, body_graph);
+  }
+  explicit WHILE_LOOP_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<RFFTAttribute> Finish() {
+  ::flatbuffers::Offset<WHILE_LOOP_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<RFFTAttribute>(end);
+    auto o = ::flatbuffers::Offset<WHILE_LOOP_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<RFFTAttribute> CreateRFFTAttribute(
+inline ::flatbuffers::Offset<WHILE_LOOP_Attribute> CreateWHILE_LOOP_Attribute(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    bool local_bound = false) {
-  RFFTAttributeBuilder builder_(_fbb);
-  builder_.add_local_bound(local_bound);
+    ::flatbuffers::Offset<::flatbuffers::String> cond_graph = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> body_graph = 0) {
+  WHILE_LOOP_AttributeBuilder builder_(_fbb);
+  builder_.add_body_graph(body_graph);
+  builder_.add_cond_graph(cond_graph);
   return builder_.Finish();
 }
 
-struct RandUniformAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef RandUniformAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_USE_SEED = 4
-  };
-  bool use_seed() const {
-    return GetField<uint8_t>(VT_USE_SEED, 0) != 0;
-  }
+inline ::flatbuffers::Offset<WHILE_LOOP_Attribute> CreateWHILE_LOOP_AttributeDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *cond_graph = nullptr,
+    const char *body_graph = nullptr) {
+  auto cond_graph__ = cond_graph ? _fbb.CreateString(cond_graph) : 0;
+  auto body_graph__ = body_graph ? _fbb.CreateString(body_graph) : 0;
+  return tosa::CreateWHILE_LOOP_Attribute(
+      _fbb,
+      cond_graph__,
+      body_graph__);
+}
+
+struct YIELD_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef YIELD_AttributeBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_USE_SEED, 1) &&
            verifier.EndTable();
   }
 };
 
-struct RandUniformAttributeBuilder {
-  typedef RandUniformAttribute Table;
+struct YIELD_AttributeBuilder {
+  typedef YIELD_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_use_seed(bool use_seed) {
-    fbb_.AddElement<uint8_t>(RandUniformAttribute::VT_USE_SEED, static_cast<uint8_t>(use_seed), 0);
-  }
-  explicit RandUniformAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit YIELD_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<RandUniformAttribute> Finish() {
+  ::flatbuffers::Offset<YIELD_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<RandUniformAttribute>(end);
+    auto o = ::flatbuffers::Offset<YIELD_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<RandUniformAttribute> CreateRandUniformAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    bool use_seed = false) {
-  RandUniformAttributeBuilder builder_(_fbb);
-  builder_.add_use_seed(use_seed);
+inline ::flatbuffers::Offset<YIELD_Attribute> CreateYIELD_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  YIELD_AttributeBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-struct NanPropagationAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef NanPropagationAttributeBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_NAN_MODE = 4
-  };
-  tosa::NanPropagationMode nan_mode() const {
-    return static_cast<tosa::NanPropagationMode>(GetField<uint32_t>(VT_NAN_MODE, 0));
-  }
+struct VARIABLE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VARIABLE_AttributeBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_NAN_MODE, 4) &&
            verifier.EndTable();
   }
 };
 
-struct NanPropagationAttributeBuilder {
-  typedef NanPropagationAttribute Table;
+struct VARIABLE_AttributeBuilder {
+  typedef VARIABLE_Attribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_nan_mode(tosa::NanPropagationMode nan_mode) {
-    fbb_.AddElement<uint32_t>(NanPropagationAttribute::VT_NAN_MODE, static_cast<uint32_t>(nan_mode), 0);
-  }
-  explicit NanPropagationAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit VARIABLE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<NanPropagationAttribute> Finish() {
+  ::flatbuffers::Offset<VARIABLE_Attribute> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<NanPropagationAttribute>(end);
+    auto o = ::flatbuffers::Offset<VARIABLE_Attribute>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<NanPropagationAttribute> CreateNanPropagationAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    tosa::NanPropagationMode nan_mode = tosa::NanPropagationMode_UNKNOWN) {
-  NanPropagationAttributeBuilder builder_(_fbb);
-  builder_.add_nan_mode(nan_mode);
+inline ::flatbuffers::Offset<VARIABLE_Attribute> CreateVARIABLE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  VARIABLE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct VARIABLE_WRITE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VARIABLE_WRITE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct VARIABLE_WRITE_AttributeBuilder {
+  typedef VARIABLE_WRITE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit VARIABLE_WRITE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VARIABLE_WRITE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VARIABLE_WRITE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VARIABLE_WRITE_Attribute> CreateVARIABLE_WRITE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  VARIABLE_WRITE_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct VARIABLE_READ_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VARIABLE_READ_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct VARIABLE_READ_AttributeBuilder {
+  typedef VARIABLE_READ_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit VARIABLE_READ_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VARIABLE_READ_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VARIABLE_READ_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VARIABLE_READ_Attribute> CreateVARIABLE_READ_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  VARIABLE_READ_AttributeBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CONST_SHAPE_Attribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CONST_SHAPE_AttributeBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CONST_SHAPE_AttributeBuilder {
+  typedef CONST_SHAPE_Attribute Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CONST_SHAPE_AttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CONST_SHAPE_Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CONST_SHAPE_Attribute>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CONST_SHAPE_Attribute> CreateCONST_SHAPE_Attribute(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CONST_SHAPE_AttributeBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
@@ -2288,71 +4870,242 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     return GetPointer<const void *>(VT_ATTRIBUTE);
   }
   template<typename T> const T *attribute_as() const;
-  const tosa::PoolAttribute *attribute_as_PoolAttribute() const {
-    return attribute_type() == tosa::Attribute_PoolAttribute ? static_cast<const tosa::PoolAttribute *>(attribute()) : nullptr;
+  const tosa::ARGMAX_Attribute *attribute_as_ARGMAX_Attribute() const {
+    return attribute_type() == tosa::Attribute_ARGMAX_Attribute ? static_cast<const tosa::ARGMAX_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::ConvAttribute *attribute_as_ConvAttribute() const {
-    return attribute_type() == tosa::Attribute_ConvAttribute ? static_cast<const tosa::ConvAttribute *>(attribute()) : nullptr;
+  const tosa::AVG_POOL2D_Attribute *attribute_as_AVG_POOL2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_AVG_POOL2D_Attribute ? static_cast<const tosa::AVG_POOL2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::TransposeConvAttribute *attribute_as_TransposeConvAttribute() const {
-    return attribute_type() == tosa::Attribute_TransposeConvAttribute ? static_cast<const tosa::TransposeConvAttribute *>(attribute()) : nullptr;
+  const tosa::CONV2D_Attribute *attribute_as_CONV2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_CONV2D_Attribute ? static_cast<const tosa::CONV2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::PadAttribute *attribute_as_PadAttribute() const {
-    return attribute_type() == tosa::Attribute_PadAttribute ? static_cast<const tosa::PadAttribute *>(attribute()) : nullptr;
+  const tosa::CONV3D_Attribute *attribute_as_CONV3D_Attribute() const {
+    return attribute_type() == tosa::Attribute_CONV3D_Attribute ? static_cast<const tosa::CONV3D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::AxisAttribute *attribute_as_AxisAttribute() const {
-    return attribute_type() == tosa::Attribute_AxisAttribute ? static_cast<const tosa::AxisAttribute *>(attribute()) : nullptr;
+  const tosa::DEPTHWISE_CONV2D_Attribute *attribute_as_DEPTHWISE_CONV2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_DEPTHWISE_CONV2D_Attribute ? static_cast<const tosa::DEPTHWISE_CONV2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::ResizeAttribute *attribute_as_ResizeAttribute() const {
-    return attribute_type() == tosa::Attribute_ResizeAttribute ? static_cast<const tosa::ResizeAttribute *>(attribute()) : nullptr;
+  const tosa::FFT2D_Attribute *attribute_as_FFT2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_FFT2D_Attribute ? static_cast<const tosa::FFT2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::ClampAttribute *attribute_as_ClampAttribute() const {
-    return attribute_type() == tosa::Attribute_ClampAttribute ? static_cast<const tosa::ClampAttribute *>(attribute()) : nullptr;
+  const tosa::MATMUL_Attribute *attribute_as_MATMUL_Attribute() const {
+    return attribute_type() == tosa::Attribute_MATMUL_Attribute ? static_cast<const tosa::MATMUL_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::RescaleAttribute *attribute_as_RescaleAttribute() const {
-    return attribute_type() == tosa::Attribute_RescaleAttribute ? static_cast<const tosa::RescaleAttribute *>(attribute()) : nullptr;
+  const tosa::MAX_POOL2D_Attribute *attribute_as_MAX_POOL2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_MAX_POOL2D_Attribute ? static_cast<const tosa::MAX_POOL2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::MulAttribute *attribute_as_MulAttribute() const {
-    return attribute_type() == tosa::Attribute_MulAttribute ? static_cast<const tosa::MulAttribute *>(attribute()) : nullptr;
+  const tosa::RFFT2D_Attribute *attribute_as_RFFT2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_RFFT2D_Attribute ? static_cast<const tosa::RFFT2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::ArithmeticRightShiftAttribute *attribute_as_ArithmeticRightShiftAttribute() const {
-    return attribute_type() == tosa::Attribute_ArithmeticRightShiftAttribute ? static_cast<const tosa::ArithmeticRightShiftAttribute *>(attribute()) : nullptr;
+  const tosa::TRANSPOSE_CONV2D_Attribute *attribute_as_TRANSPOSE_CONV2D_Attribute() const {
+    return attribute_type() == tosa::Attribute_TRANSPOSE_CONV2D_Attribute ? static_cast<const tosa::TRANSPOSE_CONV2D_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::CondIfAttribute *attribute_as_CondIfAttribute() const {
-    return attribute_type() == tosa::Attribute_CondIfAttribute ? static_cast<const tosa::CondIfAttribute *>(attribute()) : nullptr;
+  const tosa::CLAMP_Attribute *attribute_as_CLAMP_Attribute() const {
+    return attribute_type() == tosa::Attribute_CLAMP_Attribute ? static_cast<const tosa::CLAMP_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::WhileLoopAttribute *attribute_as_WhileLoopAttribute() const {
-    return attribute_type() == tosa::Attribute_WhileLoopAttribute ? static_cast<const tosa::WhileLoopAttribute *>(attribute()) : nullptr;
+  const tosa::ERF_Attribute *attribute_as_ERF_Attribute() const {
+    return attribute_type() == tosa::Attribute_ERF_Attribute ? static_cast<const tosa::ERF_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::TransposeAttribute *attribute_as_TransposeAttribute() const {
-    return attribute_type() == tosa::Attribute_TransposeAttribute ? static_cast<const tosa::TransposeAttribute *>(attribute()) : nullptr;
+  const tosa::SIGMOID_Attribute *attribute_as_SIGMOID_Attribute() const {
+    return attribute_type() == tosa::Attribute_SIGMOID_Attribute ? static_cast<const tosa::SIGMOID_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::TableAttribute *attribute_as_TableAttribute() const {
-    return attribute_type() == tosa::Attribute_TableAttribute ? static_cast<const tosa::TableAttribute *>(attribute()) : nullptr;
+  const tosa::TANH_Attribute *attribute_as_TANH_Attribute() const {
+    return attribute_type() == tosa::Attribute_TANH_Attribute ? static_cast<const tosa::TANH_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::MatMulAttribute *attribute_as_MatMulAttribute() const {
-    return attribute_type() == tosa::Attribute_MatMulAttribute ? static_cast<const tosa::MatMulAttribute *>(attribute()) : nullptr;
+  const tosa::ADD_Attribute *attribute_as_ADD_Attribute() const {
+    return attribute_type() == tosa::Attribute_ADD_Attribute ? static_cast<const tosa::ADD_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::FullyConnectedAttribute *attribute_as_FullyConnectedAttribute() const {
-    return attribute_type() == tosa::Attribute_FullyConnectedAttribute ? static_cast<const tosa::FullyConnectedAttribute *>(attribute()) : nullptr;
+  const tosa::ARITHMETIC_RIGHT_SHIFT_Attribute *attribute_as_ARITHMETIC_RIGHT_SHIFT_Attribute() const {
+    return attribute_type() == tosa::Attribute_ARITHMETIC_RIGHT_SHIFT_Attribute ? static_cast<const tosa::ARITHMETIC_RIGHT_SHIFT_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::NegateAttribute *attribute_as_NegateAttribute() const {
-    return attribute_type() == tosa::Attribute_NegateAttribute ? static_cast<const tosa::NegateAttribute *>(attribute()) : nullptr;
+  const tosa::BITWISE_AND_Attribute *attribute_as_BITWISE_AND_Attribute() const {
+    return attribute_type() == tosa::Attribute_BITWISE_AND_Attribute ? static_cast<const tosa::BITWISE_AND_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::CustomAttribute *attribute_as_CustomAttribute() const {
-    return attribute_type() == tosa::Attribute_CustomAttribute ? static_cast<const tosa::CustomAttribute *>(attribute()) : nullptr;
+  const tosa::BITWISE_OR_Attribute *attribute_as_BITWISE_OR_Attribute() const {
+    return attribute_type() == tosa::Attribute_BITWISE_OR_Attribute ? static_cast<const tosa::BITWISE_OR_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::FFTAttribute *attribute_as_FFTAttribute() const {
-    return attribute_type() == tosa::Attribute_FFTAttribute ? static_cast<const tosa::FFTAttribute *>(attribute()) : nullptr;
+  const tosa::BITWISE_XOR_Attribute *attribute_as_BITWISE_XOR_Attribute() const {
+    return attribute_type() == tosa::Attribute_BITWISE_XOR_Attribute ? static_cast<const tosa::BITWISE_XOR_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::RFFTAttribute *attribute_as_RFFTAttribute() const {
-    return attribute_type() == tosa::Attribute_RFFTAttribute ? static_cast<const tosa::RFFTAttribute *>(attribute()) : nullptr;
+  const tosa::INTDIV_Attribute *attribute_as_INTDIV_Attribute() const {
+    return attribute_type() == tosa::Attribute_INTDIV_Attribute ? static_cast<const tosa::INTDIV_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::RandUniformAttribute *attribute_as_RandUniformAttribute() const {
-    return attribute_type() == tosa::Attribute_RandUniformAttribute ? static_cast<const tosa::RandUniformAttribute *>(attribute()) : nullptr;
+  const tosa::LOGICAL_AND_Attribute *attribute_as_LOGICAL_AND_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_AND_Attribute ? static_cast<const tosa::LOGICAL_AND_Attribute *>(attribute()) : nullptr;
   }
-  const tosa::NanPropagationAttribute *attribute_as_NanPropagationAttribute() const {
-    return attribute_type() == tosa::Attribute_NanPropagationAttribute ? static_cast<const tosa::NanPropagationAttribute *>(attribute()) : nullptr;
+  const tosa::LOGICAL_LEFT_SHIFT_Attribute *attribute_as_LOGICAL_LEFT_SHIFT_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_LEFT_SHIFT_Attribute ? static_cast<const tosa::LOGICAL_LEFT_SHIFT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::LOGICAL_RIGHT_SHIFT_Attribute *attribute_as_LOGICAL_RIGHT_SHIFT_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_RIGHT_SHIFT_Attribute ? static_cast<const tosa::LOGICAL_RIGHT_SHIFT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::LOGICAL_OR_Attribute *attribute_as_LOGICAL_OR_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_OR_Attribute ? static_cast<const tosa::LOGICAL_OR_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::LOGICAL_XOR_Attribute *attribute_as_LOGICAL_XOR_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_XOR_Attribute ? static_cast<const tosa::LOGICAL_XOR_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::MAXIMUM_Attribute *attribute_as_MAXIMUM_Attribute() const {
+    return attribute_type() == tosa::Attribute_MAXIMUM_Attribute ? static_cast<const tosa::MAXIMUM_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::MINIMUM_Attribute *attribute_as_MINIMUM_Attribute() const {
+    return attribute_type() == tosa::Attribute_MINIMUM_Attribute ? static_cast<const tosa::MINIMUM_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::MUL_Attribute *attribute_as_MUL_Attribute() const {
+    return attribute_type() == tosa::Attribute_MUL_Attribute ? static_cast<const tosa::MUL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::POW_Attribute *attribute_as_POW_Attribute() const {
+    return attribute_type() == tosa::Attribute_POW_Attribute ? static_cast<const tosa::POW_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::SUB_Attribute *attribute_as_SUB_Attribute() const {
+    return attribute_type() == tosa::Attribute_SUB_Attribute ? static_cast<const tosa::SUB_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::TABLE_Attribute *attribute_as_TABLE_Attribute() const {
+    return attribute_type() == tosa::Attribute_TABLE_Attribute ? static_cast<const tosa::TABLE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::ABS_Attribute *attribute_as_ABS_Attribute() const {
+    return attribute_type() == tosa::Attribute_ABS_Attribute ? static_cast<const tosa::ABS_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::BITWISE_NOT_Attribute *attribute_as_BITWISE_NOT_Attribute() const {
+    return attribute_type() == tosa::Attribute_BITWISE_NOT_Attribute ? static_cast<const tosa::BITWISE_NOT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CEIL_Attribute *attribute_as_CEIL_Attribute() const {
+    return attribute_type() == tosa::Attribute_CEIL_Attribute ? static_cast<const tosa::CEIL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CLZ_Attribute *attribute_as_CLZ_Attribute() const {
+    return attribute_type() == tosa::Attribute_CLZ_Attribute ? static_cast<const tosa::CLZ_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::COS_Attribute *attribute_as_COS_Attribute() const {
+    return attribute_type() == tosa::Attribute_COS_Attribute ? static_cast<const tosa::COS_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::EXP_Attribute *attribute_as_EXP_Attribute() const {
+    return attribute_type() == tosa::Attribute_EXP_Attribute ? static_cast<const tosa::EXP_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::FLOOR_Attribute *attribute_as_FLOOR_Attribute() const {
+    return attribute_type() == tosa::Attribute_FLOOR_Attribute ? static_cast<const tosa::FLOOR_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::LOG_Attribute *attribute_as_LOG_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOG_Attribute ? static_cast<const tosa::LOG_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::LOGICAL_NOT_Attribute *attribute_as_LOGICAL_NOT_Attribute() const {
+    return attribute_type() == tosa::Attribute_LOGICAL_NOT_Attribute ? static_cast<const tosa::LOGICAL_NOT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::NEGATE_Attribute *attribute_as_NEGATE_Attribute() const {
+    return attribute_type() == tosa::Attribute_NEGATE_Attribute ? static_cast<const tosa::NEGATE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RECIPROCAL_Attribute *attribute_as_RECIPROCAL_Attribute() const {
+    return attribute_type() == tosa::Attribute_RECIPROCAL_Attribute ? static_cast<const tosa::RECIPROCAL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RSQRT_Attribute *attribute_as_RSQRT_Attribute() const {
+    return attribute_type() == tosa::Attribute_RSQRT_Attribute ? static_cast<const tosa::RSQRT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::SIN_Attribute *attribute_as_SIN_Attribute() const {
+    return attribute_type() == tosa::Attribute_SIN_Attribute ? static_cast<const tosa::SIN_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::SELECT_Attribute *attribute_as_SELECT_Attribute() const {
+    return attribute_type() == tosa::Attribute_SELECT_Attribute ? static_cast<const tosa::SELECT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::EQUAL_Attribute *attribute_as_EQUAL_Attribute() const {
+    return attribute_type() == tosa::Attribute_EQUAL_Attribute ? static_cast<const tosa::EQUAL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::GREATER_Attribute *attribute_as_GREATER_Attribute() const {
+    return attribute_type() == tosa::Attribute_GREATER_Attribute ? static_cast<const tosa::GREATER_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::GREATER_EQUAL_Attribute *attribute_as_GREATER_EQUAL_Attribute() const {
+    return attribute_type() == tosa::Attribute_GREATER_EQUAL_Attribute ? static_cast<const tosa::GREATER_EQUAL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_ALL_Attribute *attribute_as_REDUCE_ALL_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_ALL_Attribute ? static_cast<const tosa::REDUCE_ALL_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_ANY_Attribute *attribute_as_REDUCE_ANY_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_ANY_Attribute ? static_cast<const tosa::REDUCE_ANY_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_MAX_Attribute *attribute_as_REDUCE_MAX_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_MAX_Attribute ? static_cast<const tosa::REDUCE_MAX_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_MIN_Attribute *attribute_as_REDUCE_MIN_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_MIN_Attribute ? static_cast<const tosa::REDUCE_MIN_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_PRODUCT_Attribute *attribute_as_REDUCE_PRODUCT_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_PRODUCT_Attribute ? static_cast<const tosa::REDUCE_PRODUCT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REDUCE_SUM_Attribute *attribute_as_REDUCE_SUM_Attribute() const {
+    return attribute_type() == tosa::Attribute_REDUCE_SUM_Attribute ? static_cast<const tosa::REDUCE_SUM_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CONCAT_Attribute *attribute_as_CONCAT_Attribute() const {
+    return attribute_type() == tosa::Attribute_CONCAT_Attribute ? static_cast<const tosa::CONCAT_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::PAD_Attribute *attribute_as_PAD_Attribute() const {
+    return attribute_type() == tosa::Attribute_PAD_Attribute ? static_cast<const tosa::PAD_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RESHAPE_Attribute *attribute_as_RESHAPE_Attribute() const {
+    return attribute_type() == tosa::Attribute_RESHAPE_Attribute ? static_cast<const tosa::RESHAPE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::REVERSE_Attribute *attribute_as_REVERSE_Attribute() const {
+    return attribute_type() == tosa::Attribute_REVERSE_Attribute ? static_cast<const tosa::REVERSE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::SLICE_Attribute *attribute_as_SLICE_Attribute() const {
+    return attribute_type() == tosa::Attribute_SLICE_Attribute ? static_cast<const tosa::SLICE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::TILE_Attribute *attribute_as_TILE_Attribute() const {
+    return attribute_type() == tosa::Attribute_TILE_Attribute ? static_cast<const tosa::TILE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::TRANSPOSE_Attribute *attribute_as_TRANSPOSE_Attribute() const {
+    return attribute_type() == tosa::Attribute_TRANSPOSE_Attribute ? static_cast<const tosa::TRANSPOSE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::GATHER_Attribute *attribute_as_GATHER_Attribute() const {
+    return attribute_type() == tosa::Attribute_GATHER_Attribute ? static_cast<const tosa::GATHER_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::SCATTER_Attribute *attribute_as_SCATTER_Attribute() const {
+    return attribute_type() == tosa::Attribute_SCATTER_Attribute ? static_cast<const tosa::SCATTER_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RESIZE_Attribute *attribute_as_RESIZE_Attribute() const {
+    return attribute_type() == tosa::Attribute_RESIZE_Attribute ? static_cast<const tosa::RESIZE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CAST_Attribute *attribute_as_CAST_Attribute() const {
+    return attribute_type() == tosa::Attribute_CAST_Attribute ? static_cast<const tosa::CAST_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CAST_STOCHASTIC_Attribute *attribute_as_CAST_STOCHASTIC_Attribute() const {
+    return attribute_type() == tosa::Attribute_CAST_STOCHASTIC_Attribute ? static_cast<const tosa::CAST_STOCHASTIC_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RESCALE_Attribute *attribute_as_RESCALE_Attribute() const {
+    return attribute_type() == tosa::Attribute_RESCALE_Attribute ? static_cast<const tosa::RESCALE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CONST_Attribute *attribute_as_CONST_Attribute() const {
+    return attribute_type() == tosa::Attribute_CONST_Attribute ? static_cast<const tosa::CONST_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RAND_SEED_Attribute *attribute_as_RAND_SEED_Attribute() const {
+    return attribute_type() == tosa::Attribute_RAND_SEED_Attribute ? static_cast<const tosa::RAND_SEED_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::RAND_UNIFORM_Attribute *attribute_as_RAND_UNIFORM_Attribute() const {
+    return attribute_type() == tosa::Attribute_RAND_UNIFORM_Attribute ? static_cast<const tosa::RAND_UNIFORM_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::IDENTITY_Attribute *attribute_as_IDENTITY_Attribute() const {
+    return attribute_type() == tosa::Attribute_IDENTITY_Attribute ? static_cast<const tosa::IDENTITY_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CUSTOM_Attribute *attribute_as_CUSTOM_Attribute() const {
+    return attribute_type() == tosa::Attribute_CUSTOM_Attribute ? static_cast<const tosa::CUSTOM_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::COND_IF_Attribute *attribute_as_COND_IF_Attribute() const {
+    return attribute_type() == tosa::Attribute_COND_IF_Attribute ? static_cast<const tosa::COND_IF_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::WHILE_LOOP_Attribute *attribute_as_WHILE_LOOP_Attribute() const {
+    return attribute_type() == tosa::Attribute_WHILE_LOOP_Attribute ? static_cast<const tosa::WHILE_LOOP_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::YIELD_Attribute *attribute_as_YIELD_Attribute() const {
+    return attribute_type() == tosa::Attribute_YIELD_Attribute ? static_cast<const tosa::YIELD_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::VARIABLE_Attribute *attribute_as_VARIABLE_Attribute() const {
+    return attribute_type() == tosa::Attribute_VARIABLE_Attribute ? static_cast<const tosa::VARIABLE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::VARIABLE_WRITE_Attribute *attribute_as_VARIABLE_WRITE_Attribute() const {
+    return attribute_type() == tosa::Attribute_VARIABLE_WRITE_Attribute ? static_cast<const tosa::VARIABLE_WRITE_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::VARIABLE_READ_Attribute *attribute_as_VARIABLE_READ_Attribute() const {
+    return attribute_type() == tosa::Attribute_VARIABLE_READ_Attribute ? static_cast<const tosa::VARIABLE_READ_Attribute *>(attribute()) : nullptr;
+  }
+  const tosa::CONST_SHAPE_Attribute *attribute_as_CONST_SHAPE_Attribute() const {
+    return attribute_type() == tosa::Attribute_CONST_SHAPE_Attribute ? static_cast<const tosa::CONST_SHAPE_Attribute *>(attribute()) : nullptr;
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *inputs() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<::flatbuffers::String>> *>(VT_INPUTS);
@@ -2376,92 +5129,320 @@ struct TosaOperator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-template<> inline const tosa::PoolAttribute *TosaOperator::attribute_as<tosa::PoolAttribute>() const {
-  return attribute_as_PoolAttribute();
+template<> inline const tosa::ARGMAX_Attribute *TosaOperator::attribute_as<tosa::ARGMAX_Attribute>() const {
+  return attribute_as_ARGMAX_Attribute();
 }
 
-template<> inline const tosa::ConvAttribute *TosaOperator::attribute_as<tosa::ConvAttribute>() const {
-  return attribute_as_ConvAttribute();
+template<> inline const tosa::AVG_POOL2D_Attribute *TosaOperator::attribute_as<tosa::AVG_POOL2D_Attribute>() const {
+  return attribute_as_AVG_POOL2D_Attribute();
 }
 
-template<> inline const tosa::TransposeConvAttribute *TosaOperator::attribute_as<tosa::TransposeConvAttribute>() const {
-  return attribute_as_TransposeConvAttribute();
+template<> inline const tosa::CONV2D_Attribute *TosaOperator::attribute_as<tosa::CONV2D_Attribute>() const {
+  return attribute_as_CONV2D_Attribute();
 }
 
-template<> inline const tosa::PadAttribute *TosaOperator::attribute_as<tosa::PadAttribute>() const {
-  return attribute_as_PadAttribute();
+template<> inline const tosa::CONV3D_Attribute *TosaOperator::attribute_as<tosa::CONV3D_Attribute>() const {
+  return attribute_as_CONV3D_Attribute();
 }
 
-template<> inline const tosa::AxisAttribute *TosaOperator::attribute_as<tosa::AxisAttribute>() const {
-  return attribute_as_AxisAttribute();
+template<> inline const tosa::DEPTHWISE_CONV2D_Attribute *TosaOperator::attribute_as<tosa::DEPTHWISE_CONV2D_Attribute>() const {
+  return attribute_as_DEPTHWISE_CONV2D_Attribute();
 }
 
-template<> inline const tosa::ResizeAttribute *TosaOperator::attribute_as<tosa::ResizeAttribute>() const {
-  return attribute_as_ResizeAttribute();
+template<> inline const tosa::FFT2D_Attribute *TosaOperator::attribute_as<tosa::FFT2D_Attribute>() const {
+  return attribute_as_FFT2D_Attribute();
 }
 
-template<> inline const tosa::ClampAttribute *TosaOperator::attribute_as<tosa::ClampAttribute>() const {
-  return attribute_as_ClampAttribute();
+template<> inline const tosa::MATMUL_Attribute *TosaOperator::attribute_as<tosa::MATMUL_Attribute>() const {
+  return attribute_as_MATMUL_Attribute();
 }
 
-template<> inline const tosa::RescaleAttribute *TosaOperator::attribute_as<tosa::RescaleAttribute>() const {
-  return attribute_as_RescaleAttribute();
+template<> inline const tosa::MAX_POOL2D_Attribute *TosaOperator::attribute_as<tosa::MAX_POOL2D_Attribute>() const {
+  return attribute_as_MAX_POOL2D_Attribute();
 }
 
-template<> inline const tosa::MulAttribute *TosaOperator::attribute_as<tosa::MulAttribute>() const {
-  return attribute_as_MulAttribute();
+template<> inline const tosa::RFFT2D_Attribute *TosaOperator::attribute_as<tosa::RFFT2D_Attribute>() const {
+  return attribute_as_RFFT2D_Attribute();
 }
 
-template<> inline const tosa::ArithmeticRightShiftAttribute *TosaOperator::attribute_as<tosa::ArithmeticRightShiftAttribute>() const {
-  return attribute_as_ArithmeticRightShiftAttribute();
+template<> inline const tosa::TRANSPOSE_CONV2D_Attribute *TosaOperator::attribute_as<tosa::TRANSPOSE_CONV2D_Attribute>() const {
+  return attribute_as_TRANSPOSE_CONV2D_Attribute();
 }
 
-template<> inline const tosa::CondIfAttribute *TosaOperator::attribute_as<tosa::CondIfAttribute>() const {
-  return attribute_as_CondIfAttribute();
+template<> inline const tosa::CLAMP_Attribute *TosaOperator::attribute_as<tosa::CLAMP_Attribute>() const {
+  return attribute_as_CLAMP_Attribute();
 }
 
-template<> inline const tosa::WhileLoopAttribute *TosaOperator::attribute_as<tosa::WhileLoopAttribute>() const {
-  return attribute_as_WhileLoopAttribute();
+template<> inline const tosa::ERF_Attribute *TosaOperator::attribute_as<tosa::ERF_Attribute>() const {
+  return attribute_as_ERF_Attribute();
 }
 
-template<> inline const tosa::TransposeAttribute *TosaOperator::attribute_as<tosa::TransposeAttribute>() const {
-  return attribute_as_TransposeAttribute();
+template<> inline const tosa::SIGMOID_Attribute *TosaOperator::attribute_as<tosa::SIGMOID_Attribute>() const {
+  return attribute_as_SIGMOID_Attribute();
 }
 
-template<> inline const tosa::TableAttribute *TosaOperator::attribute_as<tosa::TableAttribute>() const {
-  return attribute_as_TableAttribute();
+template<> inline const tosa::TANH_Attribute *TosaOperator::attribute_as<tosa::TANH_Attribute>() const {
+  return attribute_as_TANH_Attribute();
 }
 
-template<> inline const tosa::MatMulAttribute *TosaOperator::attribute_as<tosa::MatMulAttribute>() const {
-  return attribute_as_MatMulAttribute();
+template<> inline const tosa::ADD_Attribute *TosaOperator::attribute_as<tosa::ADD_Attribute>() const {
+  return attribute_as_ADD_Attribute();
 }
 
-template<> inline const tosa::FullyConnectedAttribute *TosaOperator::attribute_as<tosa::FullyConnectedAttribute>() const {
-  return attribute_as_FullyConnectedAttribute();
+template<> inline const tosa::ARITHMETIC_RIGHT_SHIFT_Attribute *TosaOperator::attribute_as<tosa::ARITHMETIC_RIGHT_SHIFT_Attribute>() const {
+  return attribute_as_ARITHMETIC_RIGHT_SHIFT_Attribute();
 }
 
-template<> inline const tosa::NegateAttribute *TosaOperator::attribute_as<tosa::NegateAttribute>() const {
-  return attribute_as_NegateAttribute();
+template<> inline const tosa::BITWISE_AND_Attribute *TosaOperator::attribute_as<tosa::BITWISE_AND_Attribute>() const {
+  return attribute_as_BITWISE_AND_Attribute();
 }
 
-template<> inline const tosa::CustomAttribute *TosaOperator::attribute_as<tosa::CustomAttribute>() const {
-  return attribute_as_CustomAttribute();
+template<> inline const tosa::BITWISE_OR_Attribute *TosaOperator::attribute_as<tosa::BITWISE_OR_Attribute>() const {
+  return attribute_as_BITWISE_OR_Attribute();
 }
 
-template<> inline const tosa::FFTAttribute *TosaOperator::attribute_as<tosa::FFTAttribute>() const {
-  return attribute_as_FFTAttribute();
+template<> inline const tosa::BITWISE_XOR_Attribute *TosaOperator::attribute_as<tosa::BITWISE_XOR_Attribute>() const {
+  return attribute_as_BITWISE_XOR_Attribute();
 }
 
-template<> inline const tosa::RFFTAttribute *TosaOperator::attribute_as<tosa::RFFTAttribute>() const {
-  return attribute_as_RFFTAttribute();
+template<> inline const tosa::INTDIV_Attribute *TosaOperator::attribute_as<tosa::INTDIV_Attribute>() const {
+  return attribute_as_INTDIV_Attribute();
 }
 
-template<> inline const tosa::RandUniformAttribute *TosaOperator::attribute_as<tosa::RandUniformAttribute>() const {
-  return attribute_as_RandUniformAttribute();
+template<> inline const tosa::LOGICAL_AND_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_AND_Attribute>() const {
+  return attribute_as_LOGICAL_AND_Attribute();
 }
 
-template<> inline const tosa::NanPropagationAttribute *TosaOperator::attribute_as<tosa::NanPropagationAttribute>() const {
-  return attribute_as_NanPropagationAttribute();
+template<> inline const tosa::LOGICAL_LEFT_SHIFT_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_LEFT_SHIFT_Attribute>() const {
+  return attribute_as_LOGICAL_LEFT_SHIFT_Attribute();
+}
+
+template<> inline const tosa::LOGICAL_RIGHT_SHIFT_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_RIGHT_SHIFT_Attribute>() const {
+  return attribute_as_LOGICAL_RIGHT_SHIFT_Attribute();
+}
+
+template<> inline const tosa::LOGICAL_OR_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_OR_Attribute>() const {
+  return attribute_as_LOGICAL_OR_Attribute();
+}
+
+template<> inline const tosa::LOGICAL_XOR_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_XOR_Attribute>() const {
+  return attribute_as_LOGICAL_XOR_Attribute();
+}
+
+template<> inline const tosa::MAXIMUM_Attribute *TosaOperator::attribute_as<tosa::MAXIMUM_Attribute>() const {
+  return attribute_as_MAXIMUM_Attribute();
+}
+
+template<> inline const tosa::MINIMUM_Attribute *TosaOperator::attribute_as<tosa::MINIMUM_Attribute>() const {
+  return attribute_as_MINIMUM_Attribute();
+}
+
+template<> inline const tosa::MUL_Attribute *TosaOperator::attribute_as<tosa::MUL_Attribute>() const {
+  return attribute_as_MUL_Attribute();
+}
+
+template<> inline const tosa::POW_Attribute *TosaOperator::attribute_as<tosa::POW_Attribute>() const {
+  return attribute_as_POW_Attribute();
+}
+
+template<> inline const tosa::SUB_Attribute *TosaOperator::attribute_as<tosa::SUB_Attribute>() const {
+  return attribute_as_SUB_Attribute();
+}
+
+template<> inline const tosa::TABLE_Attribute *TosaOperator::attribute_as<tosa::TABLE_Attribute>() const {
+  return attribute_as_TABLE_Attribute();
+}
+
+template<> inline const tosa::ABS_Attribute *TosaOperator::attribute_as<tosa::ABS_Attribute>() const {
+  return attribute_as_ABS_Attribute();
+}
+
+template<> inline const tosa::BITWISE_NOT_Attribute *TosaOperator::attribute_as<tosa::BITWISE_NOT_Attribute>() const {
+  return attribute_as_BITWISE_NOT_Attribute();
+}
+
+template<> inline const tosa::CEIL_Attribute *TosaOperator::attribute_as<tosa::CEIL_Attribute>() const {
+  return attribute_as_CEIL_Attribute();
+}
+
+template<> inline const tosa::CLZ_Attribute *TosaOperator::attribute_as<tosa::CLZ_Attribute>() const {
+  return attribute_as_CLZ_Attribute();
+}
+
+template<> inline const tosa::COS_Attribute *TosaOperator::attribute_as<tosa::COS_Attribute>() const {
+  return attribute_as_COS_Attribute();
+}
+
+template<> inline const tosa::EXP_Attribute *TosaOperator::attribute_as<tosa::EXP_Attribute>() const {
+  return attribute_as_EXP_Attribute();
+}
+
+template<> inline const tosa::FLOOR_Attribute *TosaOperator::attribute_as<tosa::FLOOR_Attribute>() const {
+  return attribute_as_FLOOR_Attribute();
+}
+
+template<> inline const tosa::LOG_Attribute *TosaOperator::attribute_as<tosa::LOG_Attribute>() const {
+  return attribute_as_LOG_Attribute();
+}
+
+template<> inline const tosa::LOGICAL_NOT_Attribute *TosaOperator::attribute_as<tosa::LOGICAL_NOT_Attribute>() const {
+  return attribute_as_LOGICAL_NOT_Attribute();
+}
+
+template<> inline const tosa::NEGATE_Attribute *TosaOperator::attribute_as<tosa::NEGATE_Attribute>() const {
+  return attribute_as_NEGATE_Attribute();
+}
+
+template<> inline const tosa::RECIPROCAL_Attribute *TosaOperator::attribute_as<tosa::RECIPROCAL_Attribute>() const {
+  return attribute_as_RECIPROCAL_Attribute();
+}
+
+template<> inline const tosa::RSQRT_Attribute *TosaOperator::attribute_as<tosa::RSQRT_Attribute>() const {
+  return attribute_as_RSQRT_Attribute();
+}
+
+template<> inline const tosa::SIN_Attribute *TosaOperator::attribute_as<tosa::SIN_Attribute>() const {
+  return attribute_as_SIN_Attribute();
+}
+
+template<> inline const tosa::SELECT_Attribute *TosaOperator::attribute_as<tosa::SELECT_Attribute>() const {
+  return attribute_as_SELECT_Attribute();
+}
+
+template<> inline const tosa::EQUAL_Attribute *TosaOperator::attribute_as<tosa::EQUAL_Attribute>() const {
+  return attribute_as_EQUAL_Attribute();
+}
+
+template<> inline const tosa::GREATER_Attribute *TosaOperator::attribute_as<tosa::GREATER_Attribute>() const {
+  return attribute_as_GREATER_Attribute();
+}
+
+template<> inline const tosa::GREATER_EQUAL_Attribute *TosaOperator::attribute_as<tosa::GREATER_EQUAL_Attribute>() const {
+  return attribute_as_GREATER_EQUAL_Attribute();
+}
+
+template<> inline const tosa::REDUCE_ALL_Attribute *TosaOperator::attribute_as<tosa::REDUCE_ALL_Attribute>() const {
+  return attribute_as_REDUCE_ALL_Attribute();
+}
+
+template<> inline const tosa::REDUCE_ANY_Attribute *TosaOperator::attribute_as<tosa::REDUCE_ANY_Attribute>() const {
+  return attribute_as_REDUCE_ANY_Attribute();
+}
+
+template<> inline const tosa::REDUCE_MAX_Attribute *TosaOperator::attribute_as<tosa::REDUCE_MAX_Attribute>() const {
+  return attribute_as_REDUCE_MAX_Attribute();
+}
+
+template<> inline const tosa::REDUCE_MIN_Attribute *TosaOperator::attribute_as<tosa::REDUCE_MIN_Attribute>() const {
+  return attribute_as_REDUCE_MIN_Attribute();
+}
+
+template<> inline const tosa::REDUCE_PRODUCT_Attribute *TosaOperator::attribute_as<tosa::REDUCE_PRODUCT_Attribute>() const {
+  return attribute_as_REDUCE_PRODUCT_Attribute();
+}
+
+template<> inline const tosa::REDUCE_SUM_Attribute *TosaOperator::attribute_as<tosa::REDUCE_SUM_Attribute>() const {
+  return attribute_as_REDUCE_SUM_Attribute();
+}
+
+template<> inline const tosa::CONCAT_Attribute *TosaOperator::attribute_as<tosa::CONCAT_Attribute>() const {
+  return attribute_as_CONCAT_Attribute();
+}
+
+template<> inline const tosa::PAD_Attribute *TosaOperator::attribute_as<tosa::PAD_Attribute>() const {
+  return attribute_as_PAD_Attribute();
+}
+
+template<> inline const tosa::RESHAPE_Attribute *TosaOperator::attribute_as<tosa::RESHAPE_Attribute>() const {
+  return attribute_as_RESHAPE_Attribute();
+}
+
+template<> inline const tosa::REVERSE_Attribute *TosaOperator::attribute_as<tosa::REVERSE_Attribute>() const {
+  return attribute_as_REVERSE_Attribute();
+}
+
+template<> inline const tosa::SLICE_Attribute *TosaOperator::attribute_as<tosa::SLICE_Attribute>() const {
+  return attribute_as_SLICE_Attribute();
+}
+
+template<> inline const tosa::TILE_Attribute *TosaOperator::attribute_as<tosa::TILE_Attribute>() const {
+  return attribute_as_TILE_Attribute();
+}
+
+template<> inline const tosa::TRANSPOSE_Attribute *TosaOperator::attribute_as<tosa::TRANSPOSE_Attribute>() const {
+  return attribute_as_TRANSPOSE_Attribute();
+}
+
+template<> inline const tosa::GATHER_Attribute *TosaOperator::attribute_as<tosa::GATHER_Attribute>() const {
+  return attribute_as_GATHER_Attribute();
+}
+
+template<> inline const tosa::SCATTER_Attribute *TosaOperator::attribute_as<tosa::SCATTER_Attribute>() const {
+  return attribute_as_SCATTER_Attribute();
+}
+
+template<> inline const tosa::RESIZE_Attribute *TosaOperator::attribute_as<tosa::RESIZE_Attribute>() const {
+  return attribute_as_RESIZE_Attribute();
+}
+
+template<> inline const tosa::CAST_Attribute *TosaOperator::attribute_as<tosa::CAST_Attribute>() const {
+  return attribute_as_CAST_Attribute();
+}
+
+template<> inline const tosa::CAST_STOCHASTIC_Attribute *TosaOperator::attribute_as<tosa::CAST_STOCHASTIC_Attribute>() const {
+  return attribute_as_CAST_STOCHASTIC_Attribute();
+}
+
+template<> inline const tosa::RESCALE_Attribute *TosaOperator::attribute_as<tosa::RESCALE_Attribute>() const {
+  return attribute_as_RESCALE_Attribute();
+}
+
+template<> inline const tosa::CONST_Attribute *TosaOperator::attribute_as<tosa::CONST_Attribute>() const {
+  return attribute_as_CONST_Attribute();
+}
+
+template<> inline const tosa::RAND_SEED_Attribute *TosaOperator::attribute_as<tosa::RAND_SEED_Attribute>() const {
+  return attribute_as_RAND_SEED_Attribute();
+}
+
+template<> inline const tosa::RAND_UNIFORM_Attribute *TosaOperator::attribute_as<tosa::RAND_UNIFORM_Attribute>() const {
+  return attribute_as_RAND_UNIFORM_Attribute();
+}
+
+template<> inline const tosa::IDENTITY_Attribute *TosaOperator::attribute_as<tosa::IDENTITY_Attribute>() const {
+  return attribute_as_IDENTITY_Attribute();
+}
+
+template<> inline const tosa::CUSTOM_Attribute *TosaOperator::attribute_as<tosa::CUSTOM_Attribute>() const {
+  return attribute_as_CUSTOM_Attribute();
+}
+
+template<> inline const tosa::COND_IF_Attribute *TosaOperator::attribute_as<tosa::COND_IF_Attribute>() const {
+  return attribute_as_COND_IF_Attribute();
+}
+
+template<> inline const tosa::WHILE_LOOP_Attribute *TosaOperator::attribute_as<tosa::WHILE_LOOP_Attribute>() const {
+  return attribute_as_WHILE_LOOP_Attribute();
+}
+
+template<> inline const tosa::YIELD_Attribute *TosaOperator::attribute_as<tosa::YIELD_Attribute>() const {
+  return attribute_as_YIELD_Attribute();
+}
+
+template<> inline const tosa::VARIABLE_Attribute *TosaOperator::attribute_as<tosa::VARIABLE_Attribute>() const {
+  return attribute_as_VARIABLE_Attribute();
+}
+
+template<> inline const tosa::VARIABLE_WRITE_Attribute *TosaOperator::attribute_as<tosa::VARIABLE_WRITE_Attribute>() const {
+  return attribute_as_VARIABLE_WRITE_Attribute();
+}
+
+template<> inline const tosa::VARIABLE_READ_Attribute *TosaOperator::attribute_as<tosa::VARIABLE_READ_Attribute>() const {
+  return attribute_as_VARIABLE_READ_Attribute();
+}
+
+template<> inline const tosa::CONST_SHAPE_Attribute *TosaOperator::attribute_as<tosa::CONST_SHAPE_Attribute>() const {
+  return attribute_as_CONST_SHAPE_Attribute();
 }
 
 struct TosaOperatorBuilder {
@@ -2776,92 +5757,320 @@ inline bool VerifyAttribute(::flatbuffers::Verifier &verifier, const void *obj, 
     case Attribute_NONE: {
       return true;
     }
-    case Attribute_PoolAttribute: {
-      auto ptr = reinterpret_cast<const tosa::PoolAttribute *>(obj);
+    case Attribute_ARGMAX_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::ARGMAX_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_ConvAttribute: {
-      auto ptr = reinterpret_cast<const tosa::ConvAttribute *>(obj);
+    case Attribute_AVG_POOL2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::AVG_POOL2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_TransposeConvAttribute: {
-      auto ptr = reinterpret_cast<const tosa::TransposeConvAttribute *>(obj);
+    case Attribute_CONV2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CONV2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_PadAttribute: {
-      auto ptr = reinterpret_cast<const tosa::PadAttribute *>(obj);
+    case Attribute_CONV3D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CONV3D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_AxisAttribute: {
-      auto ptr = reinterpret_cast<const tosa::AxisAttribute *>(obj);
+    case Attribute_DEPTHWISE_CONV2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::DEPTHWISE_CONV2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_ResizeAttribute: {
-      auto ptr = reinterpret_cast<const tosa::ResizeAttribute *>(obj);
+    case Attribute_FFT2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::FFT2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_ClampAttribute: {
-      auto ptr = reinterpret_cast<const tosa::ClampAttribute *>(obj);
+    case Attribute_MATMUL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::MATMUL_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_RescaleAttribute: {
-      auto ptr = reinterpret_cast<const tosa::RescaleAttribute *>(obj);
+    case Attribute_MAX_POOL2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::MAX_POOL2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_MulAttribute: {
-      auto ptr = reinterpret_cast<const tosa::MulAttribute *>(obj);
+    case Attribute_RFFT2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RFFT2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_ArithmeticRightShiftAttribute: {
-      auto ptr = reinterpret_cast<const tosa::ArithmeticRightShiftAttribute *>(obj);
+    case Attribute_TRANSPOSE_CONV2D_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::TRANSPOSE_CONV2D_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_CondIfAttribute: {
-      auto ptr = reinterpret_cast<const tosa::CondIfAttribute *>(obj);
+    case Attribute_CLAMP_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CLAMP_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_WhileLoopAttribute: {
-      auto ptr = reinterpret_cast<const tosa::WhileLoopAttribute *>(obj);
+    case Attribute_ERF_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::ERF_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_TransposeAttribute: {
-      auto ptr = reinterpret_cast<const tosa::TransposeAttribute *>(obj);
+    case Attribute_SIGMOID_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SIGMOID_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_TableAttribute: {
-      auto ptr = reinterpret_cast<const tosa::TableAttribute *>(obj);
+    case Attribute_TANH_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::TANH_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_MatMulAttribute: {
-      auto ptr = reinterpret_cast<const tosa::MatMulAttribute *>(obj);
+    case Attribute_ADD_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::ADD_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_FullyConnectedAttribute: {
-      auto ptr = reinterpret_cast<const tosa::FullyConnectedAttribute *>(obj);
+    case Attribute_ARITHMETIC_RIGHT_SHIFT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::ARITHMETIC_RIGHT_SHIFT_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_NegateAttribute: {
-      auto ptr = reinterpret_cast<const tosa::NegateAttribute *>(obj);
+    case Attribute_BITWISE_AND_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::BITWISE_AND_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_CustomAttribute: {
-      auto ptr = reinterpret_cast<const tosa::CustomAttribute *>(obj);
+    case Attribute_BITWISE_OR_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::BITWISE_OR_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_FFTAttribute: {
-      auto ptr = reinterpret_cast<const tosa::FFTAttribute *>(obj);
+    case Attribute_BITWISE_XOR_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::BITWISE_XOR_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_RFFTAttribute: {
-      auto ptr = reinterpret_cast<const tosa::RFFTAttribute *>(obj);
+    case Attribute_INTDIV_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::INTDIV_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_RandUniformAttribute: {
-      auto ptr = reinterpret_cast<const tosa::RandUniformAttribute *>(obj);
+    case Attribute_LOGICAL_AND_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_AND_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Attribute_NanPropagationAttribute: {
-      auto ptr = reinterpret_cast<const tosa::NanPropagationAttribute *>(obj);
+    case Attribute_LOGICAL_LEFT_SHIFT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_LEFT_SHIFT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_LOGICAL_RIGHT_SHIFT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_RIGHT_SHIFT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_LOGICAL_OR_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_OR_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_LOGICAL_XOR_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_XOR_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_MAXIMUM_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::MAXIMUM_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_MINIMUM_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::MINIMUM_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_MUL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::MUL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_POW_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::POW_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SUB_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SUB_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_TABLE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::TABLE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_ABS_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::ABS_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_BITWISE_NOT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::BITWISE_NOT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CEIL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CEIL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CLZ_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CLZ_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_COS_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::COS_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_EXP_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::EXP_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_FLOOR_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::FLOOR_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_LOG_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOG_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_LOGICAL_NOT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::LOGICAL_NOT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_NEGATE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::NEGATE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RECIPROCAL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RECIPROCAL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RSQRT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RSQRT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SIN_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SIN_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SELECT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SELECT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_EQUAL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::EQUAL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_GREATER_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::GREATER_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_GREATER_EQUAL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::GREATER_EQUAL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_ALL_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_ALL_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_ANY_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_ANY_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_MAX_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_MAX_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_MIN_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_MIN_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_PRODUCT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_PRODUCT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REDUCE_SUM_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REDUCE_SUM_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CONCAT_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CONCAT_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_PAD_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::PAD_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RESHAPE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RESHAPE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_REVERSE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::REVERSE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SLICE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SLICE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_TILE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::TILE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_TRANSPOSE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::TRANSPOSE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_GATHER_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::GATHER_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_SCATTER_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::SCATTER_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RESIZE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RESIZE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CAST_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CAST_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CAST_STOCHASTIC_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CAST_STOCHASTIC_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RESCALE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RESCALE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CONST_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CONST_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RAND_SEED_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RAND_SEED_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_RAND_UNIFORM_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::RAND_UNIFORM_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_IDENTITY_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::IDENTITY_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CUSTOM_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CUSTOM_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_COND_IF_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::COND_IF_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_WHILE_LOOP_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::WHILE_LOOP_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_YIELD_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::YIELD_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_VARIABLE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::VARIABLE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_VARIABLE_WRITE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::VARIABLE_WRITE_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_VARIABLE_READ_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::VARIABLE_READ_Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Attribute_CONST_SHAPE_Attribute: {
+      auto ptr = reinterpret_cast<const tosa::CONST_SHAPE_Attribute *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return true;

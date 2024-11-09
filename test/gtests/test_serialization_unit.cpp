@@ -89,7 +89,7 @@ TEST(SerializationCpp, FullTensor)
         std::vector<int32_t> shape = { 1, data_bytes };
 
         block->GetOperators().emplace_back(std::make_unique<TosaSerializationOperator>(
-            Op_IDENTITY, Attribute_NONE, new TosaNoneAttribute(), input_names, output_names));
+            Op_IDENTITY, Attribute_IDENTITY_Attribute, new TosaIDENTITYAttribute(), input_names, output_names));
 
         block->GetTensors().emplace_back(std::make_unique<TosaSerializationTensor>(
             input_name, shape, DType_UINT8, empty_data, variable, is_unranked, variable_name));
@@ -124,7 +124,7 @@ TEST(SerializationCpp, SingleOp)
         // call the correct generate_value_... functions in test_serialization_utils.h. For example,
         // attrs[Attribute_ConvAttribute] = new TosaConvAttribute(generate_value_int32_t_V(), ...);
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
-    attrs[Attribute_##NAME##Attribute] =                                                                               \
+    attrs[Attribute_##NAME##_Attribute] =                                                                              \
         std::make_unique<Tosa##NAME##Attribute>(LIST_GENERATED_ARGS_##NUM_ARGS(__VA_ARGS__));
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
@@ -142,9 +142,9 @@ TEST(SerializationCpp, SingleOp)
         int operand_count = 0;
         switch (op)
         {
-#define DEF_OP(OP_NAME, ATTR_NAME, ...)                                                                                \
+#define DEF_OP(OP_NAME, ...)                                                                                           \
     case Op_##OP_NAME: {                                                                                               \
-        attr                                           = Attribute_##ATTR_NAME##Attribute;                             \
+        attr                                           = Attribute_##OP_NAME##_Attribute;                              \
         const std::vector<OP_INPUT_TYPE> operand_types = { __VA_ARGS__ };                                              \
         operand_count                                  = operand_types.size();                                         \
         break;                                                                                                         \

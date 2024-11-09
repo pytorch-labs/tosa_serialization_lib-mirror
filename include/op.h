@@ -22,8 +22,6 @@ using std::string;
 namespace tosa
 {
 
-#define Attribute_NoneAttribute Attribute_NONE
-
 enum OP_INPUT_TYPE
 {
     TENSOR,
@@ -31,31 +29,6 @@ enum OP_INPUT_TYPE
     TENSOR_LIST,
     SHAPE_LIST,
 };
-
-template <Op op>
-struct TosaSerializationOpInfo;
-
-#define DEF_OP(OP_NAME, ATTR_NAME, ...)                                                                                \
-    template <>                                                                                                        \
-    struct TosaSerializationOpInfo<Op_##OP_NAME>                                                                       \
-    {                                                                                                                  \
-        using attr_type = Tosa##ATTR_NAME##Attribute;                                                                  \
-        static const Attribute attr()                                                                                  \
-        {                                                                                                              \
-            return Attribute_##ATTR_NAME##Attribute;                                                                   \
-        };                                                                                                             \
-                                                                                                                       \
-        static const std::vector<OP_INPUT_TYPE>& operandTypes()                                                        \
-        {                                                                                                              \
-            operand_types = { __VA_ARGS__ };                                                                           \
-            return operand_types;                                                                                      \
-        }                                                                                                              \
-                                                                                                                       \
-        static std::vector<OP_INPUT_TYPE> operand_types;                                                               \
-    };
-
-#include "op.def"
-#undef DEF_OP
 
 }    // namespace tosa
 

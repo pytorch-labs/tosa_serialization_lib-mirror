@@ -55,19 +55,23 @@ enum NanPropagationMode:uint32 {
 
 enum Op:uint32 {
   UNKNOWN = 0,
+  // Tensor Operators
   ARGMAX,
   AVG_POOL2D,
   CONV2D,
   CONV3D,
   DEPTHWISE_CONV2D,
-  FULLY_CONNECTED (deprecated),
+  FFT2D,
   MATMUL,
   MAX_POOL2D,
+  RFFT2D,
   TRANSPOSE_CONV2D,
+  // Activation Functions
   CLAMP,
-  RESERVED,
+  ERF,
   SIGMOID,
   TANH,
+  // Elementwise Binary Operators
   ADD,
   ARITHMETIC_RIGHT_SHIFT,
   BITWISE_AND,
@@ -85,10 +89,12 @@ enum Op:uint32 {
   POW,
   SUB,
   TABLE,
+  // Elementwise Unary Operators
   ABS,
   BITWISE_NOT,
   CEIL,
   CLZ,
+  COS,
   EXP,
   FLOOR,
   LOG,
@@ -96,16 +102,21 @@ enum Op:uint32 {
   NEGATE,
   RECIPROCAL,
   RSQRT,
+  SIN,
+  // Elementwise Ternary Operators
   SELECT,
+  // Comparison Operators
   EQUAL,
   GREATER,
   GREATER_EQUAL,
-  REDUCE_ANY,
+  // Reduction Operators
   REDUCE_ALL,
+  REDUCE_ANY,
   REDUCE_MAX,
   REDUCE_MIN,
   REDUCE_PRODUCT,
   REDUCE_SUM,
+  // Data Layout
   CONCAT,
   PAD,
   RESHAPE,
@@ -113,68 +124,131 @@ enum Op:uint32 {
   SLICE,
   TILE,
   TRANSPOSE,
+  // Scatter/Gather Operators
   GATHER,
   SCATTER,
+  // Image Operators
   RESIZE,
+  // Type Conversion
   CAST,
+  CAST_STOCHASTIC,
   RESCALE,
+  // Data Nodes
   CONST,
+  RAND_SEED,
+  RAND_UNIFORM,
   IDENTITY,
+  // Custom Operators
   CUSTOM,
+  // Control Flow Operators
   COND_IF,
   WHILE_LOOP,
-  FFT2D,
-  RFFT2D,
-  ERF,
-  DIM (deprecated),
+  YIELD,
+  // Variable Operators
+  VARIABLE,
+  VARIABLE_WRITE,
+  VARIABLE_READ,
+  // Shape Operators
   CONST_SHAPE,
-  CONCAT_SHAPE (deprecated),
-  ADD_SHAPE (deprecated),
-  SUB_SHAPE (deprecated),
-  MUL_SHAPE (deprecated),
-  DIV_SHAPE (deprecated),
-  COS,
-  SIN,
-  CAST_STOCHASTIC,
-  RAND_UNIFORM,
 }
 
 union Attribute {
-  PoolAttribute,
-  ConvAttribute,
-  TransposeConvAttribute,
-  PadAttribute,
-  AxisAttribute,
-  ResizeAttribute,
-  ClampAttribute,
-  RescaleAttribute,
-  MulAttribute,
-  ArithmeticRightShiftAttribute,
-  CondIfAttribute,
-  WhileLoopAttribute,
-  TransposeAttribute,
-  TableAttribute (deprecated),
-  MatMulAttribute,
-  FullyConnectedAttribute (deprecated),
-  NegateAttribute,
-  CustomAttribute,
-  FFTAttribute,
-  RFFTAttribute,
-  RandUniformAttribute,
-  NanPropagationAttribute,
+  ARGMAX_Attribute,
+  AVG_POOL2D_Attribute,
+  CONV2D_Attribute,
+  CONV3D_Attribute,
+  DEPTHWISE_CONV2D_Attribute,
+  FFT2D_Attribute,
+  MATMUL_Attribute,
+  MAX_POOL2D_Attribute,
+  RFFT2D_Attribute,
+  TRANSPOSE_CONV2D_Attribute,
+  CLAMP_Attribute,
+  ERF_Attribute,
+  SIGMOID_Attribute,
+  TANH_Attribute,
+  ADD_Attribute,
+  ARITHMETIC_RIGHT_SHIFT_Attribute,
+  BITWISE_AND_Attribute,
+  BITWISE_OR_Attribute,
+  BITWISE_XOR_Attribute,
+  INTDIV_Attribute,
+  LOGICAL_AND_Attribute,
+  LOGICAL_LEFT_SHIFT_Attribute,
+  LOGICAL_RIGHT_SHIFT_Attribute,
+  LOGICAL_OR_Attribute,
+  LOGICAL_XOR_Attribute,
+  MAXIMUM_Attribute,
+  MINIMUM_Attribute,
+  MUL_Attribute,
+  POW_Attribute,
+  SUB_Attribute,
+  TABLE_Attribute,
+  ABS_Attribute,
+  BITWISE_NOT_Attribute,
+  CEIL_Attribute,
+  CLZ_Attribute,
+  COS_Attribute,
+  EXP_Attribute,
+  FLOOR_Attribute,
+  LOG_Attribute,
+  LOGICAL_NOT_Attribute,
+  NEGATE_Attribute,
+  RECIPROCAL_Attribute,
+  RSQRT_Attribute,
+  SIN_Attribute,
+  SELECT_Attribute,
+  EQUAL_Attribute,
+  GREATER_Attribute,
+  GREATER_EQUAL_Attribute,
+  REDUCE_ALL_Attribute,
+  REDUCE_ANY_Attribute,
+  REDUCE_MAX_Attribute,
+  REDUCE_MIN_Attribute,
+  REDUCE_PRODUCT_Attribute,
+  REDUCE_SUM_Attribute,
+  CONCAT_Attribute,
+  PAD_Attribute,
+  RESHAPE_Attribute,
+  REVERSE_Attribute,
+  SLICE_Attribute,
+  TILE_Attribute,
+  TRANSPOSE_Attribute,
+  GATHER_Attribute,
+  SCATTER_Attribute,
+  RESIZE_Attribute,
+  CAST_Attribute,
+  CAST_STOCHASTIC_Attribute,
+  RESCALE_Attribute,
+  CONST_Attribute,
+  RAND_SEED_Attribute,
+  RAND_UNIFORM_Attribute,
+  IDENTITY_Attribute,
+  CUSTOM_Attribute,
+  COND_IF_Attribute,
+  WHILE_LOOP_Attribute,
+  YIELD_Attribute,
+  VARIABLE_Attribute,
+  VARIABLE_WRITE_Attribute,
+  VARIABLE_READ_Attribute,
+  CONST_SHAPE_Attribute,
 }
 
-table PoolAttribute {
+table ARGMAX_Attribute {
+  axis: int32;
+  nan_mode: NanPropagationMode;
+}
+
+table AVG_POOL2D_Attribute {
   pad: [int32];
   kernel: [int32];
   stride: [int32];
   input_zp: int32;
   output_zp: int32;
   acc_type: DType;
-  nan_mode: NanPropagationMode;
 }
 
-table ConvAttribute {
+table CONV2D_Attribute {
   pad: [int32];
   stride: [int32];
   dilation: [int32];
@@ -184,7 +258,48 @@ table ConvAttribute {
   acc_type: DType;
 }
 
-table TransposeConvAttribute {
+table CONV3D_Attribute {
+  pad: [int32];
+  stride: [int32];
+  dilation: [int32];
+  input_zp: int32;
+  weight_zp: int32;
+  local_bound: bool;
+  acc_type: DType;
+}
+
+table DEPTHWISE_CONV2D_Attribute {
+  pad: [int32];
+  stride: [int32];
+  dilation: [int32];
+  input_zp: int32;
+  weight_zp: int32;
+  local_bound: bool;
+  acc_type: DType;
+}
+
+table FFT2D_Attribute {
+  inverse: bool;
+  local_bound: bool;
+}
+
+table MATMUL_Attribute {
+  a_zp: int32;
+  b_zp: int32;
+}
+
+table MAX_POOL2D_Attribute {
+  kernel: [int32];
+  stride: [int32];
+  pad: [int32];
+  nan_mode: NanPropagationMode;
+}
+
+table RFFT2D_Attribute {
+  local_bound: bool;
+}
+
+table TRANSPOSE_CONV2D_Attribute {
   out_pad: [int32];
   stride: [int32];
   input_zp: int32;
@@ -193,29 +308,197 @@ table TransposeConvAttribute {
   acc_type: DType;
 }
 
-table PadAttribute {
-  pad_const: [ubyte] (force_align: 8);
-}
-
-table AxisAttribute {
-  axis: int32;
-  nan_mode: NanPropagationMode;
-}
-
-table ResizeAttribute {
-  scale: [int16] (deprecated);
-  offset: [int16] (deprecated);
-  border: [int16] (deprecated);
-  mode: ResizeMode;
-}
-
-table ClampAttribute {
+table CLAMP_Attribute {
   min_val: [ubyte] (force_align: 8);
   max_val: [ubyte] (force_align: 8);
   nan_mode: NanPropagationMode;
 }
 
-table RescaleAttribute {
+table ERF_Attribute {
+}
+
+table SIGMOID_Attribute {
+}
+
+table TANH_Attribute {
+}
+
+table ADD_Attribute {
+}
+
+table ARITHMETIC_RIGHT_SHIFT_Attribute {
+  round: bool;
+}
+
+table BITWISE_AND_Attribute {
+}
+
+table BITWISE_OR_Attribute {
+}
+
+table BITWISE_XOR_Attribute {
+}
+
+table INTDIV_Attribute {
+}
+
+table LOGICAL_AND_Attribute {
+}
+
+table LOGICAL_LEFT_SHIFT_Attribute {
+}
+
+table LOGICAL_RIGHT_SHIFT_Attribute {
+}
+
+table LOGICAL_OR_Attribute {
+}
+
+table LOGICAL_XOR_Attribute {
+}
+
+table MAXIMUM_Attribute {
+  nan_mode: NanPropagationMode;
+}
+
+table MINIMUM_Attribute {
+  nan_mode: NanPropagationMode;
+}
+
+table MUL_Attribute {
+  shift: int32;
+}
+
+table POW_Attribute {
+}
+
+table SUB_Attribute {
+}
+
+table TABLE_Attribute {
+}
+
+table ABS_Attribute {
+}
+
+table BITWISE_NOT_Attribute {
+}
+
+table CEIL_Attribute {
+}
+
+table CLZ_Attribute {
+}
+
+table COS_Attribute {
+}
+
+table EXP_Attribute {
+}
+
+table FLOOR_Attribute {
+}
+
+table LOG_Attribute {
+}
+
+table LOGICAL_NOT_Attribute {
+}
+
+table NEGATE_Attribute {
+  input1_zp: int32;
+  output_zp: int32;
+}
+
+table RECIPROCAL_Attribute {
+}
+
+table RSQRT_Attribute {
+}
+
+table SIN_Attribute {
+}
+
+table SELECT_Attribute {
+}
+
+table EQUAL_Attribute {
+}
+
+table GREATER_Attribute {
+}
+
+table GREATER_EQUAL_Attribute {
+}
+
+table REDUCE_ALL_Attribute {
+  axis: int32;
+}
+
+table REDUCE_ANY_Attribute {
+  axis: int32;
+}
+
+table REDUCE_MAX_Attribute {
+  axis: int32;
+  nan_mode: NanPropagationMode;
+}
+
+table REDUCE_MIN_Attribute {
+  axis: int32;
+  nan_mode: NanPropagationMode;
+}
+
+table REDUCE_PRODUCT_Attribute {
+  axis: int32;
+}
+
+table REDUCE_SUM_Attribute {
+  axis: int32;
+}
+
+table CONCAT_Attribute {
+  axis: int32;
+}
+
+table PAD_Attribute {
+  pad_const: [ubyte] (force_align: 8);
+}
+
+table RESHAPE_Attribute {
+}
+
+table REVERSE_Attribute {
+  axis: int32;
+}
+
+table SLICE_Attribute {
+}
+
+table TILE_Attribute {
+}
+
+table TRANSPOSE_Attribute {
+  perms: [int32];
+}
+
+table GATHER_Attribute {
+}
+
+table SCATTER_Attribute {
+}
+
+table RESIZE_Attribute {
+  mode: ResizeMode;
+}
+
+table CAST_Attribute {
+}
+
+table CAST_STOCHASTIC_Attribute {
+}
+
+table RESCALE_Attribute {
   input_zp: int32;
   output_zp: int32;
   scale32: bool;
@@ -225,69 +508,50 @@ table RescaleAttribute {
   output_unsigned: bool;
 }
 
-table MulAttribute {
-  shift: int32;
+table CONST_Attribute {
 }
 
-table ArithmeticRightShiftAttribute {
-  round: bool;
+table RAND_SEED_Attribute {
 }
 
-table CondIfAttribute {
-  then_graph: string;
-  else_graph: string;
+table RAND_UNIFORM_Attribute {
+  use_seed: bool;
 }
 
-table WhileLoopAttribute {
-  cond_graph: string;
-  body_graph: string;
+table IDENTITY_Attribute {
 }
 
-table TransposeAttribute {
-  perms: [int32];
-}
-
-table TableAttribute {
-  table: [int16] (deprecated);
-}
-
-table MatMulAttribute {
-  a_zp: int32;
-  b_zp: int32;
-}
-
-table FullyConnectedAttribute {
-  input_zp: int32 (deprecated);
-  weight_zp: int32 (deprecated);
-}
-
-table NegateAttribute {
-  input1_zp: int32;
-  output_zp: int32;
-}
-
-table CustomAttribute {
+table CUSTOM_Attribute {
   operator_name:string;
   domain_name:string;
   implementation_attrs:[ubyte];
 }
 
-table FFTAttribute {
-  inverse: bool;
-  local_bound: bool;
+table COND_IF_Attribute {
+  then_graph: string;
+  else_graph: string;
 }
 
-table RFFTAttribute {
-  local_bound: bool;
+table WHILE_LOOP_Attribute {
+  cond_graph: string;
+  body_graph: string;
 }
 
-table RandUniformAttribute {
-  use_seed: bool;
+table YIELD_Attribute {
 }
 
-table NanPropagationAttribute {
-  nan_mode: NanPropagationMode;
+table VARIABLE_Attribute {
 }
+
+table VARIABLE_WRITE_Attribute {
+}
+
+table VARIABLE_READ_Attribute {
+}
+
+table CONST_SHAPE_Attribute {
+}
+
 
 table Version {
   _major: int32 = -1;

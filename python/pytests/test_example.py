@@ -71,8 +71,10 @@ def test_example_select(request):
 
     result_0 = ser.addOutput([2048, 2048, 3], ts.DType.INT8)
 
+    attr = ts.TosaSerializerAttribute()
+    attr.SelectAttribute()
     ser.addOperator(
-        ts.TosaOp.Op().SELECT, ["input-0", "input-1", "input-2"], result_0.name
+        ts.TosaOp.Op().SELECT, ["input-0", "input-1", "input-2"], result_0.name, attr
     )
 
     serialized = serialize_and_load_json(ser, tmp_dir / testname / f"{testname}.tosa")
@@ -103,7 +105,7 @@ def test_example_conv2d(request):
     ser.addOutput([256, 256, 3], ts.DType.FP32)
 
     attr = ts.TosaSerializerAttribute()
-    attr.ConvAttribute([2, 2, 2, 2], [1, 1], [1, 1], 0, 0, False, ts.DType.FP32)
+    attr.Conv2DAttribute([2, 2, 2, 2], [1, 1], [1, 1], 0, 0, False, ts.DType.FP32)
     ser.addOperator(
         ts.TosaOp.Op().CONV2D, ["input-0", "const-1", "const-2"], ["result-0"], attr
     )

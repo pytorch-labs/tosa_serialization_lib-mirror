@@ -26,16 +26,19 @@
     ...: variadic variables for more arguments, depending on NUM_ARGS_IN_ATTRIBUTES
 */
 
-DEF_ATTRIBUTE(Pool, 7,
+DEF_ATTRIBUTE(ARGMAX, 2,
+              int32_t, S, axis,
+              NanPropagationMode, S, nan_mode)
+
+DEF_ATTRIBUTE(AVG_POOL2D, 6,
               int32_t, V, pad,
               int32_t, V, kernel,
               int32_t, V, stride,
               int32_t, S, input_zp,
               int32_t, S, output_zp,
-              DType,   S, acc_type,
-              NanPropagationMode, S, nan_mode)
+              DType,   S, acc_type)
 
-DEF_ATTRIBUTE(Conv, 7,
+DEF_ATTRIBUTE(CONV2D, 7,
               int32_t, V, pad,
               int32_t, V, stride,
               int32_t, V, dilation,
@@ -44,7 +47,42 @@ DEF_ATTRIBUTE(Conv, 7,
               bool,    S, local_bound,
               DType,   S, acc_type)
 
-DEF_ATTRIBUTE(TransposeConv, 6,
+DEF_ATTRIBUTE(CONV3D, 7,
+              int32_t, V, pad,
+              int32_t, V, stride,
+              int32_t, V, dilation,
+              int32_t, S, input_zp,
+              int32_t, S, weight_zp,
+              bool,    S, local_bound,
+              DType,   S, acc_type)
+
+DEF_ATTRIBUTE(DEPTHWISE_CONV2D, 7,
+              int32_t, V, pad,
+              int32_t, V, stride,
+              int32_t, V, dilation,
+              int32_t, S, input_zp,
+              int32_t, S, weight_zp,
+              bool,    S, local_bound,
+              DType,   S, acc_type)
+
+DEF_ATTRIBUTE(FFT2D, 2,
+              bool, S, inverse,
+              bool, S, local_bound)
+
+DEF_ATTRIBUTE(MATMUL, 2,
+              int32_t, S, a_zp,
+              int32_t, S, b_zp)
+
+DEF_ATTRIBUTE(MAX_POOL2D, 4,
+              int32_t, V, kernel,
+              int32_t, V, stride,
+              int32_t, V, pad,
+              NanPropagationMode, S, nan_mode)
+
+DEF_ATTRIBUTE(RFFT2D, 1,
+              bool, S, local_bound)
+
+DEF_ATTRIBUTE(TRANSPOSE_CONV2D, 6,
               int32_t, V, out_pad,
               int32_t, V, stride,
               int32_t, S, input_zp,
@@ -52,22 +90,108 @@ DEF_ATTRIBUTE(TransposeConv, 6,
               bool,    S, local_bound,
               DType,   S, acc_type)
 
-DEF_ATTRIBUTE(Pad, 1,
-              uint8_t, V, pad_const)
-
-DEF_ATTRIBUTE(Axis, 2,
-              int32_t, S, axis,
-              NanPropagationMode, S, nan_mode)
-
-DEF_ATTRIBUTE(Resize, 1,
-              ResizeMode, S, mode)
-
-DEF_ATTRIBUTE(Clamp, 3,
+DEF_ATTRIBUTE(CLAMP, 3,
               uint8_t, V, min_val,
               uint8_t, V, max_val,
               NanPropagationMode, S, nan_mode)
 
-DEF_ATTRIBUTE(Rescale, 7,
+DEF_ATTRIBUTE(ERF, 0)
+DEF_ATTRIBUTE(SIGMOID, 0)
+DEF_ATTRIBUTE(TANH, 0)
+DEF_ATTRIBUTE(ADD, 0)
+
+DEF_ATTRIBUTE(ARITHMETIC_RIGHT_SHIFT, 1,
+              bool, S, round)
+
+DEF_ATTRIBUTE(BITWISE_AND, 0)
+DEF_ATTRIBUTE(BITWISE_OR, 0)
+DEF_ATTRIBUTE(BITWISE_XOR, 0)
+DEF_ATTRIBUTE(INTDIV, 0)
+
+DEF_ATTRIBUTE(LOGICAL_AND, 0)
+DEF_ATTRIBUTE(LOGICAL_LEFT_SHIFT, 0)
+DEF_ATTRIBUTE(LOGICAL_RIGHT_SHIFT, 0)
+DEF_ATTRIBUTE(LOGICAL_OR, 0)
+DEF_ATTRIBUTE(LOGICAL_XOR, 0)
+DEF_ATTRIBUTE(MAXIMUM, 1,
+              NanPropagationMode, S, nan_mode)
+DEF_ATTRIBUTE(MINIMUM, 1,
+              NanPropagationMode, S, nan_mode)
+
+DEF_ATTRIBUTE(MUL, 1,
+              int32_t, S, shift)
+
+DEF_ATTRIBUTE(POW, 0)
+DEF_ATTRIBUTE(SUB, 0)
+DEF_ATTRIBUTE(TABLE, 0)
+DEF_ATTRIBUTE(ABS, 0)
+DEF_ATTRIBUTE(BITWISE_NOT, 0)
+DEF_ATTRIBUTE(CEIL, 0)
+DEF_ATTRIBUTE(CLZ, 0)
+DEF_ATTRIBUTE(COS, 0)
+DEF_ATTRIBUTE(EXP, 0)
+DEF_ATTRIBUTE(FLOOR, 0)
+DEF_ATTRIBUTE(LOG, 0)
+DEF_ATTRIBUTE(LOGICAL_NOT, 0)
+
+DEF_ATTRIBUTE(NEGATE, 2,
+              int32_t, S, input1_zp,
+              int32_t, S, output_zp)
+
+DEF_ATTRIBUTE(RECIPROCAL, 0)
+DEF_ATTRIBUTE(RSQRT, 0)
+DEF_ATTRIBUTE(SIN, 0)
+DEF_ATTRIBUTE(SELECT, 0)
+DEF_ATTRIBUTE(EQUAL, 0)
+DEF_ATTRIBUTE(GREATER, 0)
+DEF_ATTRIBUTE(GREATER_EQUAL, 0)
+
+DEF_ATTRIBUTE(REDUCE_ALL, 1,
+              int32_t, S, axis)
+
+DEF_ATTRIBUTE(REDUCE_ANY, 1,
+              int32_t, S, axis)
+
+DEF_ATTRIBUTE(REDUCE_MAX, 2,
+              int32_t, S, axis,
+              NanPropagationMode, S, nan_mode)
+
+DEF_ATTRIBUTE(REDUCE_MIN, 2,
+              int32_t, S, axis,
+              NanPropagationMode, S, nan_mode)
+
+DEF_ATTRIBUTE(REDUCE_PRODUCT, 1,
+              int32_t, S, axis)
+
+DEF_ATTRIBUTE(REDUCE_SUM, 1,
+              int32_t, S, axis)
+
+DEF_ATTRIBUTE(CONCAT, 0)
+
+DEF_ATTRIBUTE(PAD, 1,
+              uint8_t, V, pad_const)
+
+DEF_ATTRIBUTE(RESHAPE, 0)
+
+DEF_ATTRIBUTE(REVERSE, 1,
+              int32_t, S, axis)
+
+DEF_ATTRIBUTE(SLICE, 0)
+DEF_ATTRIBUTE(TILE, 0)
+
+DEF_ATTRIBUTE(TRANSPOSE, 1,
+              int32_t, V, perms)
+
+DEF_ATTRIBUTE(GATHER, 0)
+DEF_ATTRIBUTE(SCATTER, 0)
+
+DEF_ATTRIBUTE(RESIZE, 1,
+              ResizeMode, S, mode)
+
+DEF_ATTRIBUTE(CAST, 0)
+DEF_ATTRIBUTE(CAST_STOCHASTIC, 0)
+
+DEF_ATTRIBUTE(RESCALE, 7,
               int32_t, S, input_zp,
               int32_t, S, output_zp,
               bool, S, scale32,
@@ -76,46 +200,29 @@ DEF_ATTRIBUTE(Rescale, 7,
               bool, S, input_unsigned,
               bool, S, output_unsigned)
 
-DEF_ATTRIBUTE(Mul, 1,
-              int32_t, S, shift)
+DEF_ATTRIBUTE(CONST, 0)
+DEF_ATTRIBUTE(RAND_SEED, 0)
 
-DEF_ATTRIBUTE(ArithmeticRightShift, 1,
-              bool, S, round)
+DEF_ATTRIBUTE(RAND_UNIFORM, 1,
+              bool, S, use_seed)
 
-DEF_ATTRIBUTE(CondIf, 2,
-              string, S, then_graph,
-              string, S, else_graph)
+DEF_ATTRIBUTE(IDENTITY, 0)
 
-DEF_ATTRIBUTE(WhileLoop, 2,
-              string, S, cond_graph,
-              string, S, body_graph)
-
-DEF_ATTRIBUTE(Transpose, 1,
-              int32_t, V, perms)
-
-DEF_ATTRIBUTE(MatMul, 2,
-              int32_t, S, a_zp,
-              int32_t, S, b_zp)
-
-DEF_ATTRIBUTE(Negate, 2,
-              int32_t, S, input1_zp,
-              int32_t, S, output_zp)
-
-DEF_ATTRIBUTE(Custom, 3,
+DEF_ATTRIBUTE(CUSTOM, 3,
               string, S, operator_name,
               string, S, domain_name,
               uint8_t, V, implementation_attrs)
 
-DEF_ATTRIBUTE(FFT, 2,
-              bool, S, inverse,
-              bool, S, local_bound)
+DEF_ATTRIBUTE(COND_IF, 2,
+              string, S, then_graph,
+              string, S, else_graph)
 
-DEF_ATTRIBUTE(RFFT, 1,
-              bool, S, local_bound)
+DEF_ATTRIBUTE(WHILE_LOOP, 2,
+              string, S, cond_graph,
+              string, S, body_graph)
 
-DEF_ATTRIBUTE(RandUniform, 1,
-              bool, S, use_seed)
-
-DEF_ATTRIBUTE(NanPropagation, 1,
-              NanPropagationMode, S, nan_mode)
-
+DEF_ATTRIBUTE(YIELD, 0)
+DEF_ATTRIBUTE(VARIABLE, 0)
+DEF_ATTRIBUTE(VARIABLE_WRITE, 0)
+DEF_ATTRIBUTE(VARIABLE_READ, 0)
+DEF_ATTRIBUTE(CONST_SHAPE, 0)

@@ -45,7 +45,7 @@ int test_int_type(std::vector<int32_t> shape, std::default_random_engine& gen, s
     NumpyUtilities::NPError err = NumpyUtilities::writeToNpyFile(filename.c_str(), shape, buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error writing file, code " << err << std::endl;
+        std::cout << "Error writing file " << filename << " , code " << err << std::endl;
         return 1;
     }
 
@@ -53,7 +53,7 @@ int test_int_type(std::vector<int32_t> shape, std::default_random_engine& gen, s
     err              = NumpyUtilities::readFromNpyFile(filename.c_str(), total_size, read_buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error reading file, code " << err << std::endl;
+        std::cout << "Error reading file " << filename << " , code " << err << std::endl;
         return 1;
     }
     if (memcmp(buffer.get(), read_buffer.get(), total_size * sizeof(T)))
@@ -84,7 +84,7 @@ int test_float_type(std::vector<int32_t> shape, std::default_random_engine& gen,
     NumpyUtilities::NPError err = NumpyUtilities::writeToNpyFile(filename.c_str(), shape, buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error writing file, code " << err << std::endl;
+        std::cout << "Error writing file " << filename << " , code " << err << std::endl;
         return 1;
     }
 
@@ -92,7 +92,7 @@ int test_float_type(std::vector<int32_t> shape, std::default_random_engine& gen,
     err              = NumpyUtilities::readFromNpyFile(filename.c_str(), total_size, read_buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error reading file, code " << err << std::endl;
+        std::cout << "Error reading file " << filename << " , code " << err << std::endl;
         return 1;
     }
     if (memcmp(buffer.get(), read_buffer.get(), total_size * sizeof(T)))
@@ -123,7 +123,7 @@ int test_double_type(std::vector<int32_t> shape, std::default_random_engine& gen
     NumpyUtilities::NPError err = NumpyUtilities::writeToNpyFile(filename.c_str(), shape, buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error writing file, code " << err << std::endl;
+        std::cout << "Error writing file " << filename << " , code " << err << std::endl;
         return 1;
     }
 
@@ -131,7 +131,7 @@ int test_double_type(std::vector<int32_t> shape, std::default_random_engine& gen
     err              = NumpyUtilities::readFromNpyFile(filename.c_str(), total_size, read_buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error reading file, code " << err << std::endl;
+        std::cout << "Error reading file " << filename << " , code " << err << std::endl;
         return 1;
     }
     if (memcmp(buffer.get(), read_buffer.get(), total_size * sizeof(T)))
@@ -161,7 +161,7 @@ int test_bool_type(std::vector<int32_t> shape, std::default_random_engine& gen, 
     NumpyUtilities::NPError err = NumpyUtilities::writeToNpyFile(filename.c_str(), shape, buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error writing file, code " << err << std::endl;
+        std::cout << "Error writing file " << filename << " , code " << err << std::endl;
         return 1;
     }
 
@@ -169,7 +169,7 @@ int test_bool_type(std::vector<int32_t> shape, std::default_random_engine& gen, 
     err              = NumpyUtilities::readFromNpyFile(filename.c_str(), total_size, read_buffer.get());
     if (err != NumpyUtilities::NO_ERROR)
     {
-        std::cout << "Error reading file, code " << err << std::endl;
+        std::cout << "Error reading file " << filename << " , code " << err << std::endl;
         return 1;
     }
 

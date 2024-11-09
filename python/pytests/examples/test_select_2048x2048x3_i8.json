@@ -14,7 +14,8 @@
                     "operators": [
                         {
                             "op": "SELECT",
-                            "attribute_type": "NONE",
+                            "attribute_type": "SELECT_Attribute",
+                            "attribute": {},
                             "inputs": [
                                 "input-0",
                                 "input-1",

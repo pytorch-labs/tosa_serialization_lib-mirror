@@ -28,27 +28,114 @@ import pytest
 # ('schema': 'python')
 FIELD_NAME_REPLACEMENTS = {
     # spelling differences
-    ("TransposeConvAttribute", "out_pad"): "outpad",
-    ("MatMulAttribute", "a_zp"): "A_zp",
-    ("MatMulAttribute", "b_zp"): "B_zp",
-    # these are for a reason; PadAttribute and ClampAttribute have
+    # these are for a reason; PadAttribute, ClampAttribute, CustomAttribute have
     # inputs that are byte arrays, and the param names reflect this
-    ("PadAttribute", "pad_const"): "pad_const_val_as_bytes",
-    ("ClampAttribute", "min_val"): "min_val_as_bytes",
-    ("ClampAttribute", "max_val"): "max_val_as_bytes",
+    ("PAD_Attribute", "pad_const"): "pad_const_val_as_bytes",
+    ("CLAMP_Attribute", "min_val"): "min_val_as_bytes",
+    ("CLAMP_Attribute", "max_val"): "max_val_as_bytes",
+    ("CUSTOM_Attribute", "implementation_attrs"): "implementation_attrs_as_bytes",
 }
 
 # When converting the tosa schema to json, the enums are lost and
 # replaced with UInt, so the enum names are hard-coded here.
 ENUM_FIELDS = {
-    ("ConvAttribute", "acc_type"): "DType",
-    ("PoolAttribute", "acc_type"): "DType",
-    ("PoolAttribute", "nan_mode"): "NanPropagationMode",
-    ("TransposeConvAttribute", "acc_type"): "DType",
-    ("ResizeAttribute", "mode"): "ResizeMode",
-    ("ClampAttribute", "nan_mode"): "NanPropagationMode",
-    ("NanPropagationAttribute", "nan_mode"): "NanPropagationMode",
-    ("AxisAttribute", "nan_mode"): "NanPropagationMode",
+    ("ARGMAX_Attribute", "nan_mode"): "NanPropagationMode",
+    ("CONV2D_Attribute", "acc_type"): "DType",
+    ("CONV3D_Attribute", "acc_type"): "DType",
+    ("DEPTHWISE_CONV2D_Attribute", "acc_type"): "DType",
+    ("TRANSPOSE_CONV2D_Attribute", "acc_type"): "DType",
+    ("AVG_POOL2D_Attribute", "acc_type"): "DType",
+    ("MAX_POOL2D_Attribute", "nan_mode"): "NanPropagationMode",
+    ("CLAMP_Attribute", "nan_mode"): "NanPropagationMode",
+    ("MAXIMUM_Attribute", "nan_mode"): "NanPropagationMode",
+    ("MINIMUM_Attribute", "nan_mode"): "NanPropagationMode",
+    ("REDUCE_MAX_Attribute", "nan_mode"): "NanPropagationMode",
+    ("REDUCE_MIN_Attribute", "nan_mode"): "NanPropagationMode",
+    ("RESIZE_Attribute", "mode"): "ResizeMode",
+}
+
+# mapping from attribute name to python attr constructor
+# eg PAD_Attribute => PadAttribute
+ATTR_FUNC = {
+    "ARGMAX_Attribute": "ArgMaxAttribute",
+    "AVG_POOL2D_Attribute": "AvgPool2DAttribute",
+    "CONV2D_Attribute": "Conv2DAttribute",
+    "CONV3D_Attribute": "Conv3DAttribute",
+    "DEPTHWISE_CONV2D_Attribute": "DepthwiseConv2DAttribute",
+    "FFT2D_Attribute": "FFT2DAttribute",
+    "MATMUL_Attribute": "MatMulAttribute",
+    "MAX_POOL2D_Attribute": "MaxPool2DAttribute",
+    "RFFT2D_Attribute": "RFFT2DAttribute",
+    "TRANSPOSE_CONV2D_Attribute": "TransposeConv2DAttribute",
+    "CLAMP_Attribute": "ClampAttribute",
+    "ERF_Attribute": "ERFAttribute",
+    "SIGMOID_Attribute": "SigmoidAttribute",
+    "TANH_Attribute": "TanhAttribute",
+    "ADD_Attribute": "AddAttribute",
+    "ARITHMETIC_RIGHT_SHIFT_Attribute": "ArithmeticRightShiftAttribute",
+    "BITWISE_AND_Attribute": "BitwiseAndAttribute",
+    "BITWISE_OR_Attribute": "BitwiseOrAttribute",
+    "BITWISE_XOR_Attribute": "BitwiseXorAttribute",
+    "INTDIV_Attribute": "IntDivAttribute",
+    "LOGICAL_AND_Attribute": "LogicalAndAttribute",
+    "LOGICAL_LEFT_SHIFT_Attribute": "LogicalLeftShiftAttribute",
+    "LOGICAL_RIGHT_SHIFT_Attribute": "LogicalRightShiftAttribute",
+    "LOGICAL_OR_Attribute": "LogicalOrAttribute",
+    "LOGICAL_XOR_Attribute": "LogicalXorAttribute",
+    "MAXIMUM_Attribute": "MaximumAttribute",
+    "MINIMUM_Attribute": "MinimumAttribute",
+    "MUL_Attribute": "MulAttribute",
+    "POW_Attribute": "PowAttribute",
+    "SUB_Attribute": "SubAttribute",
+    "TABLE_Attribute": "TableAttribute",
+    "ABS_Attribute": "AbsAttribute",
+    "BITWISE_NOT_Attribute": "BitwiseNotAttribute",
+    "CEIL_Attribute": "CeilAttribute",
+    "CLZ_Attribute": "ClzAttribute",
+    "COS_Attribute": "CosAttribute",
+    "EXP_Attribute": "ExpAttribute",
+    "FLOOR_Attribute": "FloorAttribute",
+    "LOG_Attribute": "LogAttribute",
+    "LOGICAL_NOT_Attribute": "LogicalNotAttribute",
+    "NEGATE_Attribute": "NegateAttribute",
+    "RECIPROCAL_Attribute": "ReciprocalAttribute",
+    "RSQRT_Attribute": "RsqrtAttribute",
+    "SIN_Attribute": "SinAttribute",
+    "SELECT_Attribute": "SelectAttribute",
+    "EQUAL_Attribute": "EqualAttribute",
+    "GREATER_Attribute": "GreaterAttribute",
+    "GREATER_EQUAL_Attribute": "GreaterEqualAttribute",
+    "REDUCE_ALL_Attribute": "ReduceAllAttribute",
+    "REDUCE_ANY_Attribute": "ReduceAnyAttribute",
+    "REDUCE_MAX_Attribute": "ReduceMaxAttribute",
+    "REDUCE_MIN_Attribute": "ReduceMinAttribute",
+    "REDUCE_PRODUCT_Attribute": "ReduceProductAttribute",
+    "REDUCE_SUM_Attribute": "ReduceSumAttribute",
+    "CONCAT_Attribute": "ConcatAttribute",
+    "PAD_Attribute": "PadAttribute",
+    "RESHAPE_Attribute": "ReshapeAttribute",
+    "REVERSE_Attribute": "ReverseAttribute",
+    "SLICE_Attribute": "SliceAttribute",
+    "TILE_Attribute": "TableAttribute",
+    "TRANSPOSE_Attribute": "TransposeAttribute",
+    "GATHER_Attribute": "GatherAttribute",
+    "SCATTER_Attribute": "ScatterAttribute",
+    "RESIZE_Attribute": "ResizeAttribute",
+    "CAST_Attribute": "CastAttribute",
+    "CAST_STOCHASTIC_Attribute": "CastStochasticAttribute",
+    "RESCALE_Attribute": "RescaleAttribute",
+    "CONST_Attribute": "ConstAttribute",
+    "RAND_SEED_Attribute": "RandSeedAttribute",
+    "RAND_UNIFORM_Attribute": "RandUniformAttribute",
+    "IDENTITY_Attribute": "IdentityAttribute",
+    "CUSTOM_Attribute": "CustomAttribute",
+    "COND_IF_Attribute": "CondIfAttribute",
+    "WHILE_LOOP_Attribute": "WhileLoopAttribute",
+    "YIELD_Attribute": "YieldAttribute",
+    "VARIABLE_Attribute": "VariableAttribute",
+    "VARIABLE_WRITE_Attribute": "VariableWriteAttribute",
+    "VARIABLE_READ_Attribute": "VariableReadAttribute",
+    "CONST_SHAPE_Attribute": "ConstShapeAttribute",
 }
 
 
@@ -70,8 +157,8 @@ def get_attributes():
     )["values"]
 
     for i in attribute_info:
-        # The library doesn't support custom or none attributes.
-        if i["name"] not in ["NONE", "CustomAttribute"]:
+        # The library doesn't support none attributes.
+        if i["name"] not in ["NONE"]:
             yield i["name"]
 
 
@@ -117,11 +204,7 @@ def test_single_attr(request, attribute_name):
     expected = {}
     py_kwargs = {}
 
-    if attribute_name in [
-        "PadAttribute",
-        "ClampAttribute",
-        "ClampAndNanPropagationAttribute",
-    ]:
+    if attribute_name in ["PAD_Attribute", "CLAMP_Attribute", "CUSTOM_Attribute"]:
         py_kwargs["serializer_builder"] = ser.builder
 
     # Getting the fields of the attribute from the schema
@@ -195,8 +278,11 @@ def test_single_attr(request, attribute_name):
     attr = ts.TosaSerializerAttribute()
 
     # This line calls the attribute function,
-    # e.g. attr.ConvAttribute(pad=[...], ...)
-    getattr(attr, attribute_name)(**py_kwargs)
+    # for example, for attribute_name of CONV2D_Attribute:
+    # attrFnName = ATTR_FUNC["CONV2D_Attribute"] => "Conv2DAttribute"
+    # attr.Conv2DAttribute(pad=[...], ...)
+    attrFnName = ATTR_FUNC[attribute_name]
+    getattr(attr, attrFnName)(**py_kwargs)
 
     ser.currRegion.currBasicBlock.addOperator(
         ts.TosaOp.Op().UNKNOWN, ["t1"], ["t2"], attr

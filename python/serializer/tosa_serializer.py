@@ -149,12 +149,27 @@ class TosaSerializerAttribute(TosaSerializerUnion):
     def __init__(self):
         super().__init__()
 
-    def PoolAttribute(
-        self, kernel, stride, pad, input_zp, output_zp, acc_type, nan_mode
-    ):
-        from tosa import PoolAttribute as a, Attribute
+    def ArgMaxAttribute(self, axis, nan_mode):
+        from tosa import ARGMAX_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().PoolAttribute
+        self.utype = Attribute.Attribute().ARGMAX_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def AvgPool2DAttribute(
+        self,
+        kernel,
+        stride,
+        pad,
+        input_zp,
+        output_zp,
+        acc_type,
+    ):
+        from tosa import AVG_POOL2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().AVG_POOL2D_Attribute
 
         self.optFcns = (a.Start, a.End)
         self.intvecs.append((a.AddPad, pad))
@@ -163,14 +178,13 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddOutputZp, output_zp))
         self.ints.append((a.AddAccType, acc_type))
-        self.ints.append((a.AddNanMode, nan_mode))
 
-    def ConvAttribute(
+    def Conv2DAttribute(
         self, pad, stride, dilation, input_zp, weight_zp, local_bound, acc_type
     ):
-        from tosa import ConvAttribute as a, Attribute
+        from tosa import CONV2D_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().ConvAttribute
+        self.utype = Attribute.Attribute().CONV2D_Attribute
         self.optFcns = (a.Start, a.End)
 
         self.intvecs.append((a.AddPad, pad))
@@ -181,57 +195,96 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.bools.append((a.AddLocalBound, local_bound))
         self.ints.append((a.AddAccType, acc_type))
 
-    def TransposeConvAttribute(
-        self, outpad, stride, input_zp, weight_zp, local_bound, acc_type
+    def Conv3DAttribute(
+        self, pad, stride, dilation, input_zp, weight_zp, local_bound, acc_type
     ):
-        from tosa import TransposeConvAttribute as a, Attribute
+        from tosa import CONV3D_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().TransposeConvAttribute
+        self.utype = Attribute.Attribute().CONV3D_Attribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddOutPad, outpad))
+        self.intvecs.append((a.AddPad, pad))
+        self.intvecs.append((a.AddStride, stride))
+        self.intvecs.append((a.AddDilation, dilation))
+        self.ints.append((a.AddInputZp, input_zp))
+        self.ints.append((a.AddWeightZp, weight_zp))
+        self.bools.append((a.AddLocalBound, local_bound))
+        self.ints.append((a.AddAccType, acc_type))
+
+    def DepthwiseConv2DAttribute(
+        self, pad, stride, dilation, input_zp, weight_zp, local_bound, acc_type
+    ):
+        from tosa import DEPTHWISE_CONV2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().DEPTHWISE_CONV2D_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.intvecs.append((a.AddPad, pad))
+        self.intvecs.append((a.AddStride, stride))
+        self.intvecs.append((a.AddDilation, dilation))
+        self.ints.append((a.AddInputZp, input_zp))
+        self.ints.append((a.AddWeightZp, weight_zp))
+        self.bools.append((a.AddLocalBound, local_bound))
+        self.ints.append((a.AddAccType, acc_type))
+
+    def FFT2DAttribute(self, inverse, local_bound):
+        from tosa import FFT2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().FFT2D_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddInverse, inverse))
+        self.bools.append((a.AddLocalBound, local_bound))
+
+    def MatMulAttribute(self, a_zp, b_zp):
+        from tosa import MATMUL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().MATMUL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAZp, a_zp))
+        self.ints.append((a.AddBZp, b_zp))
+
+    def MaxPool2DAttribute(self, kernel, stride, pad, nan_mode):
+        from tosa import MAX_POOL2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().MAX_POOL2D_Attribute
+
+        self.optFcns = (a.Start, a.End)
+        self.intvecs.append((a.AddKernel, kernel))
+        self.intvecs.append((a.AddStride, stride))
+        self.intvecs.append((a.AddPad, pad))
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def RFFT2DAttribute(self, local_bound):
+        from tosa import RFFT2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RFFT2D_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddLocalBound, local_bound))
+
+    def TransposeConv2DAttribute(
+        self, out_pad, stride, input_zp, weight_zp, local_bound, acc_type
+    ):
+        from tosa import TRANSPOSE_CONV2D_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().TRANSPOSE_CONV2D_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.intvecs.append((a.AddOutPad, out_pad))
         self.intvecs.append((a.AddStride, stride))
         self.ints.append((a.AddInputZp, input_zp))
         self.ints.append((a.AddWeightZp, weight_zp))
         self.bools.append((a.AddLocalBound, local_bound))
         self.ints.append((a.AddAccType, acc_type))
 
-    def PadAttribute(self, serializer_builder, pad_const_val_as_bytes):
-        from tosa import PadAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().PadAttribute
-        self.optFcns = (a.Start, a.End)
-
-        # serialize pad_const_val_as_bytes as uint8 vector
-        serialized_pad_const_val = ts.TosaSerializer.serializeUint8Vec(
-            serializer_builder, pad_const_val_as_bytes
-        )
-
-        self.floats.append((a.AddPadConst, serialized_pad_const_val))
-
-    def AxisAttribute(self, axis, nan_mode):
-        from tosa import AxisAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().AxisAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.ints.append((a.AddAxis, axis))
-        self.ints.append((a.AddNanMode, nan_mode))
-
-    def ResizeAttribute(self, mode):
-        from tosa import ResizeAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().ResizeAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.ints.append((a.AddMode, mode))
-
     def ClampAttribute(
         self, serializer_builder, min_val_as_bytes, max_val_as_bytes, nan_mode
     ):
-        from tosa import ClampAttribute as a, Attribute
+        from tosa import CLAMP_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().ClampAttribute
+        self.utype = Attribute.Attribute().CLAMP_Attribute
         self.optFcns = (a.Start, a.End)
 
         # min/max float attributes serialized as uint8 vectors
@@ -246,6 +299,377 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.floats.append((a.AddMaxVal, serialized_max_val))
         self.ints.append((a.AddNanMode, nan_mode))
 
+    def ERFAttribute(self):
+        from tosa import ERF_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().ERF_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def SigmoidAttribute(self):
+        from tosa import SIGMOID_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SIGMOID_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def TanhAttribute(self):
+        from tosa import TANH_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().TANH_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def AddAttribute(self):
+        from tosa import ADD_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().ADD_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ArithmeticRightShiftAttribute(self, round):
+        from tosa import ARITHMETIC_RIGHT_SHIFT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().ARITHMETIC_RIGHT_SHIFT_Attribute
+        self.optFcns = (
+            a.Start,
+            a.End,
+        )
+
+        self.bools.append((a.AddRound, round))
+
+    def BitwiseAndAttribute(self):
+        from tosa import BITWISE_AND_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().BITWISE_AND_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def BitwiseOrAttribute(self):
+        from tosa import BITWISE_OR_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().BITWISE_OR_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def BitwiseXorAttribute(self):
+        from tosa import BITWISE_XOR_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().BITWISE_XOR_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def IntDivAttribute(self):
+        from tosa import INTDIV_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().INTDIV_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalAndAttribute(self):
+        from tosa import LOGICAL_AND_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_AND_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalLeftShiftAttribute(self):
+        from tosa import LOGICAL_LEFT_SHIFT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_LEFT_SHIFT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalRightShiftAttribute(self):
+        from tosa import LOGICAL_RIGHT_SHIFT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_RIGHT_SHIFT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalOrAttribute(self):
+        from tosa import LOGICAL_OR_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_OR_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalXorAttribute(self):
+        from tosa import LOGICAL_XOR_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_XOR_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def MaximumAttribute(self, nan_mode):
+        from tosa import MAXIMUM_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().MAXIMUM_Attribute
+        self.optFcns = (a.Start, a.End)
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def MinimumAttribute(self, nan_mode):
+        from tosa import MINIMUM_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().MINIMUM_Attribute
+        self.optFcns = (a.Start, a.End)
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def MulAttribute(self, shift):
+        from tosa import MUL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().MUL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddShift, shift))
+
+    def PowAttribute(self):
+        from tosa import POW_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().POW_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def SubAttribute(self):
+        from tosa import SUB_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SUB_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def TableAttribute(self):
+        from tosa import TABLE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().TABLE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def AbsAttribute(self):
+        from tosa import ABS_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().ABS_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def BitwiseNotAttribute(self):
+        from tosa import BITWISE_NOT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().BITWISE_NOT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def CeilAttribute(self):
+        from tosa import CEIL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CEIL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ClzAttribute(self):
+        from tosa import CLZ_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CLZ_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def CosAttribute(self):
+        from tosa import COS_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().COS_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ExpAttribute(self):
+        from tosa import EXP_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().EXP_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def FloorAttribute(self):
+        from tosa import FLOOR_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().FLOOR_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogAttribute(self):
+        from tosa import LOG_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOG_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def LogicalNotAttribute(self):
+        from tosa import LOGICAL_NOT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().LOGICAL_NOT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def NegateAttribute(self, input1_zp, output_zp):
+        from tosa import NEGATE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().NEGATE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddInput1Zp, input1_zp))
+        self.ints.append((a.AddOutputZp, output_zp))
+
+    def ReciprocalAttribute(self):
+        from tosa import RECIPROCAL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RECIPROCAL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def RsqrtAttribute(self):
+        from tosa import RSQRT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RSQRT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def SinAttribute(self):
+        from tosa import SIN_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SIN_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def SelectAttribute(self):
+        from tosa import SELECT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SELECT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def EqualAttribute(self):
+        from tosa import EQUAL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().EQUAL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def GreaterAttribute(self):
+        from tosa import GREATER_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().GREATER_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def GreaterEqualAttribute(self):
+        from tosa import GREATER_EQUAL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().GREATER_EQUAL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ReduceAllAttribute(self, axis):
+        from tosa import REDUCE_ALL_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_ALL_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def ReduceAnyAttribute(self, axis):
+        from tosa import REDUCE_ANY_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_ANY_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def ReduceMaxAttribute(self, axis, nan_mode):
+        from tosa import REDUCE_MAX_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_MAX_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def ReduceMinAttribute(self, axis, nan_mode):
+        from tosa import REDUCE_MIN_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_MIN_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+        self.ints.append((a.AddNanMode, nan_mode))
+
+    def ReduceProductAttribute(self, axis):
+        from tosa import REDUCE_PRODUCT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_PRODUCT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def ReduceSumAttribute(self, axis):
+        from tosa import REDUCE_SUM_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REDUCE_SUM_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def ConcatAttribute(self, axis):
+        from tosa import CONCAT_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CONCAT_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def PadAttribute(self, serializer_builder, pad_const_val_as_bytes):
+        from tosa import PAD_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().PAD_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        # serialize pad_const_val_as_bytes as uint8 vector
+        serialized_pad_const_val = ts.TosaSerializer.serializeUint8Vec(
+            serializer_builder, pad_const_val_as_bytes
+        )
+
+        self.floats.append((a.AddPadConst, serialized_pad_const_val))
+
+    def ReshapeAttribute(self):
+        from tosa import RESHAPE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RESHAPE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ReverseAttribute(self, axis):
+        from tosa import REVERSE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().REVERSE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddAxis, axis))
+
+    def SliceAttribute(self):
+        from tosa import SLICE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SLICE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def TileAttribute(self):
+        from tosa import TILE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().TILE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def TransposeAttribute(self, perms):
+        from tosa import TRANSPOSE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().TRANSPOSE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.intvecs.append((a.AddPerms, perms))
+
+    def GatherAttribute(self):
+        from tosa import GATHER_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().GATHER_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ScatterAttribute(self):
+        from tosa import SCATTER_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().SCATTER_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def ResizeAttribute(self, mode):
+        from tosa import RESIZE_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RESIZE_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.ints.append((a.AddMode, mode))
+
+    def CastAttribute(self):
+        from tosa import CAST_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CAST_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def CastStochasticAttribute(self):
+        from tosa import CAST_STOCHASTIC_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CAST_STOCHASTIC_Attribute
+        self.optFcns = (a.Start, a.End)
+
     def RescaleAttribute(
         self,
         input_zp,
@@ -256,9 +680,9 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         input_unsigned,
         output_unsigned,
     ):
-        from tosa import RescaleAttribute as a, Attribute
+        from tosa import RESCALE_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().RescaleAttribute
+        self.utype = Attribute.Attribute().RESCALE_Attribute
         self.optFcns = (a.Start, a.End)
 
         self.ints.append((a.AddInputZp, input_zp))
@@ -269,113 +693,99 @@ class TosaSerializerAttribute(TosaSerializerUnion):
         self.bools.append((a.AddInputUnsigned, input_unsigned))
         self.bools.append((a.AddOutputUnsigned, output_unsigned))
 
-    def MulAttribute(self, shift):
-        from tosa import MulAttribute as a, Attribute
+    def ConstAttribute(self):
+        from tosa import CONST_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().MulAttribute
+        self.utype = Attribute.Attribute().CONST_Attribute
         self.optFcns = (a.Start, a.End)
 
-        self.ints.append((a.AddShift, shift))
+    def RandSeedAttribute(self):
+        from tosa import RAND_SEED_Attribute as a, Attribute
 
-    def ArithmeticRightShiftAttribute(self, round):
-        from tosa import ArithmeticRightShiftAttribute as a, Attribute
+        self.utype = Attribute.Attribute().RAND_SEED_Attribute
+        self.optFcns = (a.Start, a.End)
 
-        self.utype = Attribute.Attribute().ArithmeticRightShiftAttribute
-        self.optFcns = (
-            a.Start,
-            a.End,
+    def RandUniformAttribute(self, use_seed):
+        from tosa import RAND_UNIFORM_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().RAND_UNIFORM_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        self.bools.append((a.AddUseSeed, use_seed))
+
+    def IdentityAttribute(self):
+        from tosa import IDENTITY_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().IDENTITY_Attribute
+        self.optFcns = (a.Start, a.End)
+
+    def CustomAttribute(
+        self,
+        serializer_builder,
+        operator_name,
+        domain_name,
+        implementation_attrs_as_bytes,
+    ):
+        from tosa import CUSTOM_Attribute as a, Attribute
+
+        self.utype = Attribute.Attribute().CUSTOM_Attribute
+        self.optFcns = (a.Start, a.End)
+
+        implementation_attrs = ts.TosaSerializer.serializeUint8Vec(
+            serializer_builder, implementation_attrs_as_bytes
         )
 
-        self.bools.append((a.AddRound, round))
+        self.strings.append((a.AddOperatorName, operator_name))
+        self.strings.append((a.AddDomainName, domain_name))
+        self.floats.append((a.AddImplementationAttrs, implementation_attrs))
 
     def CondIfAttribute(self, then_graph, else_graph):
-        from tosa import CondIfAttribute as a, Attribute
+        from tosa import COND_IF_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().CondIfAttribute
+        self.utype = Attribute.Attribute().COND_IF_Attribute
         self.optFcns = (a.Start, a.End)
 
         self.strings.append((a.AddThenGraph, then_graph))
         self.strings.append((a.AddElseGraph, else_graph))
 
     def WhileLoopAttribute(self, cond_graph, body_graph):
-        from tosa import WhileLoopAttribute as a, Attribute
+        from tosa import WHILE_LOOP_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().WhileLoopAttribute
+        self.utype = Attribute.Attribute().WHILE_LOOP_Attribute
         self.optFcns = (a.Start, a.End)
 
         self.strings.append((a.AddCondGraph, cond_graph))
         self.strings.append((a.AddBodyGraph, body_graph))
 
-    def TransposeAttribute(self, perms):
-        from tosa import TransposeAttribute as a, Attribute
+    def YieldAttribute(self):
+        from tosa import YIELD_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().TransposeAttribute
+        self.utype = Attribute.Attribute().YIELD_Attribute
         self.optFcns = (a.Start, a.End)
 
-        self.intvecs.append((a.AddPerms, perms))
+    def VariableAttribute(self):
+        from tosa import VARIABLE_Attribute as a, Attribute
 
-    def TableAttribute(self):
-        from tosa import TableAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().TableAttribute
+        self.utype = Attribute.Attribute().VARIABLE_Attribute
         self.optFcns = (a.Start, a.End)
 
-    def MatMulAttribute(self, A_zp, B_zp):
-        from tosa import MatMulAttribute as a, Attribute
+    def VariableReadAttribute(self):
+        from tosa import VARIABLE_READ_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().MatMulAttribute
+        self.utype = Attribute.Attribute().VARIABLE_READ_Attribute
         self.optFcns = (a.Start, a.End)
 
-        self.ints.append((a.AddAZp, A_zp))
-        self.ints.append((a.AddBZp, B_zp))
+    def VariableWriteAttribute(self):
+        from tosa import VARIABLE_WRITE_Attribute as a, Attribute
 
-    def FullyConnectedAttribute(self):
-        from tosa import FullyConnectedAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().FullyConnectedAttribute
+        self.utype = Attribute.Attribute().VARIABLE_WRITE_Attribute
         self.optFcns = (a.Start, a.End)
 
-    def NegateAttribute(self, input1_zp, output_zp):
-        from tosa import NegateAttribute as a, Attribute
+    def ConstShapeAttribute(self):
+        from tosa import CONST_SHAPE_Attribute as a, Attribute
 
-        self.utype = Attribute.Attribute().NegateAttribute
+        self.utype = Attribute.Attribute().CONST_SHAPE_Attribute
         self.optFcns = (a.Start, a.End)
-
-        self.ints.append((a.AddInput1Zp, input1_zp))
-        self.ints.append((a.AddOutputZp, output_zp))
-
-    def FFTAttribute(self, inverse, local_bound):
-        from tosa import FFTAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().FFTAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.bools.append((a.AddInverse, inverse))
-        self.bools.append((a.AddLocalBound, local_bound))
-
-    def RFFTAttribute(self, local_bound):
-        from tosa import RFFTAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().RFFTAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.bools.append((a.AddLocalBound, local_bound))
-
-    def RandUniformAttribute(self, use_seed):
-        from tosa import RandUniformAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().RandUniformAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.bools.append((a.AddUseSeed, use_seed))
-
-    def NanPropagationAttribute(self, nan_mode):
-        from tosa import NanPropagationAttribute as a, Attribute
-
-        self.utype = Attribute.Attribute().NanPropagationAttribute
-        self.optFcns = (a.Start, a.End)
-
-        self.ints.append((a.AddNanMode, nan_mode))
 
 
 class TosaSerializerTensor:
@@ -530,7 +940,7 @@ class TosaSerializerBasicBlock:
     def addOutput(self, name):
         self.outputs.append(name)
 
-    def addOperator(self, op, inputs, outputs, attributes=None):
+    def addOperator(self, op, inputs, outputs, attributes):
         self.operators.append(TosaSerializerOperator(op, inputs, outputs, attributes))
 
     def serialize(self, builder):
@@ -631,9 +1041,13 @@ class TosaSerializerRegion:
         tens = self.currBasicBlock.addTensor(name, shape, dtype, tensor_vals, filename)
         # Add the operator now
         if dtype == DType.SHAPE:
-            self.currBasicBlock.addOperator(TosaOp.Op().CONST_SHAPE, [], name)
+            attr = TosaSerializerAttribute()
+            attr.ConstShapeAttribute()
+            self.currBasicBlock.addOperator(TosaOp.Op().CONST_SHAPE, [], name, attr)
         else:
-            self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name)
+            attr = TosaSerializerAttribute()
+            attr.ConstAttribute()
+            self.currBasicBlock.addOperator(TosaOp.Op().CONST, [], name, attr)
 
         # Save the const data to file for debug or as input files
         if vals is not None and self.constMode in [
@@ -680,7 +1094,7 @@ class TosaSerializerRegion:
         self.currBasicBlock.addOutput(name)
         return tens
 
-    def addOperator(self, op, inputs, outputs, attributes=None):
+    def addOperator(self, op, inputs, outputs, attributes):
         if op == TosaOp.Op().CONST:
             raise Exception("Use addConstTensor() to add CONST ops")
 
@@ -741,7 +1155,7 @@ class TosaSerializer:
     def addOutput(self, shape, dtype):
         return self.currRegion.addOutput(shape, dtype)
 
-    def addOperator(self, op, inputs, outputs, attributes=None):
+    def addOperator(self, op, inputs, outputs, attributes):
         return self.currRegion.addOperator(op, inputs, outputs, attributes)
 
     def addBasicBlock(self, name):

@@ -29,7 +29,7 @@ public:
         // call the correct generate_value_... functions in test_serialization_utils.h. For example,
         // attrs[Attribute_ConvAttribute] = new TosaConvAttribute(generate_value_int32_t_V(), ...);
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
-    attrs[Attribute_##NAME##Attribute] = new Tosa##NAME##Attribute(LIST_GENERATED_ARGS_##NUM_ARGS(__VA_ARGS__));
+    attrs[Attribute_##NAME##_Attribute] = new Tosa##NAME##Attribute(LIST_GENERATED_ARGS_##NUM_ARGS(__VA_ARGS__));
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
         attrs[Attribute_NONE] = new TosaNoneAttribute();
@@ -71,7 +71,9 @@ TEST_P(SingleAttr, )
 
 TEST(SingleAttr, NanPropagation)
 {
-    std::list<Op> op_list = { Op_MAX_POOL2D, Op_CLAMP, Op_MAXIMUM, Op_MINIMUM, Op_REDUCE_MAX, Op_REDUCE_MIN };
+    std::list<Op> op_list = {
+        Op_ARGMAX, Op_MAX_POOL2D, Op_CLAMP, Op_MAXIMUM, Op_MINIMUM, Op_REDUCE_MAX, Op_REDUCE_MIN
+    };
 
     auto generate_NanPropagationMode = [&] {
         std::uniform_int_distribution<uint32_t> valid_nan_propagation_mode(NanPropagationMode_PROPAGATE,
@@ -80,15 +82,19 @@ TEST(SingleAttr, NanPropagation)
     };
 
     std::map<Attribute, std::unique_ptr<TosaAttributeBase>> attrs;
-    attrs[Attribute_AxisAttribute] =
-        std::make_unique<TosaAxisAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
-    attrs[Attribute_ClampAttribute] = std::make_unique<TosaClampAttribute>(
+    attrs[Attribute_ARGMAX_Attribute] =
+        std::make_unique<TosaARGMAXAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
+    attrs[Attribute_MAX_POOL2D_Attribute] =
+        std::make_unique<TosaMAX_POOL2DAttribute>(generate_value_int32_t_V(), generate_value_int32_t_V(),
+                                                  generate_value_int32_t_V(), generate_NanPropagationMode());
+    attrs[Attribute_CLAMP_Attribute] = std::make_unique<TosaCLAMPAttribute>(
         generate_value_uint8_t_V(), generate_value_uint8_t_V(), generate_NanPropagationMode());
-    attrs[Attribute_PoolAttribute] = std::make_unique<TosaPoolAttribute>(
-        generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_V(), generate_value_int32_t_S(),
-        generate_value_int32_t_S(), generate_value_DType_S(), generate_NanPropagationMode());
-    attrs[Attribute_NanPropagationAttribute] =
-        std::make_unique<TosaNanPropagationAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_MAXIMUM_Attribute] = std::make_unique<TosaMAXIMUMAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_MINIMUM_Attribute] = std::make_unique<TosaMINIMUMAttribute>(generate_NanPropagationMode());
+    attrs[Attribute_REDUCE_MAX_Attribute] =
+        std::make_unique<TosaREDUCE_MAXAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
+    attrs[Attribute_REDUCE_MIN_Attribute] =
+        std::make_unique<TosaREDUCE_MINAttribute>(generate_value_int32_t_S(), generate_NanPropagationMode());
 
     for (Op op : op_list)
     {
@@ -97,29 +103,37 @@ TEST(SingleAttr, NanPropagation)
         switch (op)
         {
             case Op_ARGMAX: {
-                attr_enum     = Attribute_AxisAttribute;
+                attr_enum     = Attribute_ARGMAX_Attribute;
                 operand_types = { TENSOR };
                 break;
             }
             case Op_MAX_POOL2D: {
-                attr_enum     = Attribute_PoolAttribute;
+                attr_enum     = Attribute_MAX_POOL2D_Attribute;
                 operand_types = { TENSOR };
                 break;
             }
             case Op_CLAMP: {
-                attr_enum     = Attribute_ClampAttribute;
+                attr_enum     = Attribute_CLAMP_Attribute;
                 operand_types = { TENSOR };
                 break;
             }
-            case Op_MAXIMUM:
-            case Op_MINIMUM: {
-                attr_enum     = Attribute_NanPropagationAttribute;
+            case Op_MAXIMUM: {
+                attr_enum     = Attribute_MAXIMUM_Attribute;
                 operand_types = { TENSOR, TENSOR };
                 break;
             }
-            case Op_REDUCE_MAX:
+            case Op_MINIMUM: {
+                attr_enum     = Attribute_MINIMUM_Attribute;
+                operand_types = { TENSOR, TENSOR };
+                break;
+            }
+            case Op_REDUCE_MAX: {
+                attr_enum     = Attribute_REDUCE_MAX_Attribute;
+                operand_types = { TENSOR };
+                break;
+            }
             case Op_REDUCE_MIN: {
-                attr_enum     = Attribute_AxisAttribute;
+                attr_enum     = Attribute_REDUCE_MIN_Attribute;
                 operand_types = { TENSOR };
                 break;
             }
@@ -147,11 +161,9 @@ TEST(SingleAttr, NanPropagation)
         const auto json_path   = source_dir + "/test/tmp/Serialization.SingleAttr.NanPropagation.json";
 
         tosa_err_t err;
-        WRITE_READ_TOSA_TEST(handler1, handler2, err, tosa_path.c_str(),
-                             EnumNameAttribute(Attribute_NanPropagationAttribute));
+        WRITE_READ_TOSA_TEST(handler1, handler2, err, tosa_path.c_str(), "NanPropagation");
 
-        WRITE_READ_JSON_TEST(handler2, handler3, err, schema_path.c_str(), json_path.c_str(),
-                             EnumNameAttribute(Attribute_NanPropagationAttribute));
+        WRITE_READ_JSON_TEST(handler2, handler3, err, schema_path.c_str(), json_path.c_str(), "NanPropagation");
     }
 }
 

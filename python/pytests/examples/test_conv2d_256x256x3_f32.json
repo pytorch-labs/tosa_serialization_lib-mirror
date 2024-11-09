@@ -14,7 +14,8 @@
                     "operators": [
                         {
                             "op": "CONST",
-                            "attribute_type": "NONE",
+                            "attribute_type": "CONST_Attribute",
+                            "attribute": {},
                             "inputs": [],
                             "outputs": [
                                 "const-1"
@@ -22,7 +23,8 @@
                         },
                         {
                             "op": "CONST",
-                            "attribute_type": "NONE",
+                            "attribute_type": "CONST_Attribute",
+                            "attribute": {},
                             "inputs": [],
                             "outputs": [
                                 "const-2"
@@ -30,7 +32,7 @@
                         },
                         {
                             "op": "CONV2D",
-                            "attribute_type": "ConvAttribute",
+                            "attribute_type": "CONV2D_Attribute",
                             "attribute": {
                                 "pad": [
                                     2,

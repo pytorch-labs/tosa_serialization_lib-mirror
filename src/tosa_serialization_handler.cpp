@@ -88,7 +88,7 @@ void TosaSerializationOperator::InitializeAttribute(Attribute attribute_type, co
             _attribute = new TosaNoneAttribute();
             break;
 #define DEF_ATTRIBUTE(NAME, ...)                                                                                       \
-    case Attribute_##NAME##Attribute:                                                                                  \
+    case Attribute_##NAME##_Attribute:                                                                                 \
         _attribute = new Tosa##NAME##Attribute(attribute);                                                             \
         break;
 #include "attribute.def"
@@ -118,9 +118,9 @@ void VerifyOperatorAttributeAndInputs(Op op,
         case Op_UNKNOWN:
             // not a valid operator
             break;
-#define DEF_OP(OP_NAME, ATTR_NAME, ...)                                                                                \
+#define DEF_OP(OP_NAME, ...)                                                                                           \
     case Op_##OP_NAME: {                                                                                               \
-        Attribute expected                             = Attribute_##ATTR_NAME##Attribute;                             \
+        Attribute expected                             = Attribute_##OP_NAME##_Attribute;                              \
         const std::vector<OP_INPUT_TYPE> operand_types = { __VA_ARGS__ };                                              \
         const int operand_count                        = operand_types.size();                                         \
         if (expected != attribute_type)                                                                                \
@@ -139,16 +139,6 @@ void VerifyOperatorAttributeAndInputs(Op op,
     }
 #include "op.def"
 #undef DEF_OP
-        case Op_FULLY_CONNECTED:
-        case Op_RESERVED:
-        case Op_DIM:
-        case Op_CONCAT_SHAPE:
-        case Op_ADD_SHAPE:
-        case Op_SUB_SHAPE:
-        case Op_MUL_SHAPE:
-        case Op_DIV_SHAPE:
-            // these are deprecated operators: do not check
-            break;
         default:
             printf("TosaSerializationOperator::Verify(): Operator %s not found in op.def\n", EnumNamesOp()[op]);
             assert(0);
@@ -525,7 +515,7 @@ tosa_err_t TosaSerializationHandler::Deserialize(const uint8_t* buf)
                         typed_attribute = new TosaNoneAttribute();
                         break;
 #define DEF_ATTRIBUTE(NAME, ...)                                                                                       \
-    case Attribute_##NAME##Attribute:                                                                                  \
+    case Attribute_##NAME##_Attribute:                                                                                 \
         typed_attribute = new Tosa##NAME##Attribute(attribute);                                                        \
         break;
 #include "attribute.def"
@@ -684,6 +674,7 @@ tosa_err_t TosaSerializationHandler::Serialize()
 #define DEF_ARGS_S_string(NAME, V) DEF_ARGS_S_STR(NAME, V)
 #define DEF_ARGS_S(NAME, T, V) DEF_ARGS_S_##T(NAME, V)
 #define DEF_ARGS_V(NAME, T, V) , _builder.CreateVector<T>(reinterpret_cast<Tosa##NAME*>(op->GetAttribute())->V())
+#define DEF_ARGS_0(NAME, ...)
 #define DEF_ARGS_1(NAME, T0, F0, V0) DEF_ARGS_##F0(NAME, T0, V0)
 #define DEF_ARGS_2(NAME, T0, F0, V0, T1, F1, V1) DEF_ARGS_##F0(NAME, T0, V0) DEF_ARGS_##F1(NAME, T1, V1)
 #define DEF_ARGS_3(NAME, T0, F0, V0, T1, F1, V1, T2, F2, V2)                                                           \
@@ -710,11 +701,12 @@ tosa_err_t TosaSerializationHandler::Serialize()
         DEF_ARGS_##F4(NAME, T4, V4) DEF_ARGS_##F5(NAME, T5, V5) DEF_ARGS_##F6(NAME, T6, V6)                            \
             DEF_ARGS_##F7(NAME, T7, V7) DEF_ARGS_##F8(NAME, T8, V8)
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
-    case Attribute_##NAME##Attribute:                                                                                  \
-        fb_attribute = Create##NAME##Attribute(_builder DEF_ARGS_##NUM_ARGS(NAME##Attribute, __VA_ARGS__)).Union();    \
+    case Attribute_##NAME##_Attribute:                                                                                 \
+        fb_attribute = Create##NAME##_Attribute(_builder DEF_ARGS_##NUM_ARGS(NAME##Attribute, __VA_ARGS__)).Union();   \
         break;
 #include "attribute.def"
 #undef DEF_ATTRIBUTE
+#undef DEF_ARGS_0
 #undef DEF_ARGS_1
 #undef DEF_ARGS_2
 #undef DEF_ARGS_3

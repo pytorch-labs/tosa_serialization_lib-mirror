@@ -171,7 +171,7 @@ inline int convertFlatbuffersU8toF32(const flatbuffers::Vector<uint8_t>& in, uin
         }                                                                                                              \
         Tosa##NAME##Attribute(const void* options)                                                                     \
         {                                                                                                              \
-            DEF_VER0_VAR_##NUM_ARGS(NAME##Attribute)                                                                   \
+            DEF_VER0_VAR_##NUM_ARGS(NAME##_Attribute)                                                                  \
             DEF_ARGS_##NUM_ARGS(VER0, __VA_ARGS__)                                                                     \
         }                                                                                                              \
         Tosa##NAME##Attribute(DEF_ARGS_##NUM_ARGS(VER1, __VA_ARGS__))                                                  \

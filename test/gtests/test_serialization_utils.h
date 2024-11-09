@@ -45,6 +45,7 @@ inline std::string source_dir = CMAKE_SOURCE_DIR;
     std::remove(path);
 
 // Function and helper macros to check that all the member variables of two attributes are equal.
+#define EQ_ARGS_0(lhs, rhs, ...) true
 #define EQ_ARGS_1(lhs, rhs, T, F, V) (lhs->V() == rhs->V())
 #define EQ_ARGS_2(lhs, rhs, T, F, V, ...) (lhs->V() == rhs->V() && EQ_ARGS_1(lhs, rhs, __VA_ARGS__))
 #define EQ_ARGS_3(lhs, rhs, T, F, V, ...) (lhs->V() == rhs->V() && EQ_ARGS_2(lhs, rhs, __VA_ARGS__))
@@ -60,7 +61,7 @@ inline bool attribute_match(Attribute attribute_type, TosaAttributeBase* lhs, To
         case Attribute_NONE:
             return true;
 #define DEF_ATTRIBUTE(NAME, NUM_ARGS, ...)                                                                             \
-    case Attribute_##NAME##Attribute:                                                                                  \
+    case Attribute_##NAME##_Attribute:                                                                                 \
         return EQ_ARGS_##NUM_ARGS(static_cast<Tosa##NAME##Attribute*>(lhs), static_cast<Tosa##NAME##Attribute*>(rhs),  \
                                   __VA_ARGS__);
 #include "attribute.def"
@@ -114,6 +115,7 @@ inline bool operator==(TosaSerializationHandler& lhs, TosaSerializationHandler& 
 #undef DEEP_EQUALS
 
 // Helpers for random attribute generation.
+#define LIST_GENERATED_ARGS_0(...)
 #define LIST_GENERATED_ARGS_1(T, F, V) generate_value_##T##_##F()
 #define LIST_GENERATED_ARGS_2(T, F, V, ...) generate_value_##T##_##F(), LIST_GENERATED_ARGS_1(__VA_ARGS__)
 #define LIST_GENERATED_ARGS_3(T, F, V, ...) generate_value_##T##_##F(), LIST_GENERATED_ARGS_2(__VA_ARGS__)
