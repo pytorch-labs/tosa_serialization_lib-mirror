@@ -20,6 +20,10 @@
 #include <iostream>
 using namespace tosa;
 
+// This feature requires the arguments of operation must match the definition of tosa spec.
+// Turn it off for now as CTS ERROR_IF cases currently are not well handled.
+#define OP_DEF_ENABLED (0)
+
 TosaSerializationTensor::TosaSerializationTensor(const flatbuffers::String* name,
                                                  const flatbuffers::Vector<int32_t>* shape,
                                                  DType dtype,
@@ -167,7 +171,9 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _input_tensor_names  = input_tensor_names;
     _output_tensor_names = output_tensor_names;
 
+#if OP_DEF_ENABLED
     VerifyOperatorAttributeAndInputs(op, attribute_type, input_tensor_names);
+#endif
 
     InitializeAttribute(attribute_type, attribute);
 }
@@ -182,7 +188,9 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _input_tensor_names  = std::move(input_tensor_names);
     _output_tensor_names = std::move(output_tensor_names);
 
+#if OP_DEF_ENABLED
     VerifyOperatorAttributeAndInputs(op, attribute_type, _input_tensor_names);
+#endif
 
     InitializeAttribute(attribute_type, attribute);
 }
