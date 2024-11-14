@@ -66,10 +66,6 @@ def generate_random_data(dtype_str):
             np.array([-np.inf, np.inf, -np.nan, np.nan]).astype(py_dtype),
             data,
         )
-        if dtype_str == "FP8E5M2":
-            # FP8E5M2 arrays should be received bitcasted as uint8 arrays
-            data = data.view(np.uint8)
-
     elif dtype_str in INT_TYPES:
         py_dtype = INT_TYPES[dtype_str]
         data = np.random.uniform(
@@ -164,9 +160,7 @@ def test_single_intermediate(request, dtype_str):
 
 def placeholder_cases():
     for dtype_str in TESTED_DTYPES:
-        # The ml_dtypes library has issues with serializing FP8E5M2 to .npy
-        # files, so we don't test it.
-        if dtype_str in ["UNKNOWN", "FP8E5M2"]:
+        if dtype_str in ["UNKNOWN"]:
             continue
         yield dtype_str
 
@@ -217,10 +211,6 @@ def const_cases():
             # We don't support uint8 or uint16 serialization to flatbuffer;
             # see convertDataToUint8Vec
             if dtype_str in ["UNKNOWN", "UINT8", "UINT16"]:
-                continue
-            # The ml_dtypes library has issues with serializing FP8E5M2 to
-            # .npy files, so we don't test it.
-            if dtype_str == "FP8E5M2" and const_mode != ts.ConstMode.EMBED:
                 continue
             yield dtype_str, const_mode
 
@@ -293,9 +283,6 @@ def test_single_const(request, dtype_str, const_mode):
             # it to the shape we want
             assert alternating.size == (np.prod(shape) + 1) // 2 * 2
             assert np.array_equal(data, np.resize(alternating, shape))
-        elif dtype_str == "FP8E5M2":
-            # data is uint8 already
-            assert np.array_equal(data.flatten(), u8_data.flatten())
         else:
             assert np.array_equal(
                 data,
