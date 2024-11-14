@@ -593,6 +593,11 @@ class TosaSerializerRegion:
         # This is always an input to the block
         self.currBasicBlock.addInput(name)
 
+        # Numpy does not support serialising fp8e5m2 values, so
+        # FP8E5M2 arrays should be received bitcasted as uint8 arrays
+        if dtype == DType.FP8E5M2:
+            vals = vals.view(np.uint8)
+
         if vals is not None:
             np.save(os.path.join(self.pathPrefix, filename), vals, False)
 
@@ -605,6 +610,16 @@ class TosaSerializerRegion:
         if name is None:
             name = "const-{}".format(self.currInputIdx)
             self.currInputIdx = self.currInputIdx + 1
+
+        if vals is not None and self.constMode in [
+            ConstMode.EMBED_DUMP,
+            ConstMode.EMBED,
+            ConstMode.INPUTS,
+        ]:
+            # Numpy does not support serialising fp8e5m2 values, so
+            # FP8E5M2 arrays should be received bitcasted as uint8 arrays
+            if dtype == DType.FP8E5M2:
+                vals = vals.view(np.uint8)
 
         if self.constMode == ConstMode.INPUTS:
             # Save const as input file
@@ -948,11 +963,10 @@ class TosaSerializer:
                 val_f8 = np.array(val).astype(float8_e4m3fn).view(np.uint8)
                 u8_data.append(val_f8)
         elif dtype == DType.FP8E5M2:
-            for val in data:
-                # Numpy does not support serialising fp8e5m2 values, so usually
-                # the array we get for serialisation is a uint8 array
-                val_f8 = np.array(val).astype(np.uint8).view(np.uint8)
-                u8_data.append(val_f8)
+            # Numpy does not support serialising fp8e5m2 values, so
+            # the array we get for serialisation is a uint8 array
+            np_arr = np.array(data, dtype=np.uint8)
+            u8_data.extend(np_arr.view(np.uint8))
         elif dtype == TosaDType.DType:
             # Serialize DType enum data as uint8 bytes
             for val in data:
