@@ -167,8 +167,6 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _input_tensor_names  = input_tensor_names;
     _output_tensor_names = output_tensor_names;
 
-    VerifyOperatorAttributeAndInputs(op, attribute_type, input_tensor_names);
-
     InitializeAttribute(attribute_type, attribute);
 }
 
@@ -181,8 +179,6 @@ TosaSerializationOperator::TosaSerializationOperator(Op op,
     _op                  = op;
     _input_tensor_names  = std::move(input_tensor_names);
     _output_tensor_names = std::move(output_tensor_names);
-
-    VerifyOperatorAttributeAndInputs(op, attribute_type, _input_tensor_names);
 
     InitializeAttribute(attribute_type, attribute);
 }
