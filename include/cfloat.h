@@ -95,10 +95,10 @@ struct storage_type;
     {                                                                                                                  \
         using type = T;                                                                                                \
     }
-STORAGE_TYPE(int8_t);
-STORAGE_TYPE(int16_t);
-STORAGE_TYPE(int32_t);
-STORAGE_TYPE(int64_t);
+STORAGE_TYPE(uint8_t);
+STORAGE_TYPE(uint16_t);
+STORAGE_TYPE(uint32_t);
+STORAGE_TYPE(uint64_t);
 #undef STORAGE_TYPE
 
 template <size_t n_storage_bytes>
@@ -109,11 +109,11 @@ using storage_type_t = typename storage_type<n_storage_bytes>::type;
 
 // If bit_cast is available then use it
 
-constexpr inline int32_t get_bits(const float& f)
+constexpr inline uint32_t get_bits(const float& f)
 {
-    return std::bit_cast<int32_t>(f);
+    return std::bit_cast<uint32_t>(f);
 }
-constexpr inline float from_bits(const int32_t& i)
+constexpr inline float from_bits(const uint32_t& i)
 {
     return std::bit_cast<float>(i);
 }
@@ -123,14 +123,14 @@ constexpr inline float from_bits(const int32_t& i)
 
 // Otherwise `memcpy` is the safe (non-UB) of achieving the same result
 
-inline int32_t get_bits(const float& f)
+inline uint32_t get_bits(const float& f)
 {
-    int32_t i;
+    uint32_t i;
     std::memcpy(&i, &f, sizeof(float));
     return i;
 }
 
-inline float from_bits(const int32_t& i)
+inline float from_bits(const uint32_t& i)
 {
     float f;
     std::memcpy(&f, &i, sizeof(float));
@@ -652,8 +652,10 @@ public:
     template <size_t out_n_bits, size_t out_n_exp_bits, FloatFeatures OutFeats>
     constexpr inline operator cfloat_advanced<out_n_bits, out_n_exp_bits, OutFeats>() const
     {
+#ifndef NDEBUG
         using out_type = cfloat_advanced<out_n_bits, out_n_exp_bits, OutFeats>;
         return cfloat_cast<cfloat_advanced, out_type>().operator()(*this);
+#endif
     }
 
     /// \brief Convert from a 32-bit floating point value
@@ -676,17 +678,20 @@ public:
         // If this format exactly represents the binary32 format then return
         // a float; otherwise get a binary32 representation and then return
         // a float.
+
+        // clang-format off
         if constexpr (represents_binary32())
             return float_support::from_bits(m_data);
         else
             return static_cast<float>(this->operator cfloat_advanced<32, 8>());
+        // clang-format on
     }
 
     /// \brief Return whether this type represents the IEEE754 binary32
     /// format
     constexpr static inline bool represents_binary32()
     {
-        return std::is_same_v<storage_t, int32_t> && n_exp_bits == 8 && Feats == float_support::AllFeats;
+        return std::is_same_v<storage_t, uint32_t> && n_exp_bits == 8 && Feats == float_support::AllFeats;
     }
 
     constexpr auto operator-() const
@@ -703,7 +708,9 @@ public:
 
     constexpr bool is_zero() const
     {
-        return exponent_bits() == 0 && significand() == 0;
+        // Zero is represented by everything but the sign bit(s) being zero
+        constexpr storage_t sign_bit = (storage_t(1) << (n_bits - 1));
+        return (m_data & ~sign_bit) == 0;
     }
 
     constexpr bool is_nan() const
