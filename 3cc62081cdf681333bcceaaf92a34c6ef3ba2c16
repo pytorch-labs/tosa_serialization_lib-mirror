@@ -1,0 +1,6 @@
+Code-Review+2: Leandro Nunes <Leandro.Nunes@arm.com>
+Submitted-by: Leandro Nunes <Leandro.Nunes@arm.com>
+Submitted-at: Thu, 28 Nov 2024 09:43:52 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/13129
+Project: tosa/serialization_lib
+Branch: refs/heads/v1.0
