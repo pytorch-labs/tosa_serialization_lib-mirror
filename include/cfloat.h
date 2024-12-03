@@ -652,10 +652,8 @@ public:
     template <size_t out_n_bits, size_t out_n_exp_bits, FloatFeatures OutFeats>
     constexpr inline operator cfloat_advanced<out_n_bits, out_n_exp_bits, OutFeats>() const
     {
-#ifndef NDEBUG
         using out_type = cfloat_advanced<out_n_bits, out_n_exp_bits, OutFeats>;
         return cfloat_cast<cfloat_advanced, out_type>().operator()(*this);
-#endif
     }
 
     /// \brief Convert from a 32-bit floating point value
