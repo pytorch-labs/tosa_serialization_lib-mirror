@@ -1,0 +1,6 @@
+Code-Review+2: Tai Ly <tai.ly@arm.com>
+Submitted-by: TatWai Chong <tatwai.chong@arm.com>
+Submitted-at: Thu, 05 Dec 2024 18:40:23 +0000
+Reviewed-on: https://review.mlplatform.org/c/tosa/serialization_lib/+/13285
+Project: tosa/serialization_lib
+Branch: refs/heads/v1.0
