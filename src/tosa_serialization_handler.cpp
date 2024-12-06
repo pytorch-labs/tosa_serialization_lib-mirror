@@ -551,12 +551,9 @@ std::vector<uint8_t> float_to_u8_helper(float f_in)
 {
     // Push back a single float value to the buffer with *NO PADDING*
     // Therefore ConvertF32toU8 function not used
-    std::vector<uint8_t> u8_out;
-    uint32_t* val_u32 = reinterpret_cast<uint32_t*>(&f_in);
-    u8_out.push_back(*val_u32 & 0xFF);
-    u8_out.push_back((*val_u32 >> 8) & 0xFF);
-    u8_out.push_back((*val_u32 >> 16) & 0xFF);
-    u8_out.push_back((*val_u32 >> 24) & 0xFF);
+    std::vector<uint8_t> u8_out(/*count*/ sizeof(f_in));
+    assert(u8_out.size() == sizeof(f_in));
+    std::memcpy(&u8_out[0], &f_in, sizeof(f_in));
     return u8_out;
 }
 
@@ -772,12 +769,14 @@ tosa_err_t TosaSerializationHandler::ConvertF16toU8(const std::vector<float>& in
 {
     // Note: Converts fp32->fp16 before converting to uint8_t
     out.clear();
+    out.resize(in.size() * (sizeof(half_float::half)));
+    auto begin{ 0u };
     for (auto val : in)
     {
         half_float::half val_f16 = half_float::half_cast<half_float::half, float>(val);
-        uint16_t* val_u16        = reinterpret_cast<uint16_t*>(&val_f16);
-        out.push_back(*val_u16 & 0xFF);
-        out.push_back((*val_u16 >> 8) & 0xFF);
+        assert(begin < out.size());
+        std::memcpy(&out[0] + begin, &val_f16, sizeof(val_f16));
+        begin += sizeof(val_f16);
     }
     ForceAlignTensorData(out);
     return TOSA_OK;
@@ -786,13 +785,13 @@ tosa_err_t TosaSerializationHandler::ConvertF16toU8(const std::vector<float>& in
 tosa_err_t TosaSerializationHandler::ConvertF32toU8(const std::vector<float>& in, std::vector<uint8_t>& out)
 {
     out.clear();
+    out.resize(in.size() * (sizeof(float)));
+    auto begin{ 0u };
     for (auto val : in)
     {
-        uint32_t* val_u32 = reinterpret_cast<uint32_t*>(&val);
-        out.push_back(*val_u32 & 0xFF);
-        out.push_back((*val_u32 >> 8) & 0xFF);
-        out.push_back((*val_u32 >> 16) & 0xFF);
-        out.push_back((*val_u32 >> 24) & 0xFF);
+        assert(begin < out.size());
+        std::memcpy(&out[0] + begin, &val, sizeof(val));
+        begin += sizeof(val);
     }
     ForceAlignTensorData(out);
     return TOSA_OK;
@@ -920,7 +919,6 @@ tosa_err_t TosaSerializationHandler::ConvertBooltoU8(const std::vector<bool>& in
 tosa_err_t
     TosaSerializationHandler::ConvertU8toBF16(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<bf16>& out)
 {
-    out.clear();
     if (in.size() < out_size * sizeof(int16_t))
     {
         printf("TosaSerializationHandler::ConvertU8toBF16(): uint8 buffer size %ld must >= target size %ld\n",
@@ -928,15 +926,19 @@ tosa_err_t
         return TOSA_USER_ERROR;
     }
 
+    out.clear();
+    out.resize(out_size);
+    std::vector<bf16> out2{};
+    auto begin{ 0u };
+
     for (uint32_t i = 0; i < out_size; i++)
     {
         uint8_t bf16_byte0 = in[i * sizeof(int16_t)];
         uint8_t bf16_byte1 = in[i * sizeof(int16_t) + 1];
         uint16_t val_u16   = (bf16_byte0) + (bf16_byte1 << 8);
 
-        // Reinterpret u16 bytes as bf16
-        bf16 val_bf16 = *(bf16*)&val_u16;
-        out.push_back(val_bf16);
+        std::memcpy(&out[0] + begin, &val_u16, sizeof(val_u16));
+        begin += 1;
     }
     return TOSA_OK;
 }
@@ -989,7 +991,6 @@ tosa_err_t TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& 
                                                     std::vector<half_float::half>& out)
 {
     // Note: fp16 values returned in fp32 type
-    out.clear();
     if (in.size() < out_size * sizeof(int16_t))
     {
         printf("TosaSerializationHandler::ConvertU8toF16(): uint8 buffer size %ld must >= target size %ld\n", in.size(),
@@ -997,15 +998,18 @@ tosa_err_t TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& 
         return TOSA_USER_ERROR;
     }
 
+    out.clear();
+    out.resize(out_size);
+    auto begin{ 0u };
+
     for (uint32_t i = 0; i < out_size; i++)
     {
         uint8_t f16_byte0 = in[i * sizeof(int16_t)];
         uint8_t f16_byte1 = in[i * sizeof(int16_t) + 1];
         uint16_t val_u16  = f16_byte0 + (f16_byte1 << 8);
 
-        // Reinterpret u16 byte as fp16 then convert to fp32
-        half_float::half val_f16 = *(half_float::half*)&val_u16;
-        out.push_back(val_f16);
+        std::memcpy(&out[0] + begin, &val_u16, sizeof(val_u16));
+        begin += 1;
     }
     return TOSA_OK;
 }
@@ -1013,13 +1017,17 @@ tosa_err_t TosaSerializationHandler::ConvertU8toF16(const std::vector<uint8_t>& 
 tosa_err_t
     TosaSerializationHandler::ConvertU8toF32(const std::vector<uint8_t>& in, uint32_t out_size, std::vector<float>& out)
 {
-    out.clear();
     if (in.size() < out_size * sizeof(float))
     {
         printf("TosaSerializationHandler::ConvertU8toF32(): uint8 buffer size %ld must >= target size %ld\n", in.size(),
                out_size * sizeof(float));
         return TOSA_USER_ERROR;
     }
+
+    out.clear();
+    out.resize(out_size);
+    auto begin{ 0u };
+
     for (uint32_t i = 0; i < out_size; i++)
     {
         uint32_t byte0   = in[i * sizeof(float)];
@@ -1027,8 +1035,9 @@ tosa_err_t
         uint32_t byte2   = in[i * sizeof(float) + 2];
         uint32_t byte3   = in[i * sizeof(float) + 3];
         uint32_t val_u32 = byte0 + (byte1 << 8) + (byte2 << 16) + (byte3 << 24);
-        float* val_fp32  = reinterpret_cast<float*>(&val_u32);
-        out.push_back(*val_fp32);
+
+        std::memcpy(&out[0] + begin, &val_u32, sizeof(val_u32));
+        begin += 1;
     }
     return TOSA_OK;
 }
