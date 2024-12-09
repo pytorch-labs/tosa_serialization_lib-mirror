@@ -138,7 +138,7 @@ def AddPad(builder, pad):
 def ConvAttributeStartPadVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartPadVector(builder, numElems: int) -> int:
+def StartPadVector(builder, numElems):
     return ConvAttributeStartPadVector(builder, numElems)
 
 def ConvAttributeAddStride(builder, stride):
@@ -150,7 +150,7 @@ def AddStride(builder, stride):
 def ConvAttributeStartStrideVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartStrideVector(builder, numElems: int) -> int:
+def StartStrideVector(builder, numElems):
     return ConvAttributeStartStrideVector(builder, numElems)
 
 def ConvAttributeAddDilation(builder, dilation):
@@ -162,7 +162,7 @@ def AddDilation(builder, dilation):
 def ConvAttributeStartDilationVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartDilationVector(builder, numElems: int) -> int:
+def StartDilationVector(builder, numElems):
     return ConvAttributeStartDilationVector(builder, numElems)
 
 def ConvAttributeAddLocalBound(builder, localBound):

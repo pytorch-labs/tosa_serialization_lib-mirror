@@ -70,7 +70,7 @@ def AddPadConst(builder, padConst):
 def PadAttributeStartPadConstVector(builder, numElems):
     return builder.StartVector(1, numElems, 1)
 
-def StartPadConstVector(builder, numElems: int) -> int:
+def StartPadConstVector(builder, numElems):
     return PadAttributeStartPadConstVector(builder, numElems)
 
 def PadAttributeEnd(builder):

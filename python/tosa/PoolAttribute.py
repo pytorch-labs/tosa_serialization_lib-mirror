@@ -152,7 +152,7 @@ def AddPad(builder, pad):
 def PoolAttributeStartPadVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartPadVector(builder, numElems: int) -> int:
+def StartPadVector(builder, numElems):
     return PoolAttributeStartPadVector(builder, numElems)
 
 def PoolAttributeAddKernel(builder, kernel):
@@ -164,7 +164,7 @@ def AddKernel(builder, kernel):
 def PoolAttributeStartKernelVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartKernelVector(builder, numElems: int) -> int:
+def StartKernelVector(builder, numElems):
     return PoolAttributeStartKernelVector(builder, numElems)
 
 def PoolAttributeAddStride(builder, stride):
@@ -176,7 +176,7 @@ def AddStride(builder, stride):
 def PoolAttributeStartStrideVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartStrideVector(builder, numElems: int) -> int:
+def StartStrideVector(builder, numElems):
     return PoolAttributeStartStrideVector(builder, numElems)
 
 def PoolAttributeAddInputZp(builder, inputZp):

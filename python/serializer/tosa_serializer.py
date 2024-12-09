@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, ARM Limited.
+# Copyright (c) 2020-2025, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import json
 import flatbuffers
 import numpy as np
 from ml_dtypes import bfloat16, float8_e4m3fn
+from serializer.numpy_utils import save_npy
 from enum import IntEnum, unique
 from tosa import (
     TosaGraph,
@@ -592,13 +593,7 @@ class TosaSerializerRegion:
         # This is always an input to the block
         self.currBasicBlock.addInput(name)
 
-        # Numpy does not support serialising fp8e5m2 values, so
-        # FP8E5M2 arrays should be received bitcasted as uint8 arrays
-        if dtype == DType.FP8E5M2:
-            vals = vals.view(np.uint8)
-
-        if vals is not None:
-            np.save(os.path.join(self.pathPrefix, filename), vals, False)
+        save_npy(os.path.join(self.pathPrefix, filename), vals, dtype)
 
         return tens
 
@@ -610,13 +605,10 @@ class TosaSerializerRegion:
             name = "const-{}".format(self.currInputIdx)
             self.currInputIdx = self.currInputIdx + 1
 
-        if vals is not None and self.constMode in [
-            ConstMode.EMBED_DUMP,
-            ConstMode.EMBED,
-            ConstMode.INPUTS,
-        ]:
+        if vals is not None:
             # Numpy does not support serialising fp8e5m2 values, so
             # FP8E5M2 arrays should be received bitcasted as uint8 arrays
+            # TODO: drop support for uint8 np.dtype in FP8E5M2 arrays
             if dtype == DType.FP8E5M2:
                 vals = vals.view(np.uint8)
 
@@ -643,7 +635,7 @@ class TosaSerializerRegion:
             ConstMode.INPUTS,
         ]:
             filename = "{}.npy".format(name)
-            np.save(os.path.join(self.pathPrefix, filename), vals, False)
+            save_npy(os.path.join(self.pathPrefix, filename), vals, dtype)
 
         return tens
 

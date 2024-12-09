@@ -111,7 +111,7 @@ def AddOutPad(builder, outPad):
 def TransposeConvAttributeStartOutPadVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartOutPadVector(builder, numElems: int) -> int:
+def StartOutPadVector(builder, numElems):
     return TransposeConvAttributeStartOutPadVector(builder, numElems)
 
 def TransposeConvAttributeAddStride(builder, stride):
@@ -123,7 +123,7 @@ def AddStride(builder, stride):
 def TransposeConvAttributeStartStrideVector(builder, numElems):
     return builder.StartVector(4, numElems, 4)
 
-def StartStrideVector(builder, numElems: int) -> int:
+def StartStrideVector(builder, numElems):
     return TransposeConvAttributeStartStrideVector(builder, numElems)
 
 def TransposeConvAttributeAddLocalBound(builder, localBound):
