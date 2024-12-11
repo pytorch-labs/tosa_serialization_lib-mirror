@@ -18,6 +18,23 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5705b1c2_3216636b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "The 3 cosmetic patterns can be addressed in another patch",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f31e3e3_688a5a69",
@@ -31,6 +48,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "Whilst I appreciate liberal asserts I think this is uneccessary since the previous line is literally constructing a default initialized array of `sizeof(f_in)` elements.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39952b6a_31ee830d",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "I add asserts so that when people put code in between construction and use the assert still validates an invariant",
+      "parentUuid": "7f31e3e3_688a5a69",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -52,6 +87,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ea4ee97_d0849c6e",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2c4a7006_9ed353ec",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c9d9a34_b2dc57d7",
@@ -69,6 +122,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37836a23_1c4fa9e3",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6c9d9a34_b2dc57d7",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1a7d864_899dd8cd",
@@ -82,6 +153,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "I know you didn\u0027t touch this line, but can this be made `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1d94ff7_f96ef6d2",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Indeed, there are non-const all over the file and library, but if I touch this file again, then I will do it, thanks.",
+      "parentUuid": "d1a7d864_899dd8cd",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -120,6 +209,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfd3860d_3204a0db",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "834d9239_87cbbc63",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "616d397c_17f7d8f8",
@@ -133,6 +240,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "See above comment about using `out.assign()`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85b847a_be756894",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "616d397c_17f7d8f8",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -156,6 +281,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d4d437e3_16d88c42",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Clear naming, that\u0027s all, compiler will know to optimize.",
+      "parentUuid": "a9ef8496_f1ee1106",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c07deb78_5d50bc2d",
         "filename": "src/tosa_serialization_handler.cpp",
         "patchSetId": 1
@@ -167,6 +310,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "I know you didn\u0027t touch these lines, but can these values be made `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97391426_9e2872de",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c07deb78_5d50bc2d",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -188,6 +349,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2733d406_705e528d",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1eedcc9b_fe12897f",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52976232_94396170",
@@ -201,6 +380,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "Is there a need for this extra counter? Can\u0027t we just use `i` in the loop below to do the offseting?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86258ac2_0a442096",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "52976232_94396170",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -222,6 +419,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aced21e6_9dc143f9",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1c6844d0_0ff5a357",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2fb9bfa_b79de128",
@@ -235,6 +450,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2beec711_bf9d283d",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d2fb9bfa_b79de128",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -256,6 +489,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec69e53c_e825193a",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "24102bfb_f85e27bd",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4468709b_0007227d",
@@ -269,6 +520,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "Is there a need for this extra counter? Can\u0027t we just use `i` in the loop below to do the offseting?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec12abc6_ca7ac75f",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4468709b_0007227d",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
@@ -290,6 +559,24 @@
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95f2dea1_d3f35647",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1088,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "09a0225b_0eb75de7",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "864a1717_092187ee",
@@ -303,6 +590,24 @@
       "writtenOn": "2024-12-11T11:09:53Z",
       "side": 1,
       "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f52a763_99e1e1fe",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1001037
+      },
+      "writtenOn": "2024-12-11T11:29:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "864a1717_092187ee",
       "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
       "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
     }
