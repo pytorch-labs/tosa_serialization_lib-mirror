@@ -1,0 +1,310 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68a713fb_ca736419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Thanks for fixing this, unfortunate that this got merged before I could review it though 😞",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f31e3e3_688a5a69",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Whilst I appreciate liberal asserts I think this is uneccessary since the previous line is literally constructing a default initialized array of `sizeof(f_in)` elements.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4a7006_9ed353ec",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Favour `u8_out.data()` over `\u0026u8_out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c9d9a34_b2dc57d7",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 826,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Rather than calling `out.clear()` then `out.resize(in.size() * (sizeof(half_float::half)))` why not just replace with a single call to `out.assign(in.size() * (sizeof(half_float::half))), uint8_t{})`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a7d864_899dd8cd",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "I know you didn\u0027t touch this line, but can this be made `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d369ae27_288c4655",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 833,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834d9239_87cbbc63",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "616d397c_17f7d8f8",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "See above comment about using `out.assign()`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9ef8496_f1ee1106",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Is there a need for this extra counter? Can\u0027t we just use `i` in the loop below to do the offseting?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c07deb78_5d50bc2d",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "I know you didn\u0027t touch these lines, but can these values be made `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eedcc9b_fe12897f",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "`out.assign()` (see above).",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52976232_94396170",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Is there a need for this extra counter? Can\u0027t we just use `i` in the loop below to do the offseting?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c6844d0_0ff5a357",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "I know you didn\u0027t touch these variables, but can we make them `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2fb9bfa_b79de128",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24102bfb_f85e27bd",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "`out.assign()` (see above).",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4468709b_0007227d",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Is there a need for this extra counter? Can\u0027t we just use `i` in the loop below to do the offseting?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a0225b_0eb75de7",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1088,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "I know you didn\u0027t touch these variables, but can we make them `const`?",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "864a1717_092187ee",
+        "filename": "src/tosa_serialization_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1094,
+      "author": {
+        "id": 1000861
+      },
+      "writtenOn": "2024-12-11T11:09:53Z",
+      "side": 1,
+      "message": "Favour `out.data()` over `\u0026out[0]`.",
+      "revId": "7481af8706fa4f85fe4cbba09595e63747b71087",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    }
+  ]
+}
