@@ -95,10 +95,10 @@ struct storage_type;
     {                                                                                                                  \
         using type = T;                                                                                                \
     }
-STORAGE_TYPE(int8_t);
-STORAGE_TYPE(int16_t);
-STORAGE_TYPE(int32_t);
-STORAGE_TYPE(int64_t);
+STORAGE_TYPE(uint8_t);
+STORAGE_TYPE(uint16_t);
+STORAGE_TYPE(uint32_t);
+STORAGE_TYPE(uint64_t);
 #undef STORAGE_TYPE
 
 template <size_t n_storage_bytes>
@@ -109,11 +109,11 @@ using storage_type_t = typename storage_type<n_storage_bytes>::type;
 
 // If bit_cast is available then use it
 
-constexpr inline int32_t get_bits(const float& f)
+constexpr inline uint32_t get_bits(const float& f)
 {
-    return std::bit_cast<int32_t>(f);
+    return std::bit_cast<uint32_t>(f);
 }
-constexpr inline float from_bits(const int32_t& i)
+constexpr inline float from_bits(const uint32_t& i)
 {
     return std::bit_cast<float>(i);
 }
@@ -123,14 +123,14 @@ constexpr inline float from_bits(const int32_t& i)
 
 // Otherwise `memcpy` is the safe (non-UB) of achieving the same result
 
-inline int32_t get_bits(const float& f)
+inline uint32_t get_bits(const float& f)
 {
-    int32_t i;
+    uint32_t i;
     std::memcpy(&i, &f, sizeof(float));
     return i;
 }
 
-inline float from_bits(const int32_t& i)
+inline float from_bits(const uint32_t& i)
 {
     float f;
     std::memcpy(&f, &i, sizeof(float));
@@ -139,6 +139,30 @@ inline float from_bits(const int32_t& i)
 #endif
 
 }    // namespace float_support
+
+/// \brief Rounding mode for floating-point casts
+enum class RoundMode
+{
+    // Roundings to nearest
+
+    /// \brief Round to the nearest value, with ties going to the nearest
+    /// value with an even least significant digit.
+    TiesToEven,
+
+    /// \brief Round to the nearest value, with ties going to the nearest
+    /// value with an odd least significant digit.
+    TiesToOdd,
+
+    ///\brief Round to the nearest value, with ties to the nearest value
+    /// with larger absolute magnitude.
+    TiesToAway,
+
+    // Directed roundings
+
+    TowardZero,                ///< Truncate
+    TowardPositiveInfinity,    ///< Round up/ceiling
+    TowardNegativeInfinity,    ///< Round down/floor
+};
 
 /// \brief Overflow mode for narrowing floating-point casts.
 ///
@@ -160,6 +184,15 @@ enum class SubnormalMode
     FlushToZero
 };
 
+namespace float_support
+{
+constexpr inline bool is_round_to_nearest(const RoundMode& rm)
+{
+    return (rm == RoundMode::TiesToEven || rm == RoundMode::TiesToOdd || rm == RoundMode::TiesToAway);
+}
+
+}    // namespace float_support
+
 /// Functor for casting cfloat_advanced
 ///
 /// Specific casting behavior can be specified when constructing the
@@ -171,6 +204,7 @@ enum class SubnormalMode
 /// or NaN representations - this will result in a compilation error.
 template <class in_type,
           class out_type,
+          RoundMode round_mode = RoundMode::TiesToEven,
           OverflowMode overflow_mode =
               (out_type::has_nan || out_type::has_inf) ? OverflowMode::Overflow : OverflowMode::Saturate,
           SubnormalMode subnormal_mode = SubnormalMode::Retain>
@@ -235,21 +269,33 @@ public:
                 // different values of NaN (excepting significand = 0,
                 // which is reserved for infinity). This makes it possible
                 // to encode both quiet and signalling varieties.
-                // Generally, the LSB of the significand represents "not
+                // Generally, the MSB of the significand represents "not
                 // quiet".  However, when there is only 1 NaN encoding
                 // (which is generally the case when infinity is not
                 // supported), then there cannot be separate quiet and
                 // signalling varieties of NaN.
                 if constexpr (out_type::has_inf)
                 {
-                    // Copy across the `not_quiet bit`; set the LSB.
-                    // Don't attempt to copy across any of the rest of
-                    // the payload.
-                    new_significand = 0x1 | (((in.significand() >> (in_type::n_significand_bits - 1)) & 1)
-                                             << out_type::n_significand_bits);
+                    // Set the `not_quiet` bit.
+                    new_significand = UINT64_C(1) << (out_type::n_significand_bits - 1);
+                    if constexpr (in_type::n_significand_bits > 0)
+                    {
+                        // Copy across the `not_quiet` bit from the other
+                        // type; but not the payload.
+                        new_significand &=
+                            (static_cast<uint64_t>(in.significand()) >> (in_type::n_significand_bits - 1))
+                            << (out_type::n_significand_bits - 1);
+                    }
+                    // Also set the LSB to ensure that we've encoded a NaN
+                    // of some variety (and not infinity). This could be
+                    // conditional on the `not_quiet` bit, but
+                    // unconditionally setting the LSB is fine.
+                    new_significand |= 0x1;
                 }
                 else
                 {
+                    // If there is no representation of infinity then we
+                    // assume a single encoding of NaN, with all bits set.
                     new_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 }
             }
@@ -275,8 +321,8 @@ public:
                 constexpr int64_t exponent_rebias = out_type::exponent_bias - in_type::exponent_bias;
                 new_exponent_bits                 = std::max(this_exponent_bits + exponent_rebias, exponent_rebias + 1);
             }
-            new_significand = in.significand() << (64 - in_type::n_significand_bits);
-
+            if constexpr (in_type::n_significand_bits > 0)
+                new_significand = in.significand() << (64 - in_type::n_significand_bits);
             // Normalise subnormals
             if (this_exponent_bits == 0)
             {
@@ -333,6 +379,10 @@ public:
                     // Flush to zero
                     new_significand = 0;
                 }
+                else if (new_exponent_bits < -63)
+                {
+                    new_significand = 0;
+                }
                 else
                 {
                     // Shift to handle the non-positive exponent, and insert
@@ -347,24 +397,63 @@ public:
             }
 
             // Align the significand for the output type
-            uint32_t shift = 64 - out_type::n_significand_bits;
-
-            // Switch to a new representation of the significand, made
-            // up of: (new_significand [aligned to LSB]), n_zeros,
-            // rest_of_significand [aligned to MSB]).
-            const uint64_t n_zeros             = shift <= 64 ? 0 : shift - 64;
-            const uint64_t rest_of_significand = shift >= 64 ? new_significand : new_significand << (64 - shift);
-            new_significand                    = shift >= 64 ? 0 : new_significand >> shift;
+            // Switch to a new representation of the significand:
+            //  * new_significand [aligned to LSB])
+            //  * rest_of_significand [aligned to MSB]
+            constexpr uint32_t realign_shift   = 64 - out_type::n_significand_bits;
+            const uint64_t rest_of_significand = new_significand << (64 - realign_shift);
+            if constexpr (realign_shift >= 64)
+            {
+                // This can occur for FP8_E8M0 types
+                new_significand = 0;
+            }
+            else
+            {
+                new_significand = new_significand >> realign_shift;
+            }
 
             // Apply rounding based on values shifted out of the significand
-            constexpr uint64_t msb64 = UINT64_C(1) << 63;
-            if (n_zeros == 0 &&
-                (rest_of_significand > msb64 || (rest_of_significand == msb64 && (new_significand & 1))))
+            if (rest_of_significand && (round_mode != RoundMode::TowardZero))
             {
-                new_significand += 1;
+                if constexpr (float_support::is_round_to_nearest(round_mode))
+                {
+                    // Increment the significand if:
+                    //  * the shifted out bits are greater than half-way
+                    //    between two representable numbers
+                    //  * the shifted out bits are exactly half-way AND
+                    //    either:
+                    //    * the rounding mode is ties away from zero
+                    //    * the rounding mode is ties to even AND the
+                    //      significand is odd
+                    //    * the rounding mode is ties to odd AND the
+                    //      significand is even
+                    constexpr uint64_t tie = UINT64_C(1) << 63;
+                    if (rest_of_significand > tie || (rest_of_significand == tie &&
+                                                      (round_mode == RoundMode::TiesToAway ||
+                                                       ((new_significand & 1) && round_mode == RoundMode::TiesToEven) ||
+                                                       (!(new_significand & 1) && round_mode == RoundMode::TiesToOdd))))
+                    {
+                        new_significand += 1;
+                    }
+                }
+                else if constexpr (round_mode == RoundMode::TowardPositiveInfinity)
+                {
+                    // Truncate negative values, round up positive values
+                    if (!sign_bit)
+                    {
+                        new_significand += 1;
+                    }
+                }
+                else if constexpr (round_mode == RoundMode::TowardNegativeInfinity)
+                {
+                    // Truncate positive values, round up negative values
+                    if (sign_bit)
+                    {
+                        new_significand += 1;
+                    }
+                }
 
-                // Handle the case that the significand overflowed due to
-                // rounding
+                // Check if rounding caused the significand to overflow
                 constexpr uint64_t max_significand = (UINT64_C(1) << out_type::n_significand_bits) - 1;
                 if (new_significand > max_significand)
                 {
@@ -587,17 +676,20 @@ public:
         // If this format exactly represents the binary32 format then return
         // a float; otherwise get a binary32 representation and then return
         // a float.
+
+        // clang-format off
         if constexpr (represents_binary32())
             return float_support::from_bits(m_data);
         else
             return static_cast<float>(this->operator cfloat_advanced<32, 8>());
+        // clang-format on
     }
 
     /// \brief Return whether this type represents the IEEE754 binary32
     /// format
     constexpr static inline bool represents_binary32()
     {
-        return std::is_same_v<storage_t, int32_t> && n_exp_bits == 8 && Feats == float_support::AllFeats;
+        return std::is_same_v<storage_t, uint32_t> && n_exp_bits == 8 && Feats == float_support::AllFeats;
     }
 
     constexpr auto operator-() const
@@ -614,7 +706,9 @@ public:
 
     constexpr bool is_zero() const
     {
-        return exponent_bits() == 0 && significand() == 0;
+        // Zero is represented by everything but the sign bit(s) being zero
+        constexpr storage_t sign_bit = (storage_t(1) << (n_bits - 1));
+        return (m_data & ~sign_bit) == 0;
     }
 
     constexpr bool is_nan() const
@@ -779,6 +873,15 @@ template <int e>
 inline constexpr int max_exponent10_v = max_exponent10<e>::value;
 
 }    // namespace float_support
+
+// Typedef some commonly used floating point types
+using binary32 = ct::cfloat_advanced<32, 8, ct::float_support::AllFeats>;
+using float32  = binary32;
+using bfloat16 = ct::cfloat_advanced<16, 8, ct::float_support::AllFeats>;
+using binary16 = ct::cfloat_advanced<16, 5, ct::float_support::AllFeats>;
+using float16  = binary16;
+using fp8_e4m3 = ct::cfloat_advanced<8, 4, ct::FloatFeatures::HasNaN | ct::FloatFeatures::HasDenorms>;
+using fp8_e5m2 = ct::cfloat_advanced<8, 5, ct::float_support::AllFeats>;
 
 }    // namespace ct
 
