@@ -1,4 +1,4 @@
-// Copyright (c) 2024, ARM Limited.
+// Copyright (c) 2024-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ DEF_OP(CONV2D, Conv, TENSOR, TENSOR, TENSOR, TENSOR, TENSOR)
 DEF_OP(CONV3D, Conv, TENSOR, TENSOR, TENSOR, TENSOR, TENSOR)
 DEF_OP(DEPTHWISE_CONV2D, Conv, TENSOR, TENSOR, TENSOR, TENSOR, TENSOR)
 //  FULLY_CONNECTED (deprecated),
-DEF_OP(MATMUL, MatMul, TENSOR, TENSOR)
+DEF_OP(MATMUL, None, TENSOR, TENSOR, TENSOR, TENSOR)
 DEF_OP(MAX_POOL2D, Pool, TENSOR)
 DEF_OP(TRANSPOSE_CONV2D, TransposeConv, TENSOR, TENSOR, TENSOR, TENSOR, TENSOR)
 DEF_OP(CLAMP, Clamp, TENSOR)
