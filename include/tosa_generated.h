@@ -1620,19 +1620,10 @@ inline ::flatbuffers::Offset<TableAttribute> CreateTableAttribute(
 struct MatMulAttribute FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef MatMulAttributeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_A_ZP = 4,
-    VT_B_ZP = 6
+
   };
-  int32_t a_zp() const {
-    return GetField<int32_t>(VT_A_ZP, 0);
-  }
-  int32_t b_zp() const {
-    return GetField<int32_t>(VT_B_ZP, 0);
-  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_A_ZP, 4) &&
-           VerifyField<int32_t>(verifier, VT_B_ZP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1641,12 +1632,6 @@ struct MatMulAttributeBuilder {
   typedef MatMulAttribute Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_a_zp(int32_t a_zp) {
-    fbb_.AddElement<int32_t>(MatMulAttribute::VT_A_ZP, a_zp, 0);
-  }
-  void add_b_zp(int32_t b_zp) {
-    fbb_.AddElement<int32_t>(MatMulAttribute::VT_B_ZP, b_zp, 0);
-  }
   explicit MatMulAttributeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -1659,12 +1644,8 @@ struct MatMulAttributeBuilder {
 };
 
 inline ::flatbuffers::Offset<MatMulAttribute> CreateMatMulAttribute(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t a_zp = 0,
-    int32_t b_zp = 0) {
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
   MatMulAttributeBuilder builder_(_fbb);
-  builder_.add_b_zp(b_zp);
-  builder_.add_a_zp(a_zp);
   return builder_.Finish();
 }
 

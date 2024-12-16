@@ -1,5 +1,5 @@
 
-// Copyright (c) 2020-2024, ARM Limited.
+// Copyright (c) 2020-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -88,10 +88,6 @@ DEF_ATTRIBUTE(WhileLoop, 2,
 
 DEF_ATTRIBUTE(Transpose, 1,
               int32_t, V, perms)
-
-DEF_ATTRIBUTE(MatMul, 2,
-              int32_t, S, a_zp,
-              int32_t, S, b_zp)
 
 DEF_ATTRIBUTE(Negate, 2,
               int32_t, S, input1_zp,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2024, ARM Limited.
+# Copyright (c) 2024-2025, ARM Limited.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -29,8 +29,6 @@ import pytest
 FIELD_NAME_REPLACEMENTS = {
     # spelling differences
     ("TransposeConvAttribute", "out_pad"): "outpad",
-    ("MatMulAttribute", "a_zp"): "A_zp",
-    ("MatMulAttribute", "b_zp"): "B_zp",
     # these are for a reason; PadAttribute and ClampAttribute have
     # inputs that are byte arrays, and the param names reflect this
     ("PadAttribute", "pad_const"): "pad_const_val_as_bytes",
@@ -71,7 +69,8 @@ def get_attributes():
 
     for i in attribute_info:
         # The library doesn't support custom or none attributes.
-        if i["name"] not in ["NONE", "CustomAttribute"]:
+        # CustomAttribute and MatMulAttribute are deprecated
+        if i["name"] not in ["NONE", "CustomAttribute", "MatMulAttribute"]:
             yield i["name"]
 
 
