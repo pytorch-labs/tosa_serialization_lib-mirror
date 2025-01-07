@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024, ARM Limited.
+// Copyright (c) 2022-2025, ARM Limited.
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -12,10 +12,29 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+/// \file cfloat.hpp
+/// \brief Generic support for floating point types
+///
+/// The cfloat library contains two major pieces of functionality: the
+/// `cfloat_advanced` class which is a template-parameterized soft float
+/// implementation capable of representing IEEE754 compliant floating point
+/// types, and a handful of derived types such as BFloat16, FP8 E5M2, FP8 E4M3,
+/// FP6 E3M2, and FP4 E2M1. Instances of `cfloat_advanced` can be implicitly
+/// casted to and from `float` to allow for comparatively fast computation using
+/// machine floating point support.
+///
+/// In addition, a functor is provided which can perform casts between different
+/// parameterizations of `cfloat_advanced`. The functor can be configured to
+/// perform either SATURATING or OVERFLOWING casts; this determines the
+/// behaviour when converting an out-of-range value to a narrower type.
+///
+/// See the classes below for further documentation.
 #ifndef CT_CFLOAT_H
 #define CT_CFLOAT_H
 #include "cfloat_forward.h"
 #include <algorithm>
+#include <cassert>
+#include <cmath>
 #include <cstdint>
 #include <cstring>
 #include <limits>
@@ -170,8 +189,12 @@ enum class RoundMode
 /// destination type.
 enum class OverflowMode
 {
-    Saturate,    ///< Map to the largest representable value
-    Overflow     ///< Map to infinity (if available) or NaN
+    Saturate,                  ///< Map to the largest representable value
+    Overflow,                  ///< Round values and then map overflows to infinity (if
+                               ///< available) or NaN
+    OverflowBeforeRounding,    ///< Map all values outside of the
+                               ///< representable range to infinity (if
+                               ///< available) or NaN before applying rounding
 };
 
 /// \brief Subnormal/denormal handing
@@ -278,6 +301,7 @@ public:
                 {
                     // Set the `not_quiet` bit.
                     new_significand = UINT64_C(1) << (out_type::n_significand_bits - 1);
+
                     if constexpr (in_type::n_significand_bits > 0)
                     {
                         // Copy across the `not_quiet` bit from the other
@@ -286,6 +310,7 @@ public:
                             (static_cast<uint64_t>(in.significand()) >> (in_type::n_significand_bits - 1))
                             << (out_type::n_significand_bits - 1);
                     }
+
                     // Also set the LSB to ensure that we've encoded a NaN
                     // of some variety (and not infinity). This could be
                     // conditional on the `not_quiet` bit, but
@@ -307,7 +332,7 @@ public:
                 // of the FP8 specification.
                 return out_type::max(sign_bit);
             }
-            else if constexpr (!out_type::has_inf && overflow_mode == OverflowMode::Overflow)
+            else if constexpr (!out_type::has_inf)
             {
                 // In OVERFLOW mode, infinities in the input type map to NaN
                 // in the output type, if infinity is not available.
@@ -323,6 +348,7 @@ public:
             }
             if constexpr (in_type::n_significand_bits > 0)
                 new_significand = in.significand() << (64 - in_type::n_significand_bits);
+
             // Normalise subnormals
             if (this_exponent_bits == 0)
             {
@@ -340,10 +366,9 @@ public:
                 new_significand <<= 1;
             }
 
-            // Apply overflow to out-of-range values; this must occur before
-            // rounding, as out-of-range values could be rounded down to the
-            // largest representable value.
-            if constexpr (overflow_mode == OverflowMode::Overflow)
+            // When in overflow-before-rounding mode: apply overflow to
+            // out-of-range values.
+            if constexpr (overflow_mode == OverflowMode::OverflowBeforeRounding)
             {
                 // Determine the maximum value of exponent, and unrounded
                 // significand.
@@ -471,7 +496,7 @@ public:
                 constexpr int64_t inf_exp_bits = (INT64_C(1) << out_exp_bits) - 1;
                 if (new_exponent_bits >= inf_exp_bits)
                 {
-                    if constexpr (out_type::has_inf && overflow_mode == OverflowMode::Overflow)
+                    if constexpr (out_type::has_inf && overflow_mode != OverflowMode::Saturate)
                     {
                         // If the output type has a representation of
                         // infinity, and we are in OVERFLOW Mode, then
@@ -489,7 +514,7 @@ public:
                     }
                     else if (new_exponent_bits > inf_exp_bits)
                     {
-                        if constexpr (overflow_mode == OverflowMode::Overflow)
+                        if constexpr (overflow_mode != OverflowMode::Saturate)
                             return out_type::NaN();
                         else
                             return out_type::max(sign_bit);
@@ -513,6 +538,56 @@ public:
         return out_type::from_bits(sign_bit, new_exponent_bits, new_significand);
     }
 };
+
+template <typename T>
+struct is_cfloat : std::false_type
+{};
+
+template <size_t ContainerBits, size_t ExponentBits, FloatFeatures Feats>
+struct is_cfloat<cfloat_advanced<ContainerBits, ExponentBits, Feats>> : std::true_type
+{};
+
+namespace compat
+{
+// The following dance is required to work around a SFINAE bug in
+// gcc-8.3 where the compiler fails to recognize that an ambiguous
+// constructor call in the cfloat_advanced template can be resolved via
+// a call to the operator() overload.
+//
+// This should be removed and all uses replaced with static_cast once
+// gcc-8.3 support is no longer a requirement.
+
+// We need a way to recognize two instantiations of the cfloat_advanced
+// class template as being of the same type.
+
+// Define a cast function that can case between cfloat_advanced
+// types via a cfloat_cast and builtin types (and cfloat_advanced types)
+// via regular static cast.
+template <typename To, typename From>
+To wrapped_cfloat_cast(const From& from)
+{
+    if constexpr (is_cfloat<To>::value && is_cfloat<From>::value)
+    {
+        return cfloat_cast<From, To>()(from);
+    }
+    else
+    {
+        return static_cast<To>(from);
+    }
+}
+
+// This function ensures that on tool chains where we can use
+// static_cast directly we do.
+template <typename To, typename From>
+To cast(const From& from)
+{
+#if __GNUC__ == 8 && __GNUC_MINOR__ == 3
+    return wrapped_cfloat_cast<To>(from);
+#else
+    return static_cast<To>(from);
+#endif
+}
+}    // namespace compat
 
 /// \brief Bit-accurate representation storage of IEEE754 compliant and
 ///        derived floating point types.
@@ -564,7 +639,7 @@ public:
     /// significand bits.
     static constexpr cfloat_advanced from_bits(bool pm, storage_t e, storage_t s)
     {
-        storage_t bits = pm ? -1 : 0;
+        storage_t bits = pm ? 1 : 0;
 
         bits <<= n_exp_bits;
         bits |= e;
@@ -579,7 +654,12 @@ public:
     /// \brief (Hidden) Construct a float type from a given bit pattern
     constexpr cfloat_advanced(const float_support::hidden&, storage_t bits)
         : m_data(bits)
-    {}
+    {
+#ifndef NDEBUG
+        constexpr storage_t data_mask = (UINT64_C(1) << n_bits) - 1;
+        assert((bits & ~data_mask) == 0);
+#endif
+    }
 
     constexpr cfloat_advanced()
         : m_data(0)
@@ -610,7 +690,8 @@ public:
         // Inf doesn't exist then NaN is encoded as all ones in the
         // significand.
         constexpr uint64_t exp_bits = (UINT64_C(1) << n_exponent_bits) - 1;
-        constexpr uint64_t sig_bits = has_inf ? 1 : (UINT64_C(1) << n_significand_bits) - 1;
+        constexpr uint64_t sig_bits =
+            has_inf ? (UINT64_C(1) << (n_significand_bits - 1)) : (UINT64_C(1) << n_significand_bits) - 1;
         return cfloat_advanced::from_bits(false, exp_bits, sig_bits);
     }
 
@@ -629,8 +710,8 @@ public:
     {
         if constexpr (has_nan && has_inf)
         {
-            // Where we have NaN and Infinity, exponents all `1` corresponds
-            // to some of these values.
+            // If we have NaN and Infinity, exponents all `1` is reserved
+            // for NaN/Infinity
             return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 2, (UINT64_C(1) << n_significand_bits) - 1);
         }
         else if constexpr (has_nan || has_inf)
@@ -645,6 +726,24 @@ public:
             // With no special values to encode, the maximum value is
             // encoded as all `1`s.
             return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 1, (UINT64_C(1) << n_significand_bits) - 1);
+        }
+    }
+
+    /// \brief Get the largest representable value that's a power of two
+    static constexpr cfloat_advanced max_power_of_two(const bool& sign)
+    {
+        if constexpr (has_nan && has_inf)
+        {
+            // If we have NaN and Infinity, exponents all `1` is reserved
+            // for NaN/Infinity
+            return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 2, 0);
+        }
+        else
+        {
+            // Whereas if we have either NaN or Infinity (but not both), or
+            // none of the special values at all, the maximum power of two
+            // value is encoded as all `1` exponent and zero mantissa.
+            return from_bits(sign, (UINT64_C(1) << n_exponent_bits) - 1, 0);
         }
     }
 
@@ -667,7 +766,7 @@ public:
             m_data = float_support::get_bits(f);
         else
             m_data =
-                static_cast<cfloat_advanced<n_bits, n_exp_bits, Feats>>(static_cast<cfloat_advanced<32, 8>>(f)).m_data;
+                compat::cast<cfloat_advanced<n_bits, n_exp_bits, Feats>>(static_cast<cfloat_advanced<32, 8>>(f)).m_data;
     }
 
     /// \brief Cast to a 32-bit floating point value
@@ -678,10 +777,12 @@ public:
         // a float.
 
         // clang-format off
-        if constexpr (represents_binary32())
-            return float_support::from_bits(m_data);
-        else
-            return static_cast<float>(this->operator cfloat_advanced<32, 8>());
+            if constexpr(represents_binary32())
+                return float_support::from_bits(m_data);
+            else
+                return static_cast<float>(
+                    cfloat_cast<cfloat_advanced, cfloat_advanced<32, 8>>()
+                        .operator()(*this));
         // clang-format on
     }
 
@@ -694,8 +795,7 @@ public:
 
     constexpr auto operator-() const
     {
-        constexpr storage_t sign_bits =
-            static_cast<storage_t>(std::numeric_limits<std::make_unsigned_t<storage_t>>::max() << (n_bits - 1));
+        constexpr storage_t sign_bits = storage_t(storage_t(1) << (n_bits - 1));
         return from_bits(m_data ^ sign_bits);
     }
 
@@ -751,17 +851,6 @@ public:
         return m_data & ((UINT64_C(1) << n_significand_bits) - 1);
     }
 
-    constexpr inline bool operator==(const cfloat_advanced& other) const
-    {
-        return !is_nan() && !other.is_nan() &&    // Neither operand is NaN
-               ((is_zero() && other.is_zero()) || (m_data == other.m_data));
-    }
-
-    constexpr inline bool operator!=(const cfloat_advanced& other) const
-    {
-        return !(*this == other);
-    }
-
     constexpr inline cfloat_advanced& operator+=(const cfloat_advanced& rhs)
     {
         this->m_data = static_cast<cfloat_advanced>(static_cast<float>(*this) + static_cast<float>(rhs)).bits();
@@ -771,6 +860,31 @@ public:
 private:
     storage_t m_data = 0;
 };
+
+template <size_t N, size_t E, FloatFeatures F>
+inline constexpr bool operator==(const cfloat_advanced<N, E, F>& a, const cfloat_advanced<N, E, F>& b)
+{
+    if constexpr (cfloat_advanced<N, E, F>::represents_binary32())
+    {
+        // If this type represents binary32 then use the machine instruction
+        // to compare - the casts are NOPs in this case.
+        return static_cast<float>(a) == static_cast<float>(b);
+    }
+    else if constexpr (cfloat_advanced<N, E, F>::has_nan)
+    {
+        return (a.bits() == b.bits() || (a.is_zero() && b.is_zero())) && !a.is_nan() && !b.is_nan();
+    }
+    else
+    {
+        return a.bits() == b.bits() || (a.is_zero() && b.is_zero());
+    }
+}
+
+template <size_t N, size_t E, FloatFeatures F>
+inline constexpr bool operator!=(const cfloat_advanced<N, E, F>& a, const cfloat_advanced<N, E, F>& b)
+{
+    return !(a == b);
+}
 
 // This should probably be exported so we can use it elsewhere
 #undef BITCAST_CONSTEXPR
@@ -883,6 +997,11 @@ using float16  = binary16;
 using fp8_e4m3 = ct::cfloat_advanced<8, 4, ct::FloatFeatures::HasNaN | ct::FloatFeatures::HasDenorms>;
 using fp8_e5m2 = ct::cfloat_advanced<8, 5, ct::float_support::AllFeats>;
 
+using fp6_e2m3 = ct::cfloat_advanced<6, 2, ct::FloatFeatures::HasDenorms>;
+using fp6_e3m2 = ct::cfloat_advanced<6, 3, ct::FloatFeatures::HasDenorms>;
+
+using fp4_e2m1 = ct::cfloat_advanced<4, 2, ct::FloatFeatures::HasDenorms>;
+
 }    // namespace ct
 
 namespace std
@@ -984,6 +1103,21 @@ public:
     static constexpr bool tinyness_before          = false;
     static constexpr float_round_style round_style = round_to_nearest;
 };
+
+template <size_t n_bits, size_t n_exp_bits, ct::FloatFeatures Feats>
+int fpclassify(ct::cfloat_advanced<n_bits, n_exp_bits, Feats> x)
+{
+    if (x.is_nan())
+        return FP_NAN;
+    else if (x.is_zero())
+        return FP_ZERO;
+    else if (x.is_subnormal())
+        return FP_SUBNORMAL;
+    else if (x.is_infinity())
+        return FP_INFINITE;
+    else
+        return FP_NORMAL;
+}
 
 }    // namespace std
 
