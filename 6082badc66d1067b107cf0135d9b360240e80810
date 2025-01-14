@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f3b410_443a537d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001042
+      },
+      "writtenOn": "2025-01-14T11:21:01Z",
+      "side": 1,
+      "message": "Note: we need to wait until we know we\u0027re ready to backport this in other components before merging. I will update the code review to 0 then.",
+      "revId": "6082badc66d1067b107cf0135d9b360240e80810",
+      "serverId": "e7c18949-9f1d-4125-8f68-54b4bb1f6e6e"
+    }
+  ]
+}
